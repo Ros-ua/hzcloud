@@ -119,15 +119,15 @@ Proxy:
 # 配置开始
 - name: "V2ray1"
   type: vmess
-  server: catstest.duckdns.org
+  server: vraysg.duckdns.org
   port: 443
-  uuid: f3c9fe20-dbff-4284-aeb3-98422e6aa8a0
+  uuid: 4a4c0eb9-e4fc-4ba6-b6ea-64d56d57be4a
   alterId: 2
   cipher: auto
   tls: true
   network: ws
-  ws-path: /ff15ebe6/
-  Host: catstest.duckdns.org
+  ws-path: /413b36b6/
+  Host: vraysg.duckdns.org
 
 
   
