@@ -141,19 +141,6 @@ Proxy:
   ws-path: /413b36b6/
   Host: vraysg.duckdns.org
   
- - name: "test"
-  type: vmess
-  server: vraydigi.duckdns.org
-  port: 443
-  uuid: ff6b92e8-56ed-4d39-be35-2af00523112d
-  alterId: 2
-  cipher: auto
-  tls: true
-  network: ws
-  ws-path: /18dcd27a/
-  Host: vraydigi.duckdns.org
-
-
 
  
 ###############################################################配置分割线
@@ -167,7 +154,6 @@ Proxy Group:
   proxies:
     - "V2ray1"
     - "V2ray2"
-    - "test"
   url: 'http://www.gstatic.com/generate_204'
   interval: 300
 
@@ -178,7 +164,6 @@ Proxy Group:
     - "自动节点选择"
     - "V2ray1"
     - "V2ray2"
-    - "test"
 # 白名单模式 PROXY，黑名单模式 DIRECT
 - name: "Final"
   type: select
@@ -198,7 +183,6 @@ Proxy Group:
     - "PROXY"
     - "V2ray1"
     - "V2ray2"
-    - "test"
 # 大陆流媒体面向港澳台限定服务
 - name: "HKMTMedia"
   type: select
@@ -206,7 +190,6 @@ Proxy Group:
     - "DIRECT"
     - "V2ray1"
     - "V2ray2"
-    - "test"
 # 运营商及声名狼藉网站劫持
 - name: "Hijacking"
   type: select
