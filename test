@@ -118,14 +118,10 @@ Proxy:
 
 # 配置开始
 - name: "test"
-  type: vmess
-  server: 45.32.9.144
-  port: 39140
-  uuid: 222c3a0a-77c8-11ea-a4be-560002aa48d7
-  alterId: 16
-  cipher: auto
-  tls: true
-  network: tcp
+  type: trojan
+  server: thatsatest.duckdns.org
+  port: 443
+  password: 1qaz2wsx
  
   
 
