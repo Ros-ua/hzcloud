@@ -121,12 +121,12 @@ Proxy:
   type: vmess
   server: mayserver.zgc-servers.site
   port: 443
-  uuid: f167a592-7800-11ea-80af-560002aa7d10
+  uuid: 7ab15e56-7806-11ea-a205-0a1dc688bc02
   alterId: 16
   cipher: auto
   tls: true
   network: ws
-  ws-path: /KbuA2qY4/
+  ws-path: /S7iAG6gJ/
   Host: mayserver.zgc-servers.site
  
   
