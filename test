@@ -128,6 +128,18 @@ Proxy:
   network: ws
   ws-path: /S7iAG6gJ/
   Host: mayserver.zgc-servers.site
+  
+- name: "grey"
+  type: vmess
+  server: mayserver.zgc-servers.site
+  port: 443
+  uuid: 7ab15e56-7806-11ea-a205-0a1dc688bc02
+  alterId: 16
+  cipher: auto
+  tls: true
+  network: ws
+  ws-path: /S7iAG6gJ/
+  Host: mayserver.zgc-servers.site  
  
   
 
@@ -142,6 +154,7 @@ Proxy Group:
   type: url-test
   proxies:
     - "green"
+    - "grey"
   url: 'http://www.gstatic.com/generate_204'
   interval: 300
 
@@ -151,6 +164,7 @@ Proxy Group:
   proxies:
     - "自动节点选择"
     - "green"
+    - "grey"
 # 白名单模式 PROXY，黑名单模式 DIRECT
 - name: "Final"
   type: select
@@ -169,12 +183,14 @@ Proxy Group:
   proxies:
     - "PROXY"
     - "green"
+    - "grey"
 # 大陆流媒体面向港澳台限定服务
 - name: "HKMTMedia"
   type: select
   proxies:
     - "DIRECT"
     - "green"
+    - "grey"
 # 运营商及声名狼藉网站劫持
 - name: "Hijacking"
   type: select
