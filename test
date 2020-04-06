@@ -126,10 +126,7 @@ Proxy:
   cipher: auto
   tls: true
   network: tcp
-  # ws-path: de7c
-  # Host: myws
-
-  
+ 
   
 
  
