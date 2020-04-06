@@ -117,19 +117,16 @@ Proxy:
 
 
 # 配置开始
-- name: "V2ray1"
+- name: "test"
   type: vmess
-  server: vraysg.duckdns.org
+  server: catstest.duckdns.org
   port: 443
-  uuid: 4a4c0eb9-e4fc-4ba6-b6ea-64d56d57be4a
+  uuid: 011a72f6-2748-49d6-af57-46e4accdc511
   alterId: 2
   cipher: auto
   tls: true
-  network: ws
-  ws-path: /413b36b6/
-  Host: vraysg.duckdns.org
-
-
+  network: h2
+  ws-path: /ded9ddec/
   
 
   
@@ -145,7 +142,7 @@ Proxy Group:
 - name: "自动节点选择"
   type: url-test
   proxies:
-    - "V2ray1"
+    - "test"
   url: 'http://www.gstatic.com/generate_204'
   interval: 300
 
@@ -154,7 +151,7 @@ Proxy Group:
   type: select
   proxies:
     - "自动节点选择"
-    - "V2ray1"
+    - "test"
 # 白名单模式 PROXY，黑名单模式 DIRECT
 - name: "Final"
   type: select
@@ -172,13 +169,13 @@ Proxy Group:
   type: select
   proxies:
     - "PROXY"
-    - "V2ray1"
+    - "test"
 # 大陆流媒体面向港澳台限定服务
 - name: "HKMTMedia"
   type: select
   proxies:
     - "DIRECT"
-    - "V2ray1"
+    - "test"
 # 运营商及声名狼藉网站劫持
 - name: "Hijacking"
   type: select
