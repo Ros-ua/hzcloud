@@ -132,7 +132,7 @@ Proxy:
 - name: "grey"
   type: vmess
   server: mayserver.zgc-servers.site
-  port: 443
+  port: 444
   uuid: b9628cd8-7806-11ea-8cc2-0a1dc688bc02
   alterId: 16
   cipher: auto
