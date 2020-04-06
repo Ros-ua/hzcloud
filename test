@@ -119,15 +119,15 @@ Proxy:
 # 配置开始
 - name: "test"
   type: vmess
-  server: vraysg.duckdns.org
+  server: mayserver.zgc-servers.site
   port: 443
-  uuid: 4a4c0eb9-e4fc-4ba6-b6ea-64d56d57be4a
-  alterId: 2
+  uuid: 54e73e5c-b1ef-4844-883c-a79c5d333023
+  alterId: 64
   cipher: auto
   tls: true
   network: ws
-  ws-path: /413b36b6/
-  Host: vraysg.duckdns.org
+  ws-path: fc99
+  Host: myws
  
   
 
