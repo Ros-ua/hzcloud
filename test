@@ -119,15 +119,15 @@ Proxy:
 # 配置开始
 - name: "test"
   type: vmess
-  server: vraydigi.duckdns.org
-  port: 443
-  uuid: a920aff3-824f-4e3f-9ab9-caabbd72d1de
-  alterId: 64
+  server: 45.32.9.144
+  port: 39140
+  uuid: 222c3a0a-77c8-11ea-a4be-560002aa48d7
+  alterId: 16
   cipher: auto
   tls: true
-  network: ws
-  ws-path: de7c
-  Host: myws
+  network: tcp
+  # ws-path: de7c
+  # Host: myws
 
   
   
