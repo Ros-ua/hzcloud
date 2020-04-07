@@ -133,7 +133,7 @@ Proxy:
   type: vmess
   server: rostesta.zgc-servers.site
   port: 446
-  uuid: b9628cd8-7806-11ea-8cc2-0a1dc688bc02
+  uuid: 8c1a8592-78af-11ea-a50c-0a651a7090e4
   alterId: 16
   cipher: auto 
  
