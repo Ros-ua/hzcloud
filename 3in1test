@@ -127,19 +127,19 @@ Proxy:
   type: vmess
   server: digitest.zgc-servers.site
   port: 444
-  uuid: 71232b30-788d-11ea-b4c8-4a1c358ad7f9
+  uuid: 29878d7e-7893-11ea-8ef8-4a1c358ad7f9
   alterId: 16
   cipher: auto
   tls: true
   network: ws
-  ws-path: /ibE84eok/
+  ws-path: /Oh9Ut5Ar/
   Host: digitest.zgc-servers.site
   
 - name: "grey"
   type: vmess
-  server: 159.65.130.50
-  port: 445
-  uuid: c8e24c2a-788d-11ea-b2f3-4a1c358ad7f9
+  server: digitest.zgc-servers.site
+  port: 555
+  uuid: 6e4aa19e-7893-11ea-a4f8-4a1c358ad7f9
   alterId: 16
   cipher: auto 
 
