@@ -137,6 +137,7 @@ Proxy:
   alterId: 16
   cipher: auto
   tls: true
+  network: none
   
  
   
