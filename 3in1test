@@ -150,7 +150,6 @@ Proxy Group:
   proxies:
     - "Trojan1"
     - "green"
-    - "grey"
   url: 'http://www.gstatic.com/generate_204'
   interval: 300
 
@@ -161,7 +160,6 @@ Proxy Group:
     - "自动节点选择"
     - "Trojan1"
     - "green"
-    - "grey"
 # 白名单模式 PROXY，黑名单模式 DIRECT
 - name: "Final"
   type: select
@@ -181,7 +179,6 @@ Proxy Group:
     - "PROXY"
     - "Trojan1"
     - "green"
-    - "grey"
 # 大陆流媒体面向港澳台限定服务
 - name: "HKMTMedia"
   type: select
@@ -189,7 +186,6 @@ Proxy Group:
     - "DIRECT"
     - "Trojan1"
     - "green"
-    - "grey"
 # 运营商及声名狼藉网站劫持
 - name: "Hijacking"
   type: select
