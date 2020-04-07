@@ -119,20 +119,20 @@ Proxy:
 # 配置开始
 - name: "green"
   type: vmess
-  server: mayserver.zgc-servers.site
-  port: 443
-  uuid: 7ab15e56-7806-11ea-a205-0a1dc688bc02
+  server: rostesta.zgc-servers.site
+  port: 444
+  uuid: 0071b736-78af-11ea-beae-0a651a7090e4
   alterId: 16
   cipher: auto
   tls: true
   network: ws
-  ws-path: /S7iAG6gJ/
-  Host: mayserver.zgc-servers.site
+  ws-path: /OfgQbCRM/
+  Host: rostesta.zgc-servers.site
   
 - name: "grey"
   type: vmess
-  server: mayserver.zgc-servers.site
-  port: 444
+  server: rostesta.zgc-servers.site
+  port: 446
   uuid: b9628cd8-7806-11ea-8cc2-0a1dc688bc02
   alterId: 16
   cipher: auto 
