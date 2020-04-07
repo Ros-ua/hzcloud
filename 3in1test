@@ -119,29 +119,23 @@ Proxy:
 # 配置开始
 - name: "Trojan1"
   type: trojan
-  server: digitest.zgc-servers.site
+  server: digitesta.zgc-servers.site
   port: 443
   password: 1qaz2wsx
 
 - name: "green"
   type: vmess
-  server: digitest.zgc-servers.site
+  server: digitesta.zgc-servers.site
   port: 444
-  uuid: 29878d7e-7893-11ea-8ef8-4a1c358ad7f9
+  uuid: c5c93772-7899-11ea-8eb8-560002aafab3
   alterId: 16
   cipher: auto
   tls: true
   network: ws
-  ws-path: /Oh9Ut5Ar/
-  Host: digitest.zgc-servers.site
+  ws-path: /0g6cmINB/
+  Host: digitesta.zgc-servers.site
   
-- name: "grey"
-  type: vmess
-  server: digitest.zgc-servers.site
-  port: 555
-  uuid: 6e4aa19e-7893-11ea-a4f8-4a1c358ad7f9
-  alterId: 16
-  cipher: auto 
+
 
 
  
