@@ -137,7 +137,7 @@ Proxy:
   
 - name: "grey"
   type: vmess
-  server: digitest.zgc-servers.site
+  server: 159.65.130.50
   port: 445
   uuid: c8e24c2a-788d-11ea-b2f3-4a1c358ad7f9
   alterId: 16
