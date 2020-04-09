@@ -117,13 +117,27 @@ Proxy:
 
 
 # 配置开始
-- name: "Trojan1"
-  type: trojan
-  server: rostesta.zgc-servers.site
-  port: 443
-  password: 1qaz2wsx
+- name: "telefon1E"
+  type: vmess
+  server: cheburek.duckdns.org
+  port: 444
+  uuid: fe5c858e-796c-11ea-94a2-0af6f1f45f64
+  alterId: 16
+  cipher: auto
+  tls: true
+  network: ws
+  ws-path: /42lC8UJP/
+  Host: cheburek.duckdns.org
+  
+- name: "telefon2E"
+  type: vmess
+  server: cheburek.duckdns.org
+  port: 446
+  uuid: ab59f24e-796d-11ea-98f7-0af6f1f45f64
+  alterId: 16
+  cipher: auto
 
-- name: "green"
+- name: "greenZ"
   type: vmess
   server: rostesta.zgc-servers.site
   port: 444
@@ -135,15 +149,44 @@ Proxy:
   ws-path: /OfgQbCRM/
   Host: rostesta.zgc-servers.site
   
-- name: "grey"
+- name: "greyZ"
   type: vmess
   server: rostesta.zgc-servers.site
   port: 446
   uuid: 8c1a8592-78af-11ea-a50c-0a651a7090e4
   alterId: 16
   cipher: auto 
-  
-  
+
+- name: "V2rayR"
+  type: vmess
+  server: vraysg.duckdns.org
+  port: 443
+  uuid: 4a4c0eb9-e4fc-4ba6-b6ea-64d56d57be4a
+  alterId: 2
+  cipher: auto
+  tls: true
+  network: ws
+  ws-path: /413b36b6/
+  Host: vraysg.duckdns.org
+
+- name: "TrojanR"
+  type: trojan
+  server: cats7.duckdns.org
+  port: 443
+  password: 1qaz2wsx
+
+
+- name: "TrojanE"
+  type: trojan
+  server: cheburek.duckdns.org
+  port: 443
+  password: qazxsw123
+
+- name: "TrojanZ"
+  type: trojan
+  server: rostesta.zgc-servers.site
+  port: 443
+  password: 1qaz2wsx
 
 
 
@@ -157,9 +200,15 @@ Proxy Group:
 - name: "自动节点选择"
   type: url-test
   proxies:
-    - "Trojan1"
-    - "green"
-    - "grey"
+    - "TrojanZ"
+    - "TrojanE"
+    - "TrojanR"
+    - "V2rayR"
+    - "greyZ"
+    - "greenZ"
+    - "telefon2E"
+    - "telefon1E"
+
   url: 'http://www.gstatic.com/generate_204'
   interval: 300
 
@@ -168,9 +217,14 @@ Proxy Group:
   type: select
   proxies:
     - "自动节点选择"
-    - "Trojan1"
-    - "green"
-    - "grey"
+    - "TrojanZ"
+    - "TrojanE"
+    - "TrojanR"
+    - "V2rayR"
+    - "greyZ"
+    - "greenZ"
+    - "telefon2E"
+    - "telefon1E"
 # 白名单模式 PROXY，黑名单模式 DIRECT
 - name: "Final"
   type: select
@@ -188,17 +242,27 @@ Proxy Group:
   type: select
   proxies:
     - "PROXY"
-    - "Trojan1"
-    - "green"
-    - "grey"
+    - "TrojanZ"
+    - "TrojanE"
+    - "TrojanR"
+    - "V2rayR"
+    - "greyZ"
+    - "greenZ"
+    - "telefon2E"
+    - "telefon1E"
 # 大陆流媒体面向港澳台限定服务
 - name: "HKMTMedia"
   type: select
   proxies:
     - "DIRECT"
-    - "Trojan1"
-    - "green"
-    - "grey"
+    - "TrojanZ"
+    - "TrojanE"
+    - "TrojanR"
+    - "V2rayR"
+    - "greyZ"
+    - "greenZ"
+    - "telefon2E"
+    - "telefon1E"
 # 运营商及声名狼藉网站劫持
 - name: "Hijacking"
   type: select
