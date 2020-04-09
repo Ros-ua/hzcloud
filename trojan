@@ -117,15 +117,21 @@ Proxy:
 
 
 # 配置开始
-- name: "Trojan1"
+- name: "TrojanR"
   type: trojan
   server: cats7.duckdns.org
   port: 443
   password: 1qaz2wsx
 
-- name: "Trojan2"
+- name: "TrojanE"
   type: trojan
-  server: cats7.duckdns.org
+  server: cheburek.duckdns.org
+  port: 443
+  password: qazxsw123
+
+- name: "TrojanZ"
+  type: trojan
+  server: rostesta.zgc-servers.site
   port: 443
   password: 1qaz2wsx
 
@@ -139,8 +145,9 @@ Proxy Group:
 - name: "自动节点选择"
   type: url-test
   proxies:
-    - "Trojan1"
-    - "Trojan2"
+    - "TrojanZ"
+    - "TrojanE"
+    - "TrojanR"
   url: 'http://www.gstatic.com/generate_204'
   interval: 300
 
@@ -149,8 +156,9 @@ Proxy Group:
   type: select
   proxies:
     - "自动节点选择"
-    - "Trojan1"
-    - "Trojan2"
+    - "TrojanZ"
+    - "TrojanE"
+    - "TrojanR"
 # 白名单模式 PROXY，黑名单模式 DIRECT
 - name: "Final"
   type: select
@@ -168,15 +176,17 @@ Proxy Group:
   type: select
   proxies:
     - "PROXY"
-    - "Trojan1"
-    - "Trojan2"
+    - "TrojanZ"
+    - "TrojanE"
+    - "TrojanR"
 # 大陆流媒体面向港澳台限定服务
 - name: "HKMTMedia"
   type: select
   proxies:
     - "DIRECT"
-    - "Trojan1"
-    - "Trojan2"
+    - "TrojanZ"
+    - "TrojanE"
+    - "TrojanR"
 # 运营商及声名狼藉网站劫持
 - name: "Hijacking"
   type: select
