@@ -141,19 +141,19 @@ Proxy:
   type: vmess
   server: rostesta.zgc-servers.site
   port: 444
-  uuid: 0071b736-78af-11ea-beae-0a651a7090e4
+  uuid: 1db8118e-7bcd-11ea-91f7-0a8ac5ebd088
   alterId: 16
   cipher: auto
   tls: true
   network: ws
-  ws-path: /OfgQbCRM/
+  ws-path: /enJhF56r/
   Host: rostesta.zgc-servers.site
   
 - name: "greyZ"
   type: vmess
   server: rostesta.zgc-servers.site
   port: 446
-  uuid: 8c1a8592-78af-11ea-a50c-0a651a7090e4
+  uuid: 63f44a28-7bcd-11ea-99a7-0a8ac5ebd088
   alterId: 16
   cipher: auto 
 
