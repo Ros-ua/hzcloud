@@ -134,6 +134,12 @@ Proxy:
   server: rostesta.zgc-servers.site
   port: 443
   password: 1qaz2wsx
+ 
+- name: "TrojanG"
+  type: trojan
+  server: rostestgoogle.zgc-servers.site
+  port: 443
+  password: 1qaz2wsx
 
  
 ###############################################################配置分割线
@@ -148,6 +154,7 @@ Proxy Group:
     - "TrojanZ"
     - "TrojanE"
     - "TrojanR"
+    - "TrojanG"
   url: 'http://www.gstatic.com/generate_204'
   interval: 300
 
@@ -159,6 +166,7 @@ Proxy Group:
     - "TrojanZ"
     - "TrojanE"
     - "TrojanR"
+    - "TrojanG"
 # 白名单模式 PROXY，黑名单模式 DIRECT
 - name: "Final"
   type: select
@@ -179,6 +187,7 @@ Proxy Group:
     - "TrojanZ"
     - "TrojanE"
     - "TrojanR"
+    - "TrojanG"
 # 大陆流媒体面向港澳台限定服务
 - name: "HKMTMedia"
   type: select
@@ -186,7 +195,8 @@ Proxy Group:
     - "DIRECT"
     - "TrojanZ"
     - "TrojanE"
-    - "TrojanR"
+    - "TrojanR"  
+    - "TrojanG"
 # 运营商及声名狼藉网站劫持
 - name: "Hijacking"
   type: select
