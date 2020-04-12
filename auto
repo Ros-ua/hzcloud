@@ -188,6 +188,31 @@ Proxy:
   port: 443
   password: 1qaz2wsx
 
+- name: "TrojanG"
+  type: trojan
+  server: rostestgoogle.zgc-servers.site
+  port: 443
+  password: 1qaz2wsx
+  
+- name: "G1"
+  type: vmess
+  server: rostestgoogle.zgc-servers.site
+  port: 444
+  uuid: 8429a61c-7c72-11ea-b073-42010aaa0005
+  alterId: 16
+  cipher: auto
+  tls: true
+  network: ws
+  ws-path: /jQuypxJ8/
+  Host: rostesta.zgc-servers.site
+  
+- name: "G2"
+  type: vmess
+  server: rostestgoogle.zgc-servers.site
+  port: 446
+  uuid: f96038a6-7c72-11ea-8463-42010aaa0005
+  alterId: 16
+  cipher: auto 
 
 
  
@@ -208,7 +233,9 @@ Proxy Group:
     - "greenZ"
     - "telefon2E"
     - "telefon1E"
-
+    - "TrojanG"
+    - "G1"
+    - "G2"
   url: 'http://www.gstatic.com/generate_204'
   interval: 300
 
@@ -225,6 +252,9 @@ Proxy Group:
     - "greenZ"
     - "telefon2E"
     - "telefon1E"
+    - "TrojanG"
+    - "G1"
+    - "G2"
 # 白名单模式 PROXY，黑名单模式 DIRECT
 - name: "Final"
   type: select
@@ -250,6 +280,9 @@ Proxy Group:
     - "greenZ"
     - "telefon2E"
     - "telefon1E"
+    - "TrojanG"
+    - "G1"
+    - "G2"
 # 大陆流媒体面向港澳台限定服务
 - name: "HKMTMedia"
   type: select
@@ -263,6 +296,9 @@ Proxy Group:
     - "greenZ"
     - "telefon2E"
     - "telefon1E"
+    - "TrojanG"
+    - "G1"
+    - "G2"
 # 运营商及声名狼藉网站劫持
 - name: "Hijacking"
   type: select
