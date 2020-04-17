@@ -143,7 +143,7 @@ Proxy:
 Proxy Group:
 
 # url-test 通过指定的 URL 测试并选择延迟最低的节点
-- name: "自动节点选择"
+- name: "AutoSelect"
   type: url-test
   proxies:
     - "TrojanZ"
@@ -155,10 +155,12 @@ Proxy Group:
 - name: "PROXY"
   type: select
   proxies:
-    - "自动节点选择"
+    - "AutoSelect"
     - "TrojanZ"
     - "TrojanE"
     - "TrojanR"
+    
+    
 # 白名单模式 PROXY，黑名单模式 DIRECT
 - name: "Final"
   type: select
@@ -176,17 +178,11 @@ Proxy Group:
   type: select
   proxies:
     - "PROXY"
-    - "TrojanZ"
-    - "TrojanE"
-    - "TrojanR"
 # 大陆流媒体面向港澳台限定服务
 - name: "HKMTMedia"
   type: select
   proxies:
     - "DIRECT"
-    - "TrojanZ"
-    - "TrojanE"
-    - "TrojanR"  
 # 运营商及声名狼藉网站劫持
 - name: "Hijacking"
   type: select
