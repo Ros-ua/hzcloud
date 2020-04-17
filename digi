@@ -137,7 +137,7 @@ Proxy:
   
 - name: "WSTcp"
   type: vmess
-  server: rostestgoogle.zgc-servers.site
+  server: 68.183.231.178
   port: 446
   uuid: 8129edf6-805e-11ea-b8e6-9ee3e13c89c4
   alterId: 16
@@ -151,7 +151,7 @@ Proxy:
 Proxy Group:
 
 # url-test 通过指定的 URL 测试并选择延迟最低的节点
-- name: "自动节点选择"
+- name: "AutoSelect"
   type: url-test
   proxies:
     - "TrojanDigi"
@@ -163,7 +163,7 @@ Proxy Group:
 - name: "PROXY"
   type: select
   proxies:
-    - "自动节点选择"
+    - "AutoSelect"
     - "TrojanDigi"
     - "WSDigi"
     - "WSTcp"
