@@ -135,7 +135,7 @@ Proxy:
   ws-path: /9aZJX1no/
   Host: rostestdigid.zgc-servers.site
   
-- name: "WSTcp"
+- name: "TcpDigi"
   type: vmess
   server: 68.183.231.178
   port: 446
@@ -156,7 +156,7 @@ Proxy Group:
   proxies:
     - "TrojanDigi"
     - "WSDigi"
-    - "WSTcp"
+    - "TcpDigi"
   url: 'http://www.gstatic.com/generate_204'
   interval: 300
 # 代理节点选择
@@ -166,7 +166,7 @@ Proxy Group:
     - "AutoSelect"
     - "TrojanDigi"
     - "WSDigi"
-    - "WSTcp"
+    - "TcpDigi"
 # 白名单模式 PROXY，黑名单模式 DIRECT
 - name: "Final"
   type: select
@@ -186,7 +186,7 @@ Proxy Group:
     - "PROXY"
     - "TrojanDigi"
     - "WSDigi"
-    - "WSTcp"
+    - "TcpDigi"
 # 大陆流媒体面向港澳台限定服务
 - name: "HKMTMedia"
   type: select
@@ -194,7 +194,7 @@ Proxy Group:
     - "DIRECT"
     - "TrojanDigi"
     - "WSDigi"
-    - "WSTcp"
+    - "TcpDigi"
 # 运营商及声名狼藉网站劫持
 - name: "Hijacking"
   type: select
