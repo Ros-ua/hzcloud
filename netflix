@@ -151,7 +151,7 @@ Proxy:
 Proxy Group:
 
 # url-test 通过指定的 URL 测试并选择延迟最低的节点
-- name: "自动节点选择"
+- name: "AutoSelect"
   type: url-test
   proxies:
     - "TrojanG"
@@ -159,12 +159,11 @@ Proxy Group:
     - "G2"
   url: 'http://www.gstatic.com/generate_204'
   interval: 300
-
 # 代理节点选择
 - name: "PROXY"
   type: select
   proxies:
-    - "自动节点选择"
+    - "AutoSelect"
     - "TrojanG"
     - "G1"
     - "G2"
@@ -174,6 +173,8 @@ Proxy Group:
   proxies:
     - "PROXY"
     - "DIRECT"
+    
+    
 # Apple 服务代理
 - name: "Apple"
   type: select
@@ -185,17 +186,11 @@ Proxy Group:
   type: select
   proxies:
     - "PROXY"
-    - "TrojanG"
-    - "G1"
-    - "G2"
 # 大陆流媒体面向港澳台限定服务
 - name: "HKMTMedia"
   type: select
   proxies:
     - "DIRECT"
-    - "TrojanG"
-    - "G1"
-    - "G2"
 # 运营商及声名狼藉网站劫持
 - name: "Hijacking"
   type: select
