@@ -30,7 +30,7 @@ Proxy:
   port: 443
   password: 1qaz2wsx
 Proxy Group:
- - name: "AutoSelect"
+- name: "AutoSelect"
   type: url-test
   proxies:
     - "TrojanZ"
