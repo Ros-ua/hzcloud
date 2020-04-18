@@ -14,9 +14,21 @@ dns:
     - tls://1.0.0.1:853
     - tls://dns.google:853
 Proxy:
-{name: "TrojanR", type: trojan, server: cats7.duckdns.org, port: 443, password: 1qaz2wsx}
-{name: "TrojanE", type: trojan, server: cheburek.duckdns.org, port: 443, password: 1qaz2wsx}
-{name: "TrojanZ", type: trojan, server: rostesta.duckdns.org, port: 443, password: 1qaz2wsx}
+- name: "TrojanR"
+  type: trojan
+  server: cats7.duckdns.org
+  port: 443
+  password: 1qaz2wsx
+- name: "TrojanE"
+  type: trojan
+  server: cheburek.duckdns.org
+  port: 443
+  password: qazxsw123
+- name: "TrojanZ"
+  type: trojan
+  server: rostesta.zgc-servers.site
+  port: 443
+  password: 1qaz2wsx
 Proxy Group:
  - name: "AutoSelect"
   type: url-test
