@@ -80,7 +80,7 @@ Proxy Group:
     - "TrojanE"
     - "TrojanR"
 
- - name: "Final"
+- name: "Final"
   type: select
   proxies:
     - "PROXY"
