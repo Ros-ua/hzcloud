@@ -41,4 +41,3 @@ Proxy Group:
 Rule:
   - IP-CIDR,127.0.0.0/8,DIRECT
   - GEOIP,CN,DIRECT
-  - FINAL,Proxy
