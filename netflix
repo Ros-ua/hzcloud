@@ -127,19 +127,19 @@ Proxy:
   type: vmess
   server: rostestgoogle.zgc-servers.site
   port: 444
-  uuid: 8429a61c-7c72-11ea-b073-42010aaa0005
+  uuid: 2dbadcb0-8186-11ea-8fdc-42010aaa0007
   alterId: 16
   cipher: auto
   tls: true
   network: ws
-  ws-path: /jQuypxJ8/
+  ws-path: /EUscuwke/
   Host: rostesta.zgc-servers.site
   
 - name: "G2"
   type: vmess
   server: rostestgoogle.zgc-servers.site
   port: 446
-  uuid: f96038a6-7c72-11ea-8463-42010aaa0005
+  uuid: 7aaebc8a-8186-11ea-a249-42010aaa0007
   alterId: 16
   cipher: auto 
 
