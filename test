@@ -1,0 +1,32 @@
+port: 7890
+socks-port: 7891
+allow-lan: false
+mode: Rule
+log-level: info
+external-controller: 127.0.0.1:9090
+dns:
+  enable: true
+  nameserver:
+    - 1.1.1.1
+    - 1.0.0.1
+    - tls://dns.rubyfish.cn:853
+  fallback:
+    - tls://1.0.0.1:853
+    - tls://dns.google:853
+Proxy:
+{name: "TrojanR", type: trojan, server: cats7.duckdns.org, port: 443, password: 1qaz2wsx}
+{name: "TrojanE", type: trojan, server: cheburek.duckdns.org, port: 443, password: 1qaz2wsx}
+{name: "TrojanZ", type: trojan, server: rostesta.duckdns.org, port: 443, password: 1qaz2wsx}
+Proxy Group:
+ - name: "AutoSelect"
+  type: url-test
+  proxies:
+    - "TrojanZ"
+    - "TrojanE"
+    - "TrojanR"
+  url: 'http://www.gstatic.com/generate_204'
+  interval: 300
+Rule:
+  - IP-CIDR,127.0.0.0/8,DIRECT
+  - GEOIP,CN,DIRECT
+  - FINAL,Proxy
