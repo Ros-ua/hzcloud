@@ -55,8 +55,6 @@ Proxy Group:
 - { name: "AutoSelect", type: url-test, proxies: [ 'TrojanZ', 'TrojanE', 'TrojanR'], url: 'http://www.gstatic.com/generate_204', interval: 300 }
 - { name: "PROXY", type: select, proxies: [ AutoSelect, 'TrojanZ', 'TrojanE', 'TrojanR'] }
   
-- { name: "Final", type: select, proxies: [ PROXY, DIRECT] }
-
 
 # 规则
 Rule:
@@ -1490,5 +1488,5 @@ Rule:
 # GeoIP China
 - GEOIP,CN,DIRECT
 
-- MATCH,Final
+- MATCH,PROXY
 
