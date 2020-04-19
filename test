@@ -53,32 +53,22 @@ Proxy:
  
 Proxy Group:
 - { name: "AutoSelect", type: url-test, proxies: [ 'TrojanZ', 'TrojanE', 'TrojanR'], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-
 - { name: "PROXY", type: select, proxies: [ AutoSelect, 'TrojanZ', 'TrojanE', 'TrojanR'] }
   
 - { name: "Final", type: select, proxies: [ PROXY, DIRECT] }
-# Apple 服务代理
-- name: "Apple"
-  type: select
-  proxies:
-    - "DIRECT"
-    - "PROXY"
-# 国际流媒体服务
+- { name: "Apple", type: select, proxies: [ PROXY, DIRECT] }
+- { name: "Hijacking", type: select, proxies: [ REJECT, DIRECT] }
+
 - name: "GlobalMedia"
   type: select
   proxies:
     - "PROXY"
-# 大陆流媒体面向港澳台限定服务
+
 - name: "HKMTMedia"
   type: select
   proxies:
     - "DIRECT"
-# 运营商及声名狼藉网站劫持
-- name: "Hijacking"
-  type: select
-  proxies:
-    - "REJECT"
-    - "DIRECT"
+
 
 # 规则
 Rule:
