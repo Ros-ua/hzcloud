@@ -60,7 +60,7 @@ Proxy Group:
 
 - { name: "Apple", type: select, proxies [ PROXY, DIRECT ] }
 
-- { name: "Hijacking", type: select, proxies [ PROXY, DIRECT ] }
+- { name: "Hijacking", type: select, proxies [ REJECT, DIRECT ] }
 
 - { name: "GlobalMedia", type: select, proxies [ PROXY ] }
 
