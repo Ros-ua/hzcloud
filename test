@@ -52,19 +52,19 @@ Proxy:
 - { name: "TrojanZ", type: trojan, server: rostesta.zgc-servers.site, port: 443, password: 1qaz2wsx }
  
 Proxy Group:
-- { name: "AutoSelect", type: url-test, proxies: [ 'TrojanZ', 'TrojanE', 'TrojanR', ] , url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "AutoSelect", type: url-test, proxies: [ 'TrojanZ', 'TrojanE', 'TrojanR'], url: 'http://www.gstatic.com/generate_204', interval: 300 }
 
-- { name: "PROXY", type: select, proxies: [ AutoSelect, 'TrojanZ', 'TrojanE', 'TrojanR', ] , }
+- { name: "PROXY", type: select, proxies: [ AutoSelect, 'TrojanZ', 'TrojanE', 'TrojanR'] }
   
-- { name: "Final", type: select, proxies [ PROXY, DIRECT, ] , }
+- { name: "Final", type: select, proxies [ PROXY, DIRECT ] }
 
-- { name: "Apple", type: select, proxies [ PROXY, DIRECT, ] , }
+- { name: "Apple", type: select, proxies [ PROXY, DIRECT ] }
 
-- { name: "Hijacking", type: select, proxies [ PROXY, DIRECT, ] , }
+- { name: "Hijacking", type: select, proxies [ PROXY, DIRECT ] }
 
-- { name: "GlobalMedia", type: select, proxies [ PROXY, ] , }
+- { name: "GlobalMedia", type: select, proxies [ PROXY ] }
 
-- { name: "HKMTMedia", type: select, proxies [ DIRECT, ] , }
+- { name: "HKMTMedia", type: select, proxies [ DIRECT ] }
 
 # 规则
 Rule:
