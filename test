@@ -59,7 +59,6 @@ Proxy Group:
 - { name: "Apple", type: select, proxies: [ PROXY, DIRECT] }
 - { name: "Hijacking", type: select, proxies: [ REJECT, DIRECT] }
 
-- { name: "HKMTMedia", type: select, proxies: [ DIRECT] }
 - { name: "GlobalMedia", type: select, proxies: [ PROXY] }
 
 
@@ -526,11 +525,11 @@ Rule:
 
 # (HKMTMedia)
 # > 愛奇藝台灣站
-- DOMAIN-SUFFIX,iqiyi.com,HKMTMedia
-- DOMAIN-SUFFIX,71.am,HKMTMedia
+- DOMAIN-SUFFIX,iqiyi.com,DIRECT
+- DOMAIN-SUFFIX,71.am,DIRECT
 # > bilibili
-- DOMAIN-SUFFIX,bilibili.com,HKMTMedia
-- DOMAIN,upos-hz-mirrorakam.akamaized.net,HKMTMedia
+- DOMAIN-SUFFIX,bilibili.com,DIRECT
+- DOMAIN,upos-hz-mirrorakam.akamaized.net,DIRECT
 
 # (DNS Cache Pollution Protection)
 # > Google
