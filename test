@@ -56,16 +56,15 @@ Proxy Group:
 
 - { name: "PROXY", type: select, proxies: [ AutoSelect, 'TrojanZ', 'TrojanE', 'TrojanR', ] , }
   
-- { name: "Final", type: select, proxies: [ AutoSelect ] , }
+- { name: "Final", type: select, proxies [ PROXY, DIRECT, ] , }
 
-- { name: "Apple", type: select, proxies: [ AutoSelect ] , }
+- { name: "Apple", type: select, proxies [ PROXY, DIRECT, ] , }
 
-- { name: "GlobalMedia", type: select, proxies: [ AutoSelect ] , }
+- { name: "Hijacking", type: select, proxies [ PROXY, DIRECT, ] , }
 
-- { name: "HKMTMedia", type: select, proxies: [ AutoSelect ] , }
+- { name: "GlobalMedia", type: select, proxies [ PROXY, ] , }
 
-- { name: "Hijacking", type: select, proxies: [ AutoSelect ] , }
-
+- { name: "HKMTMedia", type: select, proxies [ DIRECT, ] , }
 
 # 规则
 Rule:
