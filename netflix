@@ -47,7 +47,7 @@ cfw-latency-timeout: 5000
 
 
 Proxy:
-- { name: "TrojanG", type: trojan, server: rostestgoogle.duckdns.org, port: 443, password: 1qaz2wsx }
+- { name: "TrojanG", type: trojan, server: rostestgoogle.zgc-servers.site, port: 443, password: 1qaz2wsx }
 - { name: "G1", type: vmess, server: rostestgoogle.zgc-servers.site, port: 444, uuid: 2dbadcb0-8186-11ea-8fdc-42010aaa0007, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /EUscuwke/, Host: rostesta.zgc-servers.site }
 - { name: "G2", type: vmess, server: rostestgoogle.zgc-servers.site, port: 446, uuid: 7aaebc8a-8186-11ea-a249-42010aaa0007, alterId: 16, cipher: auto }
  
