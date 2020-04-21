@@ -51,10 +51,10 @@ Proxy:
 - { name: "TrojanGE", type: trojan, server: rostestgooglee2.zgc-servers.site, port: 443, password: 1qaz2wsx }
 
 - { name: "G1", type: vmess, server: rostestgoogle.zgc-servers.site, port: 444, uuid: 2dbadcb0-8186-11ea-8fdc-42010aaa0007, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /EUscuwke/, Host: rostestgoogle.zgc-servers.site }
-- { name: "GGCEws", type: vmess, server: rostestgooglee2.zgc-servers.site, port: 444, uuid: ec0b9fe2-83a2-11ea-a70b-42010aaa0003, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /TQb1OYnf/, Host: rostestgooglee2.zgc-servers.site }
+- { name: "GGCEws", type: vmess, server: rostestgooglee2.zgc-servers.site, port: 444, uuid: ded7c9fc-83b3-11ea-9b07-42010aaa0007, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /xRg2K8WJ/, Host: rostestgooglee2.zgc-servers.site }
 
 - { name: "G2", type: vmess, server: rostestgoogle.zgc-servers.site, port: 446, uuid: 7aaebc8a-8186-11ea-a249-42010aaa0007, alterId: 16, cipher: auto }
-- { name: "GGCEtcp", type: vmess, server: rostestgooglee2.zgc-servers.site, port: 446, uuid: 3af20826-83a3-11ea-ad13-42010aaa0003, alterId: 16, cipher: auto }
+- { name: "GGCEtcp", type: vmess, server: rostestgooglee2.zgc-servers.site, port: 446, uuid: 062563ca-83b4-11ea-8884-42010aaa0007, alterId: 16, cipher: auto }
   
 Proxy Group:
 - { name: "AutoSelect", type: url-test, proxies: [ 'TrojanG', 'G1', 'G2', 'TrojanGE', 'GGCEws', 'GGCEtcp'], url: 'http://www.gstatic.com/generate_204', interval: 300 }
