@@ -57,10 +57,15 @@ Proxy:
 - { name: "greyZ", type: vmess, server: rostesta.zgc-servers.site, port: 446, uuid: 63f44a28-7bcd-11ea-99a7-0a8ac5ebd088, alterId: 16, cipher: auto }
 
 - { name: "V2rayR", type: vmess, server: vraysg.duckdns.org, port: 443, uuid: 4a4c0eb9-e4fc-4ba6-b6ea-64d56d57be4a, alterId: 2, cipher: auto, tls: true, network: ws, ws-path: /413b36b6/, Host: vraysg.duckdns.org }
+- { name: "TrojanR", type: trojan, server: cats7.duckdns.org, port: 443, password: 1qaz2wsx }
+- { name: "TrojanE", type: trojan, server: cheburek.duckdns.org, port: 443, password: qazxsw123 }
+- { name: "TrojanZ", type: trojan, server: rostesta.zgc-servers.site, port: 443, password: 1qaz2wsx }
 
 Proxy Group:
-- { name: "AutoSelect", type: url-test, proxies: [ 'telefon1E', 'telefon2E', 'greenZ', 'greyZ', 'V2rayR'], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "PROXY", type: select, proxies: [ AutoSelect, 'telefon1E', 'telefon2E', 'greenZ', 'greyZ', 'V2rayR'] }
+- { name: "AutoSelect", type: url-test, proxies: [ 'telefon1E', 'telefon2E', 'greenZ', 'greyZ', 'V2rayR', 'TrojanZ', 'TrojanE', 'TrojanR'
+], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "PROXY", type: select, proxies: [ AutoSelect, 'telefon1E', 'telefon2E', 'greenZ', 'greyZ', 'V2rayR', 'TrojanZ', 'TrojanE', 'TrojanR'
+] }
   
 
 # 规则
