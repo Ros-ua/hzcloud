@@ -48,18 +48,14 @@ cfw-latency-timeout: 5000
 
 Proxy:
 
-- { name: "telefon1E", type: vmess, server: cheburek.duckdns.org, port: 444, uuid: fe5c858e-796c-11ea-94a2-0af6f1f45f64, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /42lC8UJP/, Host: cheburek.duckdns.org }
-- { name: "telefon2E", type: vmess, server: cheburek.duckdns.org, port: 446, uuid: ab59f24e-796d-11ea-98f7-0af6f1f45f64, alterId: 16, cipher: auto }
-- { name: "greenZ", type: vmess, server: rostesta.zgc-servers.site, port: 444, uuid: 1db8118e-7bcd-11ea-91f7-0a8ac5ebd088, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /enJhF56r/, Host: rostesta.zgc-servers.site }
-- { name: "greyZ", type: vmess, server: rostesta.zgc-servers.site, port: 446, uuid: 63f44a28-7bcd-11ea-99a7-0a8ac5ebd088, alterId: 16, cipher: auto }
-- { name: "V2rayR", type: vmess, server: vraysg.duckdns.org, port: 443, uuid: 4a4c0eb9-e4fc-4ba6-b6ea-64d56d57be4a, alterId: 2, cipher: auto, tls: true, network: ws, ws-path: /413b36b6/, Host: vraysg.duckdns.org }
-- { name: "TrojanR", type: trojan, server: cats7.duckdns.org, port: 443, password: 1qaz2wsx }
-- { name: "TrojanE", type: trojan, server: cheburek.duckdns.org, port: 443, password: qazxsw123 }
-- { name: "TrojanZ", type: trojan, server: rostesta.zgc-servers.site, port: 443, password: 1qaz2wsx }
+- { name: "Dws", type: vmess, server: rostestdigig.zgc-servers.site, port: 444, uuid: 6938c49c-87e3-11ea-8f30-2a06ec5e5521, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /GXcHQCq3/, Host: rostestdigig.zgc-servers.site }
+- { name: "Dtcp", type: vmess, server: rostestdigig.zgc-servers.site, port: 446, uuid: 9e5e4f8e-87e3-11ea-9b4e-2a06ec5e5521, alterId: 16, cipher: auto }
+- { name: "TrojanD", type: trojan, server: rostestdigig.zgc-servers.site, port: 443, password: 1qaz2wsx }
+
 
 Proxy Group:
-- { name: "AutoSelect", type: url-test, proxies: [ 'telefon1E', 'telefon2E', 'greenZ', 'greyZ', 'V2rayR', 'TrojanZ', 'TrojanE', 'TrojanR' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "PROXY", type: select, proxies: [ AutoSelect, 'telefon1E', 'telefon2E', 'greenZ', 'greyZ', 'V2rayR', 'TrojanZ', 'TrojanE', 'TrojanR' ] }
+- { name: "AutoSelect", type: url-test, proxies: [ 'Dws', 'Dtcp', 'TrojanD' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "PROXY", type: select, proxies: [ AutoSelect, 'Dws', 'Dtcp', 'TrojanD' ] }
   
 
 # 规则
