@@ -50,7 +50,7 @@ Proxy:
 
 - { name: "Dws", type: vmess, server: rostestdigig.zgc-servers.site, port: 444, uuid: 6938c49c-87e3-11ea-8f30-2a06ec5e5521, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /GXcHQCq3/, Host: rostestdigig.zgc-servers.site }
 - { name: "Dtcp", type: vmess, server: rostestdigig.zgc-servers.site, port: 446, uuid: 9e5e4f8e-87e3-11ea-9b4e-2a06ec5e5521, alterId: 16, cipher: auto }
-- { name: "TrojanD", type: trojan, server: rostestdigig.zgc-servers.site, port: 443, password: 1qaz2wsx }
+- { name: "TrojanD", type: trojan, server: rostestawshk.zgc-servers.site, port: 443, password: 1qaz2wsx }
 
 
 Proxy Group:
