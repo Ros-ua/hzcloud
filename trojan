@@ -47,13 +47,14 @@ cfw-latency-timeout: 5000
 
 
 Proxy:
-- { name: "TrojanR", type: trojan, server: cats7.duckdns.org, port: 443, password: 1qaz2wsx }
+- { name: "TrojanA", type: trojan, server: acatsa.duckdns.org, port: 443, password: qazxsw123 }
+- { name: "TrojanB", type: trojan, server: bcatsa.duckdns.org, port: 443, password: qazxsw123 }
 - { name: "TrojanE", type: trojan, server: cheburek.duckdns.org, port: 443, password: qazxsw123 }
-- { name: "TrojanZ", type: trojan, server: rostesta.zgc-servers.site, port: 443, password: 1qaz2wsx }
+
  
 Proxy Group:
-- { name: "AutoSelect", type: url-test, proxies: [ 'TrojanZ', 'TrojanE', 'TrojanR'], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "PROXY", type: select, proxies: [ AutoSelect, 'TrojanZ', 'TrojanE', 'TrojanR'] }
+- { name: "AutoSelect", type: url-test, proxies: [ 'TrojanE', 'TrojanA', 'TrojanB' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "PROXY", type: select, proxies: [ AutoSelect, 'TrojanE', 'TrojanA', 'TrojanB' ] }
   
 
 # 规则
