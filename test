@@ -50,7 +50,7 @@ Proxy:
 
 - { name: "TestWS", type: vmess, server: rostestd.zgc-servers.site, port: 444, uuid: ebbb7952-9907-11ea-b071-c2959881b0f3, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /vcLtEzxS/, Host: rostestd.zgc-servers.site }
 - { name: "TestTCP", type: vmess, server: rostestd.zgc-servers.site, port: 446, uuid: 7edf5406-9908-11ea-87c3-c2959881b0f3, alterId: 16, cipher: auto }
-- { name: "TestT", type: trojan, server: rostestd.zgc-servers.site, port: 443, password: 1qaz2wsx }
+- { name: "TestT", type: trojan, server: rosteste.zgc-servers.site, port: 443, password: 1qaz2wsx }
 
 
 Proxy Group:
