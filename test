@@ -48,14 +48,14 @@ cfw-latency-timeout: 5000
 
 Proxy:
 
-- { name: "Dws", type: vmess, server: rostestdigig.zgc-servers.site, port: 444, uuid: 6938c49c-87e3-11ea-8f30-2a06ec5e5521, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /GXcHQCq3/, Host: rostestdigig.zgc-servers.site }
-- { name: "Dtcp", type: vmess, server: rostestdigig.zgc-servers.site, port: 446, uuid: 9e5e4f8e-87e3-11ea-9b4e-2a06ec5e5521, alterId: 16, cipher: auto }
-- { name: "TrojanD", type: trojan, server: rostestawshk.zgc-servers.site, port: 443, password: 1qaz2wsx }
+- { name: "TestWS", type: vmess, server: rostestd.zgc-servers.site, port: 444, uuid: ebbb7952-9907-11ea-b071-c2959881b0f3, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /vcLtEzxS/, Host: rostestd.zgc-servers.site }
+- { name: "TestTCP", type: vmess, server: rostestd.zgc-servers.site, port: 446, uuid: 7edf5406-9908-11ea-87c3-c2959881b0f3, alterId: 16, cipher: auto }
+- { name: "TestT", type: trojan, server: rostestd.zgc-servers.site, port: 443, password: 1qaz2wsx }
 
 
 Proxy Group:
-- { name: "AutoSelect", type: url-test, proxies: [ 'Dws', 'Dtcp', 'TrojanD' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "PROXY", type: select, proxies: [ AutoSelect, 'Dws', 'Dtcp', 'TrojanD' ] }
+- { name: "AutoSelect", type: url-test, proxies: [ 'TestWS', 'TestTCP', 'TestT' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "PROXY", type: select, proxies: [ AutoSelect, 'TestWS', 'TestTCP', 'TestT' ] }
   
 
 # 规则
