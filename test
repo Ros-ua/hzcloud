@@ -48,9 +48,9 @@ cfw-latency-timeout: 5000
 
 Proxy:
 
-- { name: "TestWS", type: vmess, server: rostestf.zgc-servers.site, port: 444, uuid: 2bd30be4-99db-11ea-b769-f6f79c371c98, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /QpFHo9Mw/, Host: rostestf.zgc-servers.site }
-- { name: "TestTCP", type: vmess, server: rostestf.zgc-servers.site, port: 446, uuid: ca3b9684-99db-11ea-b6f1-f6f79c371c98, alterId: 16, cipher: auto }
-- { name: "TestT", type: trojan, server: rostestf.zgc-servers.site, port: 443, password: 1qaz2wsx }
+- { name: "TestWS", type: vmess, server: rostestgooglee3.zgc-servers.site, port: 444, uuid: 69978c96-9b5e-11ea-9cbf-42010aaa0008, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /70asUdpr/, Host: rostestgooglee3.zgc-servers.site }
+- { name: "TestTCP", type: vmess, server: rostestgooglee3.zgc-servers.site, port: 446, uuid: e2d59e4a-9b5e-11ea-a781-42010aaa0008, alterId: 16, cipher: auto }
+- { name: "TestT", type: trojan, server: rostestgooglee3.zgc-servers.site, port: 443, password: 1qaz2wsx }
 
 
 Proxy Group:
