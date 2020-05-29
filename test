@@ -49,7 +49,7 @@ cfw-latency-timeout: 5000
 Proxy:
 
 - { name: "TestWS", type: vmess, server: rostesth.zgc-servers.site, port: 444, uuid: 0df1855c-a164-11ea-ada5-0ef0a17e2b8e, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /WEhsyIet/, Host: rostesth.zgc-servers.site }
-- { name: "TestTCP", type: vmess, server:rostesth.zgc-servers.site, port: 446, uuid: 112738e2-a165-11ea-8d35-0ef0a17e2b8e, alterId: 16, cipher: auto }
+- { name: "TestTCP", type: vmess, server: rostesth.zgc-servers.site, port: 446, uuid: 112738e2-a165-11ea-8d35-0ef0a17e2b8e, alterId: 16, cipher: auto }
 - { name: "TestT", type: trojan, server: rostesth.zgc-servers.site, port: 443, password: 1qaz2wsx }
 
 
