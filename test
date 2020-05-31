@@ -48,14 +48,17 @@ cfw-latency-timeout: 5000
 
 Proxy:
 
-- { name: "TestWS", type: vmess, server: rostesth.zgc-servers.site, port: 444, uuid: 0df1855c-a164-11ea-ada5-0ef0a17e2b8e, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /WEhsyIet/, Host: rostesth.zgc-servers.site }
-- { name: "TestTCP", type: vmess, server: rostesth.zgc-servers.site, port: 446, uuid: 112738e2-a165-11ea-8d35-0ef0a17e2b8e, alterId: 16, cipher: auto }
-- { name: "TestT", type: trojan, server: rostesth.zgc-servers.site, port: 443, password: 1qaz2wsx }
+- { name: "1WS", type: vmess, server: rostesth.zgc-servers.site, port: 444, uuid: 0df1855c-a164-11ea-ada5-0ef0a17e2b8e, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /WEhsyIet/, Host: rostesth.zgc-servers.site }
+- { name: "1TCP", type: vmess, server: rostesth.zgc-servers.site, port: 446, uuid: 112738e2-a165-11ea-8d35-0ef0a17e2b8e, alterId: 16, cipher: auto }
+- { name: "1T", type: trojan, server: rostesth.zgc-servers.site, port: 443, password: 1qaz2wsx }
+- { name: "2WS", type: vmess, server: rostesth.zgc-servers.site, port: 444, uuid: 0df1855c-a164-11ea-ada5-0ef0a17e2b8e, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /WEhsyIet/, Host: rostesth.zgc-servers.site }
+- { name: "2TCP", type: vmess, server: rostesth.zgc-servers.site, port: 446, uuid: 112738e2-a165-11ea-8d35-0ef0a17e2b8e, alterId: 16, cipher: auto }
+- { name: "2T", type: trojan, server: rostesth.zgc-servers.site, port: 443, password: 1qaz2wsx }
 
 
 Proxy Group:
-- { name: "AutoSelect", type: url-test, proxies: [ 'TestWS', 'TestTCP', 'TestT' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "PROXY", type: select, proxies: [ AutoSelect, 'TestWS', 'TestTCP', 'TestT' ] }
+- { name: "AutoSelect", type: url-test, proxies: [ '1WS', '1TCP', '1T', '2WS', '2TCP', '2T' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "PROXY", type: select, proxies: [ AutoSelect, '1WS', '1TCP', '1T', '2WS', '2TCP', '2T' ] }
   
 
 # 规则
