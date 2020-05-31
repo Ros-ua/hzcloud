@@ -47,11 +47,11 @@ cfw-latency-timeout: 5000
 
 
 Proxy:
-- { name: "Aws", type: vmess, server: acatsa.duckdns.org, port: 444, uuid: 82f11b28-8ac7-11ea-8137-0a7e23365690, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /Zd8R4KUz/, Host: acatsa.duckdns.org }
-- { name: "Bws", type: vmess, server: bcatsa.duckdns.org, port: 444, uuid: 8cc74d82-8ace-11ea-b5a2-0acd2cb091ba, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /Ylj95NR6/, Host: bcatsa.duckdns.org }
+- { name: "Aws", type: vmess, server: acatsb.duckdns.org, port: 444, uuid: 92e883b2-a314-11ea-84b5-0a06d5c6c0b8, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /Ln0JCpZk/, Host: acatsb.duckdns.org }
+- { name: "Bws", type: vmess, server: bcatsb.duckdns.org, port: 444, uuid: 1d371674-a319-11ea-a6e1-0a2d9ab353a4, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /8ItCRNVc/, Host: bcatsb.duckdns.org }
 
-- { name: "Atcp", type: vmess, server: acatsa.duckdns.org, port: 446, uuid: b49f4faa-8ac7-11ea-8363-0a7e23365690, alterId: 16, cipher: auto }
-- { name: "Btcp", type: vmess, server: bcatsa.duckdns.org, port: 446, uuid: b5159e38-8ace-11ea-9ec3-0acd2cb091ba, alterId: 16, cipher: auto }
+- { name: "Atcp", type: vmess, server: acatsb.duckdns.org, port: 446, uuid: 63e3cb8e-a315-11ea-af48-0a06d5c6c0b8, alterId: 16, cipher: auto }
+- { name: "Btcp", type: vmess, server: bcatsb.duckdns.org, port: 446, uuid: 29a23a8c-a31a-11ea-9fa0-0a2d9ab353a4, alterId: 16, cipher: auto }
 
 - { name: "Ews", type: vmess, server: cheburek.duckdns.org, port: 444, uuid: fe5c858e-796c-11ea-94a2-0af6f1f45f64, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /42lC8UJP/, Host: cheburek.duckdns.org }
 - { name: "Etcp", type: vmess, server: cheburek.duckdns.org, port: 446, uuid: ab59f24e-796d-11ea-98f7-0af6f1f45f64, alterId: 16, cipher: auto }
