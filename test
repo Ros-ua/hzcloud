@@ -52,9 +52,9 @@ Proxy:
 - { name: "1TCP", type: vmess, server: catsa.duckdns.org, port: 446, uuid: 9313fe9c-a815-11ea-8bf0-0a5fdfa64208, alterId: 16, cipher: auto }
 - { name: "1T", type: trojan, server: catsa.duckdns.org, port: 443, password: 1qaz2wsx }
 
-- { name: "2WS", type: vmess, server: rostests.zgc-servers.site, port: 444, uuid: 1d371674-a319-11ea-a6e1-0a2d9ab353a4, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /8ItCRNVc/, Host: bcatsb.duckdns.org }
-- { name: "2TCP", type: vmess, server: rostests.zgc-servers.site, port: 446, uuid: 29a23a8c-a31a-11ea-9fa0-0a2d9ab353a4, alterId: 16, cipher: auto }
-- { name: "2T", type: trojan, server: rob.zgc-servers.site, port: 443, password: 1qaz2wsx }
+- { name: "2WS", type: vmess, server: catsb.duckdns.org, port: 444, uuid: 668ef30c-a817-11ea-bd5a-0a41fcdc52d8, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /OWNxKFzf/, Host: catsb.duckdns.org }
+- { name: "2TCP", type: vmess, server: catsb.duckdns.org, port: 446, uuid: 0b8616b0-a818-11ea-9da7-0a41fcdc52d8, alterId: 16, cipher: auto }
+- { name: "2T", type: trojan, server: catsb.duckdns.org, port: 443, password: 1qaz2wsx }
 
 
 Proxy Group:
