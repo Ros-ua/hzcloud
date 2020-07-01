@@ -47,8 +47,8 @@ cfw-latency-timeout: 5000
 
 
 Proxy:
-- { name: "TrojanA", type: trojan, server: catsa.duckdns.org, port: 443, password: 1qaz2wsx }
-- { name: "TrojanB", type: trojan, server: catsb.duckdns.org, port: 443, password: 1qaz2wsx }
+- { name: "TrojanA", type: trojan, server: catsc.duckdns.org, port: 443, password: 1qaz2wsx }
+- { name: "TrojanB", type: trojan, server: catsd.duckdns.org, port: 443, password: 1qaz2wsx }
 - { name: "TrojanE", type: trojan, server: cheburek.duckdns.org, port: 443, password: qazxsw123 }
 
  
