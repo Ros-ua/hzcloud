@@ -54,7 +54,8 @@ proxies:
  
 proxy-groups:
 - { name: "AutoSelect", type: url-test, proxies: [ 'TrojanE', 'TrojanA', 'TrojanB' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "PROXY", type: select, proxies: [ AutoSelect, 'TrojanE', 'TrojanA', 'TrojanB' ] }
+- { name: "proxies", type: select, proxies: [ AutoSelect, 'TrojanE', 'TrojanA', 'TrojanB' ] }
+  
 
 # 规则
 rules:
