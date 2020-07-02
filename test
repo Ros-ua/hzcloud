@@ -2,7 +2,7 @@ port: 7890
 socks-port: 7891
 redir-port: 7892
 allow-lan: false
-mode: Rule
+mode: rules
 log-level: info
 external-controller: '0.0.0.0:9090'
 secret: ''
@@ -58,7 +58,7 @@ proxy-groups:
   
 
 # 规则
-Rule:
+rules:
 # Unbreak
 # > Google
 - DOMAIN-SUFFIX,googletraveladservices.com,DIRECT
