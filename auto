@@ -60,9 +60,13 @@ proxies:
 - { name: "Ews", type: vmess, server: cheburek.duckdns.org, port: 444, uuid: fe5c858e-796c-11ea-94a2-0af6f1f45f64, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /42lC8UJP/, Host: cheburek.duckdns.org }
 - { name: "Etcp", type: vmess, server: cheburek.duckdns.org, port: 446, uuid: ab59f24e-796d-11ea-98f7-0af6f1f45f64, alterId: 16, cipher: auto }
  
+- { name: "PokocT", type: trojan, server: pokoc.zgc-servers.site, port: 443, password: qazxsw123 }
+- { name: "PokocWS", type: vmess, server: pokoc.zgc-servers.site, port: 444, uuid: 3f8db606-bde0-11ea-a1d8-0a4a12001442, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /gXukc9oA/, Host: pokoc.zgc-servers.site }
+- { name: "PokocTCP", type: vmess, server: pokoc.zgc-servers.site, port: 446, uuid: eca495c6-bde0-11ea-a435-0a4a12001442, alterId: 16, cipher: auto }
+  
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [ 'TrojanE', 'Ews', 'Etcp', 'TrojanA', 'TrojanB', 'Aws', 'Bws', 'Atcp', 'Btcp' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect, 'TrojanE', 'Ews', 'Etcp', 'TrojanA', 'TrojanB', 'Aws', 'Bws', 'Atcp', 'Btcp' ] }
+- { name: "AutoSelect", type: url-test, proxies: [ 'TrojanE', 'TrojanE', 'Ews', 'Etcp', 'TrojanA', 'TrojanB', 'Aws', 'Bws', 'Atcp', 'Btcp', 'PokocT', 'PokocWS', 'PokocTCP' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect, 'TrojanE', 'Ews', 'Etcp', 'TrojanA', 'TrojanB', 'Aws', 'Bws', 'Atcp', 'Btcp', 'PokocT', 'PokocWS', 'PokocTCP' ] }
   
   
 
