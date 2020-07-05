@@ -62,7 +62,7 @@ proxies:
 
 - { name: "pokoGT", type: trojan, server: pokogoogle.zgc-servers.site, port: 443, password: 1qaz2wsx }
 - { name: "pokoGWS", type: vmess, server: pokogoogle.zgc-servers.site, port: 444, uuid: 94e7d9c2-be91-11ea-a217-42010aaa000a, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /IzyfkGUh/, Host: pokogoogle.zgc-servers.site}
-- { name: "pokoGCP", type: vmess, server: pokogoogle.zgc-servers.site, port: 446, uuid: bea91546-be91-11ea-b13b-42010aaa000a, alterId: 16, cipher: auto }
+- { name: "pokoGTCP", type: vmess, server: pokogoogle.zgc-servers.site, port: 446, uuid: bea91546-be91-11ea-b13b-42010aaa000a, alterId: 16, cipher: auto }
 
 proxy-groups:
 - { name: "AutoSelect", type: url-test, proxies: [ 'TrojanE', 'TrojanE', 'Ews', 'Etcp', 'TrojanA', 'TrojanB', 'Aws', 'Bws', 'Atcp', 'Btcp', 'pokoGT', 'pokoGWS', 'pokoGTCP'  ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
