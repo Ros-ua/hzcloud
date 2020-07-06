@@ -1,126 +1,51 @@
-# Port of HTTP(S) proxy server on the local end
 port: 7890
- 
-# Port of SOCKS5 proxy server on the local end
 socks-port: 7891
- 
-# Transparent proxy server port for Linux and macOS
-# redir-port: 7892
- 
-# HTTP(S) and SOCKS5 server on the same port
-# mixed-port: 7890
- 
-# authentication of local SOCKS5/HTTP(S) server
-# authentication:
-#  - "user1:pass1"
-#  - "user2:pass2"
- 
-# Set to true to allow connections to local-end server from
-# other LAN IP addresses
+redir-port: 7892
 allow-lan: false
- 
-# This is only applicable when `allow-lan` is `true`
-# '*': bind all IP addresses
-# 192.168.122.11: bind a single IPv4 address
-# "[aaaa::a8aa:ff:fe09:57d8]": bind a single IPv6 address
-bind-address: '*'
- 
-# Clash router working mode
-# rule: rule-based packet routing
-# global: all packets will be forwarded to a single endpoint
-# direct: directly forward the packets to the Internet
-mode: rule
- 
-# Clash by default prints logs to STDOUT
-# info / warning / error / debug / silent
+mode: rule #
 log-level: info
- 
-# When set to false, resolver won't translate hostnames to IPv6 addresses
-ipv6: true
- 
-# RESTful web API listening address
-external-controller: 127.0.0.1:9090
- 
-# A relative path to the configuration directory or an absolute path to a
-# directory in which you put some static web resource. Clash core will then
-# serve it at `${API}/ui`.
-# external-ui: folder
- 
-# Secret for the RESTful API (optional)
-# Authenticate by spedifying HTTP header `Authorization: Bearer ${secret}`
-# ALWAYS set a secret if RESTful API is listening on 0.0.0.0
-# secret: ""
- 
-# Outbound interface name
-interface-name: en0
- 
-# Static hosts for DNS server and connection establishment, only works
-# when `dns.enhanced-mode` is `redir-host`.
-#
-# Wildcard hostnames are supported (e.g. *.clash.dev, *.foo.*.example.com)
-# Non-wildcard domain names has a higher priority than wildcard domain names
-# e.g. foo.example.com > *.example.com > .example.com
-# P.S. +.foo.com equals to .foo.com and foo.com
-hosts:
-  'mtalk.google.com': 108.177.125.188
-  # '*.clash.dev': 127.0.0.1
-  # '.dev': 127.0.0.1
-  # 'alpha.clash.dev': '::1'
- 
-# DNS server settings
-# This section is optional. When not present, DNS server will be disabled.
+external-controller: '0.0.0.0:9090'
+secret: ''
+
 dns:
-  enable: false
-  listen: 0.0.0.0:53
-  # ipv6: false # when false, response to AAAA questions will be empty
- 
-  # These nameservers are used to resolve the DNS nameserver hostnames below.
-  # Specify IP addresses only
-  default-nameserver:
+  enable: true
+  nameserver:
     - 1.1.1.1
     - 1.0.0.1
-  enhanced-mode: redir-host # or fake-ip
-  fake-ip-range: 198.18.0.1/16 # Fake IP addresses pool CIDR
-  
-  # Hostnames in this list will not be resolved with fake IPs
-  # i.e. questions to these domain names will always be answered with their
-  # real IP addresses
-  # fake-ip-filter:
-  #   - '*.lan'
-  #   - localhost.ptlogin2.qq.com
-  
-  # Supports UDP, TCP, DoT, DoH. You can specify the port to connect to.
-  # All DNS questions are sent directly to the nameserver, without proxies
-  # involved. Clash answers the DNS question with the first result gathered.
-  nameserver:
-    - 1.1.1.1 # default value
-    - 1.0.0.1 # default value
-    - tls://dns.rubyfish.cn:853 # DNS over TLS
-    - https://1.1.1.1/dns-query # DNS over HTTPS
- 
-  # When `fallback` is present, the DNS server will send concurrent requests
-  # to the servers in this section along with servers in `nameservers`.
-  # The answers from fallback servers are used when the GEOIP country
-  # is not `CN`.
-  # fallback:
-  #   - tcp://1.1.1.1
- 
-  # If IP addresses resolved with servers in `nameservers` are in the specified
-  # subnets below, they are considered invalid and results from `fallback`
-  # servers are used instead.
-  #
-  # IP address resolved with servers in `nameserver` is used when
-  # `fallback-filter.geoip` is true and when GEOIP of the IP address is `CN`.
-  #
-  # If `fallback-filter.geoip` is false, results from `fallback` nameservers
-  # are always used, and answers from `nameservers` are discarded.
-  #
-  # This is a countermeasure against DNS pollution attacks.
-  fallback-filter:
-    geoip: true
-    ipcidr:
-      # - 240.0.0.0/4
- 
+    - tls://dns.rubyfish.cn:853
+  fallback:
+    - tls://1.0.0.1:853
+    - tls://dns.google:853
+
+cfw-bypass:
+    - qq.com
+    - taobao.com
+    - music.163.com
+    - '*.music.126.net'
+    - localhost
+    - 127.*
+    - 10.*
+    - 172.16.*
+    - 172.17.*
+    - 172.18.*
+    - 172.19.*
+    - 172.20.*
+    - 172.21.*
+    - 172.22.*
+    - 172.23.*
+    - 172.24.*
+    - 172.25.*
+    - 172.26.*
+    - 172.27.*
+    - 172.28.*
+    - 172.29.*
+    - 172.30.*
+    - 172.31.*
+    - 192.168.*
+    - <local>
+cfw-latency-timeout: 5000
+
+
 proxies:
 - { name: "TrojanA", type: trojan, server: catsc.duckdns.org, port: 443, password: 1qaz2wsx }
 - { name: "TrojanB", type: trojan, server: catsd.duckdns.org, port: 443, password: 1qaz2wsx }
@@ -128,96 +53,810 @@ proxies:
 - { name: "pokoGT", type: trojan, server: pokogoogle.zgc-servers.site, port: 443, password: 1qaz2wsx }
  
 proxy-groups:
-
 - { name: "AutoSelect", type: url-test, proxies: [ 'TrojanE', 'TrojanA', 'TrojanB', 'pokoGT' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
 - { name: "proxies", type: select, proxies: [ AutoSelect, 'TrojanE', 'TrojanA', 'TrojanB', 'pokoGT' ] }
 
- 
-# 关于 Rule Provider 请查阅：https://lancellc.gitbook.io/clash/clash-config-file/rule-provider
- 
-rule-providers:
-# name: # Provider 名称
-#   type: http # http 或 file
-#   behavior: classical # 或 ipcidr、domain
-#   path: # 文件路径
-#   url: # 只有当类型为 HTTP 时才可用，您不需要在本地空间中创建新文件。
-#   interval: # 自动更新间隔，仅在类型为 HTTP 时可用
- 
-  Unbreak:
-    type: http
-    behavior: classical
-    path: ./RuleSet/Unbreak.yaml
-    url: https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/Unbreak.yaml
-    interval: 86400
- 
-  Streaming:
-    type: http
-    behavior: classical
-    path: ./RuleSet/StreamingMedia/Streaming.yaml
-    url: https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/StreamingMedia/Streaming.yaml
-    interval: 86400
- 
-  StreamingSE:
-    type: http
-    behavior: classical
-    path: ./RuleSet/StreamingMedia/StreamingSE.yaml
-    url: https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/StreamingMedia/StreamingSE.yaml
-    interval: 86400
- 
-  Global:
-    type: http
-    behavior: classical
-    path: ./RuleSet/Global.yaml
-    url: https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/Global.yaml
-    interval: 86400
- 
-  China:
-    type: http
-    behavior: classical
-    path: ./RuleSet/China.yaml
-    url: https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/China.yaml
-    interval: 86400
- 
-  ChinaIP:
-    type: http
-    behavior: ipcidr
-    path: ./RuleSet/Extra/ChinaIP.yaml
-    url: https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/Extra/ChinaIP.yaml
-    interval: 86400
- 
-# 规则
-rules:
-  # Unbreak
-  - RULE-SET,Unbreak,DIRECT
- 
-  # Global Area Network
- 
-  # (Streaming Media)
-  - RULE-SET,Streaming,Streaming
- 
-  # (StreamingSE)
-  - RULE-SET,StreamingSE,StreamingSE
- 
-  # (DNS Cache Pollution) / (IP Blackhole) / (Region-Restricted Access Denied) / (Network Jitter)
-  - RULE-SET,Global,PROXY
- 
-  # China Area Network
-  - RULE-SET,China,DIRECT
- 
-  # Local Area Network
-  - IP-CIDR,192.168.0.0/16,DIRECT
-  - IP-CIDR,10.0.0.0/8,DIRECT
-  - IP-CIDR,172.16.0.0/12,DIRECT
-  - IP-CIDR,127.0.0.0/8,DIRECT
-  - IP-CIDR,100.64.0.0/10,DIRECT
-  - IP-CIDR,224.0.0.0/4,DIRECT
- 
-  # （可选）使用来自 ipipdotnet 的 ChinaIP 以解决数据不准确的问题，使用 ChinaIP.yaml 时可禁用下列直至（包括）「GEOIP,CN」规则
-  # - RULE-SET,ChinaIP,DIRECT
-  # Tencent
-  - IP-CIDR,119.28.28.28/32,DIRECT
-  - IP-CIDR,182.254.116.0/24,DIRECT
-  # GeoIP China
-  - GEOIP,CN,DIRECT
- 
-  - MATCH,MATCH
+
+
+# Rules
+Rule:
+# (GlobalTV)
+# > ABC
+- DOMAIN-SUFFIX,edgedatg.com,proxies
+- DOMAIN-SUFFIX,go.com,proxies
+
+# > AbemaTV
+- DOMAIN,linear-abematv.akamaized.net,proxies
+- DOMAIN-SUFFIX,abema.io,proxies
+- DOMAIN-SUFFIX,abema.tv,proxies
+- DOMAIN-SUFFIX,akamaized.net,proxies
+- DOMAIN-SUFFIX,ameba.jp,proxies
+- DOMAIN-SUFFIX,hayabusa.io,proxies
+
+# > Amazon Prime Video
+- DOMAIN-SUFFIX,aiv-cdn.net,proxies
+- DOMAIN-SUFFIX,amazonaws.com,proxies
+- DOMAIN-SUFFIX,amazonvideo.com,proxies
+- DOMAIN-SUFFIX,llnwd.net,proxies
+
+# > Bahamut
+- DOMAIN-SUFFIX,bahamut.com.tw,proxies
+- DOMAIN-SUFFIX,gamer.com.tw,proxies
+- DOMAIN-SUFFIX,hinet.net,proxies
+
+# > BBC
+- DOMAIN-KEYWORD,bbcfmt,proxies
+- DOMAIN-KEYWORD,co.uk,proxies
+- DOMAIN-KEYWORD,uk-live,proxies
+- DOMAIN-SUFFIX,bbc.co,proxies
+- DOMAIN-SUFFIX,bbc.co.uk,proxies
+- DOMAIN-SUFFIX,bbc.com,proxies
+- DOMAIN-SUFFIX,bbci.co,proxies
+- DOMAIN-SUFFIX,bbci.co.uk,proxies
+
+# > CHOCO TV
+- DOMAIN-SUFFIX,chocotv.com.tw,proxies
+
+# > Epicgames
+- DOMAIN-KEYWORD,epicgames,proxies
+- DOMAIN-SUFFIX,helpshift.com,proxies
+
+# > Fox+
+- DOMAIN-KEYWORD,foxplus,proxies
+- DOMAIN-SUFFIX,config.fox.com,proxies
+- DOMAIN-SUFFIX,emome.net,proxies
+- DOMAIN-SUFFIX,fox.com,proxies
+- DOMAIN-SUFFIX,foxdcg.com,proxies
+- DOMAIN-SUFFIX,foxnow.com,proxies
+- DOMAIN-SUFFIX,foxplus.com,proxies
+- DOMAIN-SUFFIX,foxplay.com,proxies
+- DOMAIN-SUFFIX,ipinfo.io,proxies
+- DOMAIN-SUFFIX,mstage.io,proxies
+- DOMAIN-SUFFIX,now.com,proxies
+- DOMAIN-SUFFIX,theplatform.com,proxies
+- DOMAIN-SUFFIX,urlload.net,proxies
+
+# > HBO && HBO Go
+- DOMAIN-SUFFIX,execute-api.ap-southeast-1.amazonaws.com,proxies
+- DOMAIN-SUFFIX,hbo.com,proxies
+- DOMAIN-SUFFIX,hboasia.com,proxies
+- DOMAIN-SUFFIX,hbogo.com,proxies
+- DOMAIN-SUFFIX,hbogoasia.hk,proxies
+
+# > Hulu
+- DOMAIN-SUFFIX,happyon.jp,proxies
+- DOMAIN-SUFFIX,hulu.com,proxies
+- DOMAIN-SUFFIX,huluim.com,proxies
+- DOMAIN-SUFFIX,hulustream.com,proxies
+
+# > Imkan
+- DOMAIN-SUFFIX,imkan.tv,proxies
+
+# > JOOX
+- DOMAIN-SUFFIX,joox.com,proxies
+
+# > MytvSUPER
+- DOMAIN-KEYWORD,nowtv100,proxies
+- DOMAIN-KEYWORD,rthklive,proxies
+- DOMAIN-SUFFIX,mytvsuper.com,proxies
+- DOMAIN-SUFFIX,tvb.com,proxies
+
+# > Netflix
+- DOMAIN-SUFFIX,netflix.com,proxies
+- DOMAIN-SUFFIX,netflix.net,proxies
+- DOMAIN-SUFFIX,nflxext.com,proxies
+- DOMAIN-SUFFIX,nflximg.com,proxies
+- DOMAIN-SUFFIX,nflximg.net,proxies
+- DOMAIN-SUFFIX,nflxso.net,proxies
+- DOMAIN-SUFFIX,nflxvideo.net,proxies
+
+# > Pandora
+- DOMAIN-SUFFIX,pandora.com,proxies
+
+# > Sky GO
+- DOMAIN-SUFFIX,sky.com,proxies
+- DOMAIN-SUFFIX,skygo.co.nz,proxies
+
+# > Spotify
+- DOMAIN-KEYWORD,spotify,proxies
+- DOMAIN-SUFFIX,scdn.co,proxies
+- DOMAIN-SUFFIX,spoti.fi,proxies
+
+# > viuTV
+- DOMAIN-SUFFIX,viu.tv,proxies
+
+# > Youtube
+- DOMAIN-KEYWORD,youtube,proxies
+- DOMAIN-SUFFIX,googlevideo.com,proxies
+- DOMAIN-SUFFIX,gvt2.com,proxies
+- DOMAIN-SUFFIX,youtu.be,proxies
+
+# (proxies)
+# > Bilibili
+- DOMAIN-KEYWORD,bilibili,proxies
+- DOMAIN-SUFFIX,acg.tv,proxies
+- DOMAIN-SUFFIX,acgvideo.com,proxies
+- DOMAIN-SUFFIX,b23.tv,proxies
+- DOMAIN-SUFFIX,biliapi.com,proxies
+- DOMAIN-SUFFIX,biliapi.net,proxies
+- DOMAIN-SUFFIX,bilibili.com,proxies
+- DOMAIN-SUFFIX,biligame.com,proxies
+- DOMAIN-SUFFIX,biligame.net,proxies
+- DOMAIN-SUFFIX,hdslb.com,proxies
+- DOMAIN-SUFFIX,im9.com,proxies
+
+# > IQIYI
+- DOMAIN-KEYWORD,qiyi,proxies
+- DOMAIN-SUFFIX,qy.net,proxies
+
+# > letv
+- DOMAIN-SUFFIX,api.mob.app.letv.com,proxies
+
+# > NeteaseMusic
+- DOMAIN-SUFFIX,163yun.com,proxies
+- DOMAIN-SUFFIX,music.126.net,proxies
+- DOMAIN-SUFFIX,music.163.com,proxies
+
+# > Tencent Video
+- DOMAIN-SUFFIX,vv.video.qq.com,proxies
+
+# China Area Network
+# > Microsoft
+- DOMAIN-SUFFIX,microsoft.com,proxies
+- DOMAIN-SUFFIX,windows.net,proxies
+- DOMAIN-SUFFIX,sfx.ms,proxies
+- DOMAIN-SUFFIX,sharepoint.com,proxies
+- DOMAIN-KEYWORD,officecdn,proxies
+# > Blizzard
+- DOMAIN-SUFFIX,blizzard.com,proxies
+- DOMAIN-SUFFIX,battle.net,proxies
+- DOMAIN,blzddist1-a.akamaihd.net,proxies
+# > Steam
+- DOMAIN-SUFFIX,steampowered.com,proxies
+- DOMAIN-SUFFIX,steam-chat.com,proxies
+- DOMAIN-KEYWORD,steamcdn,proxies
+- DOMAIN-KEYWORD,steamstore,proxies
+- DOMAIN-KEYWORD,steamuserimages,proxies
+- DOMAIN-KEYWORD,steambroadcast,proxies
+# > Tencent
+#USER-AGENT,MicroMessenger%20Client,proxies
+#USER-AGENT,WeChat*,proxies
+- DOMAIN-SUFFIX,qq.com,proxies
+- DOMAIN-SUFFIX,qpic.cn,proxies
+- DOMAIN-SUFFIX,tencent.com,proxies
+# > Alibaba
+- DOMAIN-SUFFIX,alibaba.com,proxies
+- DOMAIN-SUFFIX,alicdn.com,proxies
+- DOMAIN-SUFFIX,amap.com,proxies
+- DOMAIN-SUFFIX,dingtalk.com,proxies
+- DOMAIN-SUFFIX,taobao.com,proxies
+- DOMAIN-SUFFIX,tmall.com,proxies
+- DOMAIN-SUFFIX,ykimg.com,proxies
+- DOMAIN-SUFFIX,youku.com,proxies
+- DOMAIN-SUFFIX,xiami.com,proxies
+- DOMAIN-SUFFIX,xiami.net,proxies
+# > NetEase
+- DOMAIN-SUFFIX,163.com,proxies
+- DOMAIN-SUFFIX,126.net,proxies
+- DOMAIN-SUFFIX,163yun.com,proxies
+# > Sohu
+- DOMAIN-SUFFIX,sohu.com.cn,proxies
+- DOMAIN-SUFFIX,itc.cn,proxies
+- DOMAIN-SUFFIX,sohu.com,proxies
+- DOMAIN-SUFFIX,v-56.com,proxies
+# > Sina
+- DOMAIN-SUFFIX,weibo.com,proxies
+- DOMAIN-SUFFIX,weibo.cn,proxies
+# > JD
+- DOMAIN-SUFFIX,jd.com,proxies
+- DOMAIN-SUFFIX,jd.hk,proxies
+- DOMAIN-SUFFIX,360buyimg.com,proxies
+# > MI
+- DOMAIN-SUFFIX,duokan.com,proxies
+- DOMAIN-SUFFIX,mi-img.com,proxies
+- DOMAIN-SUFFIX,mifile.cn,proxies
+- DOMAIN-SUFFIX,xiaomi.com,proxies
+# > bilibili
+- DOMAIN-SUFFIX,acgvideo.com,proxies
+- DOMAIN-SUFFIX,bilibili.com,proxies
+- DOMAIN-SUFFIX,hdslb.com,proxies
+# > iQiyi
+- DOMAIN-SUFFIX,iqiyi.com,proxies
+- DOMAIN-SUFFIX,iqiyipic.com,proxies
+- DOMAIN-SUFFIX,71.am.com,proxies
+# > HunanTV
+- DOMAIN-SUFFIX,hitv.com,proxies
+- DOMAIN-SUFFIX,mgtv.com,proxies
+# > Meitu
+- DOMAIN-SUFFIX,meitu.com,proxies
+- DOMAIN-SUFFIX,meitudata.com,proxies
+- DOMAIN-SUFFIX,meipai.com,proxies
+# > YYeTs
+- DOMAIN-SUFFIX,zmzapi.com,proxies
+- DOMAIN-SUFFIX,zimuzu.tv,proxies
+- DOMAIN-SUFFIX,zmzfile.com,proxies
+- DOMAIN-SUFFIX,zmzapi.net,proxies
+# > 蛋蛋赞
+- DOMAIN-SUFFIX,baduziyuan.com,proxies
+- DOMAIN-SUFFIX,com-hs-hkdy.com,proxies
+- DOMAIN-SUFFIX,czybjz.com,proxies
+- DOMAIN-SUFFIX,dandanzan.com,proxies
+- DOMAIN-SUFFIX,fjhps.com,proxies
+- DOMAIN-SUFFIX,kuyunbo.club,proxies
+# > Baidu
+- DOMAIN-SUFFIX,baidu.com,proxies
+- DOMAIN-SUFFIX,baidubcr.com,proxies
+- DOMAIN-SUFFIX,bdstatic.com,proxies
+# > ChinaNet
+- DOMAIN-SUFFIX,189.cn,proxies
+- DOMAIN-SUFFIX,21cn.com,proxies
+# > ByteDance
+- DOMAIN-SUFFIX,bytecdn.cn,proxies
+- DOMAIN-SUFFIX,pstatp.com,proxies
+- DOMAIN-SUFFIX,snssdk.com,proxies
+- DOMAIN-SUFFIX,toutiao.com,proxies
+# > Content Delivery Network
+# > Akamai
+# - DOMAIN-SUFFIX,akadns.net,proxies
+# - DOMAIN-SUFFIX,akamai.net,proxies
+# - DOMAIN-SUFFIX,akamaiedge.net,proxies
+# - DOMAIN-SUFFIX,akamaihd.net,proxies
+# - DOMAIN-SUFFIX,akamaistream.net,proxies
+# - DOMAIN-SUFFIX,akamaized.net,proxies
+# > ChinaNetCenter
+- DOMAIN-SUFFIX,chinanetcenter.com,proxies
+- DOMAIN-SUFFIX,wangsu.com,proxies
+# > IP Query
+# - DOMAIN-SUFFIX,ipip.net,proxies
+# - DOMAIN-SUFFIX,ip.cn,proxies
+# - DOMAIN-SUFFIX,ip.la,proxies
+# - DOMAIN-SUFFIX,ip-cdn.com,proxies
+# - DOMAIN-SUFFIX,ipv6-test.com,proxies
+# - DOMAIN-SUFFIX,test-ipv6.com,proxies
+# - DOMAIN-SUFFIX,whatismyip.com,proxies
+# - DOMAIN,ip.bjango.com,proxies
+# > Other
+- DOMAIN-SUFFIX,40017.cn,proxies
+- DOMAIN-SUFFIX,broadcasthe.net,proxies
+- DOMAIN-SUFFIX,cailianpress.com,proxies
+- DOMAIN-SUFFIX,chdbits.co,proxies
+- DOMAIN-SUFFIX,chushou.tv,proxies
+- DOMAIN-SUFFIX,cmbchina.com,proxies
+- DOMAIN-SUFFIX,cmbimg.com,proxies
+- DOMAIN-SUFFIX,cmct.tv,proxies
+- DOMAIN-SUFFIX,cmvideo.cn,proxies
+- DOMAIN-SUFFIX,cnlang.org,proxies
+- DOMAIN-SUFFIX,doubanio.com,proxies
+- DOMAIN-SUFFIX,douyu.com,proxies
+- DOMAIN-SUFFIX,douyucdn.cn,proxies
+- DOMAIN-SUFFIX,dxycdn.com,proxies
+- DOMAIN-SUFFIX,hicloud.com,proxies
+- DOMAIN-SUFFIX,hdchina.org,proxies
+- DOMAIN-SUFFIX,hdcmct.org,proxies
+- DOMAIN-SUFFIX,ithome.com,proxies
+- DOMAIN-SUFFIX,kkmh.com,proxies
+- DOMAIN-SUFFIX,ksosoft.com,proxies
+- DOMAIN-SUFFIX,maoyun.tv,proxies
+- DOMAIN-SUFFIX,meituan.net,proxies
+- DOMAIN-SUFFIX,mobike.com,proxies
+- DOMAIN-SUFFIX,mubu.com,proxies
+- DOMAIN-SUFFIX,myzaker.com,proxies
+- DOMAIN-SUFFIX,ourbits.club,proxies
+- DOMAIN-SUFFIX,passthepopcorn.me,proxies
+- DOMAIN-SUFFIX,paypal.com,proxies
+- DOMAIN-SUFFIX,paypalobjects.com,proxies
+- DOMAIN-SUFFIX,privatehd.to,proxies
+- DOMAIN-SUFFIX,redacted.ch,proxies
+- DOMAIN-SUFFIX,ruguoapp.com,proxies
+- DOMAIN-SUFFIX,smzdm.com,proxies
+- DOMAIN-SUFFIX,sogou.com,proxies
+- DOMAIN-SUFFIX,teamviewer.com,proxies
+- DOMAIN-SUFFIX,totheglory.im,proxies
+- DOMAIN-SUFFIX,tp.m-team.cc,proxies
+- DOMAIN-SUFFIX,udacity.com,proxies
+- DOMAIN-SUFFIX,xmcdn.com,proxies
+- DOMAIN-SUFFIX,yangkeduo.com,proxies
+- DOMAIN-SUFFIX,zhihu.com,proxies
+- DOMAIN-SUFFIX,zhimg.com,proxies
+#USER-AGENT,NeteaseMusic*,proxies
+#USER-AGENT,%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90*,proxies
+
+# (DNS Cache Pollution Protection)
+# > Google
+- DOMAIN-SUFFIX,appspot.com,proxies
+- DOMAIN-SUFFIX,blogger.com,proxies
+- DOMAIN-SUFFIX,getoutline.org,proxies
+- DOMAIN-SUFFIX,gvt0.com,proxies
+- DOMAIN-SUFFIX,gvt1.com,proxies
+- DOMAIN-SUFFIX,gvt3.com,proxies
+- DOMAIN-SUFFIX,xn--ngstr-lra8j.com,proxies
+- DOMAIN-KEYWORD,google,proxies
+- DOMAIN-KEYWORD,blogspot,proxies
+# > Facebook
+- DOMAIN-SUFFIX,cdninstagram.com,proxies
+- DOMAIN-SUFFIX,fb.com,proxies
+- DOMAIN-SUFFIX,fb.me,proxies
+- DOMAIN-SUFFIX,fbaddins.com,proxies
+- DOMAIN-SUFFIX,fbcdn.net,proxies
+- DOMAIN-SUFFIX,fbsbx.com,proxies
+- DOMAIN-SUFFIX,fbworkmail.com,proxies
+- DOMAIN-SUFFIX,instagram.com,proxies
+- DOMAIN-SUFFIX,m.me,proxies
+- DOMAIN-SUFFIX,messenger.com,proxies
+- DOMAIN-SUFFIX,oculus.com,proxies
+- DOMAIN-SUFFIX,oculuscdn.com,proxies
+- DOMAIN-SUFFIX,rocksdb.org,proxies
+- DOMAIN-SUFFIX,whatsapp.com,proxies
+- DOMAIN-SUFFIX,whatsapp.net,proxies
+- DOMAIN-KEYWORD,facebook,proxies
+# > Twitter
+- DOMAIN-SUFFIX,pscp.tv,proxies
+- DOMAIN-SUFFIX,periscope.tv,proxies
+- DOMAIN-SUFFIX,t.co,proxies
+- DOMAIN-SUFFIX,twimg.co,proxies
+- DOMAIN-SUFFIX,twimg.com,proxies
+- DOMAIN-SUFFIX,twitpic.com,proxies
+- DOMAIN-SUFFIX,vine.co,proxies
+- DOMAIN-KEYWORD,twitter,proxies
+# > Telegram
+- DOMAIN-SUFFIX,t.me,proxies
+- DOMAIN-SUFFIX,tdesktop.com,proxies
+- DOMAIN-SUFFIX,telegra.ph,proxies
+- DOMAIN-SUFFIX,telegram.me,proxies
+- DOMAIN-SUFFIX,telegram.org,proxies
+# > Line
+- DOMAIN-SUFFIX,line.me,proxies
+- DOMAIN-SUFFIX,line-apps.com,proxies
+- DOMAIN-SUFFIX,line-scdn.net,proxies
+- DOMAIN-SUFFIX,naver.jp,proxies
+# > Other
+- DOMAIN-SUFFIX,4shared.com,proxies
+- DOMAIN-SUFFIX,881903.com,proxies
+- DOMAIN-SUFFIX,abc.net.au,proxies
+- DOMAIN-SUFFIX,abebooks.com,proxies
+- DOMAIN-SUFFIX,amazon.co.jp,proxies
+- DOMAIN-SUFFIX,apigee.com,proxies
+- DOMAIN-SUFFIX,apk-dl.com,proxies
+- DOMAIN-SUFFIX,apkmirror.com,proxies
+- DOMAIN-SUFFIX,apkmonk.com,proxies
+- DOMAIN-SUFFIX,apkpure.com,proxies
+- DOMAIN-SUFFIX,aptoide.com,proxies
+- DOMAIN-SUFFIX,archive.is,proxies
+- DOMAIN-SUFFIX,archive.org,proxies
+- DOMAIN-SUFFIX,arte.tv,proxies
+- DOMAIN-SUFFIX,ask.com,proxies
+- DOMAIN-SUFFIX,avgle.com,proxies
+- DOMAIN-SUFFIX,badoo.com,proxies
+- DOMAIN-SUFFIX,bandwagonhost.com,proxies
+- DOMAIN-SUFFIX,bbc.com,proxies
+- DOMAIN-SUFFIX,behance.net,proxies
+- DOMAIN-SUFFIX,bibox.com,proxies
+- DOMAIN-SUFFIX,biggo.com.tw,proxies
+- DOMAIN-SUFFIX,binance.com,proxies
+- DOMAIN-SUFFIX,bitcointalk.org,proxies
+- DOMAIN-SUFFIX,bitfinex.com,proxies
+- DOMAIN-SUFFIX,bitmex.com,proxies
+- DOMAIN-SUFFIX,bit-z.com,proxies
+- DOMAIN-SUFFIX,bloglovin.com,proxies
+- DOMAIN-SUFFIX,bloomberg.cn,proxies
+- DOMAIN-SUFFIX,bloomberg.com,proxies
+- DOMAIN-SUFFIX,book.com.tw,proxies
+- DOMAIN-SUFFIX,booklive.jp,proxies
+- DOMAIN-SUFFIX,books.com.tw,proxies
+- DOMAIN-SUFFIX,box.com,proxies
+- DOMAIN-SUFFIX,brookings.edu,proxies
+- DOMAIN-SUFFIX,businessinsider.com,proxies
+- DOMAIN-SUFFIX,bwh1.net,proxies
+- DOMAIN-SUFFIX,castbox.fm,proxies
+- DOMAIN-SUFFIX,cbc.ca,proxies
+- DOMAIN-SUFFIX,cdw.com,proxies
+- DOMAIN-SUFFIX,change.org,proxies
+- DOMAIN-SUFFIX,ck101.com,proxies
+- DOMAIN-SUFFIX,clarionproject.org,proxies
+- DOMAIN-SUFFIX,clyp.it,proxies
+- DOMAIN-SUFFIX,cna.com.tw,proxies
+- DOMAIN-SUFFIX,comparitech.com,proxies
+- DOMAIN-SUFFIX,conoha.jp,proxies
+- DOMAIN-SUFFIX,crucial.com,proxies
+- DOMAIN-SUFFIX,cts.com.tw,proxies
+- DOMAIN-SUFFIX,cw.com.tw,proxies
+- DOMAIN-SUFFIX,cyberctm.com,proxies
+- DOMAIN-SUFFIX,dailymotion.com,proxies
+- DOMAIN-SUFFIX,dailyview.tw,proxies
+- DOMAIN-SUFFIX,daum.net,proxies
+- DOMAIN-SUFFIX,daumcdn.net,proxies
+- DOMAIN-SUFFIX,dcard.tw,proxies
+- DOMAIN-SUFFIX,deepdiscount.com,proxies
+- DOMAIN-SUFFIX,deezer.com,proxies
+- DOMAIN-SUFFIX,depositphotos.com,proxies
+- DOMAIN-SUFFIX,disconnect.me,proxies
+- DOMAIN-SUFFIX,discordapp.com,proxies
+- DOMAIN-SUFFIX,discordapp.net,proxies
+- DOMAIN-SUFFIX,disqus.com,proxies
+- DOMAIN-SUFFIX,dns2go.com,proxies
+- DOMAIN-SUFFIX,dropbox.com,proxies
+- DOMAIN-SUFFIX,dropboxusercontent.com,proxies
+- DOMAIN-SUFFIX,duckduckgo.com,proxies
+- DOMAIN-SUFFIX,dw.com,proxies
+- DOMAIN-SUFFIX,dynu.com,proxies
+- DOMAIN-SUFFIX,earthcam.com,proxies
+- DOMAIN-SUFFIX,ebookservice.tw,proxies
+- DOMAIN-SUFFIX,economist.com,proxies
+- DOMAIN-SUFFIX,edgecastcdn.net,proxies
+- DOMAIN-SUFFIX,edu,proxies
+- DOMAIN-SUFFIX,elpais.com,proxies
+- DOMAIN-SUFFIX,enanyang.my,proxies
+- DOMAIN-SUFFIX,euronews.com,proxies
+- DOMAIN-SUFFIX,feedly.com,proxies
+- DOMAIN-SUFFIX,files.wordpress.com,proxies
+- DOMAIN-SUFFIX,flickr.com,proxies
+- DOMAIN-SUFFIX,flitto.com,proxies
+- DOMAIN-SUFFIX,foreignpolicy.com,proxies
+- DOMAIN-SUFFIX,friday.tw,proxies
+- DOMAIN-SUFFIX,gate.io,proxies
+- DOMAIN-SUFFIX,getlantern.org,proxies
+- DOMAIN-SUFFIX,getsync.com,proxies
+- DOMAIN-SUFFIX,globalvoices.org,proxies
+- DOMAIN-SUFFIX,goo.ne.jp,proxies
+- DOMAIN-SUFFIX,goodreads.com,proxies
+- DOMAIN-SUFFIX,gov.tw,proxies
+- DOMAIN-SUFFIX,gumroad.com,proxies
+- DOMAIN-SUFFIX,hbg.com,proxies
+- DOMAIN-SUFFIX,hightail.com,proxies
+- DOMAIN-SUFFIX,hk01.com,proxies
+- DOMAIN-SUFFIX,hkbf.org,proxies
+- DOMAIN-SUFFIX,hkbookcity.com,proxies
+- DOMAIN-SUFFIX,hkej.com,proxies
+- DOMAIN-SUFFIX,hket.com,proxies
+- DOMAIN-SUFFIX,hkgolden.com,proxies
+- DOMAIN-SUFFIX,hootsuite.com,proxies
+- DOMAIN-SUFFIX,hudson.org,proxies
+- DOMAIN-SUFFIX,huobi.pro,proxies
+- DOMAIN-SUFFIX,initiummall.com,proxies
+- DOMAIN-SUFFIX,ipfs.io,proxies
+- DOMAIN-SUFFIX,issuu.com,proxies
+- DOMAIN-SUFFIX,japantimes.co.jp,proxies
+- DOMAIN-SUFFIX,jiji.com,proxies
+- DOMAIN-SUFFIX,jinx.com,proxies
+- DOMAIN-SUFFIX,jkforum.net,proxies
+- DOMAIN-SUFFIX,joinmastodon.org,proxies
+- DOMAIN-SUFFIX,kakao.com,proxies
+- DOMAIN-SUFFIX,lihkg.com,proxies
+- DOMAIN-SUFFIX,live.com,proxies
+- DOMAIN-SUFFIX,mail.ru,proxies
+- DOMAIN-SUFFIX,matters.news,proxies
+- DOMAIN-SUFFIX,medium.com,proxies
+- DOMAIN-SUFFIX,mega.nz,proxies
+- DOMAIN-SUFFIX,mil,proxies
+- DOMAIN-SUFFIX,mobile01.com,proxies
+- DOMAIN-SUFFIX,naver.com,proxies
+- DOMAIN-SUFFIX,nikkei.com,proxies
+- DOMAIN-SUFFIX,nofile.io,proxies
+- DOMAIN-SUFFIX,now.com,proxies
+- DOMAIN-SUFFIX,nyt.com,proxies
+- DOMAIN-SUFFIX,nytchina.com,proxies
+- DOMAIN-SUFFIX,nytcn.me,proxies
+- DOMAIN-SUFFIX,nytco.com,proxies
+- DOMAIN-SUFFIX,nytimes.com,proxies
+- DOMAIN-SUFFIX,nytimg.com,proxies
+- DOMAIN-SUFFIX,nytlog.com,proxies
+- DOMAIN-SUFFIX,nytstyle.com,proxies
+- DOMAIN-SUFFIX,ok.ru,proxies
+- DOMAIN-SUFFIX,okex.com,proxies
+- DOMAIN-SUFFIX,pcloud.com,proxies
+- DOMAIN-SUFFIX,pinimg.com,proxies
+- DOMAIN-SUFFIX,pixiv.net,proxies
+- DOMAIN-SUFFIX,pornhub.com,proxies
+- DOMAIN-SUFFIX,pureapk.com,proxies
+- DOMAIN-SUFFIX,quora.com,proxies
+- DOMAIN-SUFFIX,quoracdn.net,proxies
+- DOMAIN-SUFFIX,rakuten.co.jp,proxies
+- DOMAIN-SUFFIX,reddit.com,proxies
+- DOMAIN-SUFFIX,redditmedia.com,proxies
+- DOMAIN-SUFFIX,resilio.com,proxies
+- DOMAIN-SUFFIX,reuters.com,proxies
+- DOMAIN-SUFFIX,scmp.com,proxies
+- DOMAIN-SUFFIX,scribd.com,proxies
+- DOMAIN-SUFFIX,seatguru.com,proxies
+- DOMAIN-SUFFIX,shadowsocks.org,proxies
+- DOMAIN-SUFFIX,slideshare.net,proxies
+- DOMAIN-SUFFIX,soundcloud.com,proxies
+- DOMAIN-SUFFIX,startpage.com,proxies
+- DOMAIN-SUFFIX,steamcommunity.com,proxies
+- DOMAIN-SUFFIX,steemit.com,proxies
+- DOMAIN-SUFFIX,t66y.com,proxies
+- DOMAIN-SUFFIX,teco-hk.org,proxies
+- DOMAIN-SUFFIX,teco-mo.org,proxies
+- DOMAIN-SUFFIX,teddysun.com,proxies
+- DOMAIN-SUFFIX,theinitium.com,proxies
+- DOMAIN-SUFFIX,tineye.com,proxies
+- DOMAIN-SUFFIX,torproject.org,proxies
+- DOMAIN-SUFFIX,tumblr.com,proxies
+- DOMAIN-SUFFIX,turbobit.net,proxies
+- DOMAIN-SUFFIX,twitch.tv,proxies
+- DOMAIN-SUFFIX,udn.com,proxies
+- DOMAIN-SUFFIX,unseen.is,proxies
+- DOMAIN-SUFFIX,upmedia.mg,proxies
+- DOMAIN-SUFFIX,uptodown.com,proxies
+- DOMAIN-SUFFIX,ustream.tv,proxies
+- DOMAIN-SUFFIX,uwants.com,proxies
+- DOMAIN-SUFFIX,v2ray.com,proxies
+- DOMAIN-SUFFIX,viber.com,proxies
+- DOMAIN-SUFFIX,videopress.com,proxies
+- DOMAIN-SUFFIX,vimeo.com,proxies
+- DOMAIN-SUFFIX,voxer.com,proxies
+- DOMAIN-SUFFIX,vzw.com,proxies
+- DOMAIN-SUFFIX,w3schools.com,proxies
+- DOMAIN-SUFFIX,wattpad.com,proxies
+- DOMAIN-SUFFIX,whoer.net,proxies
+- DOMAIN-SUFFIX,wikimapia.org,proxies
+- DOMAIN-SUFFIX,wikipedia.org,proxies
+- DOMAIN-SUFFIX,wire.com,proxies
+- DOMAIN-SUFFIX,worldcat.org,proxies
+- DOMAIN-SUFFIX,wsj.com,proxies
+- DOMAIN-SUFFIX,wsj.net,proxies
+- DOMAIN-SUFFIX,xboxlive.com,proxies
+- DOMAIN-SUFFIX,xvideos.com,proxies
+- DOMAIN-SUFFIX,yahoo.com,proxies
+- DOMAIN-SUFFIX,yesasia.com,proxies
+- DOMAIN-SUFFIX,yes-news.com,proxies
+- DOMAIN-SUFFIX,yomiuri.co.jp,proxies
+- DOMAIN-SUFFIX,you-get.org,proxies
+- DOMAIN-SUFFIX,zb.com,proxies
+- DOMAIN-SUFFIX,zello.com,proxies
+- DOMAIN-SUFFIX,zeronet.io,proxies
+- DOMAIN,cdn-images.mailchimp.com,proxies
+- DOMAIN,id.heroku.com,proxies
+- DOMAIN-KEYWORD,github,proxies
+- DOMAIN-KEYWORD,jav,proxies
+- DOMAIN-KEYWORD,pinterest,proxies
+- DOMAIN-KEYWORD,porn,proxies
+- DOMAIN-KEYWORD,wikileaks,proxies
+
+# (Region-Restricted Access Denied)
+- DOMAIN-SUFFIX,apartmentratings.com,proxies
+- DOMAIN-SUFFIX,apartments.com,proxies
+- DOMAIN-SUFFIX,bankmobilevibe.com,proxies
+- DOMAIN-SUFFIX,bing.com,proxies
+- DOMAIN-SUFFIX,booktopia.com.au,proxies
+- DOMAIN-SUFFIX,centauro.com.br,proxies
+- DOMAIN-SUFFIX,clearsurance.com,proxies
+- DOMAIN-SUFFIX,costco.com,proxies
+- DOMAIN-SUFFIX,crackle.com,proxies
+- DOMAIN-SUFFIX,depositphotos.cn,proxies
+- DOMAIN-SUFFIX,dish.com,proxies
+- DOMAIN-SUFFIX,dmm.co.jp,proxies
+- DOMAIN-SUFFIX,dmm.com,proxies
+- DOMAIN-SUFFIX,dnvod.tv,proxies
+- DOMAIN-SUFFIX,esurance.com,proxies
+- DOMAIN-SUFFIX,extmatrix.com,proxies
+- DOMAIN-SUFFIX,fastpic.ru,proxies
+- DOMAIN-SUFFIX,flipboard.com,proxies
+- DOMAIN-SUFFIX,fnac.be,proxies
+- DOMAIN-SUFFIX,fnac.com,proxies
+- DOMAIN-SUFFIX,funkyimg.com,proxies
+- DOMAIN-SUFFIX,fxnetworks.com,proxies
+- DOMAIN-SUFFIX,gettyimages.com,proxies
+- DOMAIN-SUFFIX,jcpenney.com,proxies
+- DOMAIN-SUFFIX,kknews.cc,proxies
+- DOMAIN-SUFFIX,nationwide.com,proxies
+- DOMAIN-SUFFIX,nbc.com,proxies
+- DOMAIN-SUFFIX,nordstrom.com,proxies
+- DOMAIN-SUFFIX,nordstromimage.com,proxies
+- DOMAIN-SUFFIX,nordstromrack.com,proxies
+- DOMAIN-SUFFIX,read01.com,proxies
+- DOMAIN-SUFFIX,superpages.com,proxies
+- DOMAIN-SUFFIX,target.com,proxies
+- DOMAIN-SUFFIX,thinkgeek.com,proxies
+- DOMAIN-SUFFIX,tracfone.com,proxies
+- DOMAIN-SUFFIX,uploader.jp,proxies
+- DOMAIN-SUFFIX,vevo.com,proxies
+- DOMAIN-SUFFIX,viu.tv,proxies
+- DOMAIN-SUFFIX,vk.com,proxies
+- DOMAIN-SUFFIX,vsco.co,proxies
+- DOMAIN-SUFFIX,xfinity.com,proxies
+- DOMAIN-SUFFIX,zattoo.com,proxies
+- DOMAIN,abc.com,proxies
+- DOMAIN,abc.go.com,proxies
+- DOMAIN,abc.net.au,proxies
+- DOMAIN,wego.here.com,proxies
+#USER-AGENT,Roam*,proxies
+
+# (The Most Popular Sites)
+# > Apple
+# > Apple URL Shortener
+- DOMAIN-SUFFIX,appsto.re,proxies
+# > TestFlight
+- DOMAIN,beta.itunes.apple.com,proxies
+# > iBooks Store download
+- DOMAIN,books.itunes.apple.com,proxies
+# > iTunes Store Moveis Trailers
+- DOMAIN,hls.itunes.apple.com,proxies
+# App Store Preview
+- DOMAIN,itunes.apple.com,proxies
+# > Spotlight
+- DOMAIN,api-glb-sea.smoot.apple.com,proxies
+# > Dictionary
+- DOMAIN,lookup-api.apple.com,proxies
+#PROCESS-NAME,LookupViewService,proxies
+# > Google
+- DOMAIN-SUFFIX,abc.xyz,proxies
+- DOMAIN-SUFFIX,android.com,proxies
+- DOMAIN-SUFFIX,androidify.com,proxies
+- DOMAIN-SUFFIX,dialogflow.com,proxies
+- DOMAIN-SUFFIX,autodraw.com,proxies
+- DOMAIN-SUFFIX,capitalg.com,proxies
+- DOMAIN-SUFFIX,certificate-transparency.org,proxies
+- DOMAIN-SUFFIX,chrome.com,proxies
+- DOMAIN-SUFFIX,chromeexperiments.com,proxies
+- DOMAIN-SUFFIX,chromestatus.com,proxies
+- DOMAIN-SUFFIX,chromium.org,proxies
+- DOMAIN-SUFFIX,creativelab5.com,proxies
+- DOMAIN-SUFFIX,debug.com,proxies
+- DOMAIN-SUFFIX,deepmind.com,proxies
+- DOMAIN-SUFFIX,firebaseio.com,proxies
+- DOMAIN-SUFFIX,getmdl.io,proxies
+- DOMAIN-SUFFIX,ggpht.com,proxies
+- DOMAIN-SUFFIX,gmail.com,proxies
+- DOMAIN-SUFFIX,gmodules.com,proxies
+- DOMAIN-SUFFIX,godoc.org,proxies
+- DOMAIN-SUFFIX,golang.org,proxies
+- DOMAIN-SUFFIX,gstatic.com,proxies
+- DOMAIN-SUFFIX,gv.com,proxies
+- DOMAIN-SUFFIX,gwtproject.org,proxies
+- DOMAIN-SUFFIX,itasoftware.com,proxies
+- DOMAIN-SUFFIX,madewithcode.com,proxies
+- DOMAIN-SUFFIX,material.io,proxies
+- DOMAIN-SUFFIX,polymer-project.org,proxies
+- DOMAIN-SUFFIX,admin.recaptcha.net,proxies
+- DOMAIN-SUFFIX,recaptcha.net,proxies
+- DOMAIN-SUFFIX,shattered.io,proxies
+- DOMAIN-SUFFIX,synergyse.com,proxies
+- DOMAIN-SUFFIX,tensorflow.org,proxies
+- DOMAIN-SUFFIX,tiltbrush.com,proxies
+- DOMAIN-SUFFIX,waveprotocol.org,proxies
+- DOMAIN-SUFFIX,waymo.com,proxies
+- DOMAIN-SUFFIX,webmproject.org,proxies
+- DOMAIN-SUFFIX,webrtc.org,proxies
+- DOMAIN-SUFFIX,whatbrowser.org,proxies
+- DOMAIN-SUFFIX,widevine.com,proxies
+- DOMAIN-SUFFIX,x.company,proxies
+- DOMAIN-SUFFIX,youtu.be,proxies
+- DOMAIN-SUFFIX,yt.be,proxies
+- DOMAIN-SUFFIX,ytimg.com,proxies
+# > Steam
+- DOMAIN,media.steampowered.com,proxies
+- DOMAIN,store.steampowered.com,proxies
+# > Other
+- DOMAIN-SUFFIX,0rz.tw,proxies
+- DOMAIN-SUFFIX,4bluestones.biz,proxies
+- DOMAIN-SUFFIX,9bis.net,proxies
+- DOMAIN-SUFFIX,allconnected.co,proxies
+- DOMAIN-SUFFIX,amazonaws.com,proxies
+- DOMAIN-SUFFIX,aol.com,proxies
+- DOMAIN-SUFFIX,bcc.com.tw,proxies
+- DOMAIN-SUFFIX,bit.ly,proxies
+- DOMAIN-SUFFIX,bitshare.com,proxies
+- DOMAIN-SUFFIX,blog.jp,proxies
+- DOMAIN-SUFFIX,blogimg.jp,proxies
+- DOMAIN-SUFFIX,blogtd.org,proxies
+- DOMAIN-SUFFIX,broadcast.co.nz,proxies
+- DOMAIN-SUFFIX,camfrog.com,proxies
+- DOMAIN-SUFFIX,cfos.de,proxies
+- DOMAIN-SUFFIX,citypopulation.de,proxies
+- DOMAIN-SUFFIX,cloudfront.net,proxies
+- DOMAIN-SUFFIX,ctitv.com.tw,proxies
+- DOMAIN-SUFFIX,cuhk.edu.hk,proxies
+- DOMAIN-SUFFIX,cusu.hk,proxies
+- DOMAIN-SUFFIX,discuss.com.hk,proxies
+- DOMAIN-SUFFIX,dropboxapi.com,proxies
+- DOMAIN-SUFFIX,edditstatic.com,proxies
+- DOMAIN-SUFFIX,flickriver.com,proxies
+- DOMAIN-SUFFIX,focustaiwan.tw,proxies
+- DOMAIN-SUFFIX,free.fr,proxies
+- DOMAIN-SUFFIX,ftchinese.com,proxies
+- DOMAIN-SUFFIX,gigacircle.com,proxies
+- DOMAIN-SUFFIX,gov,proxies
+- DOMAIN-SUFFIX,hk-pub.com,proxies
+- DOMAIN-SUFFIX,hosting.co.uk,proxies
+- DOMAIN-SUFFIX,hwcdn.net,proxies
+- DOMAIN-SUFFIX,jtvnw.net,proxies
+- DOMAIN-SUFFIX,linksalpha.com,proxies
+- DOMAIN-SUFFIX,manyvids.com,proxies
+- DOMAIN-SUFFIX,myactimes.com,proxies
+- DOMAIN-SUFFIX,newsblur.com,proxies
+- DOMAIN-SUFFIX,now.im,proxies
+- DOMAIN-SUFFIX,redditlist.com,proxies
+- DOMAIN-SUFFIX,signal.org,proxies
+- DOMAIN-SUFFIX,sparknotes.com,proxies
+- DOMAIN-SUFFIX,streetvoice.com,proxies
+- DOMAIN-SUFFIX,ttvnw.net,proxies
+- DOMAIN-SUFFIX,tv.com,proxies
+- DOMAIN-SUFFIX,twitchcdn.net,proxies
+- DOMAIN-SUFFIX,typepad.com,proxies
+- DOMAIN-SUFFIX,udnbkk.com,proxies
+- DOMAIN-SUFFIX,whispersystems.org,proxies
+- DOMAIN-SUFFIX,wikia.com,proxies
+- DOMAIN-SUFFIX,wn.com,proxies
+- DOMAIN-SUFFIX,wolframalpha.com,proxies
+- DOMAIN-SUFFIX,x-art.com,proxies
+- DOMAIN-SUFFIX,yimg.com,proxies
+
+- DOMAIN-KEYWORD,dlercloud,proxies
+- DOMAIN-SUFFIX,dler.cloud,proxies
+
+# Local Area Network
+- DOMAIN-KEYWORD,announce,DIRECT
+- DOMAIN-KEYWORD,torrent,DIRECT
+- DOMAIN-KEYWORD,tracker,DIRECT
+- DOMAIN-SUFFIX,smtp,DIRECT
+- DOMAIN-SUFFIX,local,DIRECT
+- IP-CIDR,192.168.0.0/16,DIRECT
+- IP-CIDR,10.0.0.0/8,DIRECT
+- IP-CIDR,172.16.0.0/12,DIRECT
+- IP-CIDR,127.0.0.0/8,DIRECT
+- IP-CIDR,100.64.0.0/10,DIRECT
+
+# > IQIYI
+- IP-CIDR,101.227.0.0/16,proxies
+- IP-CIDR,101.224.0.0/13,proxies
+- IP-CIDR,119.176.0.0/12,proxies
+
+# > Youku
+- IP-CIDR,106.11.0.0/16,proxies
+
+# > Telegram
+- IP-CIDR,67.198.55.0/24,proxies
+- IP-CIDR,91.108.4.0/22,proxies
+- IP-CIDR,91.108.8.0/22,proxies
+- IP-CIDR,91.108.12.0/22,proxies
+- IP-CIDR,91.108.16.0/22,proxies
+- IP-CIDR,91.108.56.0/22,proxies
+- IP-CIDR,109.239.140.0/24,proxies
+- IP-CIDR,149.154.160.0/20,proxies
+- IP-CIDR,205.172.60.0/22,proxies
+
+# (Extra IP-CIRD)
+# > Google
+- IP-CIDR,35.190.247.0/24,proxies
+- IP-CIDR,64.233.160.0/19,proxies
+- IP-CIDR,66.102.0.0/20,proxies
+- IP-CIDR,66.249.80.0/20,proxies
+- IP-CIDR,72.14.192.0/18,proxies
+- IP-CIDR,74.125.0.0/16,proxies
+- IP-CIDR,108.177.8.0/21,proxies
+- IP-CIDR,172.217.0.0/16,proxies
+- IP-CIDR,173.194.0.0/16,proxies
+- IP-CIDR,209.85.128.0/17,proxies
+- IP-CIDR,216.58.192.0/19,proxies
+- IP-CIDR,216.239.32.0/19,proxies
+# > Facebook
+- IP-CIDR,31.13.24.0/21,proxies
+- IP-CIDR,31.13.64.0/18,proxies
+- IP-CIDR,45.64.40.0/22,proxies
+- IP-CIDR,66.220.144.0/20,proxies
+- IP-CIDR,69.63.176.0/20,proxies
+- IP-CIDR,69.171.224.0/19,proxies
+- IP-CIDR,74.119.76.0/22,proxies
+- IP-CIDR,103.4.96.0/22,proxies
+- IP-CIDR,129.134.0.0/17,proxies
+- IP-CIDR,157.240.0.0/17,proxies
+- IP-CIDR,173.252.64.0/19,proxies
+- IP-CIDR,173.252.96.0/19,proxies
+- IP-CIDR,179.60.192.0/22,proxies
+- IP-CIDR,185.60.216.0/22,proxies
+- IP-CIDR,204.15.20.0/22,proxies
+# > Twitter
+- IP-CIDR,69.195.160.0/19,proxies
+- IP-CIDR,104.244.42.0/21,proxies
+- IP-CIDR,192.133.76.0/22,proxies
+- IP-CIDR,199.16.156.0/22,proxies
+- IP-CIDR,199.59.148.0/22,proxies
+- IP-CIDR,199.96.56.0/21,proxies
+- IP-CIDR,202.160.128.0/22,proxies
+- IP-CIDR,209.237.192.0/19,proxies
+
+# GeoIP China
+- GEOIP,CN,proxies
+
+- MATCH,proxies
