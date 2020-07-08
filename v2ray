@@ -60,8 +60,8 @@ proxies:
 - { name: "pokoGTCP", type: vmess, server: pokogoogle.zgc-servers.site, port: 446, uuid: bea91546-be91-11ea-b13b-42010aaa000a, alterId: 16, cipher: auto }
  
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [ 'Ews', 'Etcp', 'Aws', 'Bws', 'Atcp', 'Btcp', 'pokoGWS', 'pokoGTCP'  ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect, 'Ews', 'Etcp', 'Aws', 'Bws', 'Atcp', 'Btcp', 'pokoGWS', 'pokoGTCP'  ] }
+- { name: "AutoSelect", type: url-test, proxies: ['pokoGWS', 'pokoGTCP',  'Ews', 'Etcp', 'Aws', 'Bws', 'Atcp', 'Btcp'   ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect, 'pokoGWS', 'pokoGTCP', 'Ews', 'Etcp', 'Aws', 'Bws', 'Atcp', 'Btcp'  ] }
   
   
 
