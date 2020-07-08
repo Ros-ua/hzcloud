@@ -47,19 +47,17 @@ cfw-latency-timeout: 5000
 
 
 proxies:
-- { name: "TrojanG", type: trojan, server: rostestgoogle.zgc-servers.site, port: 443, password: 1qaz2wsx }
+
 - { name: "TrojanGE", type: trojan, server: rostestgooglee3.zgc-servers.site, port: 443, password: 1qaz2wsx }
 
-- { name: "G1", type: vmess, server: rostestgoogle.zgc-servers.site, port: 444, uuid: 2dbadcb0-8186-11ea-8fdc-42010aaa0007, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /EUscuwke/, Host: rostestgoogle.zgc-servers.site }
 - { name: "GGCEws", type: vmess, server: rostestgooglee3.zgc-servers.site, port: 444, uuid: 69978c96-9b5e-11ea-9cbf-42010aaa0008, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /70asUdpr/, Host: rostestgooglee3.zgc-servers.site }
 
-- { name: "G2", type: vmess, server: rostestgoogle.zgc-servers.site, port: 446, uuid: 7aaebc8a-8186-11ea-a249-42010aaa0007, alterId: 16, cipher: auto }
 - { name: "GGCEtcp", type: vmess, server: rostestgooglee3.zgc-servers.site, port: 446, uuid: e2d59e4a-9b5e-11ea-a781-42010aaa0008, alterId: 16, cipher: auto }
   
  
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [ 'TrojanG', 'G1', 'G2', 'TrojanGE', 'GGCEws', 'GGCEtcp' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect, 'TrojanG', 'G1', 'G2', 'TrojanGE', 'GGCEws', 'GGCEtcp' ] }
+- { name: "AutoSelect", type: url-test, proxies: [ 'TrojanGE', 'GGCEws', 'GGCEtcp' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect, 'TrojanGE', 'GGCEws', 'GGCEtcp' ] }
   
 
 rules:
