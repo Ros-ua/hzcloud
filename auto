@@ -57,8 +57,8 @@ proxies:
 - { name: "Btcp", type: vmess, server: catsd.duckdns.org, port: 446, uuid: a6dd7d64-bb6a-11ea-85ff-0a03c0a69a70, alterId: 16, cipher: auto }
 
 - { name: "TrojanE", type: trojan, server: cheburek.duckdns.org, port: 443, password: qazxsw123 }
-- { name: "Ews", type: vmess, server: cheburek.duckdns.org, port: 444, uuid: fe5c858e-796c-11ea-94a2-0af6f1f45f64, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /42lC8UJP/, Host: cheburek.duckdns.org }
-- { name: "Etcp", type: vmess, server: cheburek.duckdns.org, port: 446, uuid: ab59f24e-796d-11ea-98f7-0af6f1f45f64, alterId: 16, cipher: auto }
+- { name: "Ews", type: vmess, server: cheburek.duckdns.org, port: 444, uuid: bef57c10-c738-11ea-bd8d-0af7d22b149c, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /HoixZdKM/, Host: cheburek.duckdns.org }
+- { name: "Etcp", type: vmess, server: cheburek.duckdns.org, port: 446, uuid: cb804112-c739-11ea-aebd-0af7d22b149c, alterId: 16, cipher: auto }
 
 - { name: "pokoGT", type: trojan, server: pokogoogle.zgc-servers.site, port: 443, password: 1qaz2wsx }
 - { name: "pokoGWS", type: vmess, server: pokogoogle.zgc-servers.site, port: 444, uuid: 94e7d9c2-be91-11ea-a217-42010aaa000a, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /IzyfkGUh/, Host: pokogoogle.zgc-servers.site}
