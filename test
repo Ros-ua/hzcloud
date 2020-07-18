@@ -179,7 +179,7 @@ rules:
   # Global Area Network
 
   # (DNS Cache Pollution) / (IP Blackhole) / (Region-Restricted Access Denied) / (Network Jitter)
-  - RULE-SET,Global,PROXY
+  - RULE-SET,Global,proxies
 
   # China Area Network
   - RULE-SET,China,DIRECT
