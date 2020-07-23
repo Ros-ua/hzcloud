@@ -83,7 +83,7 @@ rule-providers:
   Advertising:
     type: http
     behavior: classical
-    path: ./RuleSet/Extra/Advertising.yaml
+    path: ./RuleSet/Guard/Advertising.yaml
     url: https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/Guard/Advertising.yaml
     interval: 86400
 
