@@ -10,18 +10,14 @@ secret: ''
 dns:
   enable: true
   nameserver:
-    - 1.1.1.1
-    - 1.0.0.1
-    - tls://dns.rubyfish.cn:853
+    - 8.8.8.8
+    - 8.8.4.4
   fallback:
-    - tls://1.0.0.1:853
     - tls://dns.google:853
 
-cfw-bypass:
+s:
     - qq.com
-    - taobao.com
-    - music.163.com
-    - '*.music.126.net'
+    - tac.126.net'
     - localhost
     - 127.*
     - 10.*
