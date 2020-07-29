@@ -24,8 +24,18 @@ proxy-groups:
 - { name: "AutoSelect", type: url-test, proxies: ['pokoGT', 'TrojanE', 'TrojanA', 'TrojanB' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
 - { name: "proxies", type: select, proxies: [ AutoSelect, 'pokoGT', 'TrojanE', 'TrojanA', 'TrojanB' ] }
 
+rule-providers:
+
+Global:
+    type: http
+    behavior: classical
+    path: ./RuleSet/Global.yaml
+    url: https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/Global.yaml
+    interval: 86400
+
 rules:
-   
+ 
+ - RULE-SET,Global,proxies 
   - IP-CIDR,192.168.0.0/16,DIRECT
   - IP-CIDR,10.0.0.0/8,DIRECT
   - IP-CIDR,172.16.0.0/12,DIRECT
