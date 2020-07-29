@@ -26,7 +26,12 @@ proxy-groups:
 - { name: "proxies", type: select, proxies: [ AutoSelect, 'pokoGT', 'TrojanE', 'TrojanA', 'TrojanB' ] }
 
 rule-providers:
- 
+  Unbreak:
+    type: http
+    behavior: classical
+    path: ./RuleSet/Unbreak.yaml
+    url: https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/Unbreak.yaml
+    interval: 86400
   Global:
     type: http
     behavior: classical
@@ -35,7 +40,8 @@ rule-providers:
     interval: 86400
   
 rules:
-   
+  
+  - RULE-SET,Unbreak,DIRECT
   - RULE-SET,Global,proxies
    
   - IP-CIDR,192.168.0.0/16,DIRECT
@@ -44,7 +50,5 @@ rules:
   - IP-CIDR,127.0.0.0/8,DIRECT
   - IP-CIDR,100.64.0.0/10,DIRECT
   - IP-CIDR,224.0.0.0/4,DIRECT
-  - IP-CIDR,119.28.28.28/32,DIRECT
-  - IP-CIDR,182.254.116.0/24,DIRECT
   - GEOIP,CN,DIRECT
   - MATCH,proxies
