@@ -50,14 +50,11 @@ rule-providers:
     url: https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/Extra/ChinaIP.yaml
     interval: 86400
 
-
 rules:
-  
-  - RULE-SET,Unbreak,DIRECT
-  - RULE-SET,Global,proxies
-  - RULE-SET,China,DIRECT
-  - RULE-SET,ChinaIP,DIRECT
-
+ - RULE-SET,Unbreak,DIRECT
+ - RULE-SET,Global,proxies
+ - RULE-SET,China,DIRECT
+ - RULE-SET,ChinaIP,DIRECT
  - IP-CIDR,192.168.0.0/16,DIRECT
  - IP-CIDR,10.0.0.0/8,DIRECT
  - IP-CIDR,172.16.0.0/12,DIRECT
