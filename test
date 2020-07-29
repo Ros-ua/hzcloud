@@ -11,7 +11,6 @@ dns:
   enable: true
   nameserver:
     - 8.8.8.8
-    - 8.8.4.4
   fallback:
     - tls://dns.google:853
 
@@ -25,30 +24,12 @@ proxy-groups:
 - { name: "AutoSelect", type: url-test, proxies: ['pokoGT', 'TrojanE', 'TrojanA', 'TrojanB' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
 - { name: "proxies", type: select, proxies: [ AutoSelect, 'pokoGT', 'TrojanE', 'TrojanA', 'TrojanB' ] }
 
-rule-providers:
-  Unbreak:
-    type: http
-    behavior: classical
-    path: ./RuleSet/Unbreak.yaml
-    url: https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/Unbreak.yaml
-    interval: 86400
-  Global:
-    type: http
-    behavior: classical
-    path: ./RuleSet/Global.yaml
-    url: https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/Global.yaml
-    interval: 86400
-  
 rules:
-  
-  - RULE-SET,Unbreak,DIRECT
-  - RULE-SET,Global,proxies
-   
-  - IP-CIDR,192.168.0.0/16,DIRECT
-  - IP-CIDR,10.0.0.0/8,DIRECT
-  - IP-CIDR,172.16.0.0/12,DIRECT
-  - IP-CIDR,127.0.0.0/8,DIRECT
-  - IP-CIDR,100.64.0.0/10,DIRECT
-  - IP-CIDR,224.0.0.0/4,DIRECT
-  - GEOIP,CN,DIRECT
-  - MATCH,proxies
+ - IP-CIDR,192.168.0.0/16,DIRECT
+ - IP-CIDR,10.0.0.0/8,DIRECT
+ - IP-CIDR,172.16.0.0/12,DIRECT
+ - IP-CIDR,127.0.0.0/8,DIRECT
+ - IP-CIDR,100.64.0.0/10,DIRECT
+ - IP-CIDR,224.0.0.0/4,DIRECT
+ - GEOIP,CN,DIRECT
+ - MATCH,proxies
