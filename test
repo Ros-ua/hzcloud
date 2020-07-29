@@ -2,7 +2,7 @@ port: 7890
 socks-port: 7891
 redir-port: 7892
 allow-lan: false
-mode: rule #
+mode: rule
 log-level: info
 external-controller: '0.0.0.0:9090'
 secret: ''
@@ -10,41 +10,10 @@ secret: ''
 dns:
   enable: true
   nameserver:
-    - 1.1.1.1
-    - 1.0.0.1
-    - tls://dns.rubyfish.cn:853
+    - 8.8.8.8
+    - 8.8.4.4
   fallback:
-    - tls://1.0.0.1:853
     - tls://dns.google:853
-
-cfw-bypass:
-    - qq.com
-    - taobao.com
-    - music.163.com
-    - '*.music.126.net'
-    - localhost
-    - 127.*
-    - 10.*
-    - 172.16.*
-    - 172.17.*
-    - 172.18.*
-    - 172.19.*
-    - 172.20.*
-    - 172.21.*
-    - 172.22.*
-    - 172.23.*
-    - 172.24.*
-    - 172.25.*
-    - 172.26.*
-    - 172.27.*
-    - 172.28.*
-    - 172.29.*
-    - 172.30.*
-    - 172.31.*
-    - 192.168.*
-    - <local>
-cfw-latency-timeout: 5000
-
 
 proxies:
 - { name: "TrojanA", type: trojan, server: catsc.duckdns.org, port: 443, password: 1qaz2wsx }
