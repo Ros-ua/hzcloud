@@ -35,7 +35,8 @@ Global:
 
 rules:
  
- - RULE-SET,Global,proxies 
+  - RULE-SET,Global,proxies 
+  
   - IP-CIDR,192.168.0.0/16,DIRECT
   - IP-CIDR,10.0.0.0/8,DIRECT
   - IP-CIDR,172.16.0.0/12,DIRECT
