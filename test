@@ -10,8 +10,11 @@ secret: ''
 dns:
   enable: true
   nameserver:
-    - 8.8.8.8
+    - 1.1.1.1
+    - 1.0.0.1
+    - tls://dns.rubyfish.cn:853
   fallback:
+    - tls://1.0.0.1:853
     - tls://dns.google:853
 
 proxies:
