@@ -26,20 +26,25 @@ proxy-groups:
 - { name: "proxies", type: select, proxies: [ AutoSelect, 'pokoGT', 'TrojanE', 'TrojanA', 'TrojanB' ] }
 
 rule-providers:
+ 
   Global:
     type: http
     behavior: classical
     path: ./RuleSet/Global.yaml
     url: https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/Global.yaml
     interval: 86400
-
+  
 rules:
-- RULE-SET,Global,proxies
-- IP-CIDR,192.168.0.0/16,DIRECT
-- IP-CIDR,10.0.0.0/8,DIRECT
-- IP-CIDR,172.16.0.0/12,DIRECT
-- IP-CIDR,127.0.0.0/8,DIRECT
-- IP-CIDR,100.64.0.0/10,DIRECT
-- IP-CIDR,224.0.0.0/4,DIRECT
-- GEOIP,CN,DIRECT
-- MATCH,proxies
+   
+  - RULE-SET,Global,proxies
+   
+  - IP-CIDR,192.168.0.0/16,DIRECT
+  - IP-CIDR,10.0.0.0/8,DIRECT
+  - IP-CIDR,172.16.0.0/12,DIRECT
+  - IP-CIDR,127.0.0.0/8,DIRECT
+  - IP-CIDR,100.64.0.0/10,DIRECT
+  - IP-CIDR,224.0.0.0/4,DIRECT
+  - IP-CIDR,119.28.28.28/32,DIRECT
+  - IP-CIDR,182.254.116.0/24,DIRECT
+  - GEOIP,CN,DIRECT
+  - MATCH,proxies
