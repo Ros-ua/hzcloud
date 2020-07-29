@@ -25,8 +25,7 @@ proxy-groups:
 - { name: "proxies", type: select, proxies: [ AutoSelect, 'pokoGT', 'TrojanE', 'TrojanA', 'TrojanB' ] }
 
 rule-providers:
-
-Global:
+  Global:
     type: http
     behavior: classical
     path: ./RuleSet/Global.yaml
