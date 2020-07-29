@@ -5,6 +5,7 @@ allow-lan: false
 mode: rule
 log-level: info
 external-controller: '0.0.0.0:9090'
+secret: ''
 
 dns:
   enable: true
@@ -19,51 +20,24 @@ proxies:
 - { name: "TrojanB", type: trojan, server: catsd.duckdns.org, port: 443, password: 1qaz2wsx }
 - { name: "TrojanE", type: trojan, server: cheburek.duckdns.org, port: 443, password: qazxsw123 }
 - { name: "pokoGT", type: trojan, server: pokogoogle.zgc-servers.site, port: 443, password: 1qaz2wsx }
-
+ 
 proxy-groups:
 - { name: "AutoSelect", type: url-test, proxies: ['pokoGT', 'TrojanE', 'TrojanA', 'TrojanB' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
 - { name: "proxies", type: select, proxies: [ AutoSelect, 'pokoGT', 'TrojanE', 'TrojanA', 'TrojanB' ] }
 
 rule-providers:
-  Unbreak:
-    type: http
-    behavior: classical
-    path: ./RuleSet/Unbreak.yaml
-    url: https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/Unbreak.yaml
-    interval: 86400
+ 
   Global:
     type: http
     behavior: classical
     path: ./RuleSet/Global.yaml
     url: https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/Global.yaml
     interval: 86400
-  China:
-    type: http
-    behavior: classical
-    path: ./RuleSet/China.yaml
-    url: https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/China.yaml
-    interval: 86400
-  ChinaIP:
-    type: http
-    behavior: ipcidr
-    path: ./RuleSet/Extra/ChinaIP.yaml
-    url: https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/Extra/ChinaIP.yaml
-    interval: 86400
-  Advertising:
-    type: http
-    behavior: classical
-    path: ./RuleSet/Guard/Advertising.yaml
-    url: https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/Guard/Advertising.yaml
-    interval: 86400
-
+  
 rules:
-  
-  - RULE-SET,Unbreak,DIRECT
+   
   - RULE-SET,Global,proxies
-  - RULE-SET,China,DIRECT
-  - RULE-SET,ChinaIP,DIRECT
-  - RULE-SET,Advertising,REJECT
-  
+   
   - IP-CIDR,192.168.0.0/16,DIRECT
   - IP-CIDR,10.0.0.0/8,DIRECT
   - IP-CIDR,172.16.0.0/12,DIRECT
@@ -74,4 +48,3 @@ rules:
   - IP-CIDR,182.254.116.0/24,DIRECT
   - GEOIP,CN,DIRECT
   - MATCH,proxies
-
