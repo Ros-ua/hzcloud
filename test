@@ -7,16 +7,6 @@ log-level: info
 external-controller: '0.0.0.0:9090'
 secret: ''
 
-dns:
-  enable: true
-  nameserver:
-    - 1.1.1.1
-    - 1.0.0.1
-    - tls://dns.rubyfish.cn:853
-  fallback:
-    - tls://1.0.0.1:853
-    - tls://dns.google:853
-
 proxies:
 - { name: "TrojanA", type: trojan, server: catsc.duckdns.org, port: 443, password: 1qaz2wsx }
 - { name: "TrojanB", type: trojan, server: catsd.duckdns.org, port: 443, password: 1qaz2wsx }
