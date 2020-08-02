@@ -7,15 +7,17 @@ log-level: info
 external-controller: '0.0.0.0:9090'
 secret: ''
     
-proxies:
-- { name: "TrojanA", type: trojan, server: catsc.duckdns.org, port: 443, password: 1qaz2wsx }
-- { name: "TrojanB", type: trojan, server: catsd.duckdns.org, port: 443, password: 1qaz2wsx }
-- { name: "TrojanE", type: trojan, server: cheburek.duckdns.org, port: 443, password: qazxsw123 }
-- { name: "pokoGT", type: trojan, server: pokogoogle.zgc-servers.site, port: 443, password: 1qaz2wsx }
+- { name: "Trojancatsg", type: trojan, server: catsg.zgc-servers.site, port: 443, password: 1qaz2wsx }
+
+- { name: "catsgws", type: vmess, server: catsg.zgc-servers.site, port: 444, uuid: 69978c96-9b5e-11ea-9cbf-42010aaa0008, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /70asUdpr/, Host: catsg.zgc-servers.site }
+
+- { name: "catsgtcp", type: vmess, server: catsg.zgc-servers.site, port: 446, uuid: e2d59e4a-9b5e-11ea-a781-42010aaa0008, alterId: 16, cipher: auto }
+  
  
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: ['pokoGT', 'TrojanE', 'TrojanA', 'TrojanB' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect, 'pokoGT', 'TrojanE', 'TrojanA', 'TrojanB' ] }
+- { name: "AutoSelect", type: url-test, proxies: [ 'Trojancatsg', 'catsgws', 'catsgtcp' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect, 'Trojancatsg', 'catsgws', 'catsgtcp' ] }
+  
 rules:
  - IP-CIDR,192.168.0.0/16,DIRECT
  - IP-CIDR,10.0.0.0/8,DIRECT
