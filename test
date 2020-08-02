@@ -13,12 +13,12 @@ proxies:
 - { name: "CEtcp", type: vmess, server: catse.duckdns.org, port: 446, uuid: e6274aee-d4a7-11ea-bd3b-0afdaeabf302, alterId: 16, cipher: auto }
 
 - { name: "TrojanCF", type: trojan, server: catsf.duckdns.org, port: 443, password: 1qaz2wsx }
-- { name: "CEws", type: vmess, server: catsf.duckdns.org, port: 444, uuid: 94e7d9c2-be91-11ea-a217-42010aaa000a, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /IzyfkGUh/, Host: catsf.duckdns.org}
-- { name: "CEtcp", type: vmess, server: catsf.duckdns.org, port: 446, uuid: bea91546-be91-11ea-b13b-42010aaa000a, alterId: 16, cipher: auto }
+- { name: "CFws", type: vmess, server: catsf.duckdns.org, port: 444, uuid: 94e7d9c2-be91-11ea-a217-42010aaa000a, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /IzyfkGUh/, Host: catsf.duckdns.org}
+- { name: "CFtcp", type: vmess, server: catsf.duckdns.org, port: 446, uuid: bea91546-be91-11ea-b13b-42010aaa000a, alterId: 16, cipher: auto }
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: ['TrojanCE', 'CEws', 'CEtcp', 'TrojanCF', 'CEws', 'CEtcp' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect, 'TrojanCE', 'CEws', 'CEtcp', 'TrojanCF', 'CEws', 'CEtcp' ] }
+- { name: "AutoSelect", type: url-test, proxies: ['TrojanCE', 'CEws', 'CEtcp', 'TrojanCF', 'CFws', 'CFtcp' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect, 'TrojanCE', 'CEws', 'CEtcp', 'TrojanCF', 'CFws', 'CFtcp' ] }
 
 rules:
  - IP-CIDR,192.168.0.0/16,DIRECT
