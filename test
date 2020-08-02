@@ -8,14 +8,14 @@ external-controller: '0.0.0.0:9090'
 secret: ''
 
 proxies:    
-- { name: "Trojancatsg", type: trojan, server: catsg.zgc-servers.site, port: 443, password: 1qaz2wsx }
-- { name: "catsgws", type: vmess, server: catsg.zgc-servers.site, port: 444, uuid: 18cf926e-d4ba-11ea-9cf0-0a7f366a5a42, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /A85MvZRI/, Host: catsg.zgc-servers.site }
-- { name: "catsgtcp", type: vmess, server: catsg.zgc-servers.site, port: 446, uuid: 35c899ce-d4ba-11ea-9077-0a7f366a5a42, alterId: 16, cipher: auto }
+- { name: "1", type: trojan, server: catsi.duckdns.org, port: 443, password: 1qaz2wsx }
+- { name: "2", type: vmess, server: catsi.duckdns.org, port: 444, uuid: 18cf926e-d4ba-11ea-9cf0-0a7f366a5a42, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /A85MvZRI/, Host: catsi.duckdns.org }
+- { name: "3", type: vmess, server: catsi.duckdns.org, port: 446, uuid: 35c899ce-d4ba-11ea-9077-0a7f366a5a42, alterId: 16, cipher: auto }
   
  
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [ 'Trojancatsg', 'catsgws', 'catsgtcp' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect, 'Trojancatsg', 'catsgws', 'catsgtcp' ] }
+- { name: "AutoSelect", type: url-test, proxies: [ '1', '2', '3' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect, '1', '2', '3' ] }
   
 rules:
  - IP-CIDR,192.168.0.0/16,DIRECT
