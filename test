@@ -8,9 +8,9 @@ external-controller: '0.0.0.0:9090'
 secret: ''
 
 proxies:    
-- { name: "1", type: trojan, server: catsi.duckdns.org, port: 443, password: 1qaz2wsx }
-- { name: "2", type: vmess, server: catsi.duckdns.org, port: 444, uuid: 556edfd0-d4c5-11ea-88fe-0ae18e2d8c0a, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /D1LJwE8q/, Host: catsi.duckdns.org }
-- { name: "3", type: vmess, server: catsi.duckdns.org, port: 446, uuid: f47b6a12-d4c5-11ea-8e1e-0ae18e2d8c0a, alterId: 16, cipher: auto }
+- { name: "1", type: trojan, server: catsj.duckdns.org, port: 443, password: 1qaz2wsx }
+- { name: "2", type: vmess, server: catsj.duckdns.org, port: 444, uuid: 556edfd0-d4c5-11ea-88fe-0ae18e2d8c0a, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /D1LJwE8q/, Host: catsj.duckdns.org }
+- { name: "3", type: vmess, server: catsj.duckdns.org, port: 446, uuid: f47b6a12-d4c5-11ea-8e1e-0ae18e2d8c0a, alterId: 16, cipher: auto }
   
  
 proxy-groups:
