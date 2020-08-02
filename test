@@ -9,9 +9,9 @@ secret: ''
     
 - { name: "Trojancatsg", type: trojan, server: catsg.zgc-servers.site, port: 443, password: 1qaz2wsx }
 
-- { name: "catsgws", type: vmess, server: catsg.zgc-servers.site, port: 444, uuid: 69978c96-9b5e-11ea-9cbf-42010aaa0008, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /70asUdpr/, Host: catsg.zgc-servers.site }
+- { name: "catsgws", type: vmess, server: catsg.zgc-servers.site, port: 444, uuid: 18cf926e-d4ba-11ea-9cf0-0a7f366a5a42, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /A85MvZRI/, Host: catsg.zgc-servers.site }
 
-- { name: "catsgtcp", type: vmess, server: catsg.zgc-servers.site, port: 446, uuid: e2d59e4a-9b5e-11ea-a781-42010aaa0008, alterId: 16, cipher: auto }
+- { name: "catsgtcp", type: vmess, server: catsg.zgc-servers.site, port: 446, uuid: 35c899ce-d4ba-11ea-9077-0a7f366a5a42, alterId: 16, cipher: auto }
   
  
 proxy-groups:
