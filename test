@@ -8,9 +8,9 @@ external-controller: '0.0.0.0:9090'
 secret: ''
 
 proxies:    
-- { name: "1", type: trojan, server: catsl.zgc-servers.site, port: 443, password: 1qaz2wsx }
-- { name: "2", type: vmess, server: catsl.zgc-servers.site, port: 444, uuid: 1fe3b39a-d709-11ea-9e35-066f81bcef24, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /evLSXqsJ/, Host: catsl.zgc-servers.site }
-- { name: "3", type: vmess, server: catsl.zgc-servers.site, port: 446, uuid: eec0ffe2-d709-11ea-9e83-066f81bcef24, alterId: 16, cipher: auto }
+- { name: "1", type: trojan, server: catso.zgc-servers.site, port: 443, password: 1qaz2wsx }
+- { name: "2", type: vmess, server: catso.zgc-servers.site, port: 444, uuid: 5d62393e-d79b-11ea-9797-0e5dd13ea542, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /7qxBapJN/, Host: catso.zgc-servers.site }
+- { name: "3", type: vmess, server: catso.zgc-servers.site, port: 446, uuid: 353301f4-d79c-11ea-93b8-0e5dd13ea542, alterId: 16, cipher: auto }
   
  
 proxy-groups:
