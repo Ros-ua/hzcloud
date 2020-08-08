@@ -11,18 +11,18 @@ proxies:
 - { name: "1", type: trojan, server: catst.zgc-servers.site, port: 443, password: 1qaz2wsx }
 - { name: "2", type: vmess, server: catst.zgc-servers.site, port: 444, uuid: 232d746a-d7df-11ea-ab51-0e87fe695064, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /9AUeYvKt/, Host: catst.zgc-servers.site }
 - { name: "3", type: vmess, server: catst.zgc-servers.site, port: 446, uuid: 43d7ffaa-d7df-11ea-8e68-0e87fe695064, alterId: 16, cipher: auto }
+- { name: "TrojanA", type: trojan, server: catsj.duckdns.org, port: 443, password: 1qaz2wsx }
+- { name: "TrojanB", type: trojan, server: catsk.duckdns.org, port: 443, password: 1qaz2wsx }
+- { name: "TrojanE", type: trojan, server: cheburek.duckdns.org, port: 443, password: qazxsw123 }
   
  
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [ '1', '2', '3' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect, '1', '2', '3' ] }
+- { name: "AutoSelect", type: url-test, proxies: [ '1', '2', '3','TrojanE', 'TrojanA', 'TrojanB' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect, '1', '2', '3','TrojanE', 'TrojanA', 'TrojanB' ] }
   
 rules:
- - IP-CIDR,192.168.0.0/16,DIRECT
- - IP-CIDR,10.0.0.0/8,DIRECT
- - IP-CIDR,172.16.0.0/12,DIRECT
- - IP-CIDR,127.0.0.0/8,DIRECT
- - IP-CIDR,100.64.0.0/10,DIRECT
- - IP-CIDR,224.0.0.0/4,DIRECT
- - GEOIP,CN,DIRECT
- - MATCH,proxies
+- IP-CIDR,192.168.0.0/16,DIRECT
+- IP-CIDR,127.0.0.0/8,DIRECT
+- DOMAIN-SUFFIX,ad.com,REJECT
+- GEOIP,CN,DIRECT
+- MATCH,proxies
