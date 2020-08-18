@@ -8,9 +8,9 @@ external-controller: '0.0.0.0:9090'
 secret: ''
 
 proxies:    
-- { name: "1", type: trojan, server: puokuo.zgc-servers.site, port: 443, password: 1qaz2wsx }
-- { name: "2", type: vmess, server: puokuo.zgc-servers.site, port: 444, uuid: 545ed620-d9fe-11ea-9cf7-0e00dfa67400, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /YJQaZuPH/, Host: puokuo.zgc-servers.site }
-- { name: "3", type: vmess, server: catst.zgc-servers.site, port: 446, uuid: 77132b3a-d9fe-11ea-80b3-0e00dfa67400, alterId: 16, cipher: auto }
+- { name: "1", type: trojan, server: apokoa.zgc-servers.site, port: 443, password: 1qaz2wsx }
+- { name: "2", type: vmess, server: apokoa.zgc-servers.site, port: 444, uuid: a233bcc8-e118-11ea-913c-0ee9f7aee856, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /C0hcyxRD/, Host: apokoa.zgc-servers.site }
+- { name: "3", type: vmess, server: apokoa.zgc-servers.site, port: 446, uuid: cb0481f0-e118-11ea-9bf2-0ee9f7aee856, alterId: 16, cipher: auto }
 - { name: "TrojanA", type: trojan, server: catsj.duckdns.org, port: 443, password: 1qaz2wsx }
 - { name: "TrojanB", type: trojan, server: catsk.duckdns.org, port: 443, password: 1qaz2wsx }
 - { name: "TrojanE", type: trojan, server: cheburek.duckdns.org, port: 443, password: qazxsw123 }
