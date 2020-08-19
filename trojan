@@ -19,8 +19,7 @@ proxy-groups:
 - { name: "proxies", type: select, proxies: [ AutoSelect, 'TrojanE', 'TrojanA', 'TrojanB'  ] }
 
 rule-providers:
-
-Advertising:
+  Advertising:
     type: http
     behavior: classical
     path: ./RuleSet/Advertising.yaml
