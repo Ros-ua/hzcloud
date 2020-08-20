@@ -15,10 +15,7 @@ dns:
     - 1.0.0.1
     - 8.8.8.8
     - 8.8.4.4
-    - https://1.1.1.1/dns-query # DNS over HTTPS
- 
- fallback:
-    - https://cloudflare-dns.com/dns-query  
+ fallback: 
     - tls://1.0.0.1:853
     - tls://dns.google:853
 
