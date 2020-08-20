@@ -9,13 +9,13 @@ secret: ''
 
 dns:
   enable: true
-  listen: 0.0.0.0:53
   nameserver:
     - 1.1.1.1
     - 1.0.0.1
     - 8.8.8.8
     - 8.8.4.4
- fallback: 
+    - tls://dns.rubyfish.cn:853
+  fallback:
     - tls://1.0.0.1:853
     - tls://dns.google:853
 
