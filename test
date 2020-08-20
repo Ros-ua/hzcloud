@@ -7,6 +7,16 @@ log-level: info
 external-controller: '0.0.0.0:9090'
 secret: ''
 
+dns:
+  enable: true
+  nameserver:
+    - 1.1.1.1
+    - 1.0.0.1
+    - tls://dns.rubyfish.cn:853
+  fallback:
+    - tls://1.0.0.1:853
+    - tls://dns.google:853
+
 proxies:    
 - { name: "1", type: trojan, server: apokoa.zgc-servers.site, port: 443, password: 1qaz2wsx }
 - { name: "2", type: vmess, server: apokoa.zgc-servers.site, port: 444, uuid: a233bcc8-e118-11ea-913c-0ee9f7aee856, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /C0hcyxRD/, Host: apokoa.zgc-servers.site }
