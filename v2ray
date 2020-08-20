@@ -7,6 +7,16 @@ log-level: info
 external-controller: '0.0.0.0:9090'
 secret: ''
 
+dns:
+  enable: true
+  nameserver:
+    - 1.1.1.1
+    - 1.0.0.1
+    - tls://dns.rubyfish.cn:853
+  fallback:
+    - tls://1.0.0.1:853
+    - tls://dns.google:853
+    
 proxies:
 - { name: "Aws", type: vmess, server: catsj.duckdns.org, port: 444, uuid: 4229be2c-d4ca-11ea-8f46-0a549c15b914, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /KoEJn3Zy/, Host: catsj.duckdns.org }
 - { name: "Atcp", type: vmess, server: catsj.duckdns.org, port: 446, uuid: 417e11f0-d4cd-11ea-9c00-0a549c15b914, alterId: 16, cipher: auto }
