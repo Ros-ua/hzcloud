@@ -30,22 +30,12 @@ proxy-groups:
 - { name: "AutoSelect", type: url-test, proxies: [ '1', '2', '3','TrojanE', 'TrojanA', 'TrojanB' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
 - { name: "proxies", type: select, proxies: [ AutoSelect, '1', '2', '3','TrojanE', 'TrojanA', 'TrojanB' ] }
   
-rule-providers:
-  Advertising:
-    type: http
-    behavior: classical
-    path: ./RuleSet/Advertising.yaml
-    url: https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/Guard/Advertising.yaml
-    interval: 86400
-
 rules:
- - RULE-SET,Advertising,REJECT
  - IP-CIDR,192.168.0.0/16,DIRECT
  - IP-CIDR,10.0.0.0/8,DIRECT
  - IP-CIDR,172.16.0.0/12,DIRECT
  - IP-CIDR,127.0.0.0/8,DIRECT
  - IP-CIDR,100.64.0.0/10,DIRECT
  - IP-CIDR,224.0.0.0/4,DIRECT
- - DOMAIN-SUFFIX,ad.com,REJECT
  - GEOIP,CN,DIRECT
  - MATCH,proxies
