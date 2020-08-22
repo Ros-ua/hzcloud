@@ -18,9 +18,9 @@ dns:
     - tls://dns.google:853
 
 proxies:    
-- { name: "1", type: trojan, server: apokoa.zgc-servers.site, port: 443, password: 1qaz2wsx }
-- { name: "2", type: vmess, server: apokoa.zgc-servers.site, port: 444, uuid: a233bcc8-e118-11ea-913c-0ee9f7aee856, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /C0hcyxRD/, Host: apokoa.zgc-servers.site }
-- { name: "3", type: vmess, server: apokoa.zgc-servers.site, port: 446, uuid: cb0481f0-e118-11ea-9bf2-0ee9f7aee856, alterId: 16, cipher: auto }
+- { name: "1", type: trojan, server: apokoc.zgc-servers.site, port: 443, password: 1qaz2wsx }
+- { name: "2", type: vmess, server: apokoc.zgc-servers.site, port: 444, uuid: 3408111c-e46b-11ea-9e5d-0e66574ce012, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /Lb2iojyO/, Host: apokoa.zgc-servers.site }
+- { name: "3", type: vmess, server: apokoc.zgc-servers.site, port: 446, uuid: 5c2fabe6-e46b-11ea-bd24-0e66574ce012, alterId: 16, cipher: auto }
 - { name: "TrojanA", type: trojan, server: catsj.duckdns.org, port: 443, password: 1qaz2wsx }
 - { name: "TrojanB", type: trojan, server: catsk.duckdns.org, port: 443, password: 1qaz2wsx }
 - { name: "TrojanE", type: trojan, server: cheburek.duckdns.org, port: 443, password: qazxsw123 }
