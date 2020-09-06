@@ -10,27 +10,23 @@ secret: ''
 dns:
   enable: true
   nameserver:
-    - 1.1.1.1
-    - 1.0.0.1
+    - 176.103.130.130
+    - 176.103.130.131
     - tls://dns.rubyfish.cn:853
   fallback:
     - tls://1.0.0.1:853
     - tls://dns.google:853
-
-proxies:    
-- { name: "1", type: trojan, server: apokoc.zgc-servers.site, port: 443, password: 1qaz2wsx }
-- { name: "2", type: vmess, server: apokoc.zgc-servers.site, port: 444, uuid: 3408111c-e46b-11ea-9e5d-0e66574ce012, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /Lb2iojyO/, Host: apokoa.zgc-servers.site }
-- { name: "3", type: vmess, server: apokoc.zgc-servers.site, port: 446, uuid: 5c2fabe6-e46b-11ea-bd24-0e66574ce012, alterId: 16, cipher: auto }
+    
+proxies:
 - { name: "TrojanA", type: trojan, server: catsj.duckdns.org, port: 443, password: 1qaz2wsx }
 - { name: "TrojanB", type: trojan, server: catsk.duckdns.org, port: 443, password: 1qaz2wsx }
 - { name: "TrojanE", type: trojan, server: cheburek.duckdns.org, port: 443, password: qazxsw123 }
-# - { name: "pokoGT", type: trojan, server: pokogoogle.zgc-servers.site, port: 443, password: 1qaz2wsx }
-  
+#- { name: "pokoGT", type: trojan, server: pokogoogle.zgc-servers.site, port: 443, password: 1qaz2wsx }
  
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [ '1', '2', '3','TrojanE', 'TrojanA', 'TrojanB' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect, '1', '2', '3','TrojanE', 'TrojanA', 'TrojanB' ] }
-  
+- { name: "AutoSelect", type: url-test, proxies: ['TrojanE', 'TrojanA', 'TrojanB' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect, 'TrojanE', 'TrojanA', 'TrojanB'  ] }
+
 rules:
  - GEOIP,CN,DIRECT
  - MATCH,proxies
