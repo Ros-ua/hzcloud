@@ -10,9 +10,9 @@ secret: ''
 dns:
   enable: true
   nameserver:
-    - 1.1.1.1
-    - 1.0.0.1
-    - tls://dns.rubyfish.cn:853
+    - 176.103.130.130
+    - 176.103.130.131
+    - tls://dns.adguard.com:853
   fallback:
     - tls://1.0.0.1:853
     - tls://dns.google:853
