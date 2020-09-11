@@ -12,6 +12,7 @@ dns:
   nameserver:
     - 176.103.130.130
     - 176.103.130.131
+    - tls://dns.adguard.com:853
     
 proxies:
 - { name: "TrojanA", type: trojan, server: catsj.duckdns.org, port: 443, password: 1qaz2wsx }
