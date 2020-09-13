@@ -36,7 +36,7 @@ proxies:
 
 proxy-groups:
 - { name: "AutoSelect", type: url-test, proxies: [ 'TrojanGGCt', 'GGCtws', 'GGCttcp', 'TrojanE', 'Ews', 'Etcp', 'TrojanA',  'Aws',  'Atcp', 'TrojanB', 'Bws', 'Btcp'], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect, 'TrojanGGCt', 'GGCtws', 'GGCttcp'', 'TrojanE', 'Ews', 'Etcp', 'TrojanA', 'Aws',  'Atcp', 'TrojanB', 'Bws', 'Btcp' ] }
+- { name: "proxies", type: select, proxies: [ AutoSelect, 'TrojanGGCt', 'GGCtws', 'GGCttcp', 'TrojanE', 'Ews', 'Etcp', 'TrojanA', 'Aws',  'Atcp', 'TrojanB', 'Bws', 'Btcp' ] }
   
 rules:
  - GEOIP,CN,DIRECT
