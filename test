@@ -22,19 +22,14 @@ proxies:
 #- { name: "TrojanA", type: trojan, server: catsj.duckdns.org, port: 443, password: 1qaz2wsx }
 #- { name: "TrojanB", type: trojan, server: catsk.duckdns.org, port: 443, password: 1qaz2wsx }
 #- { name: "TrojanE", type: trojan, server: cheburek.duckdns.org, port: 443, password: qazxsw123 }
-#- { name: "pokoGT", type: trojan, server: pokogoogle.zgc-servers.site, port: 443, password: 1qaz2wsx }
-
-- { name: "TrojanGGC", type: trojan, server: ggc.zgc-servers.site, port: 443, password: 1qaz2wsx }
-- { name: "GGCws", type: vmess, server: ggc.zgc-servers.site, port: 444, uuid: 2d2379b6-f584-11ea-ac9c-42010aaa000b, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /FPxSzbnD/, Host: ggc.zgc-servers.site }
-- { name: "GGCtcp", type: vmess, server: ggc.zgc-servers.site, port: 446, uuid: 554a9d16-f584-11ea-abc6-42010aaa000b, alterId: 16, cipher: auto }
 
 - { name: "TrojanGGCt", type: trojan, server: ggctw.zgc-servers.site, port: 443, password: 1qaz2wsx }
 - { name: "GGCtws", type: vmess, server: ggctw.zgc-servers.site, port: 444, uuid: bed8bc82-f588-11ea-9ec6-42010a8c0003, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /lodOUPSz/, Host: ggctw.zgc-servers.site }
 - { name: "GGCttcp", type: vmess, server: ggctw.zgc-servers.site, port: 446, uuid: e0551338-f588-11ea-95f3-42010a8c0003, alterId: 16, cipher: auto }
  
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: ['TrojanGGC', 'GGCws', 'GGCtcp', 'TrojanGGCt', 'GGCtws', 'GGCttcp' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect, 'TrojanGGC', 'GGCws', 'GGCtcp', 'TrojanGGCt', 'GGCtws', 'GGCttcp'  ] }
+- { name: "AutoSelect", type: url-test, proxies: ['TrojanGGCt', 'GGCtws', 'GGCttcp' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect, 'TrojanGGCt', 'GGCtws', 'GGCttcp'  ] }
 
 rules:
  - GEOIP,CN,DIRECT
