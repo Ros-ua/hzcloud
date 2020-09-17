@@ -22,10 +22,11 @@ proxies:
 - { name: "TrojanB", type: trojan, server: catsk.duckdns.org, port: 443, password: 1qaz2wsx }
 - { name: "TrojanE", type: trojan, server: cheburek.duckdns.org, port: 443, password: qazxsw123 }
 - { name: "TrojanGGCt", type: trojan, server: ggctw.zgc-servers.site, port: 443, password: 1qaz2wsx }
+- { name: "azuret", type: trojan, server: azurepoko.duckdns.org, port: 443, password: 1qaz2wsx }
  
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: ['TrojanE', 'TrojanA', 'TrojanB', 'TrojanGGCt' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect, 'TrojanE', 'TrojanA', 'TrojanB', 'TrojanGGCt' ] }
+- { name: "AutoSelect", type: url-test, proxies: ['TrojanE', 'TrojanA', 'TrojanB', 'TrojanGGCt', 'azuret' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect, 'TrojanE', 'TrojanA', 'TrojanB', 'TrojanGGCt', 'azuret' ] }
 
 rules:
  - GEOIP,CN,DIRECT
