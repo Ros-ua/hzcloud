@@ -23,9 +23,9 @@ proxies:
 #- { name: "TrojanB", type: trojan, server: catsk.duckdns.org, port: 443, password: 1qaz2wsx }
 #- { name: "TrojanE", type: trojan, server: cheburek.duckdns.org, port: 443, password: qazxsw123 }
 
-- { name: "TrojanGGCt", type: trojan, server: gcpoko.duckdns.org, port: 443, password: 1qaz2wsx }
-- { name: "GGCtws", type: vmess, server: gcpoko.duckdns.org, port: 444, uuid: 64a368e2-fa84-11ea-9e8b-42010aaa0013, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /6npiyOK1/, Host: gcpoko.duckdns.org }
-- { name: "GGCttcp", type: vmess, server: gcpoko.duckdns.org, port: 446, uuid: 907243a8-fa84-11ea-a195-42010aaa0013, alterId: 16, cipher: auto }
+- { name: "TrojanGGCt", type: trojan, server: pkgc.duckdns.org, port: 443, password: 1qaz2wsx }
+- { name: "GGCtws", type: vmess, server: pkgc.duckdns.org, port: 444, uuid: bdb08084-fa87-11ea-9f3e-42010aaa0014, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /NAKwdJhX/, Host: pkgc.duckdns.org }
+- { name: "GGCttcp", type: vmess, server: pkgc.duckdns.org, port: 446, uuid: dea09bc6-fa87-11ea-8af0-42010aaa0014, alterId: 16, cipher: auto }
 
 #- { name: "azuret", type: trojan, server: azurepoko.duckdns.org, port: 443, password: 1qaz2wsx }
 #- { name: "azurews", type: vmess, server: azurepoko.duckdns.org, port: 444, uuid: 1e08af34-fa82-11ea-b81a-42010aaa0012, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /ZuOky5Id/, Host: azurepoko.duckdns.org }
