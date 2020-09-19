@@ -28,8 +28,8 @@ proxies:
 - { name: "Ews", type: vmess, server: cheburek.duckdns.org, port: 444, uuid: bef57c10-c738-11ea-bd8d-0af7d22b149c, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /HoixZdKM/, Host: cheburek.duckdns.org }
 - { name: "Etcp", type: vmess, server: cheburek.duckdns.org, port: 446, uuid: cb804112-c739-11ea-aebd-0af7d22b149c, alterId: 16, cipher: auto }
 
-- { name: "GGCtws", type: vmess, server: ggctw.zgc-servers.site, port: 444, uuid: bed8bc82-f588-11ea-9ec6-42010a8c0003, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /lodOUPSz/, Host: ggctw.zgc-servers.site }
-- { name: "GGCttcp", type: vmess, server: ggctw.zgc-servers.site, port: 446, uuid: e0551338-f588-11ea-95f3-42010a8c0003, alterId: 16, cipher: auto }
+- { name: "GGCtws", type: vmess, server: pkgc.duckdns.org, port: 444, uuid: bdb08084-fa87-11ea-9f3e-42010aaa0014, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /NAKwdJhX/, Host: pkgc.duckdns.org }
+- { name: "GGCttcp", type: vmess, server: pkgc.duckdns.org, port: 446, uuid: dea09bc6-fa87-11ea-8af0-42010aaa0014, alterId: 16, cipher: auto }
  
 proxy-groups:
 - { name: "AutoSelect", type: url-test, proxies: [ 'GGCtws', 'GGCttcp',  'Ews', 'Etcp', 'Aws', 'Atcp', 'Bws', 'Btcp' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
