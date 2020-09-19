@@ -23,17 +23,17 @@ proxies:
 #- { name: "TrojanB", type: trojan, server: catsk.duckdns.org, port: 443, password: 1qaz2wsx }
 #- { name: "TrojanE", type: trojan, server: cheburek.duckdns.org, port: 443, password: qazxsw123 }
 
-- { name: "TrojanGGCt", type: trojan, server: ggctw.zgc-servers.site, port: 443, password: 1qaz2wsx }
-- { name: "GGCtws", type: vmess, server: ggctw.zgc-servers.site, port: 444, uuid: bed8bc82-f588-11ea-9ec6-42010a8c0003, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /lodOUPSz/, Host: ggctw.zgc-servers.site }
-- { name: "GGCttcp", type: vmess, server: ggctw.zgc-servers.site, port: 446, uuid: e0551338-f588-11ea-95f3-42010a8c0003, alterId: 16, cipher: auto }
+- { name: "TrojanGGCt", type: trojan, server: gcpoko.duckdns.org, port: 443, password: 1qaz2wsx }
+- { name: "GGCtws", type: vmess, server: gcpoko.duckdns.org, port: 444, uuid: bed8bc82-f588-11ea-9ec6-42010a8c0003, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /lodOUPSz/, Host: gcpoko.duckdns.org }
+- { name: "GGCttcp", type: vmess, server: gcpoko.duckdns.org, port: 446, uuid: e0551338-f588-11ea-95f3-42010a8c0003, alterId: 16, cipher: auto }
 
-- { name: "azuret", type: trojan, server: azurepoko.duckdns.org, port: 443, password: 1qaz2wsx }
-- { name: "azurews", type: vmess, server: azurepoko.duckdns.org, port: 444, uuid: 05321b38-f8db-11ea-bfb2-00224815bf16, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /gJHX9YAe/, Host: azurepoko.duckdns.org }
-- { name: "azuretcp", type: vmess, server: azurepoko.duckdns.org, port: 446, uuid:  4a5b46ee-f8db-11ea-bfb2-00224815bf16, alterId: 16, cipher: auto }
+#- { name: "azuret", type: trojan, server: azurepoko.duckdns.org, port: 443, password: 1qaz2wsx }
+#- { name: "azurews", type: vmess, server: azurepoko.duckdns.org, port: 444, uuid: 1e08af34-fa82-11ea-b81a-42010aaa0012, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /ZuOky5Id/, Host: azurepoko.duckdns.org }
+#- { name: "azuretcp", type: vmess, server: azurepoko.duckdns.org, port: 446, uuid: 3b40e648-fa82-11ea-beca-42010aaa0012, alterId: 16, cipher: auto }
  
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: ['TrojanGGCt', 'GGCtws', 'GGCttcp', 'azuret', 'azurews', 'azuretcp' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect, 'TrojanGGCt', 'GGCtws', 'GGCttcp', 'azuret', 'azurews', 'azuretcp'  ] }
+- { name: "AutoSelect", type: url-test, proxies: ['TrojanGGCt', 'GGCtws', 'GGCttcp' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect, 'TrojanGGCt', 'GGCtws', 'GGCttcp'  ] }
 
 rules:
  - GEOIP,CN,DIRECT
