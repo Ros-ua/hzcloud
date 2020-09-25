@@ -30,10 +30,14 @@ proxies:
 
 - { name: "GGCtws", type: vmess, server: pkgc.duckdns.org, port: 444, uuid: bdb08084-fa87-11ea-9f3e-42010aaa0014, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /NAKwdJhX/, Host: pkgc.duckdns.org }
 - { name: "GGCttcp", type: vmess, server: pkgc.duckdns.org, port: 446, uuid: dea09bc6-fa87-11ea-8af0-42010aaa0014, alterId: 16, cipher: auto }
+
+- { name: "greyGGCtws", type: vmess, server: greyggc.duckdns.org, port: 444, uuid: 25019bc6-fb4e-11ea-b535-42010aaa0009, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /oVySOcJQ/, Host: greyggc.duckdns.org }
+- { name: "greyGGCttcp", type: vmess, server: greyggc.duckdns.org, port: 446, uuid: 48d60bb8-fb4e-11ea-b6dd-42010aaa0009, alterId: 16, cipher: auto }
+
  
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [ 'GGCtws', 'GGCttcp',  'Ews', 'Etcp', 'Aws', 'Atcp', 'Bws', 'Btcp' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect, 'GGCtws', 'GGCttcp', 'Ews', 'Etcp', 'Aws', 'Atcp', 'Bws', 'Btcp' ] }
+- { name: "AutoSelect", type: url-test, proxies: [ 'GGCtws', 'GGCttcp',  'Ews', 'Etcp', 'Aws', 'Atcp', 'Bws', 'Btcp', 'greyGGCtws', 'greyGGCttcp' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect, 'GGCtws', 'GGCttcp', 'Ews', 'Etcp', 'Aws', 'Atcp', 'Bws', 'Btcp', 'greyGGCtws', 'greyGGCttcp' ] }
   
 rules:
  - GEOIP,CN,DIRECT
