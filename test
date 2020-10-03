@@ -23,7 +23,7 @@ proxies:
 #- { name: "TrojanB", type: trojan, server: catsk.duckdns.org, port: 443, password: 1qaz2wsx }
 #- { name: "TrojanE", type: trojan, server: cheburek.duckdns.org, port: 443, password: qazxsw123 }
 
-- { name: "TrojanGGCt", type: trojan, server: asadasa.ddns.net, port: 443, password: 1qaz2wsx }
+- { name: "TrojanGGCt", type: trojan, server: go.zgc-servers.site, port: 443, password: 1qaz2wsx }
 - { name: "GGCtws", type: vmess, server: digisg.ddns.net, port: 444, uuid: c27e850a-fe53-11ea-8978-9203e8e67aa9, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /bcE1ge38/, Host: digisg.ddns.net }
 - { name: "GGCttcp", type: vmess, server: digisg.ddns.net, port: 446, uuid: 426a37c2-fe55-11ea-be2e-9203e8e67aa9, alterId: 16, cipher: auto }
 
