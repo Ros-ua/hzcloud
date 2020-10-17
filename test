@@ -20,9 +20,9 @@ dns:
     
 proxies:
 
-- { name: "trojan", type: trojan, server: catsocto.duckdns.org, port: 443, password: 1qaz2wsx }
-- { name: "tws", type: vmess, server: catsocto.duckdns.org, port: 444, uuid: 73b92798-1084-11eb-8248-0a61dd24441c, alterId: 0, cipher: auto, tls: true, network: ws, ws-path: /wMfODpBt/, Host: catsocto.duckdns.org }
-- { name: "tcp", type: vmess, server: catsocto.duckdns.org, port: 446, uuid: 98c09ea8-1085-11eb-9455-0a61dd24441c, alterId: 0, cipher: auto }
+- { name: "trojan", type: trojan, server: octobos.duckdns.org, port: 443, password: 1qaz2wsx }
+- { name: "tws", type: vmess, server: octobos.duckdns.org, port: 444, uuid: 72463c5e-1091-11eb-a8b9-0a2b1be6d894, alterId: 0, cipher: auto, tls: true, network: ws, ws-path: /trTiuvVk/, Host: octobos.duckdns.org }
+- { name: "tcp", type: vmess, server: octobos.duckdns.org, port: 446, uuid: 9f0b6bf6-1091-11eb-9c7a-0a2b1be6d894, alterId: 0, cipher: auto }
 
 proxy-groups:
 - { name: "AutoSelect", type: url-test, proxies: ['trojan', 'tws', 'tcp' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
