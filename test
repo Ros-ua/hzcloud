@@ -19,21 +19,14 @@ dns:
     
     
 proxies:
-#- { name: "TrojanA", type: trojan, server: catsj.duckdns.org, port: 443, password: 1qaz2wsx }
-#- { name: "TrojanB", type: trojan, server: catsk.duckdns.org, port: 443, password: 1qaz2wsx }
-#- { name: "TrojanE", type: trojan, server: cheburek.duckdns.org, port: 443, password: qazxsw123 }
 
-- { name: "TrojanGGCt", type: trojan, server: go.zgc-servers.site, port: 443, password: 1qaz2wsx }
-- { name: "GGCtws", type: vmess, server: digisg.ddns.net, port: 444, uuid: c27e850a-fe53-11ea-8978-9203e8e67aa9, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /bcE1ge38/, Host: digisg.ddns.net }
-- { name: "GGCttcp", type: vmess, server: digisg.ddns.net, port: 446, uuid: 426a37c2-fe55-11ea-be2e-9203e8e67aa9, alterId: 16, cipher: auto }
+- { name: "trojan", type: trojan, server: catsocto.duckdns.org, port: 443, password: 1qaz2wsx }
+- { name: "tws", type: vmess, server: catsocto.duckdns.org, port: 444, uuid: d71ca2c8-1062-11eb-b450-0aecf58afc76, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /WAouEaTM/, Host: catsocto.duckdns.org }
+- { name: "tcp", type: vmess, server: catsocto.duckdns.org, port: 446, uuid: 0038a350-1063-11eb-803a-0aecf58afc76, alterId: 16, cipher: auto }
 
-#- { name: "azuret", type: trojan, server: azurepoko.duckdns.org, port: 443, password: 1qaz2wsx }
-#- { name: "azurews", type: vmess, server: azurepoko.duckdns.org, port: 444, uuid: 1e08af34-fa82-11ea-b81a-42010aaa0012, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /ZuOky5Id/, Host: azurepoko.duckdns.org }
-#- { name: "azuretcp", type: vmess, server: azurepoko.duckdns.org, port: 446, uuid: 3b40e648-fa82-11ea-beca-42010aaa0012, alterId: 16, cipher: auto }
- 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: ['TrojanGGCt', 'GGCtws', 'GGCttcp' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect, 'TrojanGGCt', 'GGCtws', 'GGCttcp'  ] }
+- { name: "AutoSelect", type: url-test, proxies: ['trojan', 'tws', 'tcp' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect, 'trojan', 'tws', 'tcp'  ] }
 
 rules:
  - GEOIP,CN,DIRECT
