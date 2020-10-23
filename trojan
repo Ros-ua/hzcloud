@@ -19,7 +19,6 @@ dns:
     
 proxies:
 - { name: "TrojanA", type: trojan, server: catsj.duckdns.org, port: 443, password: 1qaz2wsx }
-- { name: "TrojanB", type: trojan, server: catsk.duckdns.org, port: 443, password: 1qaz2wsx }
 - { name: "TrojanE", type: trojan, server: cheburek.duckdns.org, port: 443, password: qazxsw123 }
 - { name: "TrojanGGCt", type: trojan, server: pkgc.duckdns.org, port: 443, password: 1qaz2wsx }
 - { name: "greyGGCt", type: trojan, server: greyggc.duckdns.org, port: 443, password: 1qaz2wsx }
@@ -28,8 +27,8 @@ proxies:
 
  
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: ['TrojanE', 'TrojanA', 'TrojanB', 'TrojanGGCt', 'greyGGCt', 'TrojanO' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect, 'TrojanE', 'TrojanA', 'TrojanB', 'TrojanGGCt', 'greyGGCt', 'TrojanO' ] }
+- { name: "AutoSelect", type: url-test, proxies: ['TrojanO', 'TrojanE', 'TrojanA', 'TrojanGGCt', 'greyGGCt' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect, 'TrojanO', 'TrojanE', 'TrojanA', 'TrojanGGCt', 'greyGGCt' ] }
 
 rules:
  - GEOIP,CN,DIRECT
