@@ -18,6 +18,10 @@ dns:
     - tls://dns.google:853
     
 proxies:
+
+- { name: "twsN", type: vmess, server: novcat.duckdns.org, port: 444, uuid: 9135998c-1d04-11eb-aecc-0a2fe9d406de, alterId: 0, cipher: auto, tls: true, network: ws, ws-path: /N1LqCHZs/, Host: novcat.duckdns.org }
+- { name: "tcpN", type: vmess, server: novcat.duckdns.org, port: 446, uuid: bd3d8a94-1d04-11eb-bae0-0a2fe9d406de, alterId: 0, cipher: auto }
+
 - { name: "Aws", type: vmess, server: catsj.duckdns.org, port: 444, uuid: 4229be2c-d4ca-11ea-8f46-0a549c15b914, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /KoEJn3Zy/, Host: catsj.duckdns.org }
 - { name: "Atcp", type: vmess, server: catsj.duckdns.org, port: 446, uuid: 417e11f0-d4cd-11ea-9c00-0a549c15b914, alterId: 16, cipher: auto }
 
@@ -35,8 +39,8 @@ proxies:
 
  
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [ 'GGCtws', 'GGCttcp',  'Ews', 'Etcp', 'Aws', 'Atcp', 'greyGGCtws', 'greyGGCttcp', 'tws', 'tcp' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect, 'GGCtws', 'GGCttcp', 'Ews', 'Etcp', 'Aws', 'Atcp', 'greyGGCtws', 'greyGGCttcp', 'tws', 'tcp' ] }
+- { name: "AutoSelect", type: url-test, proxies: [ 'GGCtws', 'GGCttcp',  'Ews', 'Etcp', 'Aws', 'Atcp', 'greyGGCtws', 'greyGGCttcp', 'tws', 'tcp', 'twsN', 'tcp' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect, 'GGCtws', 'GGCttcp', 'Ews', 'Etcp', 'Aws', 'Atcp', 'greyGGCtws', 'greyGGCttcp', 'tws', 'tcp', 'tws', 'tcpN' ] }
   
 rules:
  - GEOIP,CN,DIRECT
