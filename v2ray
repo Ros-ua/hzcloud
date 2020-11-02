@@ -39,8 +39,8 @@ proxies:
 
  
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [ 'GGCtws', 'GGCttcp',  'Ews', 'Etcp', 'Aws', 'Atcp', 'greyGGCtws', 'greyGGCttcp', 'tws', 'tcp', 'twsN', 'tcp' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect, 'GGCtws', 'GGCttcp', 'Ews', 'Etcp', 'Aws', 'Atcp', 'greyGGCtws', 'greyGGCttcp', 'tws', 'tcp', 'tws', 'tcpN' ] }
+- { name: "AutoSelect", type: url-test, proxies: [ 'GGCtws', 'GGCttcp',  'Ews', 'Etcp', 'Aws', 'Atcp', 'greyGGCtws', 'greyGGCttcp', 'tws', 'tcp', 'twsN', 'tcpN' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect, 'GGCtws', 'GGCttcp', 'Ews', 'Etcp', 'Aws', 'Atcp', 'greyGGCtws', 'greyGGCttcp', 'tws', 'tcp', 'twsN', 'tcpN' ] }
   
 rules:
  - GEOIP,CN,DIRECT
