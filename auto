@@ -38,11 +38,15 @@ proxies:
 - { name: "tws", type: vmess, server: octobos.duckdns.org, port: 444, uuid: 72463c5e-1091-11eb-a8b9-0a2b1be6d894, alterId: 0, cipher: auto, tls: true, network: ws, ws-path: /trTiuvVk/, Host: octobos.duckdns.org }
 - { name: "tcp", type: vmess, server: octobos.duckdns.org, port: 446, uuid: 9f0b6bf6-1091-11eb-9c7a-0a2b1be6d894, alterId: 0, cipher: auto }
 
+- { name: "trojanN", type: trojan, server: novcat.duckdns.org, port: 443, password: 1qaz2wsx }
+- { name: "twsN", type: vmess, server: novcat.duckdns.org, port: 444, uuid: 9135998c-1d04-11eb-aecc-0a2fe9d406de, alterId: 0, cipher: auto, tls: true, network: ws, ws-path: /N1LqCHZs/, Host: novcat.duckdns.org }
+- { name: "tcpN", type: vmess, server: novcat.duckdns.org, port: 446, uuid: bd3d8a94-1d04-11eb-bae0-0a2fe9d406de, alterId: 0, cipher: auto }
+
 
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [ 'TrojanGGCt', 'GGCtws', 'GGCttcp', 'TrojanE', 'Ews', 'Etcp', 'TrojanA',  'Aws',  'Atcp', 'greyGGCt', 'greyGGCtws', 'greyGGCttcp', 'trojan', 'tws', 'tcp' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect, 'TrojanGGCt', 'GGCtws', 'GGCttcp', 'TrojanE', 'Ews', 'Etcp', 'TrojanA', 'Aws',  'Atcp', 'greyGGCt', 'greyGGCtws', 'greyGGCttcp', 'trojan', 'tws', 'tcp'  ] }
+- { name: "AutoSelect", type: url-test, proxies: [ 'TrojanGGCt', 'GGCtws', 'GGCttcp', 'TrojanE', 'Ews', 'Etcp', 'TrojanA',  'Aws',  'Atcp', 'greyGGCt', 'greyGGCtws', 'greyGGCttcp', 'trojan', 'tws', 'tcp', 'trojanN', 'twsN', 'tcpN' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect, 'TrojanGGCt', 'GGCtws', 'GGCttcp', 'TrojanE', 'Ews', 'Etcp', 'TrojanA', 'Aws',  'Atcp', 'greyGGCt', 'greyGGCtws', 'greyGGCttcp', 'trojan', 'tws', 'tcp', 'trojanN', 'twsN', 'tcpN'  ] }
   
 rules:
  - GEOIP,CN,DIRECT
