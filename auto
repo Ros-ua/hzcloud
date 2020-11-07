@@ -27,10 +27,6 @@ proxies:
 - { name: "GGCtws", type: vmess, server: pkgc.duckdns.org, port: 444, uuid: bdb08084-fa87-11ea-9f3e-42010aaa0014, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /NAKwdJhX/, Host: pkgc.duckdns.org }
 - { name: "GGCttcp", type: vmess, server: pkgc.duckdns.org, port: 446, uuid: dea09bc6-fa87-11ea-8af0-42010aaa0014, alterId: 16, cipher: auto }
 
-- { name: "greyGGCt", type: trojan, server: greyggc.duckdns.org, port: 443, password: 1qaz2wsx }
-- { name: "greyGGCtws", type: vmess, server: greyggc.duckdns.org, port: 444, uuid: 25019bc6-fb4e-11ea-b535-42010aaa0009, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /oVySOcJQ/, Host: greyggc.duckdns.org }
-- { name: "greyGGCttcp", type: vmess, server: greyggc.duckdns.org, port: 446, uuid: 48d60bb8-fb4e-11ea-b6dd-42010aaa0009, alterId: 16, cipher: auto }
-
 - { name: "trojan", type: trojan, server: octobos.duckdns.org, port: 443, password: 1qaz2wsx }
 - { name: "tws", type: vmess, server: octobos.duckdns.org, port: 444, uuid: 72463c5e-1091-11eb-a8b9-0a2b1be6d894, alterId: 0, cipher: auto, tls: true, network: ws, ws-path: /trTiuvVk/, Host: octobos.duckdns.org }
 - { name: "tcp", type: vmess, server: octobos.duckdns.org, port: 446, uuid: 9f0b6bf6-1091-11eb-9c7a-0a2b1be6d894, alterId: 0, cipher: auto }
@@ -42,8 +38,8 @@ proxies:
 
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [ 'TrojanGGCt', 'GGCtws', 'GGCttcp', 'TrojanE', 'Ews', 'Etcp', 'greyGGCt', 'greyGGCtws', 'greyGGCttcp', 'trojan', 'tws', 'tcp', 'trojanN', 'twsN', 'tcpN' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect, 'TrojanGGCt', 'GGCtws', 'GGCttcp', 'TrojanE', 'Ews', 'Etcp', 'greyGGCt', 'greyGGCtws', 'greyGGCttcp', 'trojan', 'tws', 'tcp', 'trojanN', 'twsN', 'tcpN'  ] }
+- { name: "AutoSelect", type: url-test, proxies: [ 'TrojanGGCt', 'GGCtws', 'GGCttcp', 'TrojanE', 'Ews', 'Etcp', 'trojan', 'tws', 'tcp', 'trojanN', 'twsN', 'tcpN' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect, 'TrojanGGCt', 'GGCtws', 'GGCttcp', 'TrojanE', 'Ews', 'Etcp', 'trojan', 'tws', 'tcp', 'trojanN', 'twsN', 'tcpN'  ] }
   
 rules:
  - GEOIP,CN,DIRECT
