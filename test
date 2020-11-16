@@ -23,10 +23,12 @@ proxies:
 - { name: "Trojan", type: trojan, server: novcat.duckdns.org, port: 443, password: 1qaz2wsx }
 - { name: "Tws", type: vmess, server: novcat.duckdns.org, port: 444, uuid: 9135998c-1d04-11eb-aecc-0a2fe9d406de, alterId: 0, cipher: auto, tls: true, network: ws, ws-path: /N1LqCHZs/, Host: novcat.duckdns.org }
 - { name: "Tcp", type: vmess, server: novcat.duckdns.org, port: 446, uuid: bd3d8a94-1d04-11eb-bae0-0a2fe9d406de, alterId: 0, cipher: auto }
+- { name: "TrojanO", type: trojan, server: octobos.duckdns.org, port: 443, password: 1qaz2wsx }
+- { name: "trojanN", type: trojan, server: novcat.duckdns.org, port: 443, password: 1qaz2wsx }
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: ['Trojan', 'Tws', 'Tcp' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect, 'Trojan', 'Tws', 'Tcp'  ] }
+- { name: "AutoSelect", type: url-test, proxies: [ 'trojanN', 'TrojanO' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect, 'trojanN', 'TrojanO' ] }
 
 rules:
  - GEOIP,CN,DIRECT
