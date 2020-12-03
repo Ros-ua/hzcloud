@@ -26,7 +26,7 @@ proxies:
 
 - { name: "TrojanE", type: trojan, server: hangzhoushanghai.duckdns.org, port: 443, password: 88888888 }
 - { name: "Ews", type: vmess, server: hangzhoushanghai.duckdns.org, port: 444, uuid: 3181017c-3549-11eb-b515-0afe80dc2274, alterId: 0, cipher: auto, tls: true, network: ws, ws-path: /NfsUjEIv/, Host: hangzhoushanghai.duckdns.org }
-- { name: "Etcp", type: vmess, server: hangzhoushanghai.duckdns.org, port: 446, uuid: b8ece52c-3549-11eb-b85a-0afe80dc227, alterId: 0, cipher: auto }
+- { name: "Etcp", type: vmess, server: hangzhoushanghai.duckdns.org, port: 446, uuid: b8ece52c-3549-11eb-b85a-0afe80dc2274, alterId: 0, cipher: auto }
 
 - { name: "TrojanO", type: trojan, server: octobos.duckdns.org, port: 443, password: 1qaz2wsx }
 - { name: "trojanN", type: trojan, server: novcat.duckdns.org, port: 443, password: 1qaz2wsx }
