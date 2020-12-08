@@ -29,8 +29,8 @@ proxies:
 - { name: "trojanN", type: trojan, server: novcat.duckdns.org, port: 443, password: 1qaz2wsx }
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [ 'trojanN', 'TrojanO', 'TrojanE' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect, 'trojanN', 'TrojanO', 'TrojanE' ] }
+- { name: "AutoSelect", type: url-test, proxies: [ 'trojanN', 'TrojanO' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect, 'trojanN', 'TrojanO' ] }
 
 rules:
  - GEOIP,CN,DIRECT
