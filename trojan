@@ -19,7 +19,7 @@ dns:
     
 proxies:
 
-- { name: "TrojanE", type: trojan, server: cheburek.duckdns.org, port: 443, password: qazxsw123 }
+- { name: "TrojanE", type: trojan, server: akabamapa.duckdns.org, port: 443, password: 1qaz2wsx }
 - { name: "TrojanGGCt", type: trojan, server: pkgc.duckdns.org, port: 443, password: 1qaz2wsx }
 - { name: "TrojanO", type: trojan, server: octobos.duckdns.org, port: 443, password: 1qaz2wsx }
 - { name: "trojanN", type: trojan, server: novcat.duckdns.org, port: 443, password: 1qaz2wsx }
