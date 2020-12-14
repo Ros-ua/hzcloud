@@ -22,8 +22,8 @@ proxies:
 - { name: "twsN", type: vmess, server: novcat.duckdns.org, port: 444, uuid: 9135998c-1d04-11eb-aecc-0a2fe9d406de, alterId: 0, cipher: auto, tls: true, network: ws, ws-path: /N1LqCHZs/, Host: novcat.duckdns.org }
 - { name: "tcpN", type: vmess, server: novcat.duckdns.org, port: 446, uuid: bd3d8a94-1d04-11eb-bae0-0a2fe9d406de, alterId: 0, cipher: auto }
 
-- { name: "Ews", type: vmess, server: cheburek.duckdns.org, port: 444, uuid: bef57c10-c738-11ea-bd8d-0af7d22b149c, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /HoixZdKM/, Host: cheburek.duckdns.org }
-- { name: "Etcp", type: vmess, server: cheburek.duckdns.org, port: 446, uuid: cb804112-c739-11ea-aebd-0af7d22b149c, alterId: 16, cipher: auto }
+- { name: "Ews", type: vmess, server: akabamapa.duckdns.org, port: 444, uuid: 40e12b5c-3e08-11eb-a118-0a5678a176e2, alterId: 0, cipher: auto, tls: true, network: ws, ws-path: /XQfa8BHj/, Host: cheburek.duckdns.org }
+- { name: "Etcp", type: vmess, server: akabamapa.duckdns.org, port: 446, uuid: a86111a2-3e08-11eb-acc6-0a5678a176e2, alterId: 0, cipher: auto }
 
 - { name: "GGCtws", type: vmess, server: pkgc.duckdns.org, port: 444, uuid: bdb08084-fa87-11ea-9f3e-42010aaa0014, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /NAKwdJhX/, Host: pkgc.duckdns.org }
 - { name: "GGCttcp", type: vmess, server: pkgc.duckdns.org, port: 446, uuid: dea09bc6-fa87-11ea-8af0-42010aaa0014, alterId: 16, cipher: auto }
