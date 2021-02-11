@@ -26,13 +26,13 @@ proxies:
 
 
 - { name: "TrojanO", type: trojan, server: octobos.duckdns.org, port: 443, password: 1qaz2wsx }
-- { name: "trojanN", type: trojan, server: novcat.duckdns.org, port: 443, password: 1qaz2wsx }
+#- { name: "trojanN", type: trojan, server: novcat.duckdns.org, port: 443, password: 1qaz2wsx }
 - { name: "TrojanTF", type: trojan, server: tenafeba.duckdns.org, port: 443, password: 1qaz2wsx }
 
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [ 'trojanN', 'TrojanO', 'TrojanTF' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect, 'trojanN', 'TrojanO', 'TrojanTF' ] }
+- { name: "AutoSelect", type: url-test, proxies: [ 'trojanN', 'TrojanTF' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect, 'trojanN', 'TrojanTF' ] }
 
 rules:
  - GEOIP,CN,DIRECT
