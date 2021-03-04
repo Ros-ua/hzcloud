@@ -7,16 +7,7 @@ log-level: info
 external-controller: '0.0.0.0:9090'
 secret: ''
 
-dns:
-  enable: true
-  nameserver:
-    - 94.140.14.14
-    - 94.140.15.15
-    - tls://dns.adguard.com:853
-  fallback:
-    - tls://1.0.0.1:853
-    - tls://dns.google:853
-    
+
 proxies:
 
 - { name: "Trojan2fsg", type: trojan, server: 2fsg.duckdns.org, port: 443, password: 1qaz2wsx }
