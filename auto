@@ -10,37 +10,23 @@ secret: ''
 dns:
   enable: true
   nameserver:
-    - 94.140.14.14
-    - 94.140.15.15
-    - tls://dns.adguard.com:853
-  fallback:
-    - tls://1.0.0.1:853
     - tls://dns.google:853
 
 proxies:
 
-- { name: "TrojanE", type: trojan, server: akabamapa.duckdns.org, port: 443, password: 1qaz2wsx }
-- { name: "Ews", type: vmess, server: akabamapa.duckdns.org, port: 444, uuid: 40e12b5c-3e08-11eb-a118-0a5678a176e2, alterId: 0, cipher: auto, tls: true, network: ws, ws-path: /XQfa8BHj/, Host: cheburek.duckdns.org }
-- { name: "Etcp", type: vmess, server: akabamapa.duckdns.org, port: 446, uuid: a86111a2-3e08-11eb-acc6-0a5678a176e2, alterId: 0, cipher: auto }
+#- { name: "Trojan", type: trojan, server: novcat.duckdns.org, port: 443, password: 1qaz2wsx }
+#- { name: "Tws", type: vmess, server: novcat.duckdns.org, port: 444, uuid: 9135998c-1d04-11eb-aecc-0a2fe9d406de, alterId: 0, cipher: auto, tls: true, network: ws, ws-path: /N1LqCHZs/, Host: novcat.duckdns.org }
+#- { name: "Tcp", type: vmess, server: novcat.duckdns.org, port: 446, uuid: bd3d8a94-1d04-11eb-bae0-0a2fe9d406de, alterId: 0, cipher: auto }
 
-- { name: "TrojanGGCt", type: trojan, server: pkgc.duckdns.org, port: 443, password: 1qaz2wsx }
-- { name: "GGCtws", type: vmess, server: pkgc.duckdns.org, port: 444, uuid: bdb08084-fa87-11ea-9f3e-42010aaa0014, alterId: 16, cipher: auto, tls: true, network: ws, ws-path: /NAKwdJhX/, Host: pkgc.duckdns.org }
-- { name: "GGCttcp", type: vmess, server: pkgc.duckdns.org, port: 446, uuid: dea09bc6-fa87-11ea-8af0-42010aaa0014, alterId: 16, cipher: auto }
 
-- { name: "trojan", type: trojan, server: octobos.duckdns.org, port: 443, password: 1qaz2wsx }
-- { name: "tws", type: vmess, server: octobos.duckdns.org, port: 444, uuid: 72463c5e-1091-11eb-a8b9-0a2b1be6d894, alterId: 0, cipher: auto, tls: true, network: ws, ws-path: /trTiuvVk/, Host: octobos.duckdns.org }
-- { name: "tcp", type: vmess, server: octobos.duckdns.org, port: 446, uuid: 9f0b6bf6-1091-11eb-9c7a-0a2b1be6d894, alterId: 0, cipher: auto }
-
-- { name: "trojanN", type: trojan, server: novcat.duckdns.org, port: 443, password: 1qaz2wsx }
-- { name: "twsN", type: vmess, server: novcat.duckdns.org, port: 444, uuid: 9135998c-1d04-11eb-aecc-0a2fe9d406de, alterId: 0, cipher: auto, tls: true, network: ws, ws-path: /N1LqCHZs/, Host: novcat.duckdns.org }
-- { name: "tcpN", type: vmess, server: novcat.duckdns.org, port: 446, uuid: bd3d8a94-1d04-11eb-bae0-0a2fe9d406de, alterId: 0, cipher: auto }
-
+- { name: "Trojan2fsg", type: trojan, server: 2fsg.duckdns.org, port: 443, password: 1qaz2wsx }
+- { name: "trojanmsgp", type: trojan, server: msgp.duckdns.org, port: 443, password: 1qaz2wsx }
 
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [ 'TrojanGGCt', 'GGCtws', 'GGCttcp', 'TrojanE', 'Ews', 'Etcp', 'trojan', 'tws', 'tcp', 'trojanN', 'twsN', 'tcpN' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect, 'TrojanGGCt', 'GGCtws', 'GGCttcp', 'TrojanE', 'Ews', 'Etcp', 'trojan', 'tws', 'tcp', 'trojanN', 'twsN', 'tcpN'  ] }
-  
+- { name: "AutoSelect", type: url-test, proxies: [ 'trojanmsgp', 'Trojan2fsg' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect, 'trojanmsgp', 'Trojan2fsg' ] }
+
 rules:
  - GEOIP,CN,DIRECT
  - MATCH,proxies
