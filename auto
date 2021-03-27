@@ -10,6 +10,9 @@ secret: ''
 dns:
   enable: true
   nameserver:
+    - 8.8.8.8
+    - 8.8.4.4
+  fallback:
     - tls://dns.google:853
 
 proxies:
