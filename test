@@ -8,10 +8,12 @@ external-controller: '0.0.0.0:9090'
 secret: ''
 
 dns:
-enable: true
-nameserver:
-- 8.8.8.8
-- 8.8.4.4
+  enable: true
+  nameserver:
+    - 8.8.8.8
+    - 8.8.4.4
+    - tls://dns.google:853
+
     
 proxies:
 
