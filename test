@@ -12,9 +12,9 @@ dns:
   nameserver:
     - 8.8.8.8
     - 8.8.4.4
-  fallback:
-    - tls://1.0.0.1:853
     - tls://dns.google:853
+    - tls://dns.adguard.com:853
+ 
     
 proxies:
 
