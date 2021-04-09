@@ -7,7 +7,12 @@ log-level: info
 external-controller: '0.0.0.0:9090'
 secret: ''
 
-
+dns:
+  enable: false
+  listen: 0.0.0.0:53
+default-nameserver:
+    - 8.8.8.8
+    - 8.8.4.4
     
 proxies:
 
