@@ -10,7 +10,7 @@ secret: ''
 dns:
   enable: true
   listen: 0.0.0.0:53
-default-nameserver:
+nameserver:
     - 8.8.8.8
     - 8.8.4.4
     
