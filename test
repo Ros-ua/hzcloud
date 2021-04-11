@@ -11,9 +11,7 @@ dns:
   enable: true
   nameserver:
     - 8.8.8.8
-    - 8.8.4.4
-    - tls://dns.google:853
-    - tls://dns.adguard.com:853
+    - 198.153.194.1
  
     
 proxies:
