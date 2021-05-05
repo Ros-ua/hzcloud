@@ -30,7 +30,7 @@ proxies:
 
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [ 'trojanmsgp', 'Trojan2fsg' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "AutoSelect", type: url-test, proxies: [ 'trojanmsgp', 'Trojan2fsg', 'trojan505may' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
 - { name: "proxies", type: select, proxies: [ AutoSelect, 'trojanmsgp', 'Trojan2fsg', 'trojan505may' ] }
 
 rules:
