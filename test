@@ -27,11 +27,11 @@ proxies:
 - { name: "Trojan2fsg", type: trojan, server: 2fsg.duckdns.org, port: 443, password: 1qaz2wsx }
 - { name: "trojanmsgp", type: trojan, server: msgp.duckdns.org, port: 443, password: 1qaz2wsx }
 - { name: "trojan505may", type: trojan, server: 505may.duckdns.org, port: 443, password: 1qaz2wsx }
-- { name: "trojan505may1", type: trojan, server: 505may.duckdns.org, port: 443, password: 1qaz2wsx }
+- { name: "trojan506may", type: trojan, server: 506may.duckdns.org, port: 443, password: 1qaz2wsx }
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [ 'trojan505may1', 'trojan505may' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect, 'trojan505may1', 'trojan505may' ] }
+- { name: "AutoSelect", type: url-test, proxies: [ 'trojan505may', 'trojan5056may' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect, 'trojan505may', 'trojan506may' ] }
 
 rules:
  - GEOIP,CN,DIRECT
