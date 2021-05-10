@@ -12,10 +12,11 @@ dns:
   listen: 0.0.0.0:53
   default-nameserver: 
     - 8.8.8.8
-    - https://1.1.1.1/dns-query
+    - 94.140.14.14
   nameserver:
-    - 8.8.8.8
-    - 198.153.194.1
+    - 8.8.4.4
+    - 94.140.15.15
+    - https://1.1.1.1/dns-query
   fallback:
     - tcp://1.1.1.1  
     
