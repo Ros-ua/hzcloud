@@ -16,9 +16,6 @@ dns:
   nameserver:
     - 8.8.4.4
     - 94.140.15.15
-    - https://1.1.1.1/dns-query
-  fallback:
-    - tcp://1.1.1.1  
     
  
     
