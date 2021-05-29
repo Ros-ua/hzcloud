@@ -14,13 +14,13 @@ dns:
    
 proxies:
 
-- { name: "twsN", type: vmess, server: 529may.duckdns.org, port: 444, uuid: 198228bb-c097-11eb-956a-0661ae80de22, alterId: 0, cipher: auto, tls: true, network: ws, ws-path: /CFQGT2A6/, Host: n529may.duckdns.org }
+- { name: "v2ray530may", type: vmess, server: 530may.duckdns.org, port: 444, uuid: 4eb73413-c09c-11eb-981b-0a1c273ae920, alterId: 0, cipher: auto, tls: true, network: ws, ws-path: /E4stK3cv/, Host: 530may.duckdns.org }
 
-- { name: "trojan506may", type: trojan, server: 506may.duckdns.org, port: 443, password: 1qaz2wsx }
+- { name: "trojan530may", type: trojan, server: 506may.duckdns.org, port: 443, password: 1qaz2wsx }
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [  'trojan506may' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect,  'trojan506may' ] }
+- { name: "AutoSelect", type: url-test, proxies: [  'trojan530may', 'v2ray530may' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect,  'trojan530may', 'v2ray530may' ] }
 
 rules:
  - GEOIP,CN,DIRECT
