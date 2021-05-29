@@ -14,12 +14,12 @@ dns:
    
 proxies:
 
-- { name: "trojan505may", type: trojan, server: 506may.duckdns.org, port: 443, password: 1qaz2wsx }
-- { name: "trojan506may", type: trojan, server: 506may.duckdns.org, port: 443, password: 1qaz2wsx }
+- { name: "twsN", type: vmess, server: 529may.duckdns.org, port: 444, uuid: 198228bb-c097-11eb-956a-0661ae80de22, alterId: 0, cipher: auto, tls: true, network: ws, ws-path: /CFQGT2A6/, Host: n529may.duckdns.org }
+- { name: "trojan529may", type: trojan, server: 529may.duckdns.org, port: 443, password: 1qaz2wsx }
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [ 'trojan505may', 'trojan506may' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect, 'trojan505may', 'trojan506may' ] }
+- { name: "AutoSelect", type: url-test, proxies: [ 'twsN', 'trojan529may' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect, 'twsN', 'trojan529may' ] }
 
 rules:
  - GEOIP,CN,DIRECT
