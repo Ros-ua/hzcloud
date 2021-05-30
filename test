@@ -14,14 +14,15 @@ dns:
    
 proxies:
 
-- { name: "v2ray530may", type: vmess, server: 530may.duckdns.org, port: 444, uuid: 4eb73413-c09c-11eb-981b-0a1c273ae920, alterId: 0, cipher: auto, tls: true, network: ws, ws-path: /E4stK3cv/, Host: 530may.duckdns.org }
+- { name: "v2ray_WS_SAMPLE", type: vmess, server: 530may.duckdns.org, port: 444, uuid: 4eb73413-c09c-11eb-981b-0a1c273ae920, alterId: 0, cipher: auto, tls: true, network: ws, ws-path: /E4stK3cv/, Host: 530may.duckdns.org }
+- { name: "trojan_SAMPLE", type: trojan, server: 506may.duckdns.org, port: 443, password: 1qaz2wsx }
 
 - { name: "trojan506may", type: trojan, server: 506may.duckdns.org, port: 443, password: 1qaz2wsx }
 - { name: "trojan530may", type: trojan, server: 530may.duckdns.org, port: 443, password: 1qaz2wsx }
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [   'trojan506may' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect,   'trojan506may' ] }
+- { name: "AutoSelect", type: url-test, proxies: [   'trojan506may', 'trojan530may' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect,   'trojan506may', 'trojan530may' ] }
 
 rules:
  - GEOIP,CN,DIRECT
