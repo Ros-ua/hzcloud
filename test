@@ -9,7 +9,7 @@ secret: ''
 
 dns:
     enable: true
-    default-nameserver: [198.101.242.72, 176.103.130.130]
+    default-nameserver: [76.76.19.19, 76.223.122.150]
     nameserver: ['https://doh.pub/dns-query']
    
 proxies:
