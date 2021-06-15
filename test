@@ -9,7 +9,7 @@ secret: ''
 
 dns:
     enable: true
-    default-nameserver: ['https://dns.alternate-dns.com/dns-query']
+    default-nameserver: [8.8.8.8, 8.8.4.4]
     nameserver: ['https://doh.pub/dns-query']
    
 proxies:
