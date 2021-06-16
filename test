@@ -10,7 +10,7 @@ secret: ''
 dns:
     enable: true
     default-nameserver: [94.140.14.14, 94.140.15.15]
-    nameserver: ['https://dns.adguard.com/dns-query']
+    nameserver: [76.76.19.19, 76.223.122.150]
    
 proxies:
 
