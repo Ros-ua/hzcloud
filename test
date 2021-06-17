@@ -12,10 +12,8 @@ dns:
   listen: :53 
   enhanced-mode: redir-host
   nameserver:
-    - 94.140.15.15
-    - 94.140.14.14
-  fallback:
     - 76.76.19.19
+  fallback: 
     - 76.223.122.150
     - 8.8.8.8
     - 8.8.4.4 
