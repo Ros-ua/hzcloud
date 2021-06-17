@@ -7,28 +7,15 @@ log-level: info
 external-controller: '0.0.0.0:9090'
 secret: ''
 
-
-
 dns:
   enable: true
-  listen: :53 
+  listen: 0.0.0.0:53
   enhanced-mode: redir-host
   nameserver:
-    - 94.140.15.15
-    - 94.140.14.14
-  fallback:
-    - 76.76.19.19
-    - 76.223.122.150
-    - 8.8.8.8
-    - 8.8.4.4 
-    - dns.alternate-dns.com
-    - dns.google
-    - dns.adguard.com
-    
-    
-    
-
-   
+    - 'tls://dns.alternate-dns.com'
+    - 'tls://dns.adguard.com'
+    - 'tls://dns.google'
+  
 proxies:
 
 - { name: "v2ray_WS_SAMPLE", type: vmess, server: 530may.duckdns.org, port: 444, uuid: 4eb73413-c09c-11eb-981b-0a1c273ae920, alterId: 0, cipher: auto, tls: true, network: ws, ws-path: /E4stK3cv/, Host: 530may.duckdns.org }
