@@ -12,12 +12,12 @@ proxies:
 
 
 - { name: "trojan6040", type: trojan, server: 6040june.duckdns.org, port: 443, password: 1qaz2wsx }
-- { name: "trojan6041", type: trojan, server: 6041june.duckdns.org, port: 443, password: 1qza2wsx }
+- { name: "trojanevander", type: trojan, server: evanderholyfield.duckdns.org, port: 443, password: 1qza2wsx }
 - { name: "ADD", type: trojan, server: juneadd.duckdns.org, port: 443, password: 1qaz2wsx }
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [   'trojan6040', 'trojan6041', 'ADD' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect,   'trojan6040', 'trojan6041', 'ADD' ] }
+- { name: "AutoSelect", type: url-test, proxies: [   'trojan6040', 'trojanevander', 'ADD' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect,   'trojan6040', 'trojanevander', 'ADD' ] }
 
 
 rules:
