@@ -24,13 +24,14 @@ proxies:
 - { name: "v2ray_WS_SAMPLE", type: vmess, server: 530may.duckdns.org, port: 444, uuid: 4eb73413-c09c-11eb-981b-0a1c273ae920, alterId: 0, cipher: auto, tls: true, network: ws, ws-path: /E4stK3cv/, Host: 530may.duckdns.org }
 - { name: "trojan_SAMPLE", type: trojan, server: 506may.duckdns.org, port: 443, password: 1qaz2wsx }
 
-- { name: "trojan6040", type: trojan, server: 6040june.duckdns.org, port: 443, password: 1qaz2wsx }
 - { name: "trojannakhla", type: trojan, server: nakhla.duckdns.org, port: 443, password: 1qaz2wsx }
-- { name: "ADD", type: trojan, server: juneadd.duckdns.org, port: 443, password: 1qaz2wsx }
+- { name: "trojan3070", type: trojan, server: 3070.duckdns.org, port: 443, password: 1qaz2wsx }
+- { name: "trojan3071", type: trojan, server: 3071.duckdns.org, port: 443, password: 1qaz2wsx }
+
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [   'trojan6040', 'trojannakhla', 'ADD' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect,   'trojan6040', 'trojannakhla', 'ADD' ] }
+- { name: "AutoSelect", type: url-test, proxies: [  'trojannakhla', 'trojan3070',  'trojan3071' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect,  'trojannakhla', 'trojan3070', 'trojan3071' ] }
 
 rules:
  - GEOIP,CN,DIRECT
