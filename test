@@ -25,8 +25,8 @@ proxies:
 - { name: "trojan_SAMPLE", type: trojan, server: 506may.duckdns.org, port: 443, password: 1qaz2wsx }
 
 - { name: "trojannakhla", type: trojan, server: nakhla.duckdns.org, port: 443, password: 1qaz2wsx }
-- { name: "trojan3070", type: trojan, server: 3070.duckdns.org, port: 443, password: 1qaz2wsx }
-- { name: "trojan3071", type: trojan, server: 3071.duckdns.org, port: 443, password: 1qaz2wsx }
+- { name: "trojan3070", type: trojan, server: 3070j.ddns.net, port: 443, password: 1qaz2wsx }
+- { name: "trojan3071", type: trojan, server: 3071j.ddns.net, port: 443, password: 1qaz2wsx }
 
 
 proxy-groups:
