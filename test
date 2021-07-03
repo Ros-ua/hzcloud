@@ -30,9 +30,9 @@ proxies:
 - { name: "trojan3070", type: trojan, server: 3070j.ddns.net, port: 443, password: 1qaz2wsx }
 - { name: "trojan3071", type: trojan, server: 3071j.ddns.net, port: 443, password: 1qaz2wsx }
 
-- { name: "tcp1", type: vmess, server: 13.212.146.69, port: 446, uuid: 4895c2e4-d814-11eb-ae19-0a473629618e, alterId: 0, cipher: auto }
-- { name: "tcp2", type: vmess, server: 18.141.170.35, port: 446, uuid: ee9bd94a-d95d-11eb-b5ff-0a80a921b7c4, alterId: 0, cipher: auto }
-- { name: "tcp3", type: vmess, server: 13.212.93.187, port: 446, uuid: f5f0775a-d95d-11eb-b14e-0a08309daed6, alterId: 0, cipher: auto }
+- { name: "tcp1", type: vmess, server: 13.212.146.69, port: 444, uuid: 4895c2e4-d814-11eb-ae19-0a473629618e, alterId: 0, cipher: auto }
+- { name: "tcp2", type: vmess, server: 18.141.170.35, port: 444, uuid: ee9bd94a-d95d-11eb-b5ff-0a80a921b7c4, alterId: 0, cipher: auto }
+- { name: "tcp3", type: vmess, server: 13.212.93.187, port: 444, uuid: f5f0775a-d95d-11eb-b14e-0a08309daed6, alterId: 0, cipher: auto }
 
 
 proxy-groups:
