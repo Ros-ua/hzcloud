@@ -20,8 +20,8 @@ proxies:
 
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [  'tcp1', 'tcp2',  'tcp3', 'trojannakhla', 'trojan3070',  'trojan3071',  'trojan707'], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect,  'tcp1', 'tcp2',  'tcp3', 'trojannakhla', 'trojan3070',  'trojan3071',  'trojan707' ] }
+- { name: "AutoSelect", type: url-test, proxies: [  'tcp1', 'tcp2',  'tcp3', 'trojannakhla', 'trojan3070',  'trojan3071'], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect,  'tcp1', 'tcp2',  'tcp3', 'trojannakhla', 'trojan3070',  'trojan3071' ] }
 
 
 rules:
