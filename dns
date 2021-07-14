@@ -13,3 +13,15 @@ dns:
     - dns.alternate-dns.com
     - dns.google
     - dns.adguard.com
+
+
+dns:
+  enable: true
+  listen: :53 
+  enhanced-mode: redir-host
+  nameserver:
+    - 76.76.19.19
+  fallback: 
+    - 76.223.122.150
+    - 8.8.8.8
+    - 8.8.4.4 
