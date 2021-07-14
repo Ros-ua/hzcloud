@@ -7,17 +7,6 @@ log-level: info
 external-controller: '0.0.0.0:9090'
 secret: ''
 
-dns:
-  enable: true
-  listen: :53 
-  enhanced-mode: redir-host
-  nameserver:
-    - 76.76.19.19
-  fallback: 
-    - 76.223.122.150
-    - 8.8.8.8
-    - 8.8.4.4 
-
     
 proxies:
 
@@ -35,10 +24,11 @@ proxies:
 - { name: "tcp2", type: vmess, server: 18.141.170.35, port: 444, uuid: ee9bd94a-d95d-11eb-b5ff-0a80a921b7c4, alterId: 0, cipher: auto }
 - { name: "tcp3", type: vmess, server: 13.212.93.187, port: 444, uuid: f5f0775a-d95d-11eb-b14e-0a08309daed6, alterId: 0, cipher: auto }
 
+- { name: "tcp", type: vmess, server: 13.212.93.187, port: 444, uuid: f5f0775a-d95d-11eb-b14e-0a08309daed6, alterId: 0, cipher: auto }
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [  'tcp1', 'tcp2',  'tcp3', 'trojannakhla', 'trojan3070',  'trojan3071' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect,  'tcp1', 'tcp2',  'tcp3', 'trojannakhla', 'trojan3070',  'trojan3071' ] }
+- { name: "AutoSelect", type: url-test, proxies: [  'tcp'  ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect,  'tcp' ] }
 
 rules:
  - GEOIP,CN,DIRECT
