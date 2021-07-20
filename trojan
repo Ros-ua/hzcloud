@@ -18,8 +18,8 @@ proxies:
 - { name: "tcp", type: vmess, server: 18.140.130.235, port: 444, uuid: 3f7eedbe-e4aa-11eb-8b24-0a1f24cc86f2, alterId: 0, cipher: auto }
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [  'trojannakhla', 'trojan3070',  'trojan3071',  'tcp',  'tcp1',  'tcp2' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect,  'trojannakhla', 'trojan3070',  'trojan3071',  'tcp',  'tcp1',  'tcp2' ] }
+- { name: "AutoSelect", type: url-test, proxies: [  'trojannakhla', 'trojan3070',   'tcp',  'tcp1',  'tcp2' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect,  'trojannakhla', 'trojan3070',   'tcp',  'tcp1',  'tcp2' ] }
 
 
 rules:
