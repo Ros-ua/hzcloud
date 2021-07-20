@@ -15,8 +15,7 @@ proxies:
 - { name: "tcpN_SAMPLE", type: vmess, server: novcat.duckdns.org, port: 446, uuid: bd3d8a94-1d04-11eb-bae0-0a2fe9d406de, alterId: 0, cipher: auto }
 
 - { name: "trojan_1", type: trojan, server: 2107.number999.design, port: 443, password: 1qaz2wsx }
-- { name: "trojan_2", type: trojan, server: 2107.number999.design, port: 443, password: is21f96l }
-
+- { name: "trojan_2", type: trojan, server: 2107.number999.design, port: 443, password: is21f96lp }
 
 
 
