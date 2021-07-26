@@ -7,6 +7,11 @@ log-level: info
 external-controller: '0.0.0.0:9090'
 secret: ''
 
+dns:
+  enable: true
+  nameserver:
+    - 13.213.14.206 
+
     
 proxies:
 
@@ -14,18 +19,19 @@ proxies:
 - { name: "trojan_SAMPLE", type: trojan, server: 506may.duckdns.org, port: 443, password: 1qaz2wsx }
 - { name: "tcpN_SAMPLE", type: vmess, server: novcat.duckdns.org, port: 446, uuid: bd3d8a94-1d04-11eb-bae0-0a2fe9d406de, alterId: 0, cipher: auto }
 
-- { name: "trojan_1", type: trojan, server: 2107.number999.design, port: 443, password: 1qaz2wsx }
-- { name: "trojan_2", type: trojan, server: 2107.number999.design, port: 443, password: is21f96lp }
-- { name: "tcp1", type: vmess, server: 18.138.234.213, port: 446, uuid: 4f4dd55d-e978-11eb-8129-0a8eb4ee7b88, alterId: 0, cipher: auto }
+- { name: "trojannakhla", type: trojan, server: nakhla.duckdns.org, port: 443, password: 1qaz2wsx }
+- { name: "tcpnakhla", type: vmess, server: 13.212.146.69, port: 444, uuid: 4895c2e4-d814-11eb-ae19-0a473629618e, alterId: 0, cipher: auto }
 
+- { name: "trojan3070", type: trojan, server: 3070j.ddns.net, port: 443, password: 1qaz2wsx }
+- { name: "tcp3070", type: vmess, server: 18.141.170.35, port: 444, uuid: ee9bd94a-d95d-11eb-b5ff-0a80a921b7c4, alterId: 0, cipher: auto }
 
-
-
+- { name: "trojan21071", type: trojan, server: 2107.number999.design, port: 443, password: 1qaz2wsx }
+- { name: "trojan21072", type: trojan, server: 2107.number999.design, port: 443, password: is21f96lp }
+- { name: "tcp21071", type: vmess, server: 18.138.234.213, port: 446, uuid: 4f4dd55d-e978-11eb-8129-0a8eb4ee7b88, alterId: 0, cipher: auto }
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [  'trojan_1', 'trojan_2', 'tcp1'  ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect,  'trojan_1', 'trojan_2', 'tcp1' ] }
-
+- { name: "AutoSelect", type: url-test, proxies: [  'trojannakhla',  'tcpnakhla', 'trojan3070',   'tcp3070',  'trojan21071', 'trojan21072', 'tcp21071' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect,  'trojannakhla',  'tcpnakhla',  'trojan3070',  'tcp3070',  'trojan21071', 'trojan21072', 'tcp21071' ] }
 rules:
  - GEOIP,CN,DIRECT
  - MATCH,proxies
