@@ -11,19 +11,18 @@ secret: ''
 proxies:
 
 - { name: "trojannakhla", type: trojan, server: nakhla.duckdns.org, port: 443, password: 1qaz2wsx }
-- { name: "trojan3070", type: trojan, server: 3070j.ddns.net, port: 443, password: 1qaz2wsx }
+- { name: "tcpnakhla", type: vmess, server: 13.212.146.69, port: 444, uuid: 4895c2e4-d814-11eb-ae19-0a473629618e, alterId: 0, cipher: auto }
 
-- { name: "tcp1", type: vmess, server: 13.212.146.69, port: 444, uuid: 4895c2e4-d814-11eb-ae19-0a473629618e, alterId: 0, cipher: auto }
-- { name: "tcp2", type: vmess, server: 18.141.170.35, port: 444, uuid: ee9bd94a-d95d-11eb-b5ff-0a80a921b7c4, alterId: 0, cipher: auto }
-- { name: "tcp", type: vmess, server: 18.140.130.235, port: 444, uuid: 3f7eedbe-e4aa-11eb-8b24-0a1f24cc86f2, alterId: 0, cipher: auto }
+- { name: "trojan3070", type: trojan, server: 3070j.ddns.net, port: 443, password: 1qaz2wsx }
+- { name: "tcp3070", type: vmess, server: 18.141.170.35, port: 444, uuid: ee9bd94a-d95d-11eb-b5ff-0a80a921b7c4, alterId: 0, cipher: auto }
 
 - { name: "trojan21071", type: trojan, server: 2107.number999.design, port: 443, password: 1qaz2wsx }
 - { name: "trojan21072", type: trojan, server: 2107.number999.design, port: 443, password: is21f96lp }
 - { name: "tcp21071", type: vmess, server: 18.138.234.213, port: 446, uuid: 4f4dd55d-e978-11eb-8129-0a8eb4ee7b88, alterId: 0, cipher: auto }
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [  'trojannakhla', 'trojan3070',   'tcp',  'tcp1',  'tcp2',  'trojan21071', 'trojan21072', 'tcp21071' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect,  'trojannakhla', 'trojan3070',   'tcp',  'tcp1',  'tcp2',  'trojan21071', 'trojan21072', 'tcp21071' ] }
+- { name: "AutoSelect", type: url-test, proxies: [  'trojannakhla',  'tcpnakhla', 'trojan3070',   'tcp3070',  'trojan21071', 'trojan21072', 'tcp21071' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect,  'trojannakhla',  'tcpnakhla',  'trojan3070',  'tcp3070',  'trojan21071', 'trojan21072', 'tcp21071' ] }
 
 
 rules:
