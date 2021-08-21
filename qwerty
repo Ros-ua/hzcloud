@@ -10,14 +10,13 @@ secret: ''
 
 proxies:
 
-- { name: "trojan13081", type: trojan, server: 1308.number999.design, port: 443, password: 1qaz2wsx }
-- { name: "trojan13082", type: trojan, server: 1308.number999.design, port: 443, password: gkn2rv5e9 }
-- { name: "tcp1308", type: vmess, server: 18.141.239.179, port: 444, uuid: 9df234ab-fc47-11eb-a6bc-06a2bd955d14, alterId: 0, cipher: auto }
+- { name: "trojan22081", type: trojan, server: 2208.number999.design, port: 443, password: 1qaz2wsx }
+- { name: "trojan22082", type: trojan, server: 2208.number999.design, port: 443, password: c0firl6qw }
 
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [   'trojan13081', 'trojan13082', 'tcp1308' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect,  'trojan13081', 'trojan13082', 'tcp1308' ] }
+- { name: "AutoSelect", type: url-test, proxies: [   'trojan22081', 'trojan22082' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect,  'trojan13081', 'trojan13082' ] }
 
 
 rules:
