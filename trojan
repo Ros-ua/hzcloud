@@ -13,9 +13,8 @@ proxies:
 - { name: "trojannakhla", type: trojan, server: nakhla.duckdns.org, port: 443, password: 1qaz2wsx }
 - { name: "tcpnakhla", type: vmess, server: 13.212.146.69, port: 444, uuid: 4895c2e4-d814-11eb-ae19-0a473629618e, alterId: 0, cipher: auto }
 
-- { name: "trojan13081", type: trojan, server: 1308.number999.design, port: 443, password: 1qaz2wsx }
-- { name: "trojan13082", type: trojan, server: 1308.number999.design, port: 443, password: gkn2rv5e9 }
-- { name: "tcp1308", type: vmess, server: 18.141.239.179, port: 444, uuid: 9df234ab-fc47-11eb-a6bc-06a2bd955d14, alterId: 0, cipher: auto }
+- { name: "trojan26081", type: trojan, server: 2608.number999.design, port: 443, password: 1qaz2wsx }
+- { name: "trojan26082", type: trojan, server: 2608.number999.design, port: 443, password: 921yh0pa7 }
 
 - { name: "trojan28071", type: trojan, server: 2807.number999.design, port: 443, password: 1qaz2wsx }
 - { name: "trojan28072", type: trojan, server: 2807.number999.design, port: 443, password: sr547n2no }
@@ -23,8 +22,8 @@ proxies:
 
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [  'trojannakhla',  'tcpnakhla',  'trojan13081', 'trojan13082', 'tcp1308',  'trojan28071', 'trojan28072', 'tcp28071' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect,  'trojannakhla',  'tcpnakhla',  'trojan13081', 'trojan13082', 'tcp1308',  'trojan28071', 'trojan28072', 'tcp28071' ] }
+- { name: "AutoSelect", type: url-test, proxies: [  'trojannakhla',  'tcpnakhla',  'trojan26081', 'trojan26082',  'trojan28071', 'trojan28072', 'tcp28071' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect,  'trojannakhla',  'tcpnakhla',  'trojan26081', 'trojan26082',  'trojan28071', 'trojan28072', 'tcp28071' ] }
 
 
 rules:
