@@ -10,13 +10,13 @@ secret: ''
 
 proxies:
 
-- { name: "trojan26081", type: trojan, server: 2608.number999.design, port: 443, password: 1qaz2wsx }
-- { name: "trojan26082", type: trojan, server: 2608.number999.design, port: 443, password: 921yh0pa7 }
+- { name: "trojanstatic1", type: trojan, server: static.number999.design, port: 443, password: 1qaz2wsx }
+- { name: "trojanstatic2", type: trojan, server: static.number999.design, port: 443, password: 5sfktiyel }
 
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [   'trojan26081', 'trojan26082' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect,  'trojan26081', 'trojan26082' ] }
+- { name: "AutoSelect", type: url-test, proxies: [   'trojanstatic1', 'trojanstatic2' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect,  'trojanstatic1', 'trojanstatic2' ] }
 
 
 rules:
