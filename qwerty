@@ -10,8 +10,8 @@ secret: ''
 
 proxies:
 
-- { name: "trojanstatic1", type: trojan, server: static.number999.design, port: 443, password: 1qaz2wsx }
-- { name: "trojanstatic2", type: trojan, server: static.number999.design, port: 443, password: 5sfktiyel }
+- { name: "trojanstatic1", type: trojan, server: 2908.duckdns.org, port: 443, password: 1qaz2wsx }
+- { name: "trojanstatic2", type: trojan, server: 2908.duckdns.org, port: 443, password: yj6e69pw9 }
 
 
 proxy-groups:
