@@ -21,8 +21,8 @@ proxies:
 - { name: "tcp28071", type: vmess, server: 13.212.17.151, port: 444, uuid: 1268bead-ef06-11eb-9051-0a6c286df814, alterId: 0, cipher: auto }
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [  trojannakhla', 'tcpnakhla', 'trojanstatic1', 'trojanstatic2', 'trojan28071', 'trojan28072', 'tcp28071' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect,  trojannakhla', 'tcpnakhla', 'trojanstatic1', 'trojanstatic2', 'trojan28071', 'trojan28072', 'tcp28071' ] }
+- { name: "AutoSelect", type: url-test, proxies: [  'trojannakhla', 'tcpnakhla', 'trojanstatic1', 'trojanstatic2', 'trojan28071', 'trojan28072', 'tcp28071' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect,  'trojannakhla', 'tcpnakhla', 'trojanstatic1', 'trojanstatic2', 'trojan28071', 'trojan28072', 'tcp28071' ] }
 
 
 rules:
