@@ -10,20 +10,18 @@ secret: ''
 
 proxies:
 
-- { name: "trojannakhla", type: trojan, server: nakhla.duckdns.org, port: 443, password: 1qaz2wsx }
-- { name: "tcpnakhla", type: vmess, server: 13.212.146.69, port: 444, uuid: 4895c2e4-d814-11eb-ae19-0a473629618e, alterId: 0, cipher: auto }
-
 - { name: "trojanstatic1", type: trojan, server: static.number999.design, port: 443, password: 1qaz2wsx }
 - { name: "trojanstatic2", type: trojan, server: static.number999.design, port: 443, password: 5sfktiyel }
 
-- { name: "trojan28071", type: trojan, server: 2807.number999.design, port: 443, password: 1qaz2wsx }
-- { name: "trojan28072", type: trojan, server: 2807.number999.design, port: 443, password: sr547n2no }
-- { name: "tcp28071", type: vmess, server: 13.212.17.151, port: 444, uuid: 1268bead-ef06-11eb-9051-0a6c286df814, alterId: 0, cipher: auto }
+- { name: "trojan2911", type: trojan, server: 2908-1.number999.design, port: 443, password: 1qaz2wsx }
+- { name: "trojan2912", type: trojan, server: 2908-1.number999.design, port: 443, password: bf6b4h0x2 }
 
+- { name: "trojan2921", type: trojan, server: 2908-2.number999.design, port: 443, password: 1qaz2wsx }
+- { name: "trojan2922", type: trojan, server: 2908-2.number999.design, port: 443, password: 0q389u7xv }
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [  'trojannakhla',  'tcpnakhla',  'trojanstatic1', 'trojanstatic2',  'trojan28071', 'trojan28072', 'tcp28071' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect,  'trojannakhla',  'tcpnakhla',  'trojanstatic1', 'trojanstatic2',  'trojan28071', 'trojan28072', 'tcp28071' ] }
+- { name: "AutoSelect", type: url-test, proxies: [  'trojan2911',  'trojan2912',  'trojanstatic1', 'trojanstatic2',  'trojan2921', 'trojan2922' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect,  'trojan2911',  'trojan2912',  'trojanstatic1', 'trojanstatic2',  'trojan2921', 'trojan2922'] }
 
 
 rules:
