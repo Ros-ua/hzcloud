@@ -11,13 +11,13 @@ secret: ''
 proxies:
 
 - { name: "trojanstatic1", type: trojan, server: all.number999.design, port: 443, password: a43a948074, sni: all.number999.design }
-- { name: "trojanstatic2", type: trojan, server: all.number999.design, port: 443, password: a43a948074, sni: all.number999.design }
-
-
+- { name: "trojanstatic2", type: trojan, server: all.number999.design, port: 443, password: edeac45f0a, sni: all.number999.design }
+- { name: "trojanstatic3", type: trojan, server: all.number999.design, port: 443, password: 1qaz2wsx202001, sni: all.number999.design }
+- { name: "trojanstatic4", type: trojan, server: all.number999.design, port: 443, password: 1qaz2wsx202020, sni: all.number999.design }
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [   'trojanstatic1', 'trojanstatic2' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect,  'trojanstatic1', 'trojanstatic2' ] }
+- { name: "AutoSelect", type: url-test, proxies: [   'trojanstatic1', 'trojanstatic2', 'trojanstatic3', 'trojanstatic4' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect,  'trojanstatic1', 'trojanstatic2', 'trojanstatic3', 'trojanstatic4' ] }
 
 
 rules:
