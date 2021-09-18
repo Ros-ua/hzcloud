@@ -10,8 +10,8 @@ secret: ''
 
 proxies:
 
-- { name: "t1", type: trojan, server: batmanday.number999.design, port: 443, password: 89f21f36-8acd-4113-8266-def27a40d579, sni: batmanday.number999.design, alpn: - http1.1 }
-- { name: "t2", type: trojan, server: batmanday.number999.design, port: 443, password: 89f21f36-8acd-4113-8266-def27a40d579, network: grpc, sni: batmanday.number999.design, alpn: - h2, path: batmantrojangrpc, grpc-service-name: batmantrojangrpc }
+- { name: "t1", type: trojan, server: batmanday.number999.design, port: 443, password: 89f21f36-8acd-4113-8266-def27a40d579, sni: batmanday.number999.design }
+- { name: "t2", type: trojan, server: batmanday.number999.design, port: 443, password: 89f21f36-8acd-4113-8266-def27a40d579, network: grpc, sni: batmanday.number999.design, path: batmantrojangrpc, grpc-service-name: batmantrojangrpc }
 
 proxy-groups:
 - { name: "AutoSelect", type: url-test, proxies: [   't1', 't2' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
