@@ -19,8 +19,8 @@ proxies:
 
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [   'trojanstatic1', 'trojanstatic2', 't3108-11', 't3108-12', 'batmanday' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect,  'trojanstatic1', 'trojanstatic2', 't3108-11', 't3108-12', 'batmanday' ] }
+- { name: "AutoSelect", type: url-test, proxies: [  'batmanday', 'trojanstatic1', 'trojanstatic2', 't3108-11', 't3108-12' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect,  'batmanday', 'trojanstatic1', 'trojanstatic2', 't3108-11', 't3108-12' ] }
 
 
 rules:
