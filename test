@@ -10,12 +10,17 @@ secret: ''
 
 proxies:
 
-- { name: "t1", type: trojan, server: 1609.number999.design, port: 443, password: 1qaz2wsx }
-- { name: "t2", type: trojan, server: 1609.number999.design, port: 443, password: 3bqe4efq8 }
+- { name: "trojanstatic1", type: trojan, server: 2908.duckdns.org, port: 443, password: 1qaz2wsx }
+- { name: "trojanstatic2", type: trojan, server: 2908.duckdns.org, port: 443, password: yj6e69pw9 }
+- { name: "t3108-11", type: trojan, server: 3108-1.number999.design, port: 443, password: 1qaz2wsx }
+- { name: "t3108-12", type: trojan, server: 3108-1.number999.design, port: 443, password: 8h37swkpz }
+- { name: "batmanday", type: trojan, server: batmanday.number999.design, port: 443, password: 5b43232c-effd-4a49-a34d-cfecd78957a5 }
+
+
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [   't1', 't2' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect,  't1', 't2' ] }
+- { name: "AutoSelect", type: url-test, proxies: [  'batmanday', 'trojanstatic1', 'trojanstatic2', 't3108-11', 't3108-12' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect,  'batmanday', 'trojanstatic1', 'trojanstatic2', 't3108-11', 't3108-12' ] }
 
 
 rules:
