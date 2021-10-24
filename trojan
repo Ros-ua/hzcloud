@@ -18,8 +18,8 @@ proxies:
 
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [  'batmanday', 'guardianangels', 'trojanstatic1', 'trojanstatic2'  ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect,  'batmanday', 'guardianangels', 'trojanstatic1', 'trojanstatic2'  ] }
+- { name: "AutoSelect", type: url-test, proxies: [  'batmanday', 'guardianangels'  ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect,  'batmanday', 'guardianangels'  ] }
 
 
 rules:
