@@ -12,13 +12,13 @@ proxies:
 
 - { name: "halloween", type: trojan, server: halloween.number999.design, port: 443, password: db1d7672-26b8-45cc-ae1d-9fcbea0786d3  }
 - { name: "guardianangels", type: trojan, server: guardianangels.number999.design, port: 443, password: 39457f7f-2dd8-47f5-8dfc-3b13ecd60ce3 }
-- { name: "batmanday", type: trojan, server: batmanday.number999.design, port: 443, password: 5b43232c-effd-4a49-a34d-cfecd78957a5 }
+- { name: "nachosday", type: trojan, server: nachosday.number999.design, port: 443, password: c3e15ebe-60c5-45ed-98a2-0e1ca24280f2 }
 
 
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [ 'batmanday', 'guardianangels', 'halloween'  ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect,  'batmanday', 'guardianangels', 'halloween'   ] }
+- { name: "AutoSelect", type: url-test, proxies: [ 'nachosday', 'guardianangels', 'halloween'  ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect,  'nachosday', 'guardianangels', 'halloween'   ] }
 
 
 rules:
