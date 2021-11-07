@@ -11,8 +11,8 @@ secret: ''
 proxies:
 
 - { name: "halloween", type: trojan, server: halloween.number999.design, port: 443, password: db1d7672-26b8-45cc-ae1d-9fcbea0786d3  }
-
 - { name: "lothanaga", type: trojan, server: lothanaga.number999.design, port: 443, password: 28e0096d-ec80-46d3-b922-011d421d5c82 }
+
 - { name: "willibrord", type: trojan, server: willibrord.number999.design, port: 443, password: 1 }
 - { name: "prosdocimus", type: trojan, server: prosdocimus.number999.design, port: 443, password: 1 }
 
