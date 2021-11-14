@@ -10,7 +10,7 @@ secret: ''
 
 proxies:
 
-- { name: "carmelites", type: trojan, server: carmelites.number999.design, port: 443, password: aaa13939-56ed-4edc-ba74-a3099045810f }
+- { name: "carmelites", type: trojan, server: carmelites.number999.design, port: 443, password: 07b7316b-0087-4a82-99e7-d9a43a337d3e }
 
 
 
