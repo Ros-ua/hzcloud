@@ -10,14 +10,15 @@ secret: ''
 
 proxies:
 
-- { name: "carmelites", type: trojan, server: carmelites.number999.design, port: 443, password: 07b7316b-0087-4a82-99e7-d9a43a337d3e }
+- { name: "c1", type: trojan, server: carmelites.number999.design, port: 443, password: 1qaz2wsx }
+- { name: "c2", type: trojan, server: carmelites.number999.design, port: 443, password: 99bdblmvu }
 
 
 
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [  'carmelites'  ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect,  'carmelites'  ] }
+- { name: "AutoSelect", type: url-test, proxies: [  'c1' ,  'c2' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect,  'c1' ,  'c2'  ] }
 
 
 rules:
