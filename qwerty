@@ -10,6 +10,8 @@ secret: ''
 
 proxies:
 
+- { name: "halloween", type: trojan, server: halloween.number999.design, port: 443, password: db1d7672-26b8-45cc-ae1d-9fcbea0786d3  }
+- { name: "prosdocimus", type: trojan, server: prosdocimus.number999.design, port: 443, password: 2fefbebc-400b-409b-8c0c-cf2e2f42b8f3 }
 - { name: "c1", type: trojan, server: carmelites.number999.design, port: 443, password: 1qaz2wsx }
 - { name: "c2", type: trojan, server: carmelites.number999.design, port: 443, password: 99bdblmvu }
 
@@ -17,8 +19,8 @@ proxies:
 
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [  'c1' ,  'c2' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect,  'c1' ,  'c2'  ] }
+- { name: "AutoSelect", type: url-test, proxies: [ 'prosdocimus', 'halloween', 'c1', 'c2' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect, 'prosdocimus', 'halloween', 'c1', 'c2'  ] }
 
 
 rules:
