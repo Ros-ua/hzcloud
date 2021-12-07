@@ -18,8 +18,8 @@ proxies:
 
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [ 'prosdocimus', 'halloween', 'omicronchik' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect, 'prosdocimus', 'halloween', 'omicronchik'  ] }
+- { name: "AutoSelect", type: url-test, proxies: [ 'omicronchik', 'prosdocimus', 'halloween' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect, 'omicronchik', 'prosdocimus', 'halloween'  ] }
 
 
 rules:
