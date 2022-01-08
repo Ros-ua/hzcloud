@@ -10,16 +10,16 @@ secret: ''
 
 proxies:
 
-- { name: "halloween", type: trojan, server: halloween.number999.design, port: 443, password: db1d7672-26b8-45cc-ae1d-9fcbea0786d3  }
-- { name: "prosdocimus", type: trojan, server: prosdocimus.number999.design, port: 443, password: 2fefbebc-400b-409b-8c0c-cf2e2f42b8f3 }
-- { name: "omicronchik", type: trojan, server: omicronchik.number999.design, port: 443, password: 7cd7ae8f-8290-42c2-9a05-978dd4cefb5b }
+- { name: "8011", type: trojan, server: 801.number999.design, port: 443, password: 8d5c2285-d4d7-41b2-93c6-883216996a51  }
+- { name: "8012", type: trojan, server: 801.number999.design, port: 443, password: 8d5c2285-d4d7-41b2-93c6-883216996a51 }
+
 
 
 
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [ 'omicronchik', 'prosdocimus', 'halloween' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect, 'omicronchik', 'prosdocimus', 'halloween'  ] }
+- { name: "AutoSelect", type: url-test, proxies: [ '8011', '8012' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect, '8011', '8012'  ] }
 
 
 rules:
