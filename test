@@ -12,16 +12,16 @@ proxies:
 
 - { name: "2021", type: trojan, server: 202.number999.design, port: 443, password: e0736b4f-9cd3-4d4b-bc90-cca215973e33 }
 - { name: "2022", type: trojan, server: 202.number999.design, port: 443, password: e0736b4f-9cd3-4d4b-bc90-cca215973e33 }
-- { name: "8021", type: trojan, server: 802.number999.design, port: 443, password: c364c4d6-84b8-45b0-99e8-5abe4a11ee94 }
-- { name: "8022", type: trojan, server: 802.number999.design, port: 443, password: c364c4d6-84b8-45b0-99e8-5abe4a11ee94 }
+- { name: "7021", type: trojan, server: 702.number999.design, port: 443, password: 07e527f3-86d7-4c55-aa36-485372e0fba2 }
+- { name: "7022", type: trojan, server: 702.number999.design, port: 443, password: 07e527f3-86d7-4c55-aa36-485372e0fba2 }
 
 
 
 
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [ '2021', '2022', '8021', '8022'], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect, '2021', '2022', '8021', '8022'  ] }
+- { name: "AutoSelect", type: url-test, proxies: [ '2021', '2022', '7021', '7022'], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect, '2021', '2022', '7021', '7022'  ] }
 
 
 rules:
