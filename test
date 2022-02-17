@@ -20,8 +20,8 @@ proxies:
 
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [ '2021', '2022', '15021', '15022', 'x.v.zgc.su'], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect, '2021', '2022', '15021', '15022', 'x.v.zgc.su'  ] }
+- { name: "AutoSelect", type: url-test, proxies: [ '2021',  '15021',  'x.v.zgc.su'], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect, '2021',  '15021',  'x.v.zgc.su'  ] }
 
 
 rules:
