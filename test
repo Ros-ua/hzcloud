@@ -15,7 +15,7 @@ proxies:
 - { name: "15021", type: trojan, server: 1502.number999.design, port: 443, password: 55d2025c-de39-4b17-84db-b9667486e734 }
 - { name: "15022", type: trojan, server: 1502.number999.design, port: 443, password: 55d2025c-de39-4b17-84db-b9667486e734 }
 
-- { name: "x.v.zgc.su", type: trojan, server: x.v.zgc.su, port: 443, password: 1qaz2wsx }
+- { name: "x.v.zgc.su", type: trojan, server: x.v.zgc.su, port: 443, password: a3272931-ea9c-49ec-92e8-913af9539383 }
 
 
 
