@@ -1,1 +1,27 @@
-dHJvamFuOi8vNjljMWZjMzctZmQ1NS00NmM3LTljNjctNjBhN2FhMmEzNWU0QHBlYWNlLm51bWJlcjk5OS5kZXNpZ246NDQzP3NlY3VyaXR5PXRscyZzbmk9cGVhY2UubnVtYmVyOTk5LmRlc2lnbiZhbHBuPWgyJnR5cGU9Z3JwYyZzZXJ2aWNlTmFtZT1wZWFjZS5udW1iZXI5OTkuZGVzaWdudHJvamFuZ3JwYyZtb2RlPWd1biNwZWFjZS5udW1iZXI5OTkuZGVzaWduX1Ryb2phbl9nUlBDCnZtZXNzOi8vZXcwS0lDQWlkaUk2SUNJeUlpd05DaUFnSW5Ceklqb2dJbkJsWVdObExtNTFiV0psY2prNU9TNWtaWE5wWjI1ZmRtMWxjM05mZDNNaUxBMEtJQ0FpWVdSa0lqb2dJbkJsWVdObExtNTFiV0psY2prNU9TNWtaWE5wWjI0aUxBMEtJQ0FpY0c5eWRDSTZJQ0kwTkRNaUxBMEtJQ0FpYVdRaU9pQWlOamxqTVdaak16Y3RabVExTlMwME5tTTNMVGxqTmpjdE5qQmhOMkZoTW1Fek5XVTBJaXdOQ2lBZ0ltRnBaQ0k2SUNJd0lpd05DaUFnSW5OamVTSTZJQ0poZFhSdklpd05DaUFnSW01bGRDSTZJQ0ozY3lJc0RRb2dJQ0owZVhCbElqb2dJbTV2Ym1VaUxBMEtJQ0FpYUc5emRDSTZJQ0p3WldGalpTNXVkVzFpWlhJNU9Ua3VaR1Z6YVdkdUlpd05DaUFnSW5CaGRHZ2lPaUFpTDNCbFlXTmxMbTUxYldKbGNqazVPUzVrWlhOcFoyNTJkM00vWldROU1qQTBPQ0lzRFFvZ0lDSjBiSE1pT2lBaWRHeHpJaXdOQ2lBZ0luTnVhU0k2SUNKd1pXRmpaUzV1ZFcxaVpYSTVPVGt1WkdWemFXZHVJaXdOQ2lBZ0ltRnNjRzRpT2lBaUlnMEtmUT09
+port: 7890
+socks-port: 7891
+redir-port: 7892
+allow-lan: false
+mode: rule
+log-level: info
+external-controller: '0.0.0.0:9090'
+secret: ''
+
+
+proxies:
+
+- { name: "2021", type: trojan, server: 202.number999.design, port: 443, password: e0736b4f-9cd3-4d4b-bc90-cca215973e33 }
+- { name: 222, server: peace.number999.design, port: 443, type: trojan, password: 69c1fc37-fd55-46c7-9c67-60a7aa2a35e4, sni: peace.number999.design }
+
+
+
+
+
+proxy-groups:
+- { name: "AutoSelect", type: url-test, proxies: [ '2021',  '222' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect, '2021',  '222'  ] }
+
+
+rules:
+ - GEOIP,CN,DIRECT
+ - MATCH,proxies
