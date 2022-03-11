@@ -12,14 +12,15 @@ proxies:
 
 - { name: "2021", type: trojan, server: 202.number999.design, port: 443, password: e0736b4f-9cd3-4d4b-bc90-cca215973e33 }
 - { name: "2022", type: trojan, server: 202.number999.design, port: 443, password: e0736b4f-9cd3-4d4b-bc90-cca215973e33 }
+- { name: "grpc", server: peace.number999.design, port: 443, type: trojan, password: 69c1fc37-fd55-46c7-9c67-60a7aa2a35e4, network: grpc, sni: peace.number999.design, udp: true, grpc-service-name: peace.number999.designtrojangrpc }
 
 
 
 
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [ '2021',  '2022' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect, '2021',  '2022'  ] }
+- { name: "AutoSelect", type: url-test, proxies: [ '2021',  '2022',  'grpc'  ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect, '2021',  '2022' ,  'grpc' ] }
 
 
 rules:
