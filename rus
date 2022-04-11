@@ -10,15 +10,15 @@ secret: ''
 
 proxies:
 
-- { name: "ru1", type: trojan, server: slava.number999.design, port: 443, password: 576d4926-8017-402d-a28a-61169b2f294d }
-- { name: "ru2", type: trojan, server: slava.number999.design, port: 443, password: 576d4926-8017-402d-a28a-61169b2f294d }
+- { name: "r1", type: trojan, server: dd.number999.design , port: 443, password: ded84e57-e473-422a-b46f-51f91cc8eb66 }
+- { name: "r2", type: trojan, server: dd.number999.design , port: 443, password: ded84e57-e473-422a-b46f-51f91cc8eb66 }
 
 
 
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [ 'ru1',  'ru2' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect, 'ru1',  'ru2' ] }
+- { name: "AutoSelect", type: url-test, proxies: [ 'r1',  'r2' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect, 'r1',  'r2' ] }
 
 
 rules:
