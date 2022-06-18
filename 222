@@ -1,10 +1,9 @@
 proxies:
 - { name: "15021", type: trojan, server: 1502.number999.design, port: 443, password: 55d2025c-de39-4b17-84db-b9667486e734 }
 - { name: "freedom", type: trojan, server: freedom.number999.design, port: 443, password: ebfcb728-442f-418c-a42c-3819c3f14851 }
-- {name: 111, server: 13.49.243.125, port: 62670, type: vmess, uuid: 1c06b259-d048-42fd-af67-b5775d7d0ce3, alterId: 0, cipher: auto, network: tcp}
-
+- {name: 233v2, server: 18.156.192.234, port: 44862, type: vmess, uuid: 27ecb019-64dd-4298-bc4a-a712f2cc3775, alterId: 0, cipher: auto, tls: false, skip-cert-verify: false}
 proxy-groups:
-- { name: "proxies", type: select, proxies: [ '15021', 'freedom', '111' ] }
+- { name: "proxies", type: select, proxies: [ '15021', 'freedom', '233v2' ] }
 
 rules:
  - GEOIP,CN,DIRECT
