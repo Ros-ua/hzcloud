@@ -1,6 +1,4 @@
-
 proxies:
-
 - { name: "15021", type: trojan, server: 1502.number999.design, port: 443, password: 55d2025c-de39-4b17-84db-b9667486e734 }
 - { name: "freedom", type: trojan, server: freedom.number999.design, port: 443, password: ebfcb728-442f-418c-a42c-3819c3f14851 }
 
