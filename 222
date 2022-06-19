@@ -6,5 +6,5 @@ proxy-groups:
 - { name: "proxies", type: select, proxies: [ '15021', 'freedom', '233v2' ] }
 
 rules:
- - GEOIP,CN,DIRECT
+ - GEOIP,RU,DIRECT
  - MATCH,proxies
