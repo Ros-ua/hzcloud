@@ -1,0 +1,20 @@
+port: 7890
+socks-port: 7891
+redir-port: 7892
+allow-lan: false
+mode: global
+log-level: info
+external-controller: '0.0.0.0:9090'
+secret: ''
+
+
+proxies:
+- { name: "elonmusk", type: trojan, server: elonmusk.number999.design, port: 443, password: c81a06c3-a937-413a-acce-865ec81179be }
+- { name: "freedom", type: trojan, server: freedom.number999.design, port: 443, password: ebfcb728-442f-418c-a42c-3819c3f14851 }
+- {name: 233v2, server: 18.156.192.234, port: 44862, type: vmess, uuid: 27ecb019-64dd-4298-bc4a-a712f2cc3775, alterId: 0, cipher: auto, tls: false, skip-cert-verify: false}
+proxy-groups:
+- { name: "proxies", type: select, proxies: [ 'elonmusk', 'freedom', '233v2' ] }
+
+rules:
+ - GEOIP,RU,DIRECT
+ - MATCH,proxies
