@@ -5,7 +5,7 @@ proxies:
 
 proxy-groups:
 - { name: "AutoSelect", type: url-test, proxies: [ 'visionone', 'elonmusk', 'freedom' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect, 'hemeni',  'elonmusk', 'freedom' ] }
+- { name: "proxies", type: select, proxies: [ AutoSelect, 'visionone',  'elonmusk', 'freedom' ] }
 
 rules:
  - GEOIP,CN,DIRECT
