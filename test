@@ -1,10 +1,11 @@
 proxies:
+- { name: "hemeni", type: trojan, server: hemeni.duckdns.org, port: 443, password: 94cb21fd-9ccd-42e9-8a75-2b5665390bcc }
 - { name: "elonmusk", type: trojan, server: elonmusk.number999.design, port: 443, password: c81a06c3-a937-413a-acce-865ec81179be }
 - { name: "freedom", type: trojan, server: freedom.number999.design, port: 443, password: ebfcb728-442f-418c-a42c-3819c3f14851 }
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [ 'elonmusk', 'freedom' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect, 'elonmusk', 'freedom' ] }
+- { name: "AutoSelect", type: url-test, proxies: [ 'hemeni', 'elonmusk', 'freedom' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect, 'hemeni',  'elonmusk', 'freedom' ] }
 
 rules:
  - GEOIP,CN,DIRECT
