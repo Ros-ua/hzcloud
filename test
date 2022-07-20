@@ -1,12 +1,11 @@
 proxies:
 - { name: "visionone", type: trojan, server: visionone.duckdns.org , port: 443, password: ccd630fe-17cc-468b-904e-a4c0c22eaa67 }
 - { name: "okduckagain", type: trojan, server: okduckagain.duckdns.org, port: 443, password: c1c91921-bc22-4f3f-9af0-ba1b4b7d8966 }
-- { name: "huk", type: trojan, server: cgsdgc.gsgh.d.zgc.su, port: 443, password: b5ab97d2-c4ee-452e-95db-fb3ad4165d3e }
 
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [ 'visionone', 'okduckagain', 'huk' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect, 'visionone',  'okduckagain', 'huk' ] }
+- { name: "AutoSelect", type: url-test, proxies: [ 'visionone', 'okduckagain' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect, 'visionone',  'okduckagain' ] }
 
 rules:
  - GEOIP,CN,DIRECT
