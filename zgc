@@ -1,4 +1,6 @@
 proxies:
+- { name: "visionone", type: trojan, server: visionone.duckdns.org , port: 443, password: ccd630fe-17cc-468b-904e-a4c0c22eaa67 }
+- { name: "okduckagain", type: trojan, server: okduckagain.duckdns.org, port: 443, password: c1c91921-bc22-4f3f-9af0-ba1b4b7d8966 }
 - { name: eco_HK, type: trojan, server: x.p.hk.zgc.su, port: 567, password: 12cec292-713f-4b26-883b-6fc187f10f19 }
 - { name: eco_Singapore, type: trojan, server: x.eco.singapore.zgc.su, port: 567, password: 12cec292-713f-4b26-883b-6fc187f10f19 }
 - { name: eco_SingaporeX, type: trojan, server: eco.singa.xr.zgc.su, port: 567, password: 12cec292-713f-4b26-883b-6fc187f10f19 }
@@ -30,8 +32,8 @@ proxies:
 
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: ['eco_HK', 'eco_Singapore', 'eco_SingaporeX', 'eco_SingaporeXR', 'eco_JPV', 'eco_Japan_A', 'eco_Japan_C', 'eco_Japan_D2', 'HK', 'Taiwan_telecom', 'Seoul_C', 'Seoul_A', 'Japan_C', 'Japan_D',   'SingaporeX', 'SingaporeXR',  ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect, 'eco_HK', 'eco_Singapore', 'eco_SingaporeX', 'eco_SingaporeXR', 'eco_JPV', 'eco_Japan_A', 'eco_Japan_C', 'eco_Japan_D2', 'eco_Paris', 'eco_London', 'eco_Amsterdam', 'eco_California', 'eco_Argentina', 'HK', 'Taiwan_telecom', 'Ohio', 'Seoul_C', 'Seoul_A', 'Montreal', 'Japan_C', 'Japan_D', 'Stockholm', 'Germany', 'SingaporeX', 'SingaporeXR', 'Moscow', 'China_slow' ] }
+- { name: "AutoSelect", type: url-test, proxies: ['visionone',  'okduckagain', 'eco_HK', 'eco_Singapore', 'eco_SingaporeX', 'eco_SingaporeXR', 'eco_JPV', 'eco_Japan_A', 'eco_Japan_C', 'eco_Japan_D2', 'HK', 'Taiwan_telecom', 'Seoul_C', 'Seoul_A', 'Japan_C', 'Japan_D',   'SingaporeX', 'SingaporeXR',  ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect, 'visionone',  'okduckagain', 'eco_HK', 'eco_Singapore', 'eco_SingaporeX', 'eco_SingaporeXR', 'eco_JPV', 'eco_Japan_A', 'eco_Japan_C', 'eco_Japan_D2', 'eco_Paris', 'eco_London', 'eco_Amsterdam', 'eco_California', 'eco_Argentina', 'HK', 'Taiwan_telecom', 'Ohio', 'Seoul_C', 'Seoul_A', 'Montreal', 'Japan_C', 'Japan_D', 'Stockholm', 'Germany', 'SingaporeX', 'SingaporeXR', 'Moscow', 'China_slow' ] }
 
 
 rules:
