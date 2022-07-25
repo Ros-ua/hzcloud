@@ -31,8 +31,8 @@ proxies:
 
 proxy-groups:
 - { name: "AutoSelect", type: url-test, proxies: ['eco_HK', 'eco_Singapore', 'eco_SingaporeX', 'eco_SingaporeXR', 'eco_JPV', 'eco_Japan_A', 'eco_Japan_C', 'eco_Japan_D2', 'eco_Paris', 'eco_London', 'eco_Amsterdam', 'eco_California', 'eco_Argentina', 'HK', 'Taiwan_telecom', 'Ohio', 'Seoul_C', 'Seoul_A', 'Montreal', 'Japan_C', 'Japan_D', 'Stockholm', 'Germany', 'SingaporeX', 'SingaporeXR', 'Moscow', 'China_slow'  ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "Eco", type: select, proxies: [ 'eco_HK', 'eco_Singapore', 'eco_SingaporeX', 'eco_SingaporeXR', 'eco_JPV', 'eco_Japan_A', 'eco_Japan_C', 'eco_Japan_D2', 'eco_Paris', 'eco_London', 'eco_Amsterdam', 'eco_California', 'eco_Argentina' ] }
-- { name: "Premium", type: select, proxies: [ 'HK', 'Taiwan_telecom', 'Ohio', 'Seoul_C', 'Seoul_A', 'Montreal', 'Japan_C', 'Japan_D', 'Stockholm', 'Germany', 'SingaporeX', 'SingaporeXR', 'Moscow', 'China_slow' ] }
+- { name: "proxies", type: select, proxies: [ 'eco_HK', 'eco_Singapore', 'eco_SingaporeX', 'eco_SingaporeXR', 'eco_JPV', 'eco_Japan_A', 'eco_Japan_C', 'eco_Japan_D2', 'eco_Paris', 'eco_London', 'eco_Amsterdam', 'eco_California', 'eco_Argentina', 'HK', 'Taiwan_telecom', 'Ohio', 'Seoul_C', 'Seoul_A', 'Montreal', 'Japan_C', 'Japan_D', 'Stockholm', 'Germany', 'SingaporeX', 'SingaporeXR', 'Moscow', 'China_slow' ] }
+
 
 rules:
  - GEOIP,CN,DIRECT
