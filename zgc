@@ -1,0 +1,39 @@
+proxies:
+- { name: eco_HK, type: trojan, server: x.p.hk.zgc.su, port: 567, password: 12cec292-713f-4b26-883b-6fc187f10f19 }
+- { name: eco_Singapore, type: trojan, server: x.eco.singapore.zgc.su, port: 567, password: 12cec292-713f-4b26-883b-6fc187f10f19 }
+- { name: eco_SingaporeX, type: trojan, server: eco.singa.xr.zgc.su, port: 567, password: 12cec292-713f-4b26-883b-6fc187f10f19 }
+- { name: eco_SingaporeXR, type: trojan, server: eco.xr.singa.zgc.su, port: 567, password: 12cec292-713f-4b26-883b-6fc187f10f19 }
+- { name: eco_JPV, type: trojan, server: x.eco.jpv.zgc.su, port: 567, password: 12cec292-713f-4b26-883b-6fc187f10f19 }
+- { name: eco_Japan_A, type: trojan, server: c.eco.japana.zgc.su, port: 567, password: 12cec292-713f-4b26-883b-6fc187f10f19 }
+- { name: eco_Japan_C, type: trojan, server: x.eco.japanc.zgc.su, port: 567, password: 12cec292-713f-4b26-883b-6fc187f10f19 }
+- { name: eco_Japan_D2, type: trojan, server: x.eco.japand.zgc.su, port: 567, password: 12cec292-713f-4b26-883b-6fc187f10f19 }
+- { name: eco_Paris, type: trojan, server: xr.paris.zgc.su, port: 567, password: 12cec292-713f-4b26-883b-6fc187f10f19 }
+- { name: eco_London, type: trojan, server: xr.london.zgc.su, port: 567, password: 12cec292-713f-4b26-883b-6fc187f10f19 }
+- { name: eco_Amsterdam, type: trojan, server: r.amsterdam.zgc.su, port: 567, password: 12cec292-713f-4b26-883b-6fc187f10f19 }
+- { name: eco_California, type: trojan, server: x.c.los.zgc.su, port: 567, password: 12cec292-713f-4b26-883b-6fc187f10f19 }
+- { name: eco_Argentina, type: trojan, server: b.argentina.zgc.su, port: 567, password: 12cec292-713f-4b26-883b-6fc187f10f19 }
+- { name: HK, type: trojan, server: x.p.japanturbo.zgc.su, port: 567, password: 12cec292-713f-4b26-883b-6fc187f10f19 }
+- { name: Taiwan_telecom, type: trojan, server: tw.premium.zgc.su, port: 567, password: 12cec292-713f-4b26-883b-6fc187f10f19 }
+- { name: Ohio, type: trojan, server: x.ohio.zgc.su, port: 567, password: 12cec292-713f-4b26-883b-6fc187f10f19 }
+- { name: Seoul_C, type: trojan, server: x.p.seoul.zgc.su, port: 567, password: 12cec292-713f-4b26-883b-6fc187f10f19 }
+- { name: Seoul_A, type: trojan, server: a.seoul.zgc.su, port: 567, password: 12cec292-713f-4b26-883b-6fc187f10f19 }
+- { name: Montreal, type: trojan, server: x.p.montreal.zgc.su, port: 567, password: 12cec292-713f-4b26-883b-6fc187f10f19 }
+- { name: Japan_C, type: trojan, server: x.p.japanc.zgc.su, port: 567, password: 12cec292-713f-4b26-883b-6fc187f10f19 }
+- { name: Japan_D, type: trojan, server: x.p.japand.zgc.su, port: 567, password: 12cec292-713f-4b26-883b-6fc187f10f19 }
+- { name: Stockholm, type: trojan, server: x.p.stockholm.zgc.su, port: 567, password: 12cec292-713f-4b26-883b-6fc187f10f19 }
+- { name: Germany, type: trojan, server: r.r4.zgc.su, port: 567, password: 12cec292-713f-4b26-883b-6fc187f10f19 }
+- { name: SingaporeX, type: trojan, server: singaporex.zgc.su, port: 567, password: 12cec292-713f-4b26-883b-6fc187f10f19 }
+- { name: SingaporeXR, type: trojan, server: singa.xr.zgc.su, port: 567, password: 12cec292-713f-4b26-883b-6fc187f10f19 }
+- { name: Moscow, type: trojan, server: x.p.moscow.zgc.su, port: 567, password: 12cec292-713f-4b26-883b-6fc187f10f19 }
+- { name: China_slow, type: trojan, server: china.zgc.su, port: 567, password: 12cec292-713f-4b26-883b-6fc187f10f19 }
+
+
+
+proxy-groups:
+- { name: "AutoSelect", type: url-test, proxies: ['eco_HK', 'eco_Singapore', 'eco_SingaporeX', 'eco_SingaporeXR', 'eco_JPV', 'eco_Japan_A', 'eco_Japan_C', 'eco_Japan_D2', 'eco_Paris', 'eco_London', 'eco_Amsterdam', 'eco_California', 'eco_Argentina', 'HK', 'Taiwan_telecom', 'Ohio', 'Seoul_C', 'Seoul_A', 'Montreal', 'Japan_C', 'Japan_D', 'Stockholm', 'Germany', 'SingaporeX', 'SingaporeXR', 'Moscow', 'China_slow'  ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "Eco", type: select, proxies: [ 'eco_HK', 'eco_Singapore', 'eco_SingaporeX', 'eco_SingaporeXR', 'eco_JPV', 'eco_Japan_A', 'eco_Japan_C', 'eco_Japan_D2', 'eco_Paris', 'eco_London', 'eco_Amsterdam', 'eco_California', 'eco_Argentina' ] }
+- { name: "Premium", type: select, proxies: [ 'HK', 'Taiwan_telecom', 'Ohio', 'Seoul_C', 'Seoul_A', 'Montreal', 'Japan_C', 'Japan_D', 'Stockholm', 'Germany', 'SingaporeX', 'SingaporeXR', 'Moscow', 'China_slow' ] }
+
+rules:
+ - GEOIP,CN,DIRECT
+ - MATCH,proxies
