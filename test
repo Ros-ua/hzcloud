@@ -9,7 +9,7 @@ proxies:
 
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [ 'strangeTrojan', 'strangegRPC', 'visiononegRPC', 'okduckagaingRPC', 'visionone', 'okduckagain' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "AutoSelect", type: url-test, proxies: [ 'strangeTrojan', 'strangegRPC'], url: 'http://www.gstatic.com/generate_204', interval: 300 }
 - { name: "proxies", type: select, proxies: [ AutoSelect, 'strangeTrojan', 'strangegRPC', 'visiononegRPC', 'okduckagaingRPC', 'visionone',  'okduckagain' ] }
 
 rules:
