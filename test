@@ -1,16 +1,14 @@
 proxies:
-- { name: visionone, type: trojan, server: visionone.duckdns.org , port: 443, password: ccd630fe-17cc-468b-904e-a4c0c22eaa67 }
-- { name: okduckagain, type: trojan, server: okduckagain.duckdns.org, port: 443, password: c1c91921-bc22-4f3f-9af0-ba1b4b7d8966 }
-- {name: visiononegRPC, server: visionone.duckdns.org, port: 443, type: trojan, password: ccd630fe-17cc-468b-904e-a4c0c22eaa67, sni: visionone.duckdns.org, skip-cert-verify: false}
-- {name: okduckagaingRPC, server: okduckagain.duckdns.org, port: 443, type: trojan, password: c1c91921-bc22-4f3f-9af0-ba1b4b7d8966, sni: okduckagain.duckdns.org, skip-cert-verify: false}
 - {name: strangeTrojan, server: strange.accesscam.org, port: 443, type: trojan, password: b058e091-d8d4-45d1-9209-8f227d52cd83, sni: strange.accesscam.org, skip-cert-verify: false}
 - {name: strangegRPC, server: strange.accesscam.org, port: 443, type: trojan, password: b058e091-d8d4-45d1-9209-8f227d52cd83, sni: strange.accesscam.org, skip-cert-verify: false}
+- {name: HimarsTrojan, server: Himarsforever.accesscam.org, port: 443, type: trojan, password: f1b04cd7-e110-4fd1-930b-7ecb551caf32, sni: Himarsforever.accesscam.org, skip-cert-verify: false}
+- {name: HimarsgRPC, server: Himarsforever.accesscam.org, port: 443, type: trojan, password: f1b04cd7-e110-4fd1-930b-7ecb551caf32, sni: Himarsforever.accesscam.org, skip-cert-verify: false}
 
 
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [ 'strangeTrojan', 'strangegRPC'], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect, 'strangeTrojan', 'strangegRPC' ] }
+- { name: "AutoSelect", type: url-test, proxies: [ 'HimarsTrojan', 'HimarsgRPC', 'strangeTrojan', 'strangegRPC' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect, 'HimarsTrojan', 'HimarsgRPC', 'strangeTrojan', 'strangegRPC' ] }
 
 rules:
  - GEOIP,CN,DIRECT
