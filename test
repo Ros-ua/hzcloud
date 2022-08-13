@@ -9,8 +9,8 @@ proxies:
 
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [ 'oikws', 'oikTrojan', 'oikgRPC', 'multikws', 'multikTrojan', 'multikRPC' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect, 'oikws', 'oikTrojan', 'oikgRPC', 'multikws', 'multikTrojan', 'multikRPC' ] }
+- { name: "AutoSelect", type: url-test, proxies: [ 'oikws', 'oikTrojan', 'oikgRPC', 'multikws', 'multikTrojan', 'multikgRPC' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect, 'oikws', 'oikTrojan', 'oikgRPC', 'multikws', 'multikTrojan', 'multikgRPC' ] }
 
 rules:
  - GEOIP,CN,DIRECT
