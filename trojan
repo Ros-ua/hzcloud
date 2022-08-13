@@ -2,12 +2,15 @@ proxies:
 - {name: oikws, server: oik.letitbe.ink, port: 443, type: vmess, uuid: 0f297acc-0acb-452c-9bd3-a51ff1162e2f, alterId: 0, cipher: auto, tls: true, skip-cert-verify: false, network: ws, ws-opts: {path: "/oik.letitbe.inkvws?ed=2048", headers: {Host: oik.letitbe.ink}}}
 - {name: oikTrojan, server: oik.letitbe.ink, port: 443, type: trojan, password: 0f297acc-0acb-452c-9bd3-a51ff1162e2f, sni: oik.letitbe.ink, skip-cert-verify: false}
 - {name: oikgRPC, server: oik.letitbe.ink, port: 443, type: trojan, password: 0f297acc-0acb-452c-9bd3-a51ff1162e2f, sni: oik.letitbe.ink, skip-cert-verify: false}
+- {name: multikws, server: multik.letitbe.ink, port: 443, type: vmess, uuid: 5ef8d2bd-ab1e-4a5c-bbd2-81080687405d, alterId: 0, cipher: auto, tls: true, skip-cert-verify: false, network: ws, ws-opts: {path: "/multik.letitbe.inkvws?ed=2048", headers: {Host: multik.letitbe.ink}}}
+- {name: multikTrojan, server: multik.letitbe.ink, port: 443, type: trojan, password: 5ef8d2bd-ab1e-4a5c-bbd2-81080687405d, sni: multik.letitbe.ink, skip-cert-verify: false}
+- {name: multikgRPC, server: multik.letitbe.ink, port: 443, type: trojan, password: 5ef8d2bd-ab1e-4a5c-bbd2-81080687405d, sni: multik.letitbe.ink, skip-cert-verify: false}
 
 
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [ 'oikws', 'oikTrojan', 'oikgRPC' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect, 'oikws', 'oikTrojan', 'oikgRPC' ] }
+- { name: "AutoSelect", type: url-test, proxies: [ 'oikws', 'oikTrojan', 'oikgRPC', 'multikws', 'multikTrojan', 'multikgRPC' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect, 'oikws', 'oikTrojan', 'oikgRPC', 'multikws', 'multikTrojan', 'multikgRPC' ] }
 
 rules:
  - GEOIP,CN,DIRECT
