@@ -2,11 +2,14 @@ proxies:
 - {name: kontrws, server: kontrnastup.letitbe.ink, port: 443, type: vmess, uuid: 1fa3f756-84f3-4206-866d-392e385e0b2f, alterId: 0, cipher: auto, tls: true, servername: kontrnastup.letitbe.ink, network: ws, ws-opts: {path: "/kontrnastup.letitbe.inkvws?ed=2048", headers: {Host: kontrnastup.letitbe.ink}}}
 - {name: kontrTrojan, server: kontrnastup.letitbe.ink, port: 443, type: trojan, password: 1fa3f756-84f3-4206-866d-392e385e0b2f, sni: kontrnastup.letitbe.ink}
 - {name: kontrgRPC, server: kontrnastup.letitbe.ink, port: 443, type: trojan, password: 1fa3f756-84f3-4206-866d-392e385e0b2f, sni: kontrnastup.letitbe.ink}
+- {name: sunbeamws, server: sunbeam.letitbe.ink, port: 443, type: vmess, uuid: 20a878eb-5476-4eed-b8eb-23d347ddcd4a, alterId: 0, cipher: auto, tls: true, servername: sunbeam.letitbe.ink, network: ws, ws-opts: {path: "/sunbeam.letitbe.inkvws?ed=2048", headers: {Host: sunbeam.letitbe.ink}}}
+- {name: sunbeamTrojan, server: sunbeam.letitbe.ink, port: 443, type: trojan, password: 20a878eb-5476-4eed-b8eb-23d347ddcd4a, sni: sunbeam.letitbe.ink}
+- {name: sunbeamgRPC, server: sunbeam.letitbe.ink, port: 443, type: trojan, password: 20a878eb-5476-4eed-b8eb-23d347ddcd4a, sni: sunbeam.letitbe.ink}
 
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [ 'kontrws', 'kontrTrojan', 'kontrgRPC'], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect, 'kontrws', 'kontrTrojan', 'kontrgRPC' ] }
+- { name: "AutoSelect", type: url-test, proxies: [ 'kontrws', 'kontrTrojan', 'kontrgRPC', 'sunbeamws', 'sunbeamTrojan', 'sunbeamgRPC'], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect, 'kontrws', 'kontrTrojan', 'kontrgRPC', 'sunbeamws', 'sunbeamTrojan', 'sunbeamgRPC'] }
 
 rules:
  - GEOIP,CN,DIRECT
