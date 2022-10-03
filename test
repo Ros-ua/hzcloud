@@ -2,14 +2,15 @@ proxies:
 - {name: 2ws, server: 2.letitbe.ink, port: 443, type: vmess, uuid: ae4b95e6-d35d-45fc-9374-1de451043ae2, alterId: 0, cipher: auto, tls: true, skip-cert-verify: false, servername: 2.letitbe.ink, network: ws, ws-opts: {path: "/2.letitbe.inkvws?ed=2048", headers: {Host: 2.letitbe.ink}}}
 - {name: 2Trojan, server: 2.letitbe.ink, port: 443, type: trojan, password: ae4b95e6-d35d-45fc-9374-1de451043ae2, sni: 2.letitbe.ink, skip-cert-verify: false}
 - {name: 2gRPC, server: 2.letitbe.ink, port: 443, type: trojan, password: ae4b95e6-d35d-45fc-9374-1de451043ae2, sni: 2.letitbe.ink, skip-cert-verify: false}
-- {name: sunbeamws, server: sunbeam.letitbe.ink, port: 443, type: vmess, uuid: 20a878eb-5476-4eed-b8eb-23d347ddcd4a, alterId: 0, cipher: auto, tls: true, servername: sunbeam.letitbe.ink, network: ws, ws-opts: {path: "/sunbeam.letitbe.inkvws?ed=2048", headers: {Host: sunbeam.letitbe.ink}}}
-- {name: sunbeamTrojan, server: sunbeam.letitbe.ink, port: 443, type: trojan, password: 20a878eb-5476-4eed-b8eb-23d347ddcd4a, sni: sunbeam.letitbe.ink}
-- {name: sunbeamgRPC, server: sunbeam.letitbe.ink, port: 443, type: trojan, password: 20a878eb-5476-4eed-b8eb-23d347ddcd4a, sni: sunbeam.letitbe.ink}
+  - {name: 1ws, server: 1.letitbe.ink, port: 443, type: vmess, uuid: c300e3f1-e856-4e5e-8437-89f42c313ffb, alterId: 0, cipher: auto, tls: true, skip-cert-verify: false, servername: 1.letitbe.ink, network: ws, ws-opts: {path: "/1.letitbe.inkvws?ed=2048", headers: {Host: 1.letitbe.ink}}}
+  - {name: 1Trojan, server: 1.letitbe.ink, port: 443, type: trojan, password: c300e3f1-e856-4e5e-8437-89f42c313ffb, sni: 1.letitbe.ink, skip-cert-verify: false}
+  - {name: 1gRPC, server: 1.letitbe.ink, port: 443, type: trojan, password: c300e3f1-e856-4e5e-8437-89f42c313ffb, sni: 1.letitbe.ink, skip-cert-verify: false}
+
 
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [ '2ws', '2Trojan', '2gRPC', 'sunbeamws', 'sunbeamTrojan', 'sunbeamgRPC'], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "proxies", type: select, proxies: [ AutoSelect, '2ws', '2Trojan', '2gRPC', 'sunbeamws', 'sunbeamTrojan', 'sunbeamgRPC'] }
+- { name: "AutoSelect", type: url-test, proxies: [ '2ws', '2Trojan', '2gRPC', '1ws', '1Trojan', '1gRPC'], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "proxies", type: select, proxies: [ AutoSelect, '2ws', '2Trojan', '2gRPC', '1ws', '1Trojan', '1gRPC'] }
 
 rules:
  - GEOIP,CN,DIRECT
