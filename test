@@ -14,7 +14,7 @@ proxies:
 
 proxy-groups:
 - { name: "AutoSelect", type: url-test, proxies: [ '2ws', '2Trojan', '2gRPC', '1ws', '1Trojan', '1gRPC', 'nows', 'noTrojan', 'nogRPC'], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "Premium", type: select, proxies: [ AutoSelect, '2ws', '2Trojan', '2gRPC', '1ws', '1Trojan', '1gRPC', 'nows', 'noTrojan', 'nogRPC] }
+- { name: "Premium", type: select, proxies: [ AutoSelect, '2ws', '2Trojan', '2gRPC', '1ws', '1Trojan', '1gRPC', 'nows', 'noTrojan', 'nogRPC'] }
 
 
 rules:
