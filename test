@@ -6,15 +6,14 @@ proxies:
 - {name: 1Trojan, server: 1.letitbe.ink, port: 443, type: trojan, password: c300e3f1-e856-4e5e-8437-89f42c313ffb, sni: 1.letitbe.ink, skip-cert-verify: false}
 - {name: 1gRPC, server: 1.letitbe.ink, port: 443, type: trojan, password: c300e3f1-e856-4e5e-8437-89f42c313ffb, sni: 1.letitbe.ink, skip-cert-verify: false}
 - {name: 810, server: 35.77.37.45, port: 443, type: trojan, password: ayb6nf, sni: 810.letitbe.ink}
-- {name: 🇭🇰, server: 103.68.61.175, port: 443, type: trojan, password: 23zph5, sni: hk.zgcvpn.link}
 
 
 
 
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [ '2ws', '2Trojan', '2gRPC', '1ws', '1Trojan', '1gRPC', '810', '🇭🇰' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "Premium", type: select, proxies: [ AutoSelect, '2ws', '2Trojan', '2gRPC', '1ws', '1Trojan', '1gRPC', '810', '🇭🇰' ] }
+- { name: "AutoSelect", type: url-test, proxies: [ '2ws', '2Trojan', '2gRPC', '1ws', '1Trojan', '1gRPC', '810' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "Premium", type: select, proxies: [ AutoSelect, '2ws', '2Trojan', '2gRPC', '1ws', '1Trojan', '1gRPC', '810' ] }
 rules:
  - GEOIP, CN, DIRECT
  - MATCH, Premium
