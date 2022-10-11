@@ -5,7 +5,7 @@ proxies:
 - {name: 1ws, server: 1.letitbe.ink, port: 443, type: vmess, uuid: c300e3f1-e856-4e5e-8437-89f42c313ffb, alterId: 0, cipher: auto, tls: true, skip-cert-verify: false, servername: 1.letitbe.ink, network: ws, ws-opts: {path: "/1.letitbe.inkvws?ed=2048", headers: {Host: 1.letitbe.ink}}}
 - {name: 1Trojan, server: 1.letitbe.ink, port: 443, type: trojan, password: c300e3f1-e856-4e5e-8437-89f42c313ffb, sni: 1.letitbe.ink, skip-cert-verify: false}
 - {name: 1gRPC, server: 1.letitbe.ink, port: 443, type: trojan, password: c300e3f1-e856-4e5e-8437-89f42c313ffb, sni: 1.letitbe.ink, skip-cert-verify: false}
-- {name: 999, server: 35.78.218.137, port: 443, type: trojan, password: mknrlt, sni: 999.letitbe.ink}
+- {name: 999, server: 999.letitbe.ink, port: 443, type: trojan, password: mknrlt, sni: 999.letitbe.ink}
 
 
 
