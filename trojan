@@ -5,17 +5,13 @@ proxies:
 - {name: 1ws, server: 1.letitbe.ink, port: 443, type: vmess, uuid: c300e3f1-e856-4e5e-8437-89f42c313ffb, alterId: 0, cipher: auto, tls: true, skip-cert-verify: false, servername: 1.letitbe.ink, network: ws, ws-opts: {path: "/1.letitbe.inkvws?ed=2048", headers: {Host: 1.letitbe.ink}}}
 - {name: 1Trojan, server: 1.letitbe.ink, port: 443, type: trojan, password: c300e3f1-e856-4e5e-8437-89f42c313ffb, sni: 1.letitbe.ink, skip-cert-verify: false}
 - {name: 1gRPC, server: 1.letitbe.ink, port: 443, type: trojan, password: c300e3f1-e856-4e5e-8437-89f42c313ffb, sni: 1.letitbe.ink, skip-cert-verify: false}
-- {name: 999T, server: 35.78.218.137, port: 443, type: trojan, password: mknrlt, sni: 999.letitbe.ink}
-- {name: 11T, server: 18.180.78.245, port: 443, type: trojan, password: ox28y3, sni: 11.letitbe.ink}
-
-
-
-
-
+- {name: 13ws, server: 13.letitbe.ink, port: 443, type: vmess, uuid: 758aa432-9299-41ca-89f1-f4adc4e20fbc, alterId: 0, cipher: auto, tls: true, servername: 13.letitbe.ink, network: ws, ws-opts: {path: "/13.letitbe.inkvws?ed=2048", headers: {Host: 13.letitbe.ink}}}
+- {name: 13Trojan, server: 13.letitbe.ink, port: 443, type: trojan, password: 758aa432-9299-41ca-89f1-f4adc4e20fbc, sni: 13.letitbe.ink}
+- {name: 13gRPC, server: 13.letitbe.ink, port: 443, type: trojan, password: 758aa432-9299-41ca-89f1-f4adc4e20fbc, sni: 13.letitbe.ink}
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [ '2ws', '2Trojan', '2gRPC', '1ws', '1Trojan', '1gRPC', '999T', '11T'], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "Premium", type: select, proxies: [ AutoSelect, '2ws', '2Trojan', '2gRPC', '1ws', '1Trojan', '1gRPC', '999T', '11T' ] }
+- { name: "AutoSelect", type: url-test, proxies: [ '2ws', '2Trojan', '2gRPC', '1ws', '1Trojan', '1gRPC', '13ws', '13Trojan', '13gRPC'], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "Premium", type: select, proxies: [ AutoSelect, '2ws', '2Trojan', '2gRPC', '1ws', '1Trojan', '1gRPC', '13ws', '13Trojan', '13gRPC' ] }
 rules:
  - GEOIP, CN, DIRECT
  - MATCH, Premium
