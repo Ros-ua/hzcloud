@@ -11,7 +11,7 @@ proxies:
 
 proxy-groups:
 - { name: "AutoSelect", type: url-test, proxies: [ '2ws', '2Trojan', '2gRPC', '1ws', '1Trojan', '1gRPC', '13ws', '13Trojan', '13gRPC'], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "Premium", type: select, proxies: [ AutoSelect, '2ws', '2Trojan', '2gRPC', '1ws', '1Trojan', '1gRPC', 13ws', '13Trojan', '13gRPC' ] }
+- { name: "Premium", type: select, proxies: [ AutoSelect, '2ws', '2Trojan', '2gRPC', '1ws', '1Trojan', '1gRPC', '13ws', '13Trojan', '13gRPC' ] }
 rules:
  - GEOIP, CN, DIRECT
  - MATCH, Premium
