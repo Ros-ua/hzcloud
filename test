@@ -8,10 +8,11 @@ proxies:
 - {name: 13ws, server: 13.letitbe.ink, port: 443, type: vmess, uuid: 758aa432-9299-41ca-89f1-f4adc4e20fbc, alterId: 0, cipher: auto, tls: true, servername: 13.letitbe.ink, network: ws, ws-opts: {path: "/13.letitbe.inkvws?ed=2048", headers: {Host: 13.letitbe.ink}}}
 - {name: 13Trojan, server: 13.letitbe.ink, port: 443, type: trojan, password: 758aa432-9299-41ca-89f1-f4adc4e20fbc, sni: 13.letitbe.ink}
 - {name: 13gRPC, server: 13.letitbe.ink, port: 443, type: trojan, password: 758aa432-9299-41ca-89f1-f4adc4e20fbc, sni: 13.letitbe.ink}
+- {name: 18Trojan, server: 18.letitbe.ink, port: 443, type: trojan, password: 1qaz2wsx, sni: 18.letitbe.ink}
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [ '2ws', '2Trojan', '2gRPC', '1ws', '1Trojan', '1gRPC', '13ws', '13Trojan', '13gRPC'], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "Premium", type: select, proxies: [ AutoSelect, '2ws', '2Trojan', '2gRPC', '1ws', '1Trojan', '1gRPC', '13ws', '13Trojan', '13gRPC' ] }
+- { name: "AutoSelect", type: url-test, proxies: [ '2ws', '2Trojan', '2gRPC', '1ws', '1Trojan', '1gRPC', '13ws', '13Trojan', '13gRPC', '18Trojan'], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "Premium", type: select, proxies: [ AutoSelect, '2ws', '2Trojan', '2gRPC', '1ws', '1Trojan', '1gRPC', '13ws', '13Trojan', '13gRPC', '18Trojan' ] }
 rules:
  - GEOIP, CN, DIRECT
  - MATCH, Premium
