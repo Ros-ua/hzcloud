@@ -15,7 +15,7 @@ proxies:
 - {name: 7ws, server: 104.16.82.144, port: 443, type: vmess, uuid: 28c82a70-4179-42e0-9e07-c211ae9f408c, alterId: 0, cipher: auto, tls: true, servername: 28.letitbe.ink, network: ws, ws-opts: {path: "/28.letitbe.inkvws?ed=2048", headers: {Host: 28.letitbe.ink}}}
 - {name: 8ws, server: 172.64.150.37, port: 443, type: vmess, uuid: 28c82a70-4179-42e0-9e07-c211ae9f408c, alterId: 0, cipher: auto, tls: true, servername: 28.letitbe.ink, network: ws, ws-opts: {path: "/28.letitbe.inkvws?ed=2048", headers: {Host: 28.letitbe.ink}}}
 - {name: 9ws, server: 172.64.147.235, port: 443, type: vmess, uuid: 28c82a70-4179-42e0-9e07-c211ae9f408c, alterId: 0, cipher: auto, tls: true, servername: 28.letitbe.ink, network: ws, ws-opts: {path: "/28.letitbe.inkvws?ed=2048", headers: {Host: 28.letitbe.ink}}}
-- {name: 10ws, server: 104.16.33.114, port: 443, type: vmess, uuid: 28c82a70-4179-42e0-9e07-c211ae9f408c, alterId: 0, cipher: auto, tls: true, servername: 28.letitbe.ink, network: ws, ws-opts: {path: "/28.letitbe.inkvws?ed=2048", headers: {Host: 28.letitbe.ink}}}
+- {name: 100ws, server: 104.16.33.114, port: 443, type: vmess, uuid: 28c82a70-4179-42e0-9e07-c211ae9f408c, alterId: 0, cipher: auto, tls: true, servername: 28.letitbe.ink, network: ws, ws-opts: {path: "/28.letitbe.inkvws?ed=2048", headers: {Host: 28.letitbe.ink}}}
 - {name: 11ws, server: 104.19.34.87, port: 443, type: vmess, uuid: 28c82a70-4179-42e0-9e07-c211ae9f408c, alterId: 0, cipher: auto, tls: true, servername: 28.letitbe.ink, network: ws, ws-opts: {path: "/28.letitbe.inkvws?ed=2048", headers: {Host: 28.letitbe.ink}}}
 
   
@@ -23,8 +23,8 @@ proxies:
 
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [ '2ws', '2Trojan', '13ws', '13Trojan', '20hkws', '20hbws', '28ws', '10ws', '20ws', '3ws', '4ws', '5ws', '6ws', '7ws', '8ws', '9ws', '10ws', '11ws'  ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "Premium", type: select, proxies: [ AutoSelect, '2ws', '2Trojan', '13ws', '13Trojan', '20hkws', '20hbws', '28ws', '10ws', '20ws', '3ws', '4ws', '5ws', '6ws', '7ws', '8ws', '9ws', '10ws', '11ws'  ] }
+- { name: "AutoSelect", type: url-test, proxies: [ '2ws', '2Trojan', '13ws', '13Trojan', '20hkws', '20hbws', '28ws', '10ws', '20ws', '3ws', '4ws', '5ws', '6ws', '7ws', '8ws', '9ws', '100ws', '11ws'  ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "Premium", type: select, proxies: [ AutoSelect, '2ws', '2Trojan', '13ws', '13Trojan', '20hkws', '20hbws', '28ws', '10ws', '20ws', '3ws', '4ws', '5ws', '6ws', '7ws', '8ws', '9ws', '100ws', '11ws'  ] }
 rules:
  - GEOIP, CN, DIRECT
  - MATCH, Premium
