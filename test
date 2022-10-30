@@ -4,27 +4,9 @@ proxies:
 - {name: 13ws, server: 13.letitbe.ink, port: 443, type: vmess, uuid: 758aa432-9299-41ca-89f1-f4adc4e20fbc, alterId: 0, cipher: auto, tls: true, servername: 13.letitbe.ink, network: ws, ws-opts: {path: "/13.letitbe.inkvws?ed=2048", headers: {Host: 13.letitbe.ink}}}
 - {name: 13Trojan, server: 13.letitbe.ink, port: 443, type: trojan, password: 758aa432-9299-41ca-89f1-f4adc4e20fbc, sni: 13.letitbe.ink}
 
-- {name: 20hkws, server: 104.21.205.132, port: 443, type: vmess, uuid: 2c0afd0e-e288-4754-8d26-103f01a98e14, alterId: 0, cipher: auto, tls: true, servername: 20hk.letitbe.ink, network: ws, ws-opts: {path: "/20hk.letitbe.inkvws?ed=2048", headers: {Host: 20hk.letitbe.ink}}}
-- {name: 20hbws, server: 198.41.198.130, port: 443, type: vmess, uuid: 6caab584-dbab-49eb-b33b-153553db35f1, alterId: 0, cipher: auto, tls: true, servername: 20hb.letitbe.ink, network: ws, ws-opts: {path: "/20hb.letitbe.inkvws?ed=2048", headers: {Host: 20hb.letitbe.ink}}}
-- {name: 28ws, server: 104.21.202.19, port: 443, type: vmess, uuid: 28c82a70-4179-42e0-9e07-c211ae9f408c, alterId: 0, cipher: auto, tls: true, servername: 28.letitbe.ink, network: ws, ws-opts: {path: "/28.letitbe.inkvws?ed=2048", headers: {Host: 28.letitbe.ink}}}
-- {name: 10ws, server: 104.21.88.93, port: 443, type: vmess, uuid: 28c82a70-4179-42e0-9e07-c211ae9f408c, alterId: 0, cipher: auto, tls: true, servername: 28.letitbe.ink, network: ws, ws-opts: {path: "/28.letitbe.inkvws?ed=2048", headers: {Host: 28.letitbe.ink}}}
-- {name: 20ws, server: 198.41.192.27, port: 443, type: vmess, uuid: 28c82a70-4179-42e0-9e07-c211ae9f408c, alterId: 0, cipher: auto, tls: true, servername: 28.letitbe.ink, network: ws, ws-opts: {path: "/28.letitbe.inkvws?ed=2048", headers: {Host: 28.letitbe.ink}}}
-- {name: 3ws, server: 104.21.87.98, port: 443, type: vmess, uuid: 28c82a70-4179-42e0-9e07-c211ae9f408c, alterId: 0, cipher: auto, tls: true, servername: 28.letitbe.ink, network: ws, ws-opts: {path: "/28.letitbe.inkvws?ed=2048", headers: {Host: 28.letitbe.ink}}}
-- {name: 4ws, server: 198.41.197.242, port: 443, type: vmess, uuid: 28c82a70-4179-42e0-9e07-c211ae9f408c, alterId: 0, cipher: auto, tls: true, servername: 28.letitbe.ink, network: ws, ws-opts: {path: "/28.letitbe.inkvws?ed=2048", headers: {Host: 28.letitbe.ink}}}
-- {name: 5ws, server: 104.21.203.155, port: 443, type: vmess, uuid: 28c82a70-4179-42e0-9e07-c211ae9f408c, alterId: 0, cipher: auto, tls: true, servername: 28.letitbe.ink, network: ws, ws-opts: {path: "/28.letitbe.inkvws?ed=2048", headers: {Host: 28.letitbe.ink}}}
-- {name: 6ws, server: 104.21.89.183, port: 443, type: vmess, uuid: 28c82a70-4179-42e0-9e07-c211ae9f408c, alterId: 0, cipher: auto, tls: true, servername: 28.letitbe.ink, network: ws, ws-opts: {path: "/28.letitbe.inkvws?ed=2048", headers: {Host: 28.letitbe.ink}}}
-- {name: 7ws, server: 104.21.201.140, port: 443, type: vmess, uuid: 28c82a70-4179-42e0-9e07-c211ae9f408c, alterId: 0, cipher: auto, tls: true, servername: 28.letitbe.ink, network: ws, ws-opts: {path: "/28.letitbe.inkvws?ed=2048", headers: {Host: 28.letitbe.ink}}}
-- {name: 8ws, server: 104.21.205.132, port: 443, type: vmess, uuid: 28c82a70-4179-42e0-9e07-c211ae9f408c, alterId: 0, cipher: auto, tls: true, servername: 28.letitbe.ink, network: ws, ws-opts: {path: "/28.letitbe.inkvws?ed=2048", headers: {Host: 28.letitbe.ink}}}
-- {name: 9ws, server: 198.41.198.130, port: 443, type: vmess, uuid: 28c82a70-4179-42e0-9e07-c211ae9f408c, alterId: 0, cipher: auto, tls: true, servername: 28.letitbe.ink, network: ws, ws-opts: {path: "/28.letitbe.inkvws?ed=2048", headers: {Host: 28.letitbe.ink}}}
-- {name: 100ws, server: 104.21.202.19, port: 443, type: vmess, uuid: 28c82a70-4179-42e0-9e07-c211ae9f408c, alterId: 0, cipher: auto, tls: true, servername: 28.letitbe.ink, network: ws, ws-opts: {path: "/28.letitbe.inkvws?ed=2048", headers: {Host: 28.letitbe.ink}}}
-- {name: 11ws, server: 104.19.34.87, port: 443, type: vmess, uuid: 28c82a70-4179-42e0-9e07-c211ae9f408c, alterId: 0, cipher: auto, tls: true, servername: 28.letitbe.ink, network: ws, ws-opts: {path: "/28.letitbe.inkvws?ed=2048", headers: {Host: 28.letitbe.ink}}}
-  
-    
-
-
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [ '2ws', '2Trojan', '13ws', '13Trojan', '20hkws', '20hbws', '28ws', '10ws', '20ws', '3ws', '4ws', '5ws', '6ws', '7ws', '8ws', '9ws', '100ws', '11ws'  ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "Premium", type: select, proxies: [ AutoSelect, '2ws', '2Trojan', '13ws', '13Trojan', '20hkws', '20hbws', '28ws', '10ws', '20ws', '3ws', '4ws', '5ws', '6ws', '7ws', '8ws', '9ws', '100ws', '11ws'  ] }
+- { name: "AutoSelect", type: url-test, proxies: [ '2ws', '2Trojan', '13ws', '13Trojan' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "Premium", type: select, proxies: [ AutoSelect, '2ws', '2Trojan', '13ws', '13Trojan' ] }
 rules:
  - GEOIP, CN, DIRECT
  - MATCH, Premium
