@@ -3,12 +3,11 @@ proxies:
 - {name: 2Trojan, server: 2.letitbe.ink, port: 443, type: trojan, password: ae4b95e6-d35d-45fc-9374-1de451043ae2, sni: 2.letitbe.ink, skip-cert-verify: false}
 - {name: 13ws, server: 13.letitbe.ink, port: 443, type: vmess, uuid: 758aa432-9299-41ca-89f1-f4adc4e20fbc, alterId: 0, cipher: auto, tls: true, servername: 13.letitbe.ink, network: ws, ws-opts: {path: "/13.letitbe.inkvws?ed=2048", headers: {Host: 13.letitbe.ink}}}
 - {name: 13Trojan, server: 13.letitbe.ink, port: 443, type: trojan, password: 758aa432-9299-41ca-89f1-f4adc4e20fbc, sni: 13.letitbe.ink}
-- {name: halloweenTrojan, server: 18.179.34.176, port: 443, type: trojan, password: eomab5, sni: halloween.letitbe.ink}  
-- {name: halloweenSS, server: 18.179.34.176, port: 8388, type: ss, cipher: aes-128-gcm, password: eomab5}
+
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [ '2ws', '2Trojan', '13ws', '13Trojan', 'halloweenTrojan', 'halloweenSS' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "Premium", type: select, proxies: [ AutoSelect, '2ws', '2Trojan', '13ws', '13Trojan', 'halloweenTrojan', 'halloweenSS' ] }
+- { name: "AutoSelect", type: url-test, proxies: [ '2ws', '2Trojan', '13ws', '13Trojan' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "Premium", type: select, proxies: [ AutoSelect, '2ws', '2Trojan', '13ws', '13Trojan' ] }
 rules:
  - GEOIP, CN, DIRECT
  - MATCH, Premium
