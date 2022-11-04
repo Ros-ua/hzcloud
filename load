@@ -10,7 +10,7 @@ proxies:
 proxy-groups:
 - { name: "AutoSelect", type: url-test, proxies: [ '3ws', '3Trojan', '4ws', '4Trojan', '20hk' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
 - { name: "Premium", type: select, proxies: [ AutoSelect, '3ws', '3Trojan', '4ws', '4Trojan', '20hk'] }
-- { name: "load", type: load-balance, proxies: ['3ws', '3Trojan', '4ws', '4Trojan', '20hk'], url: 'http://www.gstatic.com/generate_204', interval: 300, strategy: consistent-hashing }
+- { name: "load", type: load-balance, proxies: ['3ws', '3Trojan', '4ws', '4Trojan', '20hk'], url: 'http://www.gstatic.com/generate_204', interval: 300, strategy: round-robin }
 rules:
  - GEOIP, CN, DIRECT
  - MATCH, Premium
