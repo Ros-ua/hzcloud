@@ -1,17 +1,14 @@
 proxies:
-- {name: 2ws, server: 2.letitbe.ink, port: 443, type: vmess, uuid: ae4b95e6-d35d-45fc-9374-1de451043ae2, alterId: 0, cipher: auto, tls: true, servername: 2.letitbe.ink, network: ws, ws-opts: {path: "/2.letitbe.inkvws?ed=2048", headers: {Host: 2.letitbe.ink}}}
-- {name: 2Trojan, server: 2.letitbe.ink, port: 443, type: trojan, password: ae4b95e6-d35d-45fc-9374-1de451043ae2, sni: 2.letitbe.ink, skip-cert-verify: false}
-- {name: 13ws, server: 13.letitbe.ink, port: 443, type: vmess, uuid: 758aa432-9299-41ca-89f1-f4adc4e20fbc, alterId: 0, cipher: auto, tls: true, servername: 13.letitbe.ink, network: ws, ws-opts: {path: "/13.letitbe.inkvws?ed=2048", headers: {Host: 13.letitbe.ink}}}
-- {name: 13Trojan, server: 13.letitbe.ink, port: 443, type: trojan, password: 758aa432-9299-41ca-89f1-f4adc4e20fbc, sni: 13.letitbe.ink}
 - {name: 3ws, server: 3.letitbe.ink, port: 443, type: vmess, uuid: fd6c7985-ce12-4a6b-b0d3-214ffcb89e60, alterId: 0, cipher: auto, tls: true, servername: 3.letitbe.ink, network: ws, ws-opts: {path: "/3.letitbe.inkvws?ed=2048", headers: {Host: 3.letitbe.ink}}}
 - {name: 3Trojan, server: 3.letitbe.ink, port: 443, type: trojan, password: fd6c7985-ce12-4a6b-b0d3-214ffcb89e60, sni: 3.letitbe.ink}
-
+- {name: 4ws, server: 4.letitbe.ink, port: 443, type: vmess, uuid: 753647a6-754e-42e5-9e6a-94150f575ed7, alterId: 0, cipher: auto, tls: true, servername: 4.letitbe.ink, network: ws, ws-opts: {path: "/4.letitbe.inkvws?ed=2048", headers: {Host: 4.letitbe.ink}}}
+- {name: 4Trojan, server: 4.letitbe.ink, port: 443, type: trojan, password: 753647a6-754e-42e5-9e6a-94150f575ed7, sni: 4.letitbe.ink}
 
 
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [ '3ws', '3Trojan', '2ws', '2Trojan', '13ws', '13Trojan' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "Premium", type: select, proxies: [ AutoSelect, '3ws', '3Trojan', '2ws', '2Trojan', '13ws', '13Trojan' ] }
+- { name: "AutoSelect", type: url-test, proxies: [ '3ws', '3Trojan', '4ws', '4Trojan' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "Premium", type: select, proxies: [ AutoSelect, '3ws', '3Trojan', '4ws', '4Trojan' ] }
 rules:
  - GEOIP, CN, DIRECT
  - MATCH, Premium
