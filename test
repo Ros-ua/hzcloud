@@ -5,17 +5,11 @@ proxies:
 - {name: 4Trojan, server: 4.letitbe.ink, port: 443, type: trojan, password: 753647a6-754e-42e5-9e6a-94150f575ed7, sni: 4.letitbe.ink}
 - {name: 5ws, server: 5.letitbe.ink, port: 443, type: vmess, uuid: 84f47932-1248-41a8-82a7-c0eb134428dd, alterId: 0, cipher: auto, tls: true, servername: 5.letitbe.ink, network: ws, ws-opts: {path: "/5.letitbe.inkvws?ed=2048", headers: {Host: 5.letitbe.ink}}}
 - {name: 5Trojan, server: 5.letitbe.ink, port: 443, type: trojan, password: 84f47932-1248-41a8-82a7-c0eb134428dd, sni: 5.letitbe.ink}
-- {name: 20hkws1, server: 146.56.162.25, port: 443, type: vmess, uuid: 2c0afd0e-e288-4754-8d26-103f01a98e14, alterId: 0, cipher: auto, tls: false, servername: 20hk.letitbe.ink, network: ws, ws-opts: {path: "/20hk.letitbe.inkvws?ed=2048", headers: {Host: 20hk.letitbe.ink}}}
-- {name: 20hkws2, server: 220.130.80.179, port: 443, type: vmess, uuid: 2c0afd0e-e288-4754-8d26-103f01a98e14, alterId: 0, cipher: auto, tls: false, servername: 20hk.letitbe.ink, network: ws, ws-opts: {path: "/20hk.letitbe.inkvws?ed=2048", headers: {Host: 20hk.letitbe.ink}}}
-- {name: 20hkws3, server: 50.7.250.210, port: 443, type: vmess, uuid: 2c0afd0e-e288-4754-8d26-103f01a98e14, alterId: 0, cipher: auto, tls: false, servername: 20hk.letitbe.ink, network: ws, ws-opts: {path: "/20hk.letitbe.inkvws?ed=2048", headers: {Host: 20hk.letitbe.ink}}}
-- {name: 20hkws4, server: 146.56.166.153, port: 443, type: vmess, uuid: 2c0afd0e-e288-4754-8d26-103f01a98e14, alterId: 0, cipher: auto, tls: false, servername: 20hk.letitbe.ink, network: ws, ws-opts: {path: "/20hk.letitbe.inkvws?ed=2048", headers: {Host: 20hk.letitbe.ink}}}
-- {name: 20hkws5, server: 211.72.35.119, port: 443, type: vmess, uuid: 2c0afd0e-e288-4754-8d26-103f01a98e14, alterId: 0, cipher: auto, tls: false, servername: 20hk.letitbe.ink, network: ws, ws-opts: {path: "/20hk.letitbe.inkvws?ed=2048", headers: {Host: 20hk.letitbe.ink}}}
-
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [ '5ws', '5Trojan', '3ws', '3Trojan', '4ws', '4Trojan', '20hkws1', '20hkws2', '20hkws3', '20hkws4', '20hkws5'], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "Premium", type: select, proxies: [ load, AutoSelect, '5ws', '5Trojan', '3ws', '3Trojan', '4ws', '4Trojan', '20hkws1', '20hkws2', '20hkws3', '20hkws4', '20hkws5' ] }
-- { name: "load", type: load-balance, proxies: [ '3ws', '3Trojan', '5ws', '5Trojan', '4ws', '4Trojan', '20hkws1', '20hkws2', '20hkws3', '20hkws4', '20hkws5' ], url: 'http://www.gstatic.com/generate_204', interval: 300, strategy: round-robin }
+- { name: "AutoSelect", type: url-test, proxies: [ '5ws', '5Trojan', '3ws', '3Trojan', '4ws', '4Trojan' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "Premium", type: select, proxies: [ load, AutoSelect, '5ws', '5Trojan', '3ws', '3Trojan', '4ws', '4Trojan' ] }
+- { name: "load", type: load-balance, proxies: [ '3ws', '3Trojan', '5ws', '5Trojan', '4ws', '4Trojan' ], url: 'http://www.gstatic.com/generate_204', interval: 300, strategy: round-robin }
 rules:
  - GEOIP, CN, DIRECT
  - MATCH, Premium
