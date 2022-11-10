@@ -16,9 +16,9 @@ proxies:
 
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [ '6ws', '6Trojan', '5ws', '5Trojan', 'cdnws1', 'cdnws2', 'cdnws3', 'cdnws4', 'cdnws6', 'cdnws6', 'cdnws7', 'cdnws8', 'cdnws9'  ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
-- { name: "Premium", type: select, proxies: [ load, AutoSelect, '5ws', '5Trojan', '6ws', '6Trojan',  'cdnws1', 'cdnws2', 'cdnws3', 'cdnws4', 'cdnws6', 'cdnws6', 'cdnws7', 'cdnws8', 'cdnws9'  ] }
-- { name: "load", type: load-balance, proxies: [  '5ws', '5Trojan', '6ws', '6Trojan', 'cdnws1', 'cdnws2', 'cdnws3', 'cdnws4', 'cdnws6', 'cdnws6', 'cdnws7', 'cdnws8', 'cdnws9'  ], url: 'http://www.gstatic.com/generate_204', interval: 300, strategy: round-robin }
+- { name: "AutoSelect", type: url-test, proxies: [ '6ws', '6Trojan', '5ws', '5Trojan', 'cdnws1', 'cdnws2', 'cdnws3', 'cdnws4', 'cdnws5', 'cdnws6', 'cdnws7', 'cdnws8', 'cdnws9'  ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "Premium", type: select, proxies: [ load, AutoSelect, '5ws', '5Trojan', '6ws', '6Trojan',  'cdnws1', 'cdnws2', 'cdnws3', 'cdnws4', 'cdnws5', 'cdnws6', 'cdnws7', 'cdnws8', 'cdnws9'  ] }
+- { name: "load", type: load-balance, proxies: [  '5ws', '5Trojan', '6ws', '6Trojan', 'cdnws1', 'cdnws2', 'cdnws3', 'cdnws4', 'cdnws5', 'cdnws6', 'cdnws7', 'cdnws8', 'cdnws9'  ], url: 'http://www.gstatic.com/generate_204', interval: 300, strategy: round-robin }
 rules:
  - GEOIP, CN, DIRECT
  - MATCH, Premium
