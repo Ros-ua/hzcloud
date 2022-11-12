@@ -11,11 +11,14 @@ proxies:
 - {name: cdnws5, server: 139.99.141.145, port: 443, type: vmess, uuid: 3c266fd3-5f9f-4132-90ac-c33a2a316cb5, alterId: 0, cipher: auto, tls: true, servername: cdn.letitbe.ink, network: ws, ws-opts: {path: "/cdn.letitbe.inkvws?ed=2048", headers: {Host: cdn.letitbe.ink}}}
 - {name: cdnws6, server: 210.75.24.220, port: 443, type: vmess, uuid: 3c266fd3-5f9f-4132-90ac-c33a2a316cb5, alterId: 0, cipher: auto, tls: true, servername: cdn.letitbe.ink, network: ws, ws-opts: {path: "/cdn.letitbe.inkvws?ed=2048", headers: {Host: cdn.letitbe.ink}}}
 
+- {name: 20hkws, server: 20hk.letitbe.ink, port: 443, type: vmess, uuid: f87ce0e2-e938-445e-a71f-f2adcb180a75, alterId: 0, cipher: auto, tls: true, servername: 20hk.letitbe.ink, network: ws, ws-opts: {path: /hk.letitbe.inkvws, headers: {Host: 20hk.letitbe.ink}}}
+- {name: 20hkTrojan, server: 20hk.letitbe.ink, port: 443, type: trojan, password: f87ce0e2-e938-445e-a71f-f2adcb180a75, sni: 20hk.letitbe.ink}
+
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [ '6ws', '6Trojan', '5ws', '5Trojan', 'cdnws1', 'cdnws2', 'cdnws3', 'cdnws4', 'cdnws5', 'cdnws6'   ], url: 'http://www.gstatic.com/generate_204', interval: 150 }
-- { name: "Premium", type: select, proxies: [ load, AutoSelect, '5ws', '5Trojan', '6ws', '6Trojan',  'cdnws1', 'cdnws2', 'cdnws3', 'cdnws4', 'cdnws5', 'cdnws6' ] }
-- { name: "load", type: load-balance, proxies: [  '5ws', '5Trojan', '6ws', '6Trojan', 'cdnws1', 'cdnws2', 'cdnws3', 'cdnws4', 'cdnws5', 'cdnws6'  ], url: 'http://www.gstatic.com/generate_204', interval: 150, strategy: round-robin }
+- { name: "AutoSelect", type: url-test, proxies: [ '6ws', '6Trojan', '5ws', '5Trojan', 'cdnws1', 'cdnws2', 'cdnws3', 'cdnws4', 'cdnws5', 'cdnws6', '20hkws', '20hkTrojan'   ], url: 'http://www.gstatic.com/generate_204', interval: 150 }
+- { name: "Premium", type: select, proxies: [ load, AutoSelect, '5ws', '5Trojan', '6ws', '6Trojan',  'cdnws1', 'cdnws2', 'cdnws3', 'cdnws4', 'cdnws5', 'cdnws6', '20hkws', '20hkTrojan' ] }
+- { name: "load", type: load-balance, proxies: [  '5ws', '5Trojan', '6ws', '6Trojan', 'cdnws1', 'cdnws2', 'cdnws3', 'cdnws4', 'cdnws5', 'cdnws6', '20hkws', '20hkTrojan'  ], url: 'http://www.gstatic.com/generate_204', interval: 150, strategy: round-robin }
 rules:
  - GEOIP, CN, DIRECT
  - MATCH, Premium
