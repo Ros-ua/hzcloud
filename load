@@ -6,9 +6,9 @@ proxies:
 
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [ '6ws', '6Trojan', '5ws', '5Trojan' ], url: 'http://www.gstatic.com/generate_204', interval: 300 }
+- { name: "AutoSelect", type: url-test, proxies: [ '6ws', '6Trojan', '5ws', '5Trojan' ], url: 'http://www.gstatic.com/generate_204', interval: 150 }
 - { name: "Premium", type: select, proxies: [ load, AutoSelect, '5ws', '5Trojan', '6ws', '6Trojan' ] }
-- { name: "load", type: load-balance, proxies: [  '5ws', '5Trojan', '6ws', '6Trojan',  ], url: 'http://www.gstatic.com/generate_204', interval: 300, strategy: round-robin }
+- { name: "load", type: load-balance, proxies: [  '5ws', '5Trojan', '6ws', '6Trojan',  ], url: 'http://www.gstatic.com/generate_204', interval: 150, strategy: round-robin }
 rules:
  - GEOIP, CN, DIRECT
  - MATCH, Premium
