@@ -4,14 +4,14 @@ proxies:
 - {name: 5ws, server: 5.letitbe.ink, port: 443, type: vmess, uuid: 84f47932-1248-41a8-82a7-c0eb134428dd, alterId: 0, cipher: auto, tls: true, servername: 5.letitbe.ink, network: ws, ws-opts: {path: "/5.letitbe.inkvws?ed=2048", headers: {Host: 5.letitbe.ink}}}
 - {name: 5Trojan, server: 5.letitbe.ink, port: 443, type: trojan, password: 84f47932-1248-41a8-82a7-c0eb134428dd, sni: 5.letitbe.ink}
 
-- {name: cdnws1, server: 47.242.33.105, port: 443, type: vmess, uuid: 3c266fd3-5f9f-4132-90ac-c33a2a316cb5, alterId: 0, cipher: auto, tls: true, servername: cdn.letitbe.ink, network: ws, ws-opts: {path: "/cdn.letitbe.inkvws?ed=2048", headers: {Host: cdn.letitbe.ink}}}
-- {name: cdnws2, server: 50.7.250.210, port: 443, type: vmess, uuid: 3c266fd3-5f9f-4132-90ac-c33a2a316cb5, alterId: 0, cipher: auto, tls: true, servername: cdn.letitbe.ink, network: ws, ws-opts: {path: "/cdn.letitbe.inkvws?ed=2048", headers: {Host: cdn.letitbe.ink}}}
+- {name: cdnws1, server: 18.163.249.175, port: 443, type: vmess, uuid: 3c266fd3-5f9f-4132-90ac-c33a2a316cb5, alterId: 0, cipher: auto, tls: true, servername: cdn.letitbe.ink, network: ws, ws-opts: {path: "/cdn.letitbe.inkvws?ed=2048", headers: {Host: cdn.letitbe.ink}}}
+- {name: cdnws2, server: 47.243.245.195, port: 443, type: vmess, uuid: 3c266fd3-5f9f-4132-90ac-c33a2a316cb5, alterId: 0, cipher: auto, tls: true, servername: cdn.letitbe.ink, network: ws, ws-opts: {path: "/cdn.letitbe.inkvws?ed=2048", headers: {Host: cdn.letitbe.ink}}}
 
-- {name: cdnws3, server: 211.72.35.110, port: 443, type: vmess, uuid: 3c266fd3-5f9f-4132-90ac-c33a2a316cb5, alterId: 0, cipher: auto, tls: true, servername: cdn.letitbe.ink, network: ws, ws-opts: {path: "/cdn.letitbe.inkvws?ed=2048", headers: {Host: cdn.letitbe.ink}}}
-- {name: cdnws4, server: 18.163.249.175, port: 443, type: vmess, uuid: 3c266fd3-5f9f-4132-90ac-c33a2a316cb5, alterId: 0, cipher: auto, tls: true, servername: cdn.letitbe.ink, network: ws, ws-opts: {path: "/cdn.letitbe.inkvws?ed=2048", headers: {Host: cdn.letitbe.ink}}}
+- {name: cdnws3, server: 47.242.33.105, port: 443, type: vmess, uuid: 3c266fd3-5f9f-4132-90ac-c33a2a316cb5, alterId: 0, cipher: auto, tls: true, servername: cdn.letitbe.ink, network: ws, ws-opts: {path: "/cdn.letitbe.inkvws?ed=2048", headers: {Host: cdn.letitbe.ink}}}
+- {name: cdnws4, server: 50.7.250.210, port: 443, type: vmess, uuid: 3c266fd3-5f9f-4132-90ac-c33a2a316cb5, alterId: 0, cipher: auto, tls: true, servername: cdn.letitbe.ink, network: ws, ws-opts: {path: "/cdn.letitbe.inkvws?ed=2048", headers: {Host: cdn.letitbe.ink}}}
 
 - {name: cdnws5, server: 210.75.24.220, port: 443, type: vmess, uuid: 3c266fd3-5f9f-4132-90ac-c33a2a316cb5, alterId: 0, cipher: auto, tls: true, servername: cdn.letitbe.ink, network: ws, ws-opts: {path: "/cdn.letitbe.inkvws?ed=2048", headers: {Host: cdn.letitbe.ink}}}
-- {name: cdnws6, server: 211.72.35.119, port: 443, type: vmess, uuid: 3c266fd3-5f9f-4132-90ac-c33a2a316cb5, alterId: 0, cipher: auto, tls: true, servername: cdn.letitbe.ink, network: ws, ws-opts: {path: "/cdn.letitbe.inkvws?ed=2048", headers: {Host: cdn.letitbe.ink}}}
+- {name: cdnws6, server: 211.22.184.186, port: 443, type: vmess, uuid: 3c266fd3-5f9f-4132-90ac-c33a2a316cb5, alterId: 0, cipher: auto, tls: true, servername: cdn.letitbe.ink, network: ws, ws-opts: {path: "/cdn.letitbe.inkvws?ed=2048", headers: {Host: cdn.letitbe.ink}}}
 
 
 
