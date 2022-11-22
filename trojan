@@ -1,7 +1,6 @@
 proxies:
 - {name: 6ws, server: 6.letitbe.ink, port: 443, type: vmess, uuid: 3c266fd3-5f9f-4132-90ac-c33a2a316cb5, alterId: 0, cipher: auto, tls: true, servername: 6.letitbe.ink, network: ws, ws-opts: {path: "/6.letitbe.inkvws?ed=2048", headers: {Host: 6.letitbe.ink}}}
 - {name: 6Trojan, server: 6.letitbe.ink, port: 443, type: trojan, password: 3c266fd3-5f9f-4132-90ac-c33a2a316cb5, sni: 6.letitbe.ink}
-
 - {name: 5ws, server: 5.letitbe.ink, port: 443, type: vmess, uuid: 84f47932-1248-41a8-82a7-c0eb134428dd, alterId: 0, cipher: auto, tls: true, servername: 5.letitbe.ink, network: ws, ws-opts: {path: "/5.letitbe.inkvws?ed=2048", headers: {Host: 5.letitbe.ink}}}
 - {name: 5Trojan, server: 5.letitbe.ink, port: 443, type: trojan, password: 84f47932-1248-41a8-82a7-c0eb134428dd, sni: 5.letitbe.ink}
 
@@ -9,18 +8,22 @@ proxies:
 - {name: cdnws2, server: 210.75.24.220, port: 443, type: vmess, uuid: 3c266fd3-5f9f-4132-90ac-c33a2a316cb5, alterId: 0, cipher: auto, tls: true, servername: cdn.letitbe.ink, network: ws, ws-opts: {path: "/cdn.letitbe.inkvws?ed=2048", headers: {Host: cdn.letitbe.ink}}}
 - {name: cdnws3, server: 210.75.24.222, port: 443, type: vmess, uuid: 3c266fd3-5f9f-4132-90ac-c33a2a316cb5, alterId: 0, cipher: auto, tls: true, servername: cdn.letitbe.ink, network: ws, ws-opts: {path: "/cdn.letitbe.inkvws?ed=2048", headers: {Host: cdn.letitbe.ink}}}
 - {name: cdnws4, server: 18.163.249.175, port: 443, type: vmess, uuid: 3c266fd3-5f9f-4132-90ac-c33a2a316cb5, alterId: 0, cipher: auto, tls: true, servername: cdn.letitbe.ink, network: ws, ws-opts: {path: "/cdn.letitbe.inkvws?ed=2048", headers: {Host: cdn.letitbe.ink}}}
+- {name: cdnws5, server: 211.22.184.186, port: 443, type: vmess, uuid: 3c266fd3-5f9f-4132-90ac-c33a2a316cb5, alterId: 0, cipher: auto, tls: true, servername: cdn.letitbe.ink, network: ws, ws-opts: {path: "/cdn.letitbe.inkvws?ed=2048", headers: {Host: cdn.letitbe.ink}}}
+- {name: cdnws6, server: 60.249.92.67, port: 443, type: vmess, uuid: 3c266fd3-5f9f-4132-90ac-c33a2a316cb5, alterId: 0, cipher: auto, tls: true, servername: cdn.letitbe.ink, network: ws, ws-opts: {path: "/cdn.letitbe.inkvws?ed=2048", headers: {Host: cdn.letitbe.ink}}}
 
 - {name: newsib1, server: 50.7.250.210, port: 443, type: vmess, uuid: 45b92155-7788-44a9-8782-4d87040b29d8, alterId: 0, cipher: auto, tls: true,  servername: newsib.letitbe.ink, network: ws, ws-opts: {path: "/newsib.letitbe.inkvws?ed=2048", headers: {Host: newsib.letitbe.ink}}}
 - {name: newsib2, server: 210.75.24.220, port: 443, type: vmess, uuid: 45b92155-7788-44a9-8782-4d87040b29d8, alterId: 0, cipher: auto, tls: true,  servername: newsib.letitbe.ink, network: ws, ws-opts: {path: "/newsib.letitbe.inkvws?ed=2048", headers: {Host: newsib.letitbe.ink}}}
+- {name: newsib3, server: 210.75.24.222, port: 443, type: vmess, uuid: 45b92155-7788-44a9-8782-4d87040b29d8, alterId: 0, cipher: auto, tls: true,  servername: newsib.letitbe.ink, network: ws, ws-opts: {path: "/newsib.letitbe.inkvws?ed=2048", headers: {Host: newsib.letitbe.ink}}}
 
 - {name: newrar1, server: 50.7.250.210, port: 443, type: vmess, uuid: cf2161e0-da7a-4f6e-b562-83fead2d1c2c, alterId: 0, cipher: auto, tls: true, servername: newrar.letitbe.ink, network: ws, ws-opts: {path: "/newrar.letitbe.inkvws?ed=2048", headers: {Host: newrar.letitbe.ink}}}
 - {name: newrar2, server: 210.75.24.220, port: 443, type: vmess, uuid: cf2161e0-da7a-4f6e-b562-83fead2d1c2c, alterId: 0, cipher: auto, tls: true, servername: newrar.letitbe.ink, network: ws, ws-opts: {path: "/newrar.letitbe.inkvws?ed=2048", headers: {Host: newrar.letitbe.ink}}}
+- {name: newrar3, server: 210.75.24.222, port: 443, type: vmess, uuid: cf2161e0-da7a-4f6e-b562-83fead2d1c2c, alterId: 0, cipher: auto, tls: true, servername: newrar.letitbe.ink, network: ws, ws-opts: {path: "/newrar.letitbe.inkvws?ed=2048", headers: {Host: newrar.letitbe.ink}}}
 
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [ '6ws', '6Trojan', '5ws', '5Trojan', 'cdnws1', 'cdnws2', 'cdnws3', 'cdnws4',  'newsib1', 'newrar1', 'newsib2', 'newrar2', 'newsib3'], url: 'http://www.gstatic.com/generate_204', interval: 150 }
-- { name: "Premium", type: select, proxies: [ load, AutoSelect, '5ws', '5Trojan', '6ws', '6Trojan',  'cdnws1', 'cdnws2', 'cdnws3', 'cdnws4',  'newsib1', 'newrar1', 'newsib2', 'newrar2'] }
-- { name: "load", type: load-balance, proxies: [  '5ws', '5Trojan', '6ws', '6Trojan', 'cdnws1', 'cdnws2', 'cdnws3', 'cdnws4', 'newsib1', 'newrar1', 'newsib2', 'newrar2', 'newsib3', 'newrar3' ], url: 'http://www.gstatic.com/generate_204', interval: 150, strategy: round-robin }
+- { name: "AutoSelect", type: url-test, proxies: [ '6ws', '6Trojan', '5ws', '5Trojan', 'cdnws1', 'cdnws2', 'cdnws3', 'cdnws4', 'cdnws5', 'cdnws6', 'newsib1', 'newrar1', 'newsib2', 'newrar2', 'newsib3', 'newrar3'  ], url: 'http://www.gstatic.com/generate_204', interval: 150 }
+- { name: "Premium", type: select, proxies: [ load, AutoSelect, '5ws', '5Trojan', '6ws', '6Trojan',  'cdnws1', 'cdnws2', 'cdnws3', 'cdnws4', 'cdnws5', 'cdnws6', 'newsib1', 'newrar1', 'newsib2', 'newrar2', 'newsib3', 'newrar3' ] }
+- { name: "load", type: load-balance, proxies: [  '5ws', '5Trojan', '6ws', '6Trojan', 'cdnws1', 'cdnws2', 'cdnws3', 'cdnws4', 'cdnws5', 'cdnws6', 'newsib1', 'newrar1', 'newsib2', 'newrar2', 'newsib3', 'newrar3' ], url: 'http://www.gstatic.com/generate_204', interval: 150, strategy: round-robin }
 rules:
  - GEOIP, CN, DIRECT
  - MATCH, Premium
