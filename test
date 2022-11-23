@@ -6,11 +6,8 @@ proxies:
 - {name: 6ws, server: 6.letitbe.ink, port: 443, type: vmess, uuid: 3c266fd3-5f9f-4132-90ac-c33a2a316cb5, alterId: 0, cipher: auto, tls: true, servername: 6.letitbe.ink, network: ws, ws-opts: {path: "/6.letitbe.inkvws?ed=2048", headers: {Host: 6.letitbe.ink}}}
 - {name: 6Trojan, server: 6.letitbe.ink, port: 443, type: trojan, password: 3c266fd3-5f9f-4132-90ac-c33a2a316cb5, sni: 6.letitbe.ink}
 
-
-
-
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [ '23ws', '23Trojan', '5ws', '5Trojan'], url: 'http://www.gstatic.com/generate_204', interval: 150 }
+- { name: "AutoSelect", type: url-test, proxies: [ '23ws', '23Trojan', '6ws', '6Trojan'], url: 'http://www.gstatic.com/generate_204', interval: 150 }
 - { name: "Premium", type: select, proxies: [ load, AutoSelect, '23ws', '23Trojan', '6ws', '6Trojan' ] }
 - { name: "load", type: load-balance, proxies: [  '23ws', '23Trojan', '6ws', '6Trojan' ], url: 'http://www.gstatic.com/generate_204', interval: 150, strategy: round-robin }
 rules:
