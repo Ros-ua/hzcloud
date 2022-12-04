@@ -9,13 +9,12 @@ proxies:
 - {name: tothemoonws, server: tothemoon.letitbe.ink, port: 443, type: vmess, uuid: 3c266fd3-5f9f-4132-90ac-c33a2a316cb5, alterId: 0, cipher: auto, tls: true, servername: tothemoon.letitbe.ink, network: ws, ws-opts: {path: /pokocatvws, headers: {Host: tothemoon.letitbe.ink}}}
 - {name: tothemoonTrojan, server: tothemoon.letitbe.ink, port: 443, type: trojan, password: 3c266fd3-5f9f-4132-90ac-c33a2a316cb5, sni: tothemoon.letitbe.ink}
 
-- {name: 27ws, server: 27.letitbe.ink, port: 443, type: vmess, uuid: 3c266fd3-5f9f-4132-90ac-c33a2a316cb5, alterId: 0, cipher: auto, tls: true, servername: 27.letitbe.ink, network: ws, ws-opts: {path: /pokocatvws, headers: {Host: 27.letitbe.ink}}}
-- {name: 27Trojan, server: 27.letitbe.ink, port: 443, type: trojan, password: 3c266fd3-5f9f-4132-90ac-c33a2a316cb5, sni: 27.letitbe.ink}
+- {name: 412Trojan, server: 412.letitbe.ink, port: 443, type: trojan, password: 1qaz2wsx202201, sni: 412.letitbe.ink}
 
 proxy-groups:
-- { name: "AutoSelect", type: url-test, proxies: [ '23ws', '23Trojan', '6ws', '6Trojan', 'tothemoonws', 'tothemoonTrojan', '27ws', '27Trojan' ], url: 'http://www.gstatic.com/generate_204', interval: 150 }
-- { name: "Premium", type: select, proxies: [ load, AutoSelect, '23ws', '23Trojan', '6ws', '6Trojan', 'tothemoonws', 'tothemoonTrojan', '27ws', '27Trojan' ] }
-- { name: "load", type: load-balance, proxies: [  '23ws', '23Trojan', '6ws', '6Trojan', 'tothemoonws', 'tothemoonTrojan', '27ws', '27Trojan' ], url: 'http://www.gstatic.com/generate_204', interval: 150, strategy: round-robin }
+- { name: "AutoSelect", type: url-test, proxies: [ '23ws', '23Trojan', '6ws', '6Trojan', 'tothemoonws', 'tothemoonTrojan', '412Trojan' ], url: 'http://www.gstatic.com/generate_204', interval: 150 }
+- { name: "Premium", type: select, proxies: [ load, AutoSelect, '23ws', '23Trojan', '6ws', '6Trojan', 'tothemoonws', 'tothemoonTrojan', '412Trojan' ] }
+- { name: "load", type: load-balance, proxies: [  '23ws', '23Trojan', '6ws', '6Trojan', 'tothemoonws', 'tothemoonTrojan', '412Trojan' ], url: 'http://www.gstatic.com/generate_204', interval: 150, strategy: round-robin }
 rules:
  - GEOIP, CN, DIRECT
  - MATCH, Premium
