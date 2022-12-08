@@ -1,11 +1,11 @@
 proxies:
 
-- {name: 23Trojan, server: 23.letitbe.ink, port: 443, type: trojan, password: 3c266fd3-5f9f-4132-90ac-c33a2a316cb5, sni: 23.letitbe.ink}
-- {name: 6Trojan, server: 6.letitbe.ink, port: 443, type: trojan, password: 3c266fd3-5f9f-4132-90ac-c33a2a316cb5, sni: 6.letitbe.ink}
-- {name: tothemoonTrojan, server: tothemoon.letitbe.ink, port: 443, type: trojan, password: 3c266fd3-5f9f-4132-90ac-c33a2a316cb5, sni: tothemoon.letitbe.ink}
-
+- {name: 23Trojan, server: 23.letitbe.ink, port: 443, type: trojan, password: 3c266fd3-5f9f-4132-90ac-c33a2a316cb5}
+- {name: 6Trojan, server: 6.letitbe.ink, port: 443, type: trojan, password: 3c266fd3-5f9f-4132-90ac-c33a2a316cb5}
+- {name: tothemoonTrojan, server: tothemoon.letitbe.ink, port: 443, type: trojan, password: 3c266fd3-5f9f-4132-90ac-c33a2a316cb5}
+- {name: trainer, server: trainer.letitbe.ink, port: 443, type: trojan, password: 1qaz2wsx}
 proxy-groups:
-- { name: "Load", type: load-balance, proxies: [  '23Trojan', '6Trojan',  'tothemoonTrojan' ], url: 'http://www.gstatic.com/generate_204', interval: 150, strategy: round-robin }
+- { name: "Load", type: load-balance, proxies: [  '23Trojan', '6Trojan', 'tothemoonTrojan', 'trainerTrojan' ], url: 'http://www.gstatic.com/generate_204', interval: 150, strategy: round-robin }
 
 rules:
  - GEOIP, CN, DIRECT
