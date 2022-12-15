@@ -3,11 +3,11 @@ proxies:
 - {name: 23, server: 23.letitbe.ink, port: 443, type: trojan, password: 3c266fd3-5f9f-4132-90ac-c33a2a316cb5}
 - {name: 6, server: 6.letitbe.ink, port: 443, type: trojan, password: 3c266fd3-5f9f-4132-90ac-c33a2a316cb5}
 - {name: tothemoon, server: tothemoon.letitbe.ink, port: 443, type: trojan, password: 3c266fd3-5f9f-4132-90ac-c33a2a316cb5}
-- {name: centos, server: centos.letitbe.ink, port: 443, type: trojan, password: 475eedfc0b}
+- {name: travel, server: travel.letitbe.ink, port: 443, type: trojan, password: 471b6bd985, sni: travel.letitbe.ink}
 
 
 proxy-groups:
-- { name: "Load", type: load-balance, proxies: [ 'centos', '23', '6', 'tothemoon' ], url: 'http://www.gstatic.com/generate_204', interval: 150, strategy: round-robin }
+- { name: "Load", type: load-balance, proxies: [ 'travel', '23', '6', 'tothemoon' ], url: 'http://www.gstatic.com/generate_204', interval: 150, strategy: round-robin }
 
 rules:
  - GEOIP, CN, DIRECT
