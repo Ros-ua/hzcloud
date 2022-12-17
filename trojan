@@ -4,7 +4,7 @@ proxies:
 - {name: 6, server: 6.letitbe.ink, port: 443, type: trojan, password: 3c266fd3-5f9f-4132-90ac-c33a2a316cb5}
 - {name: tothemoon, server: tothemoon.letitbe.ink, port: 443, type: trojan, password: 3c266fd3-5f9f-4132-90ac-c33a2a316cb5}
 - {name: travel, server: travel.letitbe.ink, port: 443, type: trojan, password: 471b6bd985, sni: travel.letitbe.ink}
-- {name: go, server: go.letitbe.ink, port: 443, type: trojan, password: eb8e9f6393, sni: go.letitbe.ink}
+- {name: go, server: go.letitbe.ink, password: eb8e9f6393, port: 443, type: trojan, network: ws, sni: go.letitbe.ink, ws-opts: {path: /c81f8701, headers: {Host: go.letitbe.ink}}}
 
 
 
