@@ -2,7 +2,6 @@ proxies:
 
 - {name: 23, server: 23.letitbe.ink, port: 443, type: trojan, password: 3c266fd3-5f9f-4132-90ac-c33a2a316cb5}
 - {name: 6, server: 6.letitbe.ink, port: 443, type: trojan, password: 3c266fd3-5f9f-4132-90ac-c33a2a316cb5}
-- {name: tothemoon, server: tothemoon.letitbe.ink, port: 443, type: trojan, password: 3c266fd3-5f9f-4132-90ac-c33a2a316cb5}
 - {name: record, server: record.letitbe.ink, password: 924478d28c, port: 443, type: trojan, network: ws, sni: record.letitbe.ink, ws-opts: {path: /dbd065fc, headers: {Host: record.letitbe.ink}}}
 - {name: maple, server: maple.letitbe.ink, password: 655c372776, port: 443, type: trojan, network: ws, sni: maple.letitbe.ink, ws-opts: {path: /f7dea2a3, headers: {Host: maple.letitbe.ink}}}
 - {name: sun, server: tothesun.letitbe.ink, password: 649d9e92e6, port: 443, type: trojan, network: ws, sni: tothesun.letitbe.ink, ws-opts: {path: /305326a8, headers: {Host: tothesun.letitbe.ink}}}
