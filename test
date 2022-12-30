@@ -3,11 +3,12 @@ proxies:
 - {name: 23, server: 23.letitbe.ink, port: 443, type: trojan, password: 3c266fd3-5f9f-4132-90ac-c33a2a316cb5}
 - {name: 6, server: 6.letitbe.ink, port: 443, type: trojan, password: 3c266fd3-5f9f-4132-90ac-c33a2a316cb5}
 - {name: maple, server: maple.letitbe.ink, password: 655c372776, port: 443, type: trojan, network: ws, sni: maple.letitbe.ink, ws-opts: {path: /f7dea2a3, headers: {Host: maple.letitbe.ink}}}
+- {name: macro, server: macro.letitbe.ink, password: 9f61dcf6e1, port: 443, type: trojan, network: ws, sni: macro.letitbe.ink, ws-opts: {path: /6e54a6bd, headers: {Host: macro.letitbe.ink}}}
 
 
 
 proxy-groups:
-- { name: "Load", type: load-balance, proxies: [ '23', '6', 'maple' ], url: 'http://www.gstatic.com/generate_204', interval: 150, strategy: round-robin }
+- { name: "Load", type: load-balance, proxies: [ 'macro', '23', '6', 'maple' ], url: 'http://www.gstatic.com/generate_204', interval: 150, strategy: round-robin }
 
 rules:
  - GEOIP, CN, DIRECT
