@@ -1,15 +1,14 @@
 proxies:
 
-- {name: multi, server: multi.letitbe.ink, password: a0b348f83b, port: 443, type: trojan, network: ws, sni: multi.letitbe.ink, ws-opts: {path: /e7f4cb7b, headers: {Host: multi.letitbe.ink}}}
-- {name: macro, server: macro.letitbe.ink, password: 9f61dcf6e1, port: 443, type: trojan, network: ws, sni: macro.letitbe.ink, ws-opts: {path: /6e54a6bd, headers: {Host: macro.letitbe.ink}}}
+- {name: multi, server: multi.letitbe.ink, password: a0b348f83b, port: 443, type: trojan, network: ws, sni: multi.letitbe.ink, ws-opts: {path: /0a8b1a15, headers: {Host: multi.letitbe.ink}}}
 - {name: micro, server: micro.letitbe.ink, password: 14c751113c, port: 443, type: trojan, network: ws, sni: micro.letitbe.ink, ws-opts: {path: /0d19835d, headers: {Host: micro.letitbe.ink}}}
 - {name: massive, server: massive.letitbe.ink, password: a0a271f4da, port: 443, type: trojan, network: ws, sni: massive.letitbe.ink, ws-opts: {path: /a63452f4, headers: {Host: massive.letitbe.ink}}}
-
+- {name: mix, server: mix.letitbe.ink, port: 443, type: trojan, password: 1qaz2wsx}
 
 
 
 proxy-groups:
-- { name: "Load", type: load-balance, proxies: [ 'macro', 'massive', 'micro', 'multi' ], url: 'http://www.gstatic.com/generate_204', interval: 150, strategy: round-robin }
+- { name: "Load", type: load-balance, proxies: [ 'massive', 'micro', 'multi', 'mix' ], url: 'http://www.gstatic.com/generate_204', interval: 150, strategy: round-robin }
 
 rules:
  - GEOIP, CN, DIRECT
