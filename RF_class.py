@@ -183,9 +183,9 @@ class RF:
         elif "Ваша группа замерзнет через 5 минут" in lstr[0]:
             await asyncio.sleep(1)
             await self.rf_message.click(2)
-        elif "Ваша группа восстановила силы" in lstr[0]:
-            await asyncio.sleep(1)
-            await self.rf_message.click(2)
+        # elif "Ваша группа восстановила силы" in lstr[0]:
+        #     await asyncio.sleep(1)
+        #     await self.rf_message.click(2)
         elif "Ваша группа прибудет в ген. штаб через" in lstr[0]:
             print("чувачок, ты закончил пещеру")
             self.is_in_caves = False
