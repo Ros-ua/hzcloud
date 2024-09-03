@@ -43,17 +43,16 @@ class RF:
             4: "🤖Алтарь Тир",
             5: "🤖Алтарь Эйви"
         }
-        self.is_nacheve_active = False  # Флаг активности nacheve
+        self.is_nacheve_active = self.in_battle = False  # Флаги активности nacheve и боя
         self.is_cave_leader = True
         self.kroha_pativod()
-        self.in_battle = False
 
 
 
-    def isIdCompare(self, id) -> bool:
+    def isIdCompare(self, id):
         return id == self.bot_id
 
-    def isCaveLeaderIdCompare(self, id) -> bool:
+    def isCaveLeaderIdCompare(self, id):
         return id == self.cave_leader_id
 
     def reset_health(self):
@@ -151,7 +150,7 @@ class RF:
         # в пещерах
         if any(phrase in lstr[0] for phrase in [
             "Панель управления", 
-            "Если вы не используете воскрешение", 
+            "воскрешение в течение 1 минуты", 
             "Ты направляешься в пещеры на фуникулере",
         ]):
             self.is_in_caves = True
@@ -854,8 +853,12 @@ class RF:
             if "💖" in sost:
                 str_hp = re.search("❤️(\d+)/\d+", sost)
                 helth = int(str_hp.group(1))
-                if helth < 2000 and self.is_cave_leader and self.is_in_caves:
-                    await self.client.send_message(h_id, "Хил")
+                if self.is_cave_leader and self.is_in_caves:
+                    if helth < 1500:
+                        await self.client.send_message(h_id, "Хил")
+                    elif 1500 <= helth < 2000:
+                        await self.client.send_message(h_id, "Шаг или хил?")
+
 
                 continue
             
@@ -871,46 +874,54 @@ class RF:
 
         total_health = 0
         no_res = True
+        group_members = []
 
         for line in lstr:
             if not line.strip():
+                continue
+            
+            in_str_find = re.search("/p_guild_exc_(\d+)", line)
+            if in_str_find:
+                h_id = int(in_str_find.group(1))
+                group_members.append(h_id)
                 continue
             
             in_str_find = re.search(r"\d\) .*\[.*\](.*)🏅\d+ур\. (.*)", line)
             if not in_str_find:
                 continue
             
+            nick = in_str_find.group(1)
             sost = in_str_find.group(2)
-            ''' пусть пока побудет'''
-            # # Проверка на наличие "🥤" в строке
-            # if "🥤" in sost:
-            #     no_res = False
 
-            # if not "Мертв" in sost and "💖" in sost:
-            #         no_res = True 
+            # Проверяем, жив ли игрок
+            if "Мертв" not in sost:
+                # Подсчитываем HP только для живых игроков
+                str_hp = re.search(r"❤️(\d+)/\d+", sost)
+                if str_hp:
+                    health = int(str_hp.group(1))
+                    total_health += health
 
-            if "🥤" in sost or ("Мертв" not in sost and "💖" in sost):
-                no_res = False
-                print(f"Status no_res: False - Найден член группы с : {sost}")
-                break  # Прерываем цикл, так как нашли причину не выходить
+                # Проверяем наличие ресурсов у живых игроков
+                if "🥤" in sost or "💖" in sost:
+                    no_res = False
+                    print(f"Status no_res: False - Найден живой член группы с ресурсами: {sost}")
+                else:
+                    print(f"Status no_res: True - Живой член группы без ресурсов: {sost}")
             else:
-                print(f"Status no_res: True - Член группы без хилов ресов: {sost}")
-
-            
-            str_hp = re.search(r"❤️(\d+)/\d+", sost)
-            if str_hp:
-                health = int(str_hp.group(1))
-                total_health += health
+                print(f"Мертвый член группы: {sost}")
 
         print(f"Final no_res status: {no_res}")
         print(f"Total Health: {total_health}")
 
-
-            
         if self.is_cave_leader and no_res and total_health < 2000:
             await self.client.send_message(715480502, f"Ты лидер, пора на выход. Total Health: {total_health}")
             print(f"Ты лидер, пора на выход. Total Health: {total_health}")
             await self.rf_message.click(3)
+            # Отправляем сообщение всем участникам группы, кроме себя
+            for member_id in group_members:
+                if member_id != 715480502:  # Не отправляем сообщение себе
+                    await self.client.send_message(member_id, "Вышли из пещеры")
+                    print(f"Отправлено сообщение участнику {member_id}: Вышли из пещеры")
         elif no_res and total_health < 2000:
             await self.client.send_message(715480502, f"Ты не лидер, пора на выход. Total Health: {total_health}")
             print(f"Ты не лидер, пора на выход. Total Health: {total_health}")
