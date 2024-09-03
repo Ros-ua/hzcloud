@@ -1,22 +1,18 @@
 import re
 import sys
-from addons import qHash
-from random import randint
-from telethon import events
 import asyncio
 import random
+from random import randint
+from telethon import events
+from addons import qHash
 
 class RF:
     bot_id = 577009581
     is_run = False
     rf_message = None
-    is_in_caves = False
-    is_in_gh = False
-    is_has_hil = False
-    is_has_res = False
+    is_in_caves = is_in_gh = is_has_hil = is_has_res = False
     cave_leader_id = 715480502
-    my_health = 5117
-    my_max_health = 5117
+    my_health = my_max_health = 5117
     hp = "/bind_wear_1723376879927d"
     tomat_id = 278339710
     kroha_id = 353501977
@@ -743,7 +739,7 @@ class RF:
                 if talisman_info:
                     print(f"# Найден талисман: тип {found_symbol}, уровень {talisman_level}")
                     self.last_talisman_info = talisman_info  # Сохраняем информацию о последнем талисмане
-                    if talisman_level < 5:
+                    if talisman_level < 5: #уровень заточки
                         await asyncio.sleep(1)
                         await self._insert_talisman_and_stone(*talisman_info, lstr)
                     else:
