@@ -167,7 +167,7 @@ class RF:
         elif any(phrase in line for line in lstr for phrase in [
             "Ожидай завершения",
         ]):
-            await asyncio.sleep(randint(4, 10))
+            await asyncio.sleep(randint(6, 10))
             await self.rf_message.click(1)
             self.reset_health()
             print(self.my_health, self.my_max_health)
