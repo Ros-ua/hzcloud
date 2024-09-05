@@ -204,7 +204,7 @@ class RF:
                         await self.client.send_message(self.players[player], "Давайте в ген. штаб")
             await self.client.send_message(self.bot_id, "🔥 61-65 Лес пламени")  # или заменить на локацию
         elif "Если ты хочешь вернуть группу" in lstr[0]:
-            await self.client.send_message(self.bot_id, "222")
+            await self.client.send_message(self.bot_id, "22")
             
 
 
