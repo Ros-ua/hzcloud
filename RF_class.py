@@ -254,7 +254,7 @@ class RF:
 
 
         # на мобах
-        elif "пойти в 61-65 Лес пламени" in lstr[0]:
+        elif any(phrase in lstr[0] for phrase in ["пойти в 61-65 Лес пламени", "что хочешь отправиться в пещеры?"]):
             await asyncio.sleep(1)
             await message.click(0)
         elif "Что будем делать?" in lstr[-1]:
