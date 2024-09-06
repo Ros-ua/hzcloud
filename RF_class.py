@@ -898,7 +898,7 @@ class RF:
 
 
     async def vihod_s_caves(self, lstr):
-        self.is_cave_leader = any("/group_guild_join_715480502" in line for line in lstr)
+        self.is_cave_leader = "/group_guild_join_715480502" in lstr[0]
         print(f"{'Ты пативод' if self.is_cave_leader else 'Ты не пативод'}")
 
         if not self.is_in_caves:
@@ -907,8 +907,9 @@ class RF:
         print("Ты в пещерах")
 
         total_health = 0
-        has_res_potion = False
-        has_heal_potion = False
+        alive_count = 0
+        alive_has_heal = False
+        group_has_res = False
         group_members = []
 
         for line in lstr:
@@ -928,33 +929,24 @@ class RF:
                 has_heal = "💖" in status
                 has_res = "🥤" in status
                 
-                is_effective = (
-                    (is_alive) or
-                    (not is_alive and has_res)
-                )
-                
                 if is_alive:
+                    alive_count += 1
                     if health_match := re.search(r"❤️(\d+)/\d+", status):
                         health = int(health_match.group(1))
-                        if is_effective:
-                            total_health += health
+                        total_health += health
+                    alive_has_heal = alive_has_heal or has_heal
                 
-                status_description = []
-                status_description.append("alive" if is_alive else "dead")
-                status_description.append("has hil" if has_heal else "no hil")
-                status_description.append("has res" if has_res else "no res")
-                status_description.append("effective" if is_effective else "not effective")
+                # Учитываем рес у любого игрока, живого или мертвого
+                group_has_res = group_has_res or has_res
                 
-                player_status = f"{nick}: HP {health}, {', '.join(status_description)}"
+                player_status = f"{nick}: HP {health}, {'alive' if is_alive else 'dead'}, {'has hil' if has_heal else 'no hil'}, {'has res' if has_res else 'no res'}"
                 print(player_status)
 
-        print(f"\nОбщее эффективное здоровье группы: {total_health}")
+        print(f"\nОбщее здоровье группы: {total_health}")
+        print(f"Живых: {alive_count}, Живые с хилками: {'да' if alive_has_heal else 'нет'}, Группа с ресами: {'да' if group_has_res else 'нет'}")
 
-        alive_without_potions = sum(1 for _ in lstr if "🏅" in _ and "Мертв" not in _ and "💖" not in _ and "🥤" not in _)
-        total_members = sum(1 for _ in lstr if "🏅" in _)
-
-        if alive_without_potions == total_members and total_health < 2000:
-            message = f"{'Ты лидер' if self.is_cave_leader else 'Ты не лидер'}, пора на выход. Общее эффективное здоровье: {total_health}"
+        if total_health < 2000 and not alive_has_heal and not group_has_res:
+            message = f"{'Ты лидер' if self.is_cave_leader else 'Ты не лидер'}, пора на выход. Общее здоровье: {total_health}, нет хилок у живых и ресов в группе"
             await self.client.send_message(715480502, message)
             print(message)
             
@@ -962,7 +954,7 @@ class RF:
                 await self.rf_message.click(3)
                 for member_id in group_members:
                     if member_id != 715480502:
-                        await self.client.send_message(member_id, "Вышли из пещеры")
-                        print(f"Отправлено сообщение участнику {member_id}: Вышли из пещеры")
+                        await self.client.send_message(member_id, "Выходим из пещеры")
+                        print(f"Отправлено сообщение участнику {member_id}: Выходим из пещеры")
         else:
-            print(f"Ещё рано на выход. Общее эффективное здоровье: {total_health}, живых без зелий: {alive_without_potions}/{total_members}")
+            print(f"Ещё рано на выход. Общее здоровье: {total_health}, Живых: {alive_count}")
