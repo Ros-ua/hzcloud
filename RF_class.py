@@ -898,7 +898,7 @@ class RF:
 
 
     async def vihod_s_caves(self, lstr):
-        self.is_cave_leader = "/group_guild_join_715480502" in lstr[0]
+        self.is_cave_leader = any("/group_guild_join_715480502" in line for line in lstr)
         print(f"{'Ты пативод' if self.is_cave_leader else 'Ты не пативод'}")
 
         if not self.is_in_caves:
