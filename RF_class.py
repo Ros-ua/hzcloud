@@ -857,8 +857,6 @@ class RF:
                 if self.is_cave_leader and self.is_in_caves:
                     if helth < 1500:
                         await self.client.send_message(h_id, "Хил")
-                    elif 1500 <= helth < 2000:
-                        await self.client.send_message(h_id, "Шаг или хил?")
 
 
                 continue
