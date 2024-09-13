@@ -959,10 +959,12 @@ class RF:
             print(message)
             
             if self.is_cave_leader:
-                await self.rf_message.click(3)
                 for member_id in group_members:
                     if member_id != 715480502:
                         await self.client.send_message(member_id, "Выходим из пещеры")
                         print(f"Отправлено сообщение участнику {member_id}: Выходим из пещеры")
+                await asyncio.sleep(60) 
+                await self.rf_message.click(3)
+        
         else:
             print(f"Ещё рано на выход. Общее здоровье: {total_health}, Живых: {alive_count}")
