@@ -167,7 +167,7 @@ class RF:
         elif any(phrase in line for line in lstr for phrase in [
             "Ожидай завершения",
         ]):
-            await asyncio.sleep(randint(6, 10))
+            await asyncio.sleep(randint(10, 14))
             await self.rf_message.click(1)
             self.reset_health()
             print(self.my_health, self.my_max_health)
@@ -190,7 +190,7 @@ class RF:
         elif lstr[0].startswith("Состав:"):
             print("что там по составу")
             await self.check_group_list(lstr)
-            await asyncio.sleep(randint(10, 20))
+            await asyncio.sleep(randint(20, 30))
             await self.vihod_s_caves(lstr)
 
         elif lstr[0].endswith("не в ген. штабе]"):
@@ -788,11 +788,11 @@ class RF:
 
         # Этот блок выполнится, только если условие выше не выполнится
         print("# Компоненты добавлены успешно, продолжаем крафт")
-        await self._craft_and_process_result(lstr)
+        await self._craft_and_process_result()
 
         return True
 
-    async def _craft_and_process_result(self, lstr):
+    async def _craft_and_process_result(self):
         await asyncio.sleep(1)
         print("# Крафт и проверка результата")
         await self.client.send_message(self.bot_id, "🔨 Скрафтить")
