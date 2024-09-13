@@ -943,7 +943,7 @@ class RF:
         print(f"\nОбщее здоровье группы: {total_health}")
         print(f"Живых: {alive_count}, Живые с хилками: {'да' if alive_has_heal else 'нет'}, Группа с ресами: {'да' if group_has_res else 'нет'}")
 
-        if total_health < 2000 and not alive_has_heal and not group_has_res:
+        if total_health < 2500 and not alive_has_heal and not group_has_res:
             message = f"{'Ты лидер' if self.is_cave_leader else 'Ты не лидер'}, пора на выход. Общее здоровье: {total_health}, нет хилок у живых и ресов в группе"
             await self.client.send_message(715480502, message)
             print(message)
