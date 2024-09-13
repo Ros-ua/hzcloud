@@ -190,7 +190,7 @@ class RF:
         elif lstr[0].startswith("Состав:"):
             print("что там по составу")
             await self.check_group_list(lstr)
-            await asyncio.sleep(randint(20, 30))
+            await asyncio.sleep(randint(2)
             await self.vihod_s_caves(lstr)
 
         elif lstr[0].endswith("не в ген. штабе]"):
