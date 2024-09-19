@@ -289,8 +289,6 @@ class RF:
                 await self.check_arrival()
 
 
-
-
         # # данжи
         # elif any(f"+1 к энергии 🔋{i}/5" in lstr[0] for i in (4, 5)):
         #     await asyncio.sleep(1)
@@ -867,7 +865,7 @@ class RF:
     def kroha_pativod(self):
         print("Устанавливаем обработчик сообщений для kroha_pativod")
         
-        @self.client.on(events.NewMessage(from_users=[353501977]))
+        @self.client.on(events.NewMessage(from_users=[353501977, 255360779]))
         async def handle_specific_user_messages(event):
             if event.is_private:  # Проверяем, что сообщение пришло из личного чата
                 print(f"Получено новое личное сообщение от пользователя 353501977: {event.message.text}")
@@ -965,6 +963,6 @@ class RF:
                         print(f"Отправлено сообщение участнику {member_id}: Выходим из пещеры")
                 await asyncio.sleep(60) 
                 await self.rf_message.click(3)
-        
+                
         else:
             print(f"Ещё рано на выход. Общее здоровье: {total_health}, Живых: {alive_count}")
