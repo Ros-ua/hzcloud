@@ -536,26 +536,18 @@ class RF:
             print("Завершаем работу на чв")
 
     async def process_bot_message(self, lstr):
-
-        # # Проверка, наносился ли вам урон
-        # if not any("нанес удар" in line and self.your_name in line for line in lstr):
-        #     print("По вам не было нанесено урона. Переходим к следующему терминалу.")
-        #     self.is_nacheve_active = False 
-        #     # await self.client.send_message(self.bot_id, "⛏Рудник")
-        #     return False
-        # Проверка победы и получения урона
-        if any(phrase in line for line in lstr for phrase in ["Ты одержал победу над"]):
-            if any("нанес удар" in line and self.your_name in line for line in lstr):
-                print("Обнаружена победа с получением урона. Отправляемся в ген. штаб.")
+        if any("Ты одержал победу над" in line for line in lstr):
+            # Проверяем, есть ли другие игроки, которые нанесли удар
+            if any("нанес удар" in line and self.your_name not in line for line in lstr):
+                print("Победа с получением урона. Отправляемся в ген. штаб.")
                 self.is_nacheve_active = False
                 await asyncio.sleep(2)
                 await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
                 await self.gokragi()
                 return True
-            else:
+            elif any(f"{self.your_name} нанес удар" in line for line in lstr) and not any("нанес удар" in line and self.your_name not in line for line in lstr):
                 print("Победа без получения урона. Переходим к следующему терминалу.")
-                return False  # Логика продолжит проверку cmd_altar для перехода к следующему алтарю
-
+                return False
 
         if lstr[-1].endswith("минут.") or "дождись пока воскреснешь" in lstr[0] or "был убит ядерной ракетой" in lstr[0]:
             print("Обнаружено сообщение о времени. Вызываем gokragi()")
