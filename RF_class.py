@@ -874,12 +874,14 @@ class RF:
                 print(f"Преобразованный текст сообщения: {message_text}")
                 
                 keywords = ['банка', 'банку', 'пить']
+                gsh_keywords = ['гш']
                 
                 if message_text in keywords:
-                    print(f"Обнаружено точное совпадение с ключевым словом: {message_text}")
                     print("Отправляем команду /drink_102")
                     await self.client.send_message(self.bot_id, "/drink_102")
-                    print("Команда /drink_102 отправлена")
+                elif any(gsh in message_text for gsh in gsh_keywords):  
+                    print("Отправляем команду /go_to_gsh")
+                    await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
                 else:
                     print("Точное совпадение с ключевыми словами не обнаружено")
             else:
