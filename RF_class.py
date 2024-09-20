@@ -876,7 +876,8 @@ class RF:
                     await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
                     await asyncio.sleep(5)
                     await self.client.send_message(self.bot_id, "/bind_wear_171967083952510")
-                    self.reset_health()
+                    self.my_health = self.my_max_health = 5117  # Устанавливаем текущее и максимальное здоровье на 5117
+                    print(f"Здоровье обновлено: {self.my_health}/{self.my_max_health}")
 
                 else:
                     print("Точное совпадение с ключевыми словами не обнаружено")
