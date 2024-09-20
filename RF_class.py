@@ -874,6 +874,10 @@ class RF:
                 elif any(gsh in message_text for gsh in gsh_keywords):  
                     print("Отправляем команду /go_to_gsh")
                     await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
+                    await asyncio.sleep(5)
+                    await self.client.send_message(self.bot_id, "/bind_wear_171967083952510")
+                    self.reset_health()
+
                 else:
                     print("Точное совпадение с ключевыми словами не обнаружено")
             else:
