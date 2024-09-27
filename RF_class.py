@@ -281,7 +281,7 @@ class RF:
                 else: # Если в пещерах, но не лидер
                     print("Пересылка сообщения о восполнении энергии в группу")
                     # await message.forward_to(-1001323974021) #59 60
-                    await message.forward_to(2220238697) # без В
+                    # await message.forward_to(2220238697) # без В
             else:
                 print("Восполнение энергии вне пещер")
                 await asyncio.sleep(1)
