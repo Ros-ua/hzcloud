@@ -46,6 +46,7 @@ class RF:
         self.is_nacheve_active = self.in_battle = False  # Флаги активности nacheve и боя
         self.is_cave_leader = True
         self.kroha_pativod()
+        self.fast_cave = False
 
 
 
@@ -178,17 +179,29 @@ class RF:
         elif "Ваша группа замерзнет через 5 минут" in lstr[0]:
             await asyncio.sleep(1)
             await self.rf_message.click(2)
+
         elif "Ваша группа восстановила силы" in lstr[0]:
-            await asyncio.sleep(1)
-            await self.rf_message.click(2)
+            if self.fast_cave:  # Проверка значения fast_ceve
+                await asyncio.sleep(1)
+                await self.rf_message.click(2)
         elif "Ваша группа прибудет в ген. штаб через" in lstr[0]:
             print("чувачок, ты закончил пещеру")
             self.is_in_caves = False
+            self.fast_cave = False
             await asyncio.sleep(1)
             await self.client.send_message(self.bot_id, RF.hp)  # переодеться для мобов
             await self.check_arrival()
         elif lstr[0].startswith("Состав:"):
             print("что там по составу")
+            # Проверка баллов
+            score_line = lstr[1]  # Предполагаем, что баллы находятся на второй строке
+            if "Баллы:" in score_line:
+                score = int(score_line.split(":")[1].strip().split()[0])  # Извлекаем значение баллов
+                if score == 11:
+                    self.fast_cave = True  # Устанавливаем флаг fast_cave в True
+                    print("Установлен флаг fast_cave в True, баллы равны 11.")
+                else:
+                    print(f"Баллы не равны 11, текущее значение: {score}")  # Отладочное сообщение
             await self.check_group_list(lstr)
             await asyncio.sleep(2)
             await self.vihod_s_caves(lstr)
