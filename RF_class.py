@@ -344,7 +344,7 @@ class RF:
         if not message.buttons:
             if val == 3190963077:  # ✨Добыча:
                 await message.forward_to(-1001323974021) #группа 59
-                await message.forward_to(2220238697) #группа без В
+                # await message.forward_to(2220238697) #группа без В
             else:
                 await self.checkHealth(lstr)
             return
