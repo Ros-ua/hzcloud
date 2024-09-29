@@ -892,8 +892,8 @@ class RF:
                     self.my_health = self.my_max_health = 5117  # Устанавливаем текущее и максимальное здоровье на 5117
                     print(f"Здоровье обновлено: {self.my_health}/{self.my_max_health}")
                 elif "шаг" in message_text:  
-					await asyncio.sleep(1)
-					await self.rf_message.click(2)
+                    await asyncio.sleep(1)  
+                    await self.rf_message.click(2)
 
                 else:
                     print("Точное совпадение с ключевыми словами не обнаружено")
