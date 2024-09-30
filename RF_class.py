@@ -18,6 +18,9 @@ class RF:
     kroha_id = 353501977
     tamplier_id = 681431333
     john_id = 562559122
+    pchelka_id = 255360779
+    ded_id = 1757434874
+
     your_name = "Ros_Hangzhou"
 
     def __init__(self, client):
@@ -32,7 +35,9 @@ class RF:
             "Нежный 🍅": self.tomat_id,
             "🐾ᏦᎮᎧχᏗ": self.kroha_id,
             "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗": self.tamplier_id,
-            "John Doe": self.john_id
+            "John Doe": self.john_id,
+            "๖ۣۜᗯαsͥpwͣoͫℝt🐝": self.pchelka_id,
+            "kingRagnar🤴🏼": self.ded_id
         }
         self.cmd_altar = None
         self.altar_dict = {
@@ -870,10 +875,10 @@ class RF:
     def kroha_pativod(self):
         print("Устанавливаем обработчик сообщений для kroha_pativod")
         
-        @self.client.on(events.NewMessage(from_users=[353501977, 681431333, 255360779]))
+        @self.client.on(events.NewMessage(from_users=[278339710, 353501977, 681431333, 562559122, 255360779, 1757434874]))
         async def handle_specific_user_messages(event):
             if event.is_private:  # Проверяем, что сообщение пришло из личного чата
-                print(f"Получено новое личное сообщение от пользователя 353501977: {event.message.text}")
+                print(f"Получено новое личное сообщение от пользователя {event.sender_id}: {event.message.text}")  # Изменено на вывод ID пользователя
                 
                 message_text = event.message.text.lower().strip()
                 print(f"Преобразованный текст сообщения: {message_text}")
@@ -894,6 +899,9 @@ class RF:
                 elif "шаг" in message_text:  
                     await asyncio.sleep(1)  
                     await self.rf_message.click(2)
+                elif "выход" in message_text:  
+                    await asyncio.sleep(1)  
+                    await self.rf_message.click(3)
 
                 else:
                     print("Точное совпадение с ключевыми словами не обнаружено")
