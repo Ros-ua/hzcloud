@@ -870,7 +870,7 @@ class RF:
     def kroha_pativod(self):
         print("Устанавливаем обработчик сообщений для kroha_pativod")
         
-        @self.client.on(events.NewMessage(from_users=[353501977, 255360779]))
+        @self.client.on(events.NewMessage(from_users=[353501977, 681431333, 255360779]))
         async def handle_specific_user_messages(event):
             if event.is_private:  # Проверяем, что сообщение пришло из личного чата
                 print(f"Получено новое личное сообщение от пользователя 353501977: {event.message.text}")
