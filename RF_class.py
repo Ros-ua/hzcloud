@@ -50,7 +50,7 @@ class RF:
         }
         self.is_nacheve_active = self.in_battle = False  # Флаги активности nacheve и боя
         self.is_cave_leader = True
-        self.kroha_pativod()
+        self.common_cave()
         self.fast_cave = False
 
 
@@ -872,43 +872,40 @@ class RF:
 
 
 
-    def kroha_pativod(self):
+    def common_cave(self):
         print("Устанавливаем обработчик сообщений для kroha_pativod")
         
         @self.client.on(events.NewMessage(from_users=[278339710, 353501977, 681431333, 562559122, 255360779, 1757434874]))
         async def handle_specific_user_messages(event):
             if event.is_private:  # Проверяем, что сообщение пришло из личного чата
-                print(f"Получено новое личное сообщение от пользователя {event.sender_id}: {event.message.text}")  # Изменено на вывод ID пользователя
+                print(f"Получено новое личное сообщение от пользователя {event.sender_id}: {event.message.text}")
                 
                 message_text = event.message.text.lower().strip()
                 print(f"Преобразованный текст сообщения: {message_text}")
                 
-                keywords = ['банка', 'банку', 'пить']
-                gsh_keywords = ['гш']
-                
-                if message_text in keywords:
+                # Проверяем текст сообщения и выполняем соответствующие действия
+                if "_банка" in message_text or "_банку" in message_text or "_пить" in message_text:
                     print("Отправляем команду /drink_102")
                     await self.client.send_message(self.bot_id, "/drink_102")
-                elif any(gsh in message_text for gsh in gsh_keywords):  
+                elif "_гш" in message_text:  
                     print("Отправляем команду /go_to_gsh")
                     await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
                     await asyncio.sleep(5)
                     await self.client.send_message(self.bot_id, "/bind_wear_171967083952510")
                     self.my_health = self.my_max_health = 5117  # Устанавливаем текущее и максимальное здоровье на 5117
                     print(f"Здоровье обновлено: {self.my_health}/{self.my_max_health}")
-                elif "шаг" in message_text:  
+                elif "_шаг" in message_text:  
                     await asyncio.sleep(1)  
                     await self.rf_message.click(2)
-                elif "выход" in message_text:  
+                elif "_выход" in message_text:  
                     await asyncio.sleep(1)  
                     await self.rf_message.click(3)
-
                 else:
                     print("Точное совпадение с ключевыми словами не обнаружено")
             else:
                 print("Сообщение не из личного чата, игнорируем его.")
 
-        print("Обработчик сообщений для kroha_pativod успешно установлен")
+        print("Обработчик сообщений для common_cave успешно установлен")
         print(f"Ваше текущее здоровье: {self.my_health}")
         print(f"Находитесь ли вы в пещерах: {self.is_in_caves}")
         print(f"Являетесь ли вы лидером пещер: {self.is_cave_leader}")
