@@ -873,7 +873,7 @@ class RF:
 
 
     def common_cave(self):
-        print("Устанавливаем обработчик сообщений для kroha_pativod")
+        print("Устанавливаем обработчик сообщений для common_cave")
         
         @self.client.on(events.NewMessage(from_users=[278339710, 353501977, 681431333, 562559122, 255360779, 1757434874]))
         async def handle_specific_user_messages(event):
