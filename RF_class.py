@@ -61,6 +61,7 @@ class RF:
         self.hp_5117 = "/bind_wear_171967083952510"   # 5117 HP
         self.last_bind = None
         self.cave_task_running = False
+        self.last_set_kingRagnar = None
 
 
 
@@ -234,6 +235,8 @@ class RF:
             await self.vihod_s_caves(lstr)
             await asyncio.sleep(2)
             await self.hp_in_caves(lstr)
+            await asyncio.sleep(2)
+            await self.hp_in_caves_kingRagnar(lstr)
             await asyncio.sleep(2)
             await self.time_cave(lstr)
 
@@ -1145,6 +1148,47 @@ class RF:
                             await self.client.send_message(self.bot_id, self.hp_11999)  # Надеваем 11999 HP
                             print(f"Сменили бинд на: {self.hp_11999} (макс. здоровье: 11999)")
                             self.last_bind = self.hp_11999
+                    break
+
+
+    async def hp_in_caves_kingRagnar(self, lstr):
+        print(f"Привет, kingRagnar в пещерах")
+        # Проверяем, находимся ли мы в пещерах
+        if not self.is_in_caves:
+            print("Ты не в пещерах, выход из функции.")
+            return
+        
+        last_set = None  # Переменная для хранения последнего отправленного сета
+
+        for line in lstr:
+            if "kingRagnar" in line:  # Проверяем, что это сообщение для kingRagnar
+                health_info = re.search(r"❤️(\d+)/\d+", line)
+                if health_info:
+                    current_health = int(health_info.group(1))
+                    print(f"Текущее здоровье kingRagnar: {current_health}")
+
+                    # Логика смены сетов для kingRagnar
+                    new_set = None  # Переменная для хранения нового сета
+                    if 10500 <= current_health <= 11500:  # Сет1
+                        new_set = "Сет1"
+                    elif 9500 <= current_health < 10500:  # Сет2
+                        new_set = "Сет2"
+                    elif 9000 <= current_health < 9500:  # Сет3
+                        new_set = "Сет3"
+                    elif 8000 <= current_health < 9000:  # Сет4
+                        new_set = "Сет4"
+                    elif 5700 <= current_health < 8000:  # Сет5
+                        new_set = "Сет5"
+                    elif current_health < 5700:  # Сет6
+                        new_set = "Сет6"
+
+                    # Отправляем сообщение только если сет изменился
+                    if new_set and new_set != self.last_set_kingRagnar:
+                        await self.client.send_message(self.players["kingRagnar🤴🏼"], new_set)
+                        print(f"Отправлено сообщение: {new_set}")  # Добавлено
+                        self.last_set_kingRagnar = new_set  # Обновляем last_set
+
+                    print(f"Текущий сет: {self.last_set_kingRagnar}")  # Добавлено
                     break
 
     async def time_cave(self, lstr):  # Добавлен параметр lstr
