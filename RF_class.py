@@ -202,6 +202,7 @@ class RF:
                 self.my_health = self.my_max_health = 11999  # Устанавливаем значения для my_health и my_max_health
                 print(self.my_health, self.my_max_health)
                 self.is_has_res = False
+                self.last_bind = self.hp_11999
         elif "Сражение с" in lstr[0] and not any("Рюкзак" in line for line in lstr):
             self.in_battle = True   
         elif "К сожалению ты умер" in lstr:
