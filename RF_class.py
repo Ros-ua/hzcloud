@@ -62,6 +62,8 @@ class RF:
         self.last_bind = None
         self.cave_task_running = False
         self.last_set_kingRagnar = None
+        self.waiting_for_captcha = False  # Флаг ожидания капчи
+
 
 
 
@@ -361,8 +363,8 @@ class RF:
                     # await message.forward_to(-1001323974021) #59 60
                     # await message.forward_to(2220238697) # без В
             else:  # Исправленный отступ
-                # Проверяем, что не на чв
-                if not self.is_nacheve_active:
+                # Проверяем, что не на чв и не ждем капчу
+                if not self.is_nacheve_active and not self.waiting_for_captcha:
                     print("Восполнение энергии вне пещер")
                     await asyncio.sleep(1)
                     await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
@@ -406,7 +408,17 @@ class RF:
             "⚠️Прежде чем выполнять какие-то действия в игре",
             "Введите, пожалуйста, текст с картинки."
         ]):
-            sys.exit()
+            print("Капча получена")
+            await self.client.send_message(715480502, "Капча получена")  # Отправляем сообщение
+            self.waiting_for_captcha = True # Флаг ожидания капчи
+            # sys.exit()
+        elif any(phrase in lstr[0] for phrase in [
+            "Ты направляешься в ген. штаб",
+        ]):
+            self.waiting_for_captcha = False  # Флаг ожидания капчи
+
+
+
 
         if not message.buttons:
             if val == 3190963077:  # ✨Добыча:
@@ -421,7 +433,7 @@ class RF:
             await asyncio.sleep(1)
             await self.client.send_message(self.bot_id, "⚖️Проверить состав")
             return
-
+        
 
     async def check_arrival_dange(self):  # ходим данжи
         print("check_arrival_dange")
@@ -669,16 +681,16 @@ class RF:
 
         if lstr[-1].endswith("минут.") or "дождись пока воскреснешь" in lstr[0] or "был убит ядерной ракетой" in lstr[0]:
             print("Обнаружено сообщение о времени. Вызываем gokragi()")
-            self.is_nacheve_active = False
             await self.gokragi()
+            self.is_nacheve_active = False
             return True
 
         if any(phrase in line for line in lstr for phrase in ["Бронза уже у тебя в рюкзаке."]):
             print("Обнаружена победа. Отправляемся в ген. штаб")
-            self.is_nacheve_active = False
             await asyncio.sleep(2)
             await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
             await self.gokragi()
+            self.is_nacheve_active = False
             return True
 
         if "Ты направляешься" in lstr[0]:
