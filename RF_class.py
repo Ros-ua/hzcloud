@@ -1171,13 +1171,13 @@ class RF:
                         new_set = "Сет1"
                     elif 9500 <= current_health < 10500:  # Сет2
                         new_set = "Сет2"
-                    elif 9000 <= current_health < 9500:  # Сет3
+                    elif 8000 <= current_health < 9000:  # Сет3
                         new_set = "Сет3"
-                    elif 8000 <= current_health < 9000:  # Сет4
+                    elif 7000 <= current_health < 8000:  # Сет4
                         new_set = "Сет4"
-                    elif 5700 <= current_health < 8000:  # Сет5
+                    elif 5700 <= current_health < 6500:  # Сет5
                         new_set = "Сет5"
-                    elif current_health < 5700:  # Сет6
+                    elif 0 <= current_health < 5700:  # Сет6
                         new_set = "Сет6"
 
                     # Отправляем сообщение только если сет изменился
