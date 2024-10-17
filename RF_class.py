@@ -323,6 +323,9 @@ class RF:
         elif "Ты прибыл в ⛏рудник." in lstr[0]:
             await asyncio.sleep(1)
             await self.client.send_message(self.bot_id, "🖲 Установить АБУ")
+        elif "Произошла реинкарнация" in lstr[0]:
+            await asyncio.sleep(15)
+            await self.client.send_message(self.bot_id, "🌋 Краговые шахты") 
 
 
 
