@@ -184,6 +184,8 @@ class RF:
         ]):
             self.is_has_hil = False  
             print(f"Статус has_hil обновлен: {self.is_has_hil}")  # Добавлен вывод статуса has_hil
+            self.waiting_for_captcha = False  # Флаг ожидания капчи
+
             # self.reset_health()
         elif any(phrase in line for line in lstr for phrase in [
             "Ты снова жив",
@@ -325,7 +327,8 @@ class RF:
             await self.client.send_message(self.bot_id, "🖲 Установить АБУ")
         elif "Произошла реинкарнация" in lstr[0]:
             await asyncio.sleep(15)
-            await self.client.send_message(self.bot_id, "🌋 Краговые шахты") 
+            if not self.is_in_caves:  # Проверяем, что не в пещерах
+                await self.client.send_message(self.bot_id, "🌋 Краговые шахты")
 
 
 
