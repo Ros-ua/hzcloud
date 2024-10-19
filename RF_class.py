@@ -1161,8 +1161,6 @@ class RF:
         if not self.is_in_caves:
             print("Ты не в пещерах, выход из функции.")
             return
-        
-        last_set = None  # Переменная для хранения последнего отправленного сета
 
         for line in lstr:
             if "kingRagnar" in line:  # Проверяем, что это сообщение для kingRagnar
@@ -1172,27 +1170,28 @@ class RF:
                     print(f"Текущее здоровье kingRagnar: {current_health}")
 
                     # Логика смены сетов для kingRagnar
-                    new_set = None  # Переменная для хранения нового сета
                     if 10500 <= current_health <= 11500:  # Сет1
                         new_set = "Сет1"
                     elif 9500 <= current_health < 10500:  # Сет2
                         new_set = "Сет2"
-                    elif 8000 <= current_health < 9000:  # Сет3
+                    elif 8000 <= current_health < 9500:  # Сет3
                         new_set = "Сет3"
                     elif 7000 <= current_health < 8000:  # Сет4
                         new_set = "Сет4"
-                    elif 5700 <= current_health < 6500:  # Сет5
+                    elif 5700 <= current_health < 7000:  # Сет5
                         new_set = "Сет5"
                     elif 0 <= current_health < 5700:  # Сет6
                         new_set = "Сет6"
+                    else:
+                        new_set = None
 
                     # Отправляем сообщение только если сет изменился
                     if new_set and new_set != self.last_set_kingRagnar:
                         await self.client.send_message(self.players["kingRagnar🤴🏼"], new_set)
-                        print(f"Отправлено сообщение: {new_set}")  # Добавлено
+                        print(f"Отправлено сообщение: {new_set}")
                         self.last_set_kingRagnar = new_set  # Обновляем last_set
 
-                    print(f"Текущий сет: {self.last_set_kingRagnar}")  # Добавлено
+                    print(f"Текущий сет: {self.last_set_kingRagnar}")
                     break
 
     async def time_cave(self, lstr):  # Добавлен параметр lstr
