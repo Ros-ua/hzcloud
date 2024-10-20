@@ -1,4 +1,4 @@
-ыыimport re
+import re
 import sys
 import asyncio
 import random
