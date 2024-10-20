@@ -1,4 +1,4 @@
-import re
+ыыimport re
 import sys
 import asyncio
 import random
@@ -1098,7 +1098,7 @@ class RF:
                     if member_id != 715480502:
                         await self.client.send_message(member_id, "Выходим из пещеры")
                         print(f"Отправлено сообщение участнику {member_id}: Выходим из пещеры")
-                await asyncio.sleep(60) 
+                await asyncio.sleep(10) 
                 await self.rf_message.click(3)
                 
         else:
