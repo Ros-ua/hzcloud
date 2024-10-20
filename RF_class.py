@@ -309,10 +309,13 @@ class RF:
             "Ты прибыл к алтарю",
              "бой за терминал будет происходить автоматически",
              "ты можешь перейти к терминалу только из алтаря",
+             "Ты уже находишься в данной локации",
         ]):
             await self.nacheve()
         elif "Храна. Ты был убит!" in lstr[0]:
             await self.gokragi()
+        elif "Бронза уже у тебя в рюкзаке" in lstr[0]:
+            self.is_nacheve_active = False
         elif "Ты прибыл в краговые шахты" in lstr[0]:
             await asyncio.sleep(1)
             await self.client.send_message(self.bot_id, "⛏Рудник")
@@ -329,6 +332,11 @@ class RF:
             await asyncio.sleep(15)
             if not self.is_in_caves:  # Проверяем, что не в пещерах
                 await self.client.send_message(self.bot_id, "🌋 Краговые шахты")
+                await asyncio.sleep(2)
+                # надеваем бинд для ч
+                await self.client.send_message(self.bot_id, "/bind_wear_1729445025167j")
+
+
 
 
 
