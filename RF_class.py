@@ -32,7 +32,7 @@ class RF:
         self.health_re = re.compile(r"Здоровье пополнено \D+(\d+)/(\d+)")
         self.battle_re = re.compile(r"^Сражение с .*$")
         self.damage_re = re.compile(r"(\d+)$")
-        self.arrival_re = re.compile(r'прибудешь через (\d+)\s*мин.\s*(\d+)\s*сек')
+        self.arrival_re = re.compile(r'прибудешь через (\d+)\s*мин\.\s*(\d+(?:\.\d+)?)\s*сек')
         self.last_talisman_info = None  # (type, level)
         self.players = {
             "Нежный 🍅": self.tomat_id,
@@ -453,12 +453,14 @@ class RF:
             self.waiting_for_captcha = False  # Флаг ожидания капчи
 
         elif "прибудешь через" in lstr[0]:
-            match = re.search(r'прибудешь через (\d+)\s*мин.\s*(\d+)\s*сек', lstr[0])
+            match = re.search(r'прибудешь через (\d+)\s*мин\.\s*(\d+(?:\.\d+)?)\s*сек', lstr[0])
             if match:
-                minutes, seconds = map(int, match.groups())
-                duration = minutes * 60 + seconds
+                minutes = int(match.group(1))
+                seconds = float(match.group(2))
+                duration = int(minutes * 60 + seconds)
                 await self.set_moving_flag(duration)
-                print(f"Движение начато. Продолжительность: {duration} секунд")
+                print(f"Движение начато: {lstr[0]}")
+                print(f"Продолжительность: {duration} секунд")
 
 
 
