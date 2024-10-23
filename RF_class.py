@@ -6,6 +6,7 @@ from random import randint
 from telethon import events
 from addons import qHash
 import datetime
+import threading
 
 class RF:
     bot_id = 577009581
@@ -31,6 +32,7 @@ class RF:
         self.health_re = re.compile(r"Здоровье пополнено \D+(\d+)/(\d+)")
         self.battle_re = re.compile(r"^Сражение с .*$")
         self.damage_re = re.compile(r"(\d+)$")
+        self.arrival_re = re.compile(r'прибудешь через (\d+)\s*мин.\s*(\d+)\s*сек')
         self.last_talisman_info = None  # (type, level)
         self.players = {
             "Нежный 🍅": self.tomat_id,
@@ -63,6 +65,10 @@ class RF:
         self.cave_task_running = False
         self.last_set_kingRagnar = None
         self.waiting_for_captcha = False  # Флаг ожидания капчи
+        self.is_moving = False  # Добавляем этот флаг
+        self.move_timer = None
+
+
 
 
 
@@ -155,6 +161,17 @@ class RF:
         else:
             print(f"Здоровье достаточно высокое ({self.my_health}). Лечение не требуется.")
 
+
+    async def set_moving_flag(self, duration):
+        self.is_moving = True
+        if self.move_timer:
+            self.move_timer.cancel()
+        self.move_timer = asyncio.create_task(self.reset_moving_flag(duration))
+
+    async def reset_moving_flag(self, duration):
+        await asyncio.sleep(duration)
+        self.is_moving = False
+
     async def msg_parce(self, message):
         if not self.is_run:
             return
@@ -219,11 +236,10 @@ class RF:
                 await self.rf_message.click(2)
         elif "Ваша группа прибудет в ген. штаб через" in lstr[0]:
             print("чувачок, ты закончил пещеру")
-            self.is_in_caves = False
-            self.fast_cave = False
             await asyncio.sleep(1)
             await self.client.send_message(self.bot_id, RF.hp)  # переодеться для мобов
             await self.check_arrival()
+            self.fast_cave = False
         elif lstr[0].startswith("Состав:"):
             print("что там по составу")
             # Проверка баллов
@@ -333,8 +349,8 @@ class RF:
             if not self.is_in_caves:  # Проверяем, что не в пещерах
                 await self.client.send_message(self.bot_id, "🌋 Краговые шахты")
                 await asyncio.sleep(2)
-                # надеваем бинд для ч
-                await self.client.send_message(self.bot_id, "/bind_wear_1729445025167j")
+                # надеваем бинд для чв
+                await self.client.send_message(self.bot_id, "/bind_wear_1729689260746d")
 
 
 
@@ -360,6 +376,10 @@ class RF:
             await self.check_arrival()
         elif any(f"+1 к энергии 🔋{i}/5" in lstr[0] for i in (4, 5)):
 
+            if self.waiting_for_captcha:
+                print("Уже ожидаем решения капчи от предыдущего действия...")
+                return
+            
             if self.is_in_caves:
                 if self.is_cave_leader:
                     print("Восполнение энергии в пещерах или если ты лидер пещеры")
@@ -431,6 +451,14 @@ class RF:
             "Ты направляешься в ген. штаб",
         ]):
             self.waiting_for_captcha = False  # Флаг ожидания капчи
+
+        elif "прибудешь через" in lstr[0]:
+            match = re.search(r'прибудешь через (\d+)\s*мин.\s*(\d+)\s*сек', lstr[0])
+            if match:
+                minutes, seconds = map(int, match.groups())
+                duration = minutes * 60 + seconds
+                await self.set_moving_flag(duration)
+                print(f"Движение начато. Продолжительность: {duration} секунд")
 
 
 
@@ -552,12 +580,14 @@ class RF:
                     "Ваша группа вернулась в ген. штаб!" ,
                     "Ты снова жив👼"
                 ]):    
+                    self.is_in_caves = False  # Сбрасываем флаг здесь
                     await asyncio.sleep(2)
                     await self.client.send_message(self.bot_id, "💖 Пополнить здоровье")
                     await self.wait_for_health_refill()
                     await self.client.send_message(self.bot_id, "🔥 61-65 Лес пламени")
                     return
             await asyncio.sleep(1)
+
 
 
     async def arrival_hil(self):  # ходим на моба
@@ -678,10 +708,10 @@ class RF:
             # Проверяем, есть ли другие игроки, которые нанесли удар
             if any("нанес удар" in line and self.your_name not in line for line in lstr):
                 print("Победа с получением урона. Отправляемся в ген. штаб.")
-                self.is_nacheve_active = False
                 await asyncio.sleep(2)
                 await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
                 await self.gokragi()
+                self.is_nacheve_active = False
                 return True
             elif any(f"{self.your_name} нанес удар" in line for line in lstr) and not any("нанес удар" in line and self.your_name not in line for line in lstr):
                 print("Победа без получения урона. Переходим к следующему терминалу.")
@@ -694,7 +724,7 @@ class RF:
             return True
 
         if any(phrase in line for line in lstr for phrase in ["Бронза уже у тебя в рюкзаке."]):
-            print("Обнаружена победа. Отправляемся в ген. штаб")
+            print("Бронза уже у тебя в рюкзаке.")
             await asyncio.sleep(2)
             await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
             await self.gokragi()
