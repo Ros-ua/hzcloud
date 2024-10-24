@@ -525,7 +525,7 @@ class RF:
 
         if val == 3190963077:  # ✨Добыча:
             self.rf_message = message
-            await asyncio.sleep(1)
+            await asyncio.sleep(10)
             await self.client.send_message(self.bot_id, "⚖️Проверить состав")
             return
         
