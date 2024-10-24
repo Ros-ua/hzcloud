@@ -32,7 +32,7 @@ class RF:
         self.health_re = re.compile(r"Здоровье пополнено \D+(\d+)/(\d+)")
         self.battle_re = re.compile(r"^Сражение с .*$")
         self.damage_re = re.compile(r"(\d+)$")
-        self.arrival_re = re.compile(r'прибудешь через (\d+)\s*мин\.\s*(\d+(?:\.\d+)?)\s*сек')
+        self.arrival_re = re.compile(r'.*прибудешь через\s*(\d+)\s*мин\.\s*(\d+(?:\.\d+)?)\s*сек\.')
         self.last_talisman_info = None  # (type, level)
         self.players = {
             "Нежный 🍅": self.tomat_id,
@@ -154,10 +154,62 @@ class RF:
 
     async def autoHeal(self):
         print(f"Проверка здоровья перед автолечением: {self.my_health}")
-        if self.my_health <= 300 and self.is_has_hil :
+        
+        # Лечимся, если здоровье ниже 300
+        if self.my_health <= 300 and self.is_has_hil:
             print(f"Здоровье критически низкое ({self.my_health}). Отправляем запрос на хил.")
             await self.rf_message.click(0)
             self.is_has_hil = False
+        
+        # Логика смены снаряжения в зависимости от текущего здоровья
+        elif 300 <= self.my_health <= 1500:  # Если здоровье между 300 и 1500
+            if self.last_bind != self.hp_11999 and self.is_has_hil:
+                self.is_has_hil = False
+                await asyncio.sleep(5)  # Ждем 3 секунды
+                await self.client.send_message(self.bot_id, self.hp_11999)  # Надеваем 11999 HP
+                print(f"Сменили бинд на: {self.hp_11999} (макс. здоровье: 11999)")
+                await self.rf_message.click(0)  # Выполняем клик
+                self.my_health = self.my_max_health = 11999
+                self.last_bind = self.hp_11999
+
+                # await self.client.send_message(self.bot_id, self.hp_11999)  # Надеваем 11999 HP
+                # print(f"Сменили бинд на: {self.hp_11999} (макс. здоровье: 11999)")
+                # await asyncio.sleep(3)  # Ждем 3 секунды
+                # await self.rf_message.click(0)  # Выполняем клик
+                # self.my_health = self.my_max_health = 11999
+                # self.last_bind = self.hp_11999
+                # self.is_has_hil = False
+
+        elif 1300 < self.my_health <= 5117:  # Если здоровье между 1300 и 5117
+            if self.last_bind != self.hp_5117:
+                await self.client.send_message(self.bot_id, self.hp_5117)  # Надеваем 5117 HP
+                print(f"Сменили бинд на: {self.hp_5117} (макс. здоровье: 5117)")
+                self.last_bind = self.hp_5117
+        elif 5117 < self.my_health <= 5829:  # Если здоровье между 5117 и 5829
+            if self.last_bind != self.hp_5829:
+                await self.client.send_message(self.bot_id, self.hp_5829)  # Надеваем 5829 HP
+                print(f"Сменили бинд на: {self.hp_5829} (макс. здоровье: 5829)")
+                self.last_bind = self.hp_5829
+        elif 5829 < self.my_health <= 7412:  # Если здоровье между 5829 и 7412
+            if self.last_bind != self.hp_7412:
+                await self.client.send_message(self.bot_id, self.hp_7412)  # Надеваем 7412 HP
+                print(f"Сменили бинд на: {self.hp_7412} (макс. здоровье: 7412)")
+                self.last_bind = self.hp_7412
+        elif 7412 < self.my_health <= 8930:  # Если здоровье между 7412 и 8930
+            if self.last_bind != self.hp_8930:
+                await self.client.send_message(self.bot_id, self.hp_8930)  # Надеваем 8930 HP
+                print(f"Сменили бинд на: {self.hp_8930} (макс. здоровье: 8930)")
+                self.last_bind = self.hp_8930
+        elif 8930 < self.my_health <= 10403:  # Если здоровье между 8930 и 10403
+            if self.last_bind != self.hp_10403:
+                await self.client.send_message(self.bot_id, self.hp_10403)  # Надеваем 10403 HP
+                print(f"Сменили бинд на: {self.hp_10403} (макс. здоровье: 10403)")
+                self.last_bind = self.hp_10403
+        elif 10403 < self.my_health < 11999:  # Если здоровье между 10403 и 11999
+            if self.last_bind != self.hp_11999:
+                await self.client.send_message(self.bot_id, self.hp_11999)  # Надеваем 11999 HP
+                print(f"Сменили бинд на: {self.hp_11999} (макс. здоровье: 11999)")
+                self.last_bind = self.hp_11999
         else:
             print(f"Здоровье достаточно высокое ({self.my_health}). Лечение не требуется.")
 
@@ -191,9 +243,10 @@ class RF:
             self.is_in_caves = True
             self.is_has_hil = True
             self.is_has_res = True
-            await asyncio.sleep(randint(4, 10))
+            await asyncio.sleep(randint(4, 6))
             await self.client.send_message(self.bot_id, "⚖️Проверить состав")
             print("в пещерах")
+            await asyncio.sleep(10)
             # asyncio.create_task(self.time_cave())
             # await self.time_cave()
         elif any(phrase in line for line in lstr for phrase in [
@@ -214,13 +267,13 @@ class RF:
             "Ожидай завершения",
         ]):
             if self.is_has_res:  # Проверяем, что is_has_res равно True
-                await asyncio.sleep(randint(10, 14))
+                self.is_has_res = False
+                await asyncio.sleep(randint(14, 20))
                 await self.client.send_message(self.bot_id, self.hp_11999)  # Надеваем бинд на самое большое HP
                 await asyncio.sleep(3)  # Ждем 3 секунды перед кликом
                 await self.rf_message.click(1)
                 self.my_health = self.my_max_health = 11999  # Устанавливаем значения для my_health и my_max_health
                 print(self.my_health, self.my_max_health)
-                self.is_has_res = False
                 self.last_bind = self.hp_11999
         elif "Сражение с" in lstr[0] and not any("Рюкзак" in line for line in lstr):
             self.in_battle = True   
@@ -255,8 +308,8 @@ class RF:
             await asyncio.sleep(2)
             await self.vihod_s_caves(lstr)
             await asyncio.sleep(2)
-            await self.hp_in_caves(lstr)
-            await asyncio.sleep(2)
+            # await self.hp_in_caves(lstr)
+            # await asyncio.sleep(2)
             await self.hp_in_caves_kingRagnar(lstr)
             await asyncio.sleep(2)
             await self.time_cave(lstr)
@@ -447,20 +500,15 @@ class RF:
             await self.client.send_message(715480502, "Капча получена")  # Отправляем сообщение
             self.waiting_for_captcha = True # Флаг ожидания капчи
             # sys.exit()
-        elif any(phrase in lstr[0] for phrase in [
-            "Ты направляешься в ген. штаб",
-        ]):
-            self.waiting_for_captcha = False  # Флаг ожидания капчи
+        elif (match := self.arrival_re.search(lstr[0])):  # Проверяем совпадение для строки прибытия
+            minutes = int(match.group(1))
+            seconds = float(match.group(2))
+            duration = int(minutes * 60 + seconds)
+            self.waiting_for_captcha = False  # Сбрасываем флаг ожидания капчи
+            await self.set_moving_flag(duration)
+            print(f"Движение начато: {lstr[0]}, продолжительность: {duration} секунд")
 
-        elif "прибудешь через" in lstr[0]:
-            match = re.search(r'прибудешь через (\d+)\s*мин\.\s*(\d+(?:\.\d+)?)\s*сек', lstr[0])
-            if match:
-                minutes = int(match.group(1))
-                seconds = float(match.group(2))
-                duration = int(minutes * 60 + seconds)
-                await self.set_moving_flag(duration)
-                print(f"Движение начато: {lstr[0]}")
-                print(f"Продолжительность: {duration} секунд")
+
 
 
 
