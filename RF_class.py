@@ -62,6 +62,7 @@ class RF:
         self.hp_5829 = "/bind_wear_1728118474616c"    # 5829 HP
         self.hp_5117 = "/bind_wear_171967083952510"   # 5117 HP
         self.last_bind = None
+        self.after_bind = None
         self.cave_task_running = False
         self.last_set_kingRagnar = None
         self.waiting_for_captcha = False  # Флаг ожидания капчи
@@ -308,8 +309,8 @@ class RF:
             await asyncio.sleep(2)
             await self.vihod_s_caves(lstr)
             await asyncio.sleep(2)
-            # await self.hp_in_caves(lstr)
-            # await asyncio.sleep(2)
+            await self.hp_in_caves(lstr)
+            await asyncio.sleep(2)
             await self.hp_in_caves_kingRagnar(lstr)
             await asyncio.sleep(2)
             await self.time_cave(lstr)
@@ -1195,7 +1196,7 @@ class RF:
 
 
     async def hp_in_caves(self, lstr):
-        print(f"Привет, я в пещерах. Текущий бинд: {self.last_bind}")
+        print(f"Привет, я в пещерах. Текущий бинд: {self.after_bind}")
         # Проверяем, находимся ли мы в пещерах
         if not self.is_in_caves:
             print("Ты не в пещерах, выход из функции.")
@@ -1209,47 +1210,47 @@ class RF:
                     current_health = int(health_info.group(1))
                     print(f"Текущее здоровье {self.your_name}: {current_health}")
 
-                    # Логика смены сетов в зависимости от текущего здоровья
-                    if 300 <= current_health <= 1500:  # Если здоровье между 300 и 1500
-                        if self.last_bind != self.hp_11999 and self.is_has_hil:  # Проверяем is_has_hil
-                            await self.client.send_message(self.bot_id, self.hp_11999)  # Надеваем 11999 HP
-                            print(f"Сменили бинд на: {self.hp_11999} (макс. здоровье: 11999)")
-                            await asyncio.sleep(3)  # Ждем 3 секунды
-                            await self.rf_message.click(0)  # Выполняем клик
-                            self.my_health = self.my_max_health = 11999
-                            self.last_bind = self.hp_11999  # Сохраняем последний бинд
-                            self.is_has_hil = False
-                    elif 1300 < current_health <= 5117:  # Если здоровье между 1300 и 5117
-                        if self.last_bind != self.hp_5117:
-                            await self.client.send_message(self.bot_id, self.hp_5117)  # Надеваем 5117 HP
-                            print(f"Сменили бинд на: {self.hp_5117} (макс. здоровье: 5117)")
-                            self.last_bind = self.hp_5117
-                    elif 5117 < current_health <= 5829:  # Если здоровье между 5117 и 5829
-                        if self.last_bind != self.hp_5829:
-                            await self.client.send_message(self.bot_id, self.hp_5829)  # Надеваем 5829 HP
-                            print(f"Сменили бинд на: {self.hp_5829} (макс. здоровье: 5829)")
-                            self.last_bind = self.hp_5829
-                    elif 5829 < current_health <= 7412:  # Если здоровье между 5829 и 7412
-                        if self.last_bind != self.hp_7412:
-                            await self.client.send_message(self.bot_id, self.hp_7412)  # Надеваем 7412 HP
-                            print(f"Сменили бинд на: {self.hp_7412} (макс. здоровье: 7412)")
-                            self.last_bind = self.hp_7412
-                    elif 7412 < current_health <= 8930:  # Если здоровье между 7412 и 8930
-                        if self.last_bind != self.hp_8930:
-                            await self.client.send_message(self.bot_id, self.hp_8930)  # Надеваем 8930 HP
-                            print(f"Сменили бинд на: {self.hp_8930} (макс. здоровье: 8930)")
-                            self.last_bind = self.hp_8930
-                    elif 8930 < current_health <= 10403:  # Если здоровье между 8930 и 10403
-                        if self.last_bind != self.hp_10403:
-                            await self.client.send_message(self.bot_id, self.hp_10403)  # Надеваем 10403 HP
-                            print(f"Сменили бинд на: {self.hp_10403} (макс. здоровье: 10403)")
-                            self.last_bind = self.hp_10403
-                    elif 10403 < current_health < 11999:  # Если здоровье между 10403 и 11999
-                        if self.last_bind != self.hp_11999:
-                            await self.client.send_message(self.bot_id, self.hp_11999)  # Надеваем 11999 HP
-                            print(f"Сменили бинд на: {self.hp_11999} (макс. здоровье: 11999)")
-                            self.last_bind = self.hp_11999
-                    break
+                # Логика смены сетов в зависимости от текущего здоровья
+                # if 300 <= current_health <= 1500:  # Если здоровье между 300 и 1500
+                #     if self.last_bind != self.hp_11999 and self.is_has_hil:  # Проверяем is_has_hil
+                #         await self.client.send_message(self.bot_id, self.hp_11999)  # Надеваем 11999 HP
+                #         print(f"Сменили бинд на: {self.hp_11999} (макс. здоровье: 11999)")
+                #         await asyncio.sleep(3)  # Ждем 3 секунды
+                #         await self.rf_message.click(0)  # Выполняем клик
+                #         self.my_health = self.my_max_health = 11999
+                #         self.last_bind = self.hp_11999  # Сохраняем последний бинд
+                #         self.is_has_hil = False
+                if 1500 < current_health <= 5117:  # Если здоровье между 1500 и 5117
+                    if self.after_bind != self.hp_5117:
+                        await self.client.send_message(self.bot_id, self.hp_5117)  # Надеваем 5117 HP
+                        print(f"Сменили бинд на: {self.hp_5117} (макс. здоровье: 5117)")
+                        self.after_bind = self.hp_5117
+                elif 5117 < current_health <= 5829:  # Если здоровье между 5117 и 5829
+                    if self.after_bind != self.hp_5829:
+                        await self.client.send_message(self.bot_id, self.hp_5829)  # Надеваем 5829 HP
+                        print(f"Сменили бинд на: {self.hp_5829} (макс. здоровье: 5829)")
+                        self.after_bind = self.hp_5829
+                elif 5829 < current_health <= 7412:  # Если здоровье между 5829 и 7412
+                    if self.after_bind != self.hp_7412:
+                        await self.client.send_message(self.bot_id, self.hp_7412)  # Надеваем 7412 HP
+                        print(f"Сменили бинд на: {self.hp_7412} (макс. здоровье: 7412)")
+                        self.after_bind = self.hp_7412
+                elif 7412 < current_health <= 8930:  # Если здоровье между 7412 и 8930
+                    if self.after_bind != self.hp_8930:
+                        await self.client.send_message(self.bot_id, self.hp_8930)  # Надеваем 8930 HP
+                        print(f"Сменили бинд на: {self.hp_8930} (макс. здоровье: 8930)")
+                        self.after_bind = self.hp_8930
+                elif 8930 < current_health <= 10403:  # Если здоровье между 8930 и 10403
+                    if self.after_bind != self.hp_10403:
+                        await self.client.send_message(self.bot_id, self.hp_10403)  # Надеваем 10403 HP
+                        print(f"Сменили бинд на: {self.hp_10403} (макс. здоровье: 10403)")
+                        self.after_bind = self.hp_10403
+                elif 10403 < current_health < 11999:  # Если здоровье между 10403 и 11999
+                    if self.after_bind != self.hp_11999:
+                        await self.client.send_message(self.bot_id, self.hp_11999)  # Надеваем 11999 HP
+                        print(f"Сменили бинд на: {self.hp_11999} (макс. здоровье: 11999)")
+                        self.after_bind = self.hp_11999
+                break
 
 
     async def hp_in_caves_kingRagnar(self, lstr):
