@@ -429,9 +429,10 @@ class RF:
             await self.check_arrival()
         elif any(f"+1 к энергии 🔋{i}/5" in lstr[0] for i in (4, 5)):
 
-            if self.waiting_for_captcha:
+            if self.waiting_for_captcha or self.is_moving:
                 print("Уже ожидаем решения капчи от предыдущего действия...")
                 return
+            
             
             if self.is_in_caves:
                 if self.is_cave_leader:
