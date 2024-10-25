@@ -68,6 +68,8 @@ class RF:
         self.waiting_for_captcha = False  # Флаг ожидания капчи
         self.is_moving = False  # Добавляем этот флаг
         self.move_timer = None
+        self.in_castle = False  # Флаг нахождения в замке
+
 
 
 
@@ -217,6 +219,7 @@ class RF:
 
     async def set_moving_flag(self, duration):
         self.is_moving = True
+        self.in_castle = False  # Сбрасываем флаг замка при начале движения
         if self.move_timer:
             self.move_timer.cancel()
         self.move_timer = asyncio.create_task(self.reset_moving_flag(duration))
@@ -400,7 +403,7 @@ class RF:
             await self.client.send_message(self.bot_id, "🖲 Установить АБУ")
         elif "Произошла реинкарнация" in lstr[0]:
             await asyncio.sleep(15)
-            if not self.is_in_caves:  # Проверяем, что не в пещерах
+            if not self.is_in_caves and not self.is_moving:  # Проверяем что не в пещерах и не в движении
                 await self.client.send_message(self.bot_id, "🌋 Краговые шахты")
                 await asyncio.sleep(2)
                 # надеваем бинд для чв
@@ -446,7 +449,7 @@ class RF:
                     # await message.forward_to(2220238697) # без В
             else:  # Исправленный отступ
                 # Проверяем, что не на чв и не ждем капчу
-                if not self.is_nacheve_active and not self.waiting_for_captcha:
+                if not self.is_nacheve_active and not self.waiting_for_captcha and not self.in_castle:
                     print("Восполнение энергии вне пещер")
                     await asyncio.sleep(1)
                     await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
@@ -509,6 +512,9 @@ class RF:
             self.waiting_for_captcha = False  # Сбрасываем флаг ожидания капчи
             await self.set_moving_flag(duration)
             print(f"Движение начато: {lstr[0]}, продолжительность: {duration} секунд")
+        elif "Ты прибыл в замок" in lstr[0]:
+            self.in_castle = True
+            print("Прибыли в замок")
 
 
 
