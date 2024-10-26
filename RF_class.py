@@ -389,7 +389,10 @@ class RF:
             await self.gokragi()
         elif "Бронза уже у тебя в рюкзаке" in lstr[0]:
             self.is_nacheve_active = False
-        elif "Ты прибыл в краговые шахты" in lstr[0]:
+        elif any(phrase in line for line in lstr for phrase in [
+            "Ты прибыл в краговые шахты",
+            "пока не началась война",
+        ]):
             await asyncio.sleep(1)
             await self.client.send_message(self.bot_id, "⛏Рудник")
         elif "[на время боевых действий проход закрыт]" in lstr[0]:
