@@ -1346,6 +1346,10 @@ class RF:
                 await self.client.send_message(self.bot_id, "/daily")
                 break
 
+            # Если `self.is_moving` активен, ждем, пока он не станет `False`
+            while self.is_moving:
+                await asyncio.sleep(2)  # Проверяем каждую секунду
+
             await asyncio.sleep(randint(10, 50))
             await self.rf_message.click(3)
             await asyncio.sleep(5)
