@@ -69,6 +69,8 @@ class RF:
         self.is_moving = False  # Добавляем этот флаг
         self.move_timer = None
         self.in_castle = False  # Флаг нахождения в замке
+        self.v_terminale = False
+
 
 
 
@@ -380,11 +382,17 @@ class RF:
 
         elif any(phrase in line for line in lstr for phrase in [
             "Ты прибыл к алтарю",
-             "бой за терминал будет происходить автоматически",
              "ты можешь перейти к терминалу только из алтаря",
              "Ты уже находишься в данной локации",
         ]):
             await self.nacheve()
+
+        elif any(phrase in line for line in lstr for phrase in [
+            "бой за терминал будет происходить автоматически",
+        ]):
+            self.v_terminale = True
+            await self.nacheve()
+
         elif "Храна. Ты был убит!" in lstr[0]:
             await self.gokragi()
         elif "Бронза уже у тебя в рюкзаке" in lstr[0]:
@@ -513,6 +521,7 @@ class RF:
             seconds = float(match.group(2))
             duration = int(minutes * 60 + seconds)
             self.waiting_for_captcha = False  # Сбрасываем флаг ожидания капчи
+            self.v_terminale =  False
             await self.set_moving_flag(duration)
             print(f"Движение начато: {lstr[0]}, продолжительность: {duration} секунд")
         elif "Ты прибыл в замок" in lstr[0]:
@@ -714,8 +723,13 @@ class RF:
                 self.cmd_altar = self.altar_dict.get(random.choice(l_altars))
                 print(f"Выбранный алтарь: {self.cmd_altar}")
             else:
-                self.cmd_altar = self.choose_random_altar()
-                print(f"Алтари не найдены, выбран случайный алтарь: {self.cmd_altar}")
+                # Если персонаж в терминале, не выбираем случайный алтарь
+                if not self.v_terminale:
+                    self.cmd_altar = self.choose_random_altar()
+                    print(f"Алтари не найдены, выбран случайный алтарь: {self.cmd_altar}")
+                else:
+                    self.cmd_altar = None  # Не выбираем и не посылаем, если персонаж в терминале
+                    print("Находимся в терминале, алтарь не выбран.")
 
         print("Конец работы parce_4v_logs.")
 
