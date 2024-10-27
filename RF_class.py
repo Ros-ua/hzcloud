@@ -294,9 +294,9 @@ class RF:
         elif "Ваша группа прибудет в ген. штаб через" in lstr[0]:
             print("чувачок, ты закончил пещеру")
             await asyncio.sleep(1)
+            self.fast_cave = False
             await self.client.send_message(self.bot_id, RF.hp)  # переодеться для мобов
             await self.check_arrival()
-            self.fast_cave = False
         elif lstr[0].startswith("Состав:"):
             print("что там по составу")
             # Проверка баллов
