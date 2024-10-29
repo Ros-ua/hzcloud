@@ -70,13 +70,6 @@ class RF:
         self.move_timer = None
         self.in_castle = False  # Флаг нахождения в замке
         self.v_terminale = False
-        self.chv_reward = False
-
-
-
-
-
-
 
 
     def isIdCompare(self, id):
@@ -397,15 +390,9 @@ class RF:
         elif any(phrase in line for line in lstr for phrase in [
                     "Бронза уже у тебя в рюкзаке",
                     "За то, что ты героически сражался",
-                ]) and not self.chv_reward:
+                ]):
                     self.is_nacheve_active = False
-                    self.chv_reward = True
-                    print("Бронза уже у тебя в рюкзаке.")
-                    await asyncio.sleep(2)
-                    await self.client.send_message(self.bot_id, RF.hp)  # переодеться для мобов
-                    await asyncio.sleep(2)
-                    await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
-                    await self.gokragi()
+
         elif any(phrase in line for line in lstr for phrase in [
             "Ты прибыл в краговые шахты",
             "пока не началась война",
@@ -423,7 +410,6 @@ class RF:
             await self.client.send_message(self.bot_id, "🖲 Установить АБУ")
         elif "Произошла реинкарнация" in lstr[0]:
             await asyncio.sleep(15)
-            self.chv_reward = False
             if not self.is_in_caves and not self.is_moving:  # Проверяем что не в пещерах и не в движении
                 await self.client.send_message(self.bot_id, "🌋 Краговые шахты")
                 await asyncio.sleep(2)
