@@ -433,7 +433,7 @@ class RF:
             await asyncio.sleep(1)
             await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
             await self.gokragi()
-        elif any(f"Энергия: 🔋{i}/5" in lstr[-1] for i in range(1, 5)):
+        elif any(phrase in line for line in lstr for phrase in [f"Энергия: 🔋{i}/5" for i in range(1, 5)]):
             print("есть энергия")
             await asyncio.sleep(1)
             await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
