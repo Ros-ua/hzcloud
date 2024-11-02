@@ -391,7 +391,9 @@ class RF:
                     "Бронза уже у тебя в рюкзаке",
                     "За то, что ты героически сражался",
                 ]):
-                    self.is_nacheve_active = False
+            self.is_nacheve_active = False
+            await asyncio.sleep(1)
+            await self.client.send_message(self.bot_id, RF.hp)  # переодеться для мобов
 
         elif any(phrase in line for line in lstr for phrase in [
             "Ты прибыл в краговые шахты",
@@ -412,7 +414,7 @@ class RF:
             await asyncio.sleep(15)
             if not self.is_in_caves and not self.is_moving:  # Проверяем что не в пещерах и не в движении
                 await self.client.send_message(self.bot_id, "🌋 Краговые шахты")
-                await asyncio.sleep(2)
+                await asyncio.sleep(5)
                 # надеваем бинд для чв
                 await self.client.send_message(self.bot_id, "/bind_wear_1729689260746d")
 
@@ -421,6 +423,9 @@ class RF:
 
 
         # на мобах
+        elif any(phrase in line for line in lstr for phrase in ["попробуй"]):
+            await asyncio.sleep(1)
+            await message.click(0)
         elif any(phrase in lstr[0] for phrase in ["пойти в 61-65 Лес пламени", "что хочешь отправиться в пещеры?"]):
             await asyncio.sleep(1)
             await message.click(0)
@@ -428,47 +433,58 @@ class RF:
             print("будем бить")
             await asyncio.sleep(1)
             await self.client.send_message(self.bot_id, "🔪 Атаковать")
+        
+        # elif any(phrase in line for line in lstr for phrase in ["Энергия: 🔋0/5", "[недостаточно энергии]"]):
+        #     print("нет энергии")
+        #     await asyncio.sleep(1)
+        #     await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
+        #     await self.gokragi()
+        # elif any(phrase in line for line in lstr for phrase in [f"Энергия: 🔋{i}/5" for i in range(1, 5)]):
+        #     print("есть энергия")
+        #     await asyncio.sleep(1)
+        #     await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
+        #     await self.check_arrival()
+        
+
         elif any(phrase in line for line in lstr for phrase in ["Энергия: 🔋0/5", "[недостаточно энергии]"]):
             print("нет энергии")
-            await asyncio.sleep(1)
-            await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
-            await self.gokragi()
+            await self.handle_no_energy()
         elif any(phrase in line for line in lstr for phrase in [f"Энергия: 🔋{i}/5" for i in range(1, 5)]):
             print("есть энергия")
-            await asyncio.sleep(1)
-            await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
-            await self.check_arrival()
-        elif any(f"+1 к энергии 🔋{i}/5" in lstr[0] for i in (4, 5)):
+            await self.handle_energy_found()
 
-            if self.waiting_for_captcha or self.is_moving:
-                print("Уже ожидаем решения капчи от предыдущего действия...")
-                return
+
+        elif any(f"+1 к энергии 🔋{i}/5" in lstr[0] for i in (4, 5)):
+            await self.handle_energy()
+            # if self.waiting_for_captcha or self.is_moving:
+            #     print("Уже ожидаем решения капчи от предыдущего действия...")
+            #     return
             
             
-            if self.is_in_caves:
-                if self.is_cave_leader:
-                    print("Восполнение энергии в пещерах или если ты лидер пещеры")
-                    await asyncio.sleep(1)
-                    await self.rf_message.click(2)
-                else:  # Если в пещерах, но не лидер
-                    print("Пересылка сообщения о восполнении энергии в группу")
-                    # await message.forward_to(-1001323974021) #59 60
-                    # await message.forward_to(2220238697) # без В
-            else:  # Исправленный отступ
-                # Проверяем, что не на чв и не ждем капчу
-                if not self.is_nacheve_active and not self.waiting_for_captcha and not self.in_castle:
-                    print("Восполнение энергии вне пещер")
-                    await asyncio.sleep(1)
-                    await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
-                    await asyncio.sleep(5)
-                    # Проверяем, если нужно решить капчу
-                    if self.waiting_for_captcha:
-                        print("Ожидаем решения капчи...")
-                        # Здесь ждем, пока капча будет решена (можно через цикл или другой метод)
-                        while self.waiting_for_captcha:
-                            await asyncio.sleep(60)  
-                    # Когда капча решена, продолжаем
-                    await self.check_arrival()
+            # if self.is_in_caves:
+            #     if self.is_cave_leader:
+            #         print("Восполнение энергии в пещерах или если ты лидер пещеры")
+            #         await asyncio.sleep(1)
+            #         await self.rf_message.click(2)
+            #     else:  # Если в пещерах, но не лидер
+            #         print("Пересылка сообщения о восполнении энергии в группу")
+            #         # await message.forward_to(-1001323974021) #59 60
+            #         # await message.forward_to(2220238697) # без В
+            # else:  # Исправленный отступ
+            #     # Проверяем, что не на чв и не ждем капчу
+            #     if not self.is_nacheve_active and not self.waiting_for_captcha and not self.in_castle:
+            #         print("Восполнение энергии вне пещер")
+            #         await asyncio.sleep(1)
+            #         await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
+            #         await asyncio.sleep(5)
+            #         # Проверяем, если нужно решить капчу
+            #         if self.waiting_for_captcha:
+            #             print("Ожидаем решения капчи...")
+            #             # Здесь ждем, пока капча будет решена (можно через цикл или другой метод)
+            #             while self.waiting_for_captcha:
+            #                 await asyncio.sleep(60)  
+            #         # Когда капча решена, продолжаем
+            #         await self.check_arrival()
 
 
         # # данжи
@@ -869,15 +885,25 @@ class RF:
             print("Ни одно из условий не выполнено, повторная проверка через 10 секунд")
 
     async def wait_for_health_refill(self):
+        await asyncio.sleep(3)
+        
+        # Если появилась капча - ждём её решения
+        if self.waiting_for_captcha:
+            print("Обнаружена капча при пополнении здоровья...")
+            while self.waiting_for_captcha:
+                print("Проверка статуса капчи...")
+                await asyncio.sleep(20)  # Проверяем каждые 20 секунд
+            print("Капча решена, продолжаем...")
+
+        # Ожидание пополнения здоровья после решения капчи
         while True:
-            last_message = await self.client.get_messages(self.bot_id, limit=1)
+            last_message = await self.client.get_messages(self.bot_id, limit=2)
             if last_message:
                 lstr = last_message[0].message.split('\n')
                 if any("Здоровье пополнено" in line for line in lstr):
                     await asyncio.sleep(1)
                     return
             await asyncio.sleep(1)
-
 
     async def wait_for_confirmation(self):
         try:
@@ -1394,4 +1420,50 @@ class RF:
         ])
 
 
+    async def handle_no_energy(self):
+        print("нет энергии")
+        await asyncio.sleep(5)
+        await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
+        await self.gokragi()
 
+    async def handle_energy_found(self):
+        print("есть энергия")
+        await asyncio.sleep(5)
+        await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
+        await self.check_arrival()
+
+    async def handle_energy(self):
+        # Проверяем начальные флаги
+        if self.waiting_for_captcha or self.is_moving:
+            print("Уже ожидаем решения капчи или в движении...")
+            return
+
+        # Обработка в пещерах
+        if self.is_in_caves:
+            if self.is_cave_leader:
+                print("Восполнение энергии в пещерах (лидер)")
+                await asyncio.sleep(1)
+                await self.rf_message.click(2)
+            else:
+                print("Пересылка сообщения о восполнении энергии в группу")
+            return
+
+        # Обработка вне пещер
+        if not self.is_nacheve_active and not self.in_castle:
+            print("Восполнение энергии вне пещер")
+            await asyncio.sleep(1)
+            await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
+            
+            # Ждем 3 секунды и проверяем появление капчи
+            await asyncio.sleep(3)
+            
+            # Если появилась капча - ждём её решения
+            if self.waiting_for_captcha:
+                print("Обнаружена капча, ожидаем решения...")
+                while self.waiting_for_captcha:
+                    print("Проверка статуса капчи...")
+                    await asyncio.sleep(20)  # Проверяем каждые 20 секунд
+                print("Капча решена, продолжаем...")
+            
+            # После решения капчи или если её не было - проверяем прибытие
+            await self.check_arrival()
