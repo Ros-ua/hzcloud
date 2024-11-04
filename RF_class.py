@@ -517,7 +517,10 @@ class RF:
             await self.craft_rec(lstr)
         elif val == 2509085174:  # Рецепты:
             return
-        elif "[данное действие можно выполнять только из ген. штаба]" in lstr[0]:
+        elif any(phrase in line for line in lstr for phrase in  [
+            "данное действие можно выполнять только из ген. штаба",
+            "В данную локацию можно перейти из ген. штаба!"
+            ]):
             await asyncio.sleep(1)
             await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
             await self.check_arrival()
