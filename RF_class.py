@@ -423,10 +423,11 @@ class RF:
 
 
         # на мобах
-        elif any(phrase in line for line in lstr for phrase in ["попробуй"]):
-            await asyncio.sleep(1)
-            await message.click(0)
-        elif any(phrase in lstr[0] for phrase in ["пойти в 61-65 Лес пламени", "что хочешь отправиться в пещеры?"]):
+        elif any(phrase in line for line in lstr for phrase in  [
+            "пойти в 61-65 Лес пламени", 
+            "что хочешь отправиться в пещеры?",
+            "попробуй"
+            ]):
             await asyncio.sleep(1)
             await message.click(0)
         elif "Что будем делать?" in lstr[-1]:
