@@ -883,7 +883,10 @@ class RF:
                     is_dead = True
                     break
 
-                if "Ты дошел до локации." in lstr[0]:
+                if any(phrase in line for line in lstr for phrase in [
+                    "Ты дошел до локации.",
+                    "Ты направляешься в ген. штаб",
+                    ]): 
                     print("конец работы на страже")
                     return
 
