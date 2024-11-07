@@ -377,7 +377,7 @@ class RF:
         elif any(phrase in line for line in lstr for phrase in [
             "Ты прибыл к алтарю",
             "ты можешь перейти к терминалу только из алтаря",
-            "Ты уже находишься в данной локации",
+            # "Ты уже находишься в данной локации",
         ]):
             await self.nacheve()
 
