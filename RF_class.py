@@ -519,7 +519,7 @@ class RF:
             return
         elif any(phrase in line for line in lstr for phrase in  [
             "данное действие можно выполнять только из ген. штаба",
-            "В данную локацию можно перейти из ген. штаба!"
+            "В данную локацию можно перейти из ген. штаба!",
             "У тебя нет"
             ]):
             await asyncio.sleep(1)
