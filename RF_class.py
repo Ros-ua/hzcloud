@@ -886,6 +886,7 @@ class RF:
 
                 if any(phrase in line for line in lstr for phrase in [
                     "Ты дошел до локации.",
+                    "Твоя добыча с босса",
                     "Ты направляешься в ген. штаб",
                     ]): 
                     print("конец работы на страже")
