@@ -1193,6 +1193,32 @@ class RF:
                     await asyncio.sleep(1)  
                     await self.rf_message.click(3)
                     await event.message.delete()  # Удаляем сообщение
+                elif "_рес" in message_text:  
+                    if self.is_has_res:  # Проверяем, что is_has_res равно True
+                            self.is_has_res = False
+                            await asyncio.sleep(randint(14, 20))
+                            await self.client.send_message(self.bot_id, self.hp_11999)  # Надеваем бинд на самое большое HP
+                            await asyncio.sleep(3)  # Ждем 3 секунды перед кликом
+                            await self.rf_message.click(1)
+                            print(self.my_health, self.my_max_health)
+                            self.my_health = self.my_max_health = 11999  # Устанавливаем значения для my_health и my_max_health
+                            self.last_bind = self.hp_11999
+                            await event.message.delete()  # Удаляем сообщение
+                elif "_состав" in message_text:  
+                    await asyncio.sleep(1)  
+                    await self.client.send_message(self.bot_id, "⚖️Проверить состав")
+                    await event.message.delete()  # Удаляем сообщение
+                elif "_хил" in message_text:  
+                    if self.last_bind != self.hp_11999 and self.is_has_hil:
+                        self.is_has_hil = False
+                        await asyncio.sleep(5)  # Ждем 3 секунды
+                        await self.client.send_message(self.bot_id, self.hp_11999)  # Надеваем 11999 HP
+                        await asyncio.sleep(3)  # Ждем 3 секунды перед кликом
+                        await self.rf_message.click(0)  # Выполняем клик
+                        print(f"Сменили бинд на: {self.hp_11999} (макс. здоровье: 11999)")
+                        self.my_health = self.my_max_health = 11999
+                        self.last_bind = self.hp_11999
+                        await event.message.delete()  # Удаляем сообщение
                 else:
                     print("Точное совпадение с ключевыми словами не обнаружено")
 
