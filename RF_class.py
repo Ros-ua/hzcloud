@@ -412,7 +412,7 @@ class RF:
             await self.client.send_message(self.bot_id, "🖲 Установить АБУ")
         elif any(phrase in line for line in lstr for phrase in ["После боевых действий ты снова сможешь"]):
             await asyncio.sleep(15)
-            if not self.is_in_caves and not self.is_moving:  # Проверяем что не в пещерах и не в движении
+            if not any([self.is_in_caves, self.is_moving, self.waiting_for_captcha]):
                 await self.client.send_message(self.bot_id, "🌋 Краговые шахты")
                 await asyncio.sleep(5)
                 # надеваем бинд для чв
