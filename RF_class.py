@@ -391,9 +391,9 @@ class RF:
                     "Бронза уже у тебя в рюкзаке",
                     "За то, что ты героически сражался",
                 ]):
-            self.is_nacheve_active = False
-            await asyncio.sleep(1)
             await self.client.send_message(self.bot_id, RF.hp)  # переодеться для мобов
+            asyncio.create_task(self.set_nacheve_inactive_after_delay())  # Устанавливаем флаг через 2 минуты
+
 
         elif any(phrase in line for line in lstr for phrase in [
             "Ты прибыл в краговые шахты",
@@ -564,6 +564,10 @@ class RF:
             await self.client.send_message(self.bot_id, "⚖️Проверить состав")
             return
         
+
+    async def set_nacheve_inactive_after_delay(self):
+        await asyncio.sleep(120)  # Ожидание 2 минуты
+        self.is_nacheve_active = False
 
     async def check_arrival_dange(self):  # ходим данжи
         print("check_arrival_dange")
