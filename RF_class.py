@@ -71,6 +71,7 @@ class RF:
         self.in_castle = False  # Флаг нахождения в замке
         self.v_terminale = False
         self.kopka = False
+        self.last_energy_message = None
 
 
     def isIdCompare(self, id):
@@ -461,8 +462,12 @@ class RF:
             await self.handle_energy_found()
 
 
-        elif any(f"+1 к энергии 🔋{i}/5" in lstr[0] for i in (4, 5)):
-            await self.handle_energy()
+        elif any(f"+1 к энергии 🔋{i}/5" in lstr[0] for i in range(1, 6)):
+            self.last_energy_message = message  # Сохраняем сообщение о получении энергии
+            
+            # Проверяем, увеличилась ли энергия на 4 или 5
+            if any(f"+1 к энергии 🔋{i}/5" in lstr[0] for i in (4, 5)):
+                await self.handle_energy()  # Вызываем обработчик энергии только для 4 и 5
             # if self.waiting_for_captcha or self.is_moving:
             #     print("Уже ожидаем решения капчи от предыдущего действия...")
             #     return
@@ -476,7 +481,7 @@ class RF:
             #     else:  # Если в пещерах, но не лидер
             #         print("Пересылка сообщения о восполнении энергии в группу")
             #         # await message.forward_to(-1001323974021) #59 60
-            #         # await message.forward_to(2220238697) # без В
+            #         # await message.forward_to(-1002220238697) # без В
             # else:  # Исправленный отступ
             #     # Проверяем, что не на чв и не ждем капчу
             #     if not self.is_nacheve_active and not self.waiting_for_captcha and not self.in_castle:
@@ -1234,6 +1239,14 @@ class RF:
                         self.my_health = self.my_max_health = 11999
                         self.last_bind = self.hp_11999
                         await event.message.delete()  # Удаляем сообщение
+                elif "_энка" in message_text:  
+                    if self.last_energy_message:  # Проверяем, что last_energy_message не None
+                        await self.last_energy_message.forward_to(-1001323974021)  # Пересылаем сохраненное сообщение
+                    else:
+                        await self.client.send_message(-1001323974021, "ещё не капнуло")  # Отправляем сообщение в группу
+                    await event.message.delete()  # Удаляем сообщение
+
+
                 else:
                     print("Точное совпадение с ключевыми словами не обнаружено")
 
