@@ -70,6 +70,7 @@ class RF:
         self.move_timer = None
         self.in_castle = False  # Флаг нахождения в замке
         self.v_terminale = False
+        self.kopka = False
 
 
     def isIdCompare(self, id):
@@ -215,7 +216,8 @@ class RF:
 
     async def set_moving_flag(self, duration):
         self.is_moving = True
-        self.in_castle = False  # Сбрасываем флаг замка при начале движения
+        self.in_castle = False
+        self.kopka = False  # Сбрасываем флаг замка при начале движения
         if self.move_timer:
             self.move_timer.cancel()
         self.move_timer = asyncio.create_task(self.reset_moving_flag(duration))
@@ -360,6 +362,10 @@ class RF:
             await self.client.send_message(self.bot_id, "🔥 61-65 Лес пламени")
 
         # на чв
+        elif "Ты был убит!" in lstr[0]:  # Добавлено условие для проверки фразы
+            print("Персонаж был убит!")
+            await self.check_arrival()
+
         elif any(phrase in line for line in lstr for phrase in [
             "Алтарь Эйви",
             "Алтарь Тир",
@@ -412,7 +418,7 @@ class RF:
             await self.client.send_message(self.bot_id, "🖲 Установить АБУ")
         elif any(phrase in line for line in lstr for phrase in ["После боевых действий ты снова сможешь"]):
             await asyncio.sleep(15)
-            if not any([self.is_in_caves, self.is_moving, self.waiting_for_captcha]):
+            if not any([self.is_in_caves, self.kopka, self.is_moving, self.waiting_for_captcha]):
                 await self.client.send_message(self.bot_id, "🌋 Краговые шахты")
                 await asyncio.sleep(5)
                 # надеваем бинд для чв
@@ -544,6 +550,10 @@ class RF:
         elif "Ты прибыл в замок" in lstr[0]:
             self.in_castle = True
             print("Прибыли в замок")
+        elif "Ты успешно установил" in lstr[0]:
+            self.kopka = True
+            print("поставил абу")
+        
 
 
 
