@@ -398,6 +398,7 @@ class RF:
                     "Бронза уже у тебя в рюкзаке",
                     "За то, что ты героически сражался",
                 ]):
+            await asyncio.sleep(1)
             await self.client.send_message(self.bot_id, RF.hp)  # переодеться для мобов
             asyncio.create_task(self.set_nacheve_inactive_after_delay())  # Устанавливаем флаг через 2 минуты
 
@@ -1241,9 +1242,9 @@ class RF:
                         await event.message.delete()  # Удаляем сообщение
                 elif "_энка" in message_text:  
                     if self.last_energy_message:  # Проверяем, что last_energy_message не None
-                        await self.last_energy_message.forward_to(-1001323974021)  # Пересылаем сохраненное сообщение
+                        await self.last_energy_message.forward_to(-1002220238697)  # Пересылаем сохраненное сообщение
                     else:
-                        await self.client.send_message(-1001323974021, "ещё не капнуло")  # Отправляем сообщение в группу
+                        await self.client.send_message(-1002220238697, "ещё не капнуло")  # Отправляем сообщение в группу
                     await event.message.delete()  # Удаляем сообщение
 
 
