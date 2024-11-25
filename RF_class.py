@@ -72,6 +72,7 @@ class RF:
         self.v_terminale = False
         self.kopka = False
         self.last_energy_message = None
+        self.got_reward = None
 
 
     def isIdCompare(self, id):
@@ -386,18 +387,21 @@ class RF:
             "ты можешь перейти к терминалу только из алтаря",
             # "Ты уже находишься в данной локации",
         ]):
+            self.got_reward = False  # Сбрасываем флаг получения награды
             await self.nacheve()
 
         elif any(phrase in line for line in lstr for phrase in [
             "бой за терминал будет происходить автоматически",
         ]):
             self.v_terminale = True
+            self.got_reward = False  # Сбрасываем флаг получения награды
             await self.nacheve()
 
         elif any(phrase in line for line in lstr for phrase in [
                     "Бронза уже у тебя в рюкзаке",
                     "За то, что ты героически сражался",
-                ]):
+                ]) and not self.got_reward:  # Проверка, что got_reward был False
+            self.got_reward = True
             await asyncio.sleep(1)
             await self.client.send_message(self.bot_id, RF.hp)  # переодеться для мобов
             asyncio.create_task(self.set_nacheve_inactive_after_delay())  # Устанавливаем флаг через 2 минуты
