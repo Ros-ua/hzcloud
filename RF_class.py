@@ -563,6 +563,10 @@ class RF:
         elif "Ты успешно установил" in lstr[0]:
             self.kopka = True
             print("поставил абу")
+        elif "Ты закончил тренировку" in lstr[0]:
+            await asyncio.sleep(1)
+            await self.client.send_message(self.bot_id, "🔥 61-65 Лес пламени")
+
         
 
 
