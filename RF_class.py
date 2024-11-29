@@ -73,6 +73,8 @@ class RF:
         self.kopka = False
         self.last_energy_message = None
         self.got_reward = None
+        self.is_training = False
+
 
 
     def isIdCompare(self, id):
@@ -564,8 +566,12 @@ class RF:
             self.kopka = True
             print("поставил абу")
         elif "Ты закончил тренировку" in lstr[0]:
+            self.is_training = False
             await asyncio.sleep(1)
             await self.client.send_message(self.bot_id, "🔥 61-65 Лес пламени")
+        elif "Ты начал тренировку" in lstr[0]:
+            self.is_training = True
+        
 
         
 
@@ -1205,14 +1211,20 @@ class RF:
                     await self.client.send_message(self.bot_id, "/drink_102")
                     await event.message.delete()  # Удаляем сообщение
                 elif "_гш" in message_text:  
-                    print("Отправляем комплект hp_11999")
-                    await self.client.send_message(self.bot_id, self.hp_11999)  # Используем переменную hp_11999 для надевания
-                    self.my_health = self.my_max_health = 11999  # Устанавливаем текущее и максимальное здоровье на 11999
-                    print(f"Здоровье обновлено: {self.my_health}/{self.my_max_health}")
-                    await asyncio.sleep(5)
-                    print("Отправляем команду /go_to_gsh")
-                    await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
-                    await self.arrival_hil()  # Вызываем arrival_hil после отправки в ген. штаб
+                    if self.kopka:  
+                        print("Отправляем комплект hp_11999")
+                        await self.client.send_message(self.bot_id, self.hp_11999)  # Используем переменную hp_11999 для надевания
+                        self.my_health = self.my_max_health = 11999  # Устанавливаем текущее и максимальное здоровье на 11999
+                        print(f"Здоровье обновлено: {self.my_health}/{self.my_max_health}")
+                        await asyncio.sleep(5)
+                        print("Отправляем команду /go_to_gsh")
+                        await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
+                        await self.arrival_hil()  # Вызываем arrival_hil после отправки в ген. штаб
+                    else:
+                        await self.client.send_message(self.bot_id, self.hp_11999)
+                        self.my_health = self.my_max_health = 11999  # Устанавливаем текущее и максимальное здоровье на 11999
+                        await asyncio.sleep(2)
+                        await self.client.send_message(self.bot_id, "💖 Пополнить здоровье")
                     await event.message.delete()  # Удаляем сообщение
                 elif "_шаг" in message_text:  
                     await asyncio.sleep(1)  
@@ -1561,7 +1573,7 @@ class RF:
             return
 
         # Обработка вне пещер
-        if not self.is_nacheve_active and not self.in_castle:
+        if not (self.is_nacheve_active or self.is_training or self.in_castle):
             print("Восполнение энергии вне пещер")
             await asyncio.sleep(1)
             await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
