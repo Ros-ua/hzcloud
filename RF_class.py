@@ -571,9 +571,16 @@ class RF:
             await self.client.send_message(self.bot_id, "🔥 61-65 Лес пламени")
         elif "Ты начал тренировку" in lstr[0]:
             self.is_training = True
-        
+        elif "Как долго ты хочешь тренировать питомца" in lstr[0]:
+            await asyncio.sleep(1)
+            await self.client.send_message(self.bot_id, "1")
+        elif "Начать тренировку?" in lstr[-1]:
+            await message.click(0)
 
-        
+
+
+
+
 
 
 
