@@ -249,6 +249,7 @@ class RF:
             self.is_in_caves = True
             self.is_has_hil = True
             self.is_has_res = True
+            self.my_health = self.my_max_health = 11999
             await asyncio.sleep(randint(4, 6))
             await self.client.send_message(self.bot_id, "⚖️Проверить состав")
             print("в пещерах")
