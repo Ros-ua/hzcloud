@@ -242,6 +242,12 @@ class RF:
 
         # в пещерах
         if any(phrase in lstr[0] for phrase in [
+            "Ваша группа наткнулась"
+        ]) and is_cave_leader and is_in_caves:
+            await asyncio.sleep(10)
+            await self.client.send_message(self.bot_id, "⚖️Проверить состав")
+
+        if any(phrase in lstr[0] for phrase in [
             "Панель управления", 
             "воскрешение в течение 1 минуты", 
             "Ты направляешься в пещеры на фуникулере",
