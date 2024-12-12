@@ -278,6 +278,7 @@ class RF:
             print(self.my_health, self.my_max_health)
         elif any(phrase in line for line in lstr for phrase in [
             "Ожидай завершения",
+            "одержал победу над Ros_Hangzhou",
         ]):
             if self.is_has_res:  # Проверяем, что is_has_res равно True
                 self.is_has_res = False
