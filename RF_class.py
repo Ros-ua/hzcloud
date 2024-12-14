@@ -276,10 +276,11 @@ class RF:
         ]):
             self.reset_health()
             print(self.my_health, self.my_max_health)
-        elif any(phrase in line for line in lstr for phrase in [
-            "Ожидай завершения",
-            "одержал победу над Ros_Hangzhou",
-        ]):
+        elif any(
+            phrase in line for line in lstr for phrase in [
+                "Ожидай завершения",
+            ]
+        ) or any(re.search(r"одержал победу над .*Ros_Hangzhou", line) for line in lstr):
             if self.is_has_res:  # Проверяем, что is_has_res равно True
                 self.is_has_res = False
                 await asyncio.sleep(randint(14, 20))
