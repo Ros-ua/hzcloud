@@ -243,9 +243,10 @@ class RF:
         # в пещерах
         if any(phrase in lstr[0] for phrase in [
             "Ваша группа наткнулась"
-        ]) and is_cave_leader and is_in_caves:
+        ]) and is_cave_leader:
             await asyncio.sleep(10)
-            await self.client.send_message(self.bot_id, "⚖️Проверить состав")
+            if is_in_caves:
+                await self.client.send_message(self.bot_id, "⚖️Проверить состав")
 
         if any(phrase in lstr[0] for phrase in [
             "Панель управления", 
@@ -281,9 +282,10 @@ class RF:
                 "Ожидай завершения",
             ]
         ) or any(re.search(r"одержал победу над .*Ros_Hangzhou", line) for line in lstr):
-            if self.is_has_res:  # Проверяем, что is_has_res равно True
+            await asyncio.sleep(5)
+            if self.is_has_res and self.is_in_caves:  # Проверяем, что is_has_res равно True и мы в пещерах
                 self.is_has_res = False
-                await asyncio.sleep(randint(14, 20))
+                await asyncio.sleep(10)
                 await self.client.send_message(self.bot_id, self.hp_11999)  # Надеваем бинд на самое большое HP
                 await asyncio.sleep(3)  # Ждем 3 секунды перед кликом
                 await self.rf_message.click(1)
@@ -294,6 +296,8 @@ class RF:
             self.in_battle = True   
         elif "К сожалению ты умер" in lstr:
             self.in_battle = False     
+        elif "Ваша группа прибудет в ген. штаб через 10 минут!" in lstr:
+            self.is_in_caves = False
         elif "Ваша группа замерзнет через 5 минут" in lstr[0]:
             await asyncio.sleep(1)
             await self.rf_message.click(2)
