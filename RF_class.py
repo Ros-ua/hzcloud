@@ -1269,6 +1269,10 @@ class RF:
                     await asyncio.sleep(1)  
                     await self.client.send_message(self.bot_id, "⚖️Проверить состав")
                     await event.message.delete()  # Удаляем сообщение
+                elif "_данж" in message_text:  
+                    await asyncio.sleep(1)  
+                    await self.client.send_message(self.bot_id, "/go_dange_10014")
+                    await event.message.delete()  # Удаляем сообщение
                 elif "_хил" in message_text:  
                     if self.last_bind != self.hp_11999 and self.is_has_hil:
                         self.is_has_hil = False
