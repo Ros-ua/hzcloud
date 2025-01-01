@@ -74,6 +74,7 @@ class RF:
         self.last_energy_message = None
         self.got_reward = None
         self.is_training = False
+        self.extra_hil = True
 
 
 
@@ -159,22 +160,26 @@ class RF:
     async def autoHeal(self):
         print(f"Проверка здоровья перед автолечением: {self.my_health}")
         
-        # Лечимся, если здоровье ниже 300
-        if self.my_health <= 300 and self.is_has_hil:
+        # Лечимся, если здоровье ниже 400
+        if self.my_health <= 400 and self.is_has_hil and self.extra_hil:
+            self.is_has_hil = False
+            self.extra_hil = False
             print(f"Здоровье критически низкое ({self.my_health}). Отправляем запрос на хил.")
             await self.rf_message.click(0)
-            self.is_has_hil = False
-        
+            print(f"Статус has_hil обновлен: {self.is_has_hil}")  # Добавлен вывод статуса has_hil
+
         # Логика смены снаряжения в зависимости от текущего здоровья
-        elif 300 <= self.my_health <= 1500:  # Если здоровье между 300 и 1500
-            if self.last_bind != self.hp_11999 and self.is_has_hil:
+        elif 400 <= self.my_health <= 1600:  # Если здоровье между 400 и 1500
+            await asyncio.sleep(8)  # Ждем 5 секунды
+            if not self.isPlayerDead() and self.last_bind != self.hp_11999 and self.is_has_hil and self.extra_hil:  # Перенесено сюда
                 self.is_has_hil = False
-                await asyncio.sleep(5)  # Ждем 3 секунды
                 await self.client.send_message(self.bot_id, self.hp_11999)  # Надеваем 11999 HP
                 print(f"Сменили бинд на: {self.hp_11999} (макс. здоровье: 11999)")
+                await asyncio.sleep (1)
                 await self.rf_message.click(0)  # Выполняем клик
                 self.my_health = self.my_max_health = 11999
                 self.last_bind = self.hp_11999
+                print(f"Статус has_hil обновлен: {self.is_has_hil}")  # Добавлен вывод статуса has_hil
 
                 # await self.client.send_message(self.bot_id, self.hp_11999)  # Надеваем 11999 HP
                 # print(f"Сменили бинд на: {self.hp_11999} (макс. здоровье: 11999)")
@@ -221,6 +226,7 @@ class RF:
     async def set_moving_flag(self, duration):
         self.is_moving = True
         self.in_castle = False
+        self.is_nacheve_active = False
         self.kopka = False  # Сбрасываем флаг замка при начале движения
         if self.move_timer:
             self.move_timer.cancel()
@@ -241,7 +247,16 @@ class RF:
         print(val, lstr[0])
 
         # в пещерах
-        if any(phrase in lstr[0] for phrase in [
+        if any(phrase in line for line in lstr for phrase in [
+            "булочка"
+        ]):    
+            print("булочка")
+        elif any(phrase in line for line in lstr for phrase in [
+            "ты мертв, дождись пока воскреснешь"
+        ]):    
+            self.is_has_hil = True
+            self.extra_hil = True
+        elif any(phrase in line for line in lstr for phrase in [
             "Ваша группа наткнулась"
         ]) and is_cave_leader:
             await asyncio.sleep(10)
@@ -250,8 +265,9 @@ class RF:
 
         if any(phrase in lstr[0] for phrase in [
             "Панель управления", 
-            "воскрешение в течение 1 минуты", 
+            # "воскрешение в течение 1 минуты", 
             "Ты направляешься в пещеры на фуникулере",
+            "Ты направляешься в пещеры на санях",
         ]):
             self.is_in_caves = True
             self.is_has_hil = True
@@ -271,12 +287,17 @@ class RF:
             self.waiting_for_captcha = False  # Флаг ожидания капчи
 
             # self.reset_health()
-        elif any(phrase in line for line in lstr for phrase in [
-            "Ты снова жив",
-            "Вы больше не можете воскрешаться",
-        ]):
-            self.reset_health()
-            print(self.my_health, self.my_max_health)
+        # elif any(phrase in line for line in lstr for phrase in [
+        #     "Ты снова жив",
+        #     "Вы больше не можете воскрешаться",
+        # ]):
+        #     self.reset_health()
+        #     print(self.my_health, self.my_max_health)
+        #     # на новый год 
+        #     if not self.is_in_caves:  # Используем существующее условие
+        #         await asyncio.sleep(1)
+        #         await self.client.send_message(self.bot_id, "🌋 Краговые шахты")
+
         elif any(
             phrase in line for line in lstr for phrase in [
                 "Ожидай завершения",
@@ -296,8 +317,8 @@ class RF:
             self.in_battle = True   
         elif "К сожалению ты умер" in lstr:
             self.in_battle = False     
-        elif "Ваша группа прибудет в ген. штаб через 10 минут!" in lstr:
-            self.is_in_caves = False
+        # elif "Ваша группа прибудет в ген. штаб через 10 минут!" in lstr:
+        #     self.is_in_caves = False
         elif "Ваша группа замерзнет через 5 минут" in lstr[0]:
             await asyncio.sleep(1)
             await self.rf_message.click(2)
@@ -337,7 +358,7 @@ class RF:
         elif lstr[0].endswith("не в ген. штабе]"):
             await message.forward_to(-1001323974021)
             # Ищем всех игроков, упомянутых в сообщении
-            players_not_in_gh = re.findall(r'(Нежный 🍅|🐾ᏦᎮᎧχᏗ|𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗|John Doe)', lstr[0])
+            players_not_in_gh = re.findall(r'(Нежный 🍅|🐾ᏦᎮᎧχᏗ|𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗|John Doe|๖ۣۜᗯαsͥpwͣoͫℝt🐝|kingRagnar🤴🏼)', lstr[0])
             if players_not_in_gh:
                 for player in players_not_in_gh:
                     if player in self.players:
@@ -425,6 +446,7 @@ class RF:
         elif any(phrase in line for line in lstr for phrase in [
             "Ты прибыл в краговые шахты",
             "пока не началась война",
+            "Ты прибыл на"
         ]):
             await asyncio.sleep(1)
             await self.client.send_message(self.bot_id, "⛏Рудник")
@@ -437,19 +459,21 @@ class RF:
         elif "Ты прибыл в ⛏рудник." in lstr[0]:
             await asyncio.sleep(1)
             await self.client.send_message(self.bot_id, "🖲 Установить АБУ")
+            
         elif any(phrase in line for line in lstr for phrase in ["После боевых действий ты снова сможешь"]):
             if not any([self.is_in_caves, self.kopka, self.is_moving, self.waiting_for_captcha]):
                 await asyncio.sleep(15)
                 await self.client.send_message(self.bot_id, "🌋 Краговые шахты")
                 await asyncio.sleep(5)
-                # надеваем бинд для чв
+                #надеваем бинд для чв
                 await self.client.send_message(self.bot_id, "/bind_wear_1729689260746d")
+        elif any(phrase in line for line in lstr for phrase in [
+            "Удачи!"
+        ]):  
+            self.is_nacheve_active = True
 
 
-
-
-
-        # на мобах
+              # на мобах
         elif any(phrase in line for line in lstr for phrase in  [
             "пойти в 61-65 Лес пламени", 
             "что хочешь отправиться в пещеры?",
