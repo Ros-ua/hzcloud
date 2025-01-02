@@ -162,8 +162,7 @@ class RF:
         
         # Лечимся, если здоровье ниже 400
         if self.my_health <= 400 and self.is_has_hil and self.extra_hil:
-            self.is_has_hil = False
-            self.extra_hil = False
+            self.is_has_hil = self.extra_hil = False
             print(f"Здоровье критически низкое ({self.my_health}). Отправляем запрос на хил.")
             await self.rf_message.click(0)
             print(f"Статус has_hil обновлен: {self.is_has_hil}")  # Добавлен вывод статуса has_hil
@@ -254,8 +253,7 @@ class RF:
         elif any(phrase in line for line in lstr for phrase in [
             "ты мертв, дождись пока воскреснешь"
         ]):    
-            self.is_has_hil = True
-            self.extra_hil = True
+            self.is_has_hil = self.extra_hil = True
         elif any(phrase in line for line in lstr for phrase in [
             "Ваша группа наткнулась"
         ]) and is_cave_leader:
@@ -269,9 +267,7 @@ class RF:
             "Ты направляешься в пещеры на фуникулере",
             "Ты направляешься в пещеры на санях",
         ]):
-            self.is_in_caves = True
-            self.is_has_hil = True
-            self.is_has_res = True
+            self.is_in_caves = self.is_has_hil = self.is_has_res = self.extra_hil = True
             self.my_health = self.my_max_health = 11999
             await asyncio.sleep(randint(4, 6))
             await self.client.send_message(self.bot_id, "⚖️Проверить состав")
