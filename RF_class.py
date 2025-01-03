@@ -283,12 +283,12 @@ class RF:
             self.waiting_for_captcha = False  # Флаг ожидания капчи
 
             # self.reset_health()
-        # elif any(phrase in line for line in lstr for phrase in [
-        #     "Ты снова жив",
-        #     "Вы больше не можете воскрешаться",
-        # ]):
-        #     self.reset_health()
-        #     print(self.my_health, self.my_max_health)
+        elif any(phrase in line for line in lstr for phrase in [
+            "Ты снова жив",
+            "Вы больше не можете воскрешаться",
+        ]):
+            self.reset_health()
+            print(self.my_health, self.my_max_health)
         #     # на новый год 
         #     if not self.is_in_caves:  # Используем существующее условие
         #         await asyncio.sleep(1)
