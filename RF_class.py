@@ -256,9 +256,9 @@ class RF:
             self.is_has_hil = self.extra_hil = True
         elif any(phrase in line for line in lstr for phrase in [
             "Ваша группа наткнулась"
-        ]) and is_cave_leader:
+        ]):
             await asyncio.sleep(10)
-            if is_in_caves:
+            if self.is_in_caves:  # Изменено на self.is_in_caves
                 await self.client.send_message(self.bot_id, "⚖️Проверить состав")
 
         if any(phrase in lstr[0] for phrase in [
