@@ -360,7 +360,7 @@ class RF:
                     if player in self.players:
                         print(f"{player} не в ген. штабе")
                         await self.client.send_message(self.players[player], "Давайте в ген. штаб")
-            await self.client.send_message(self.bot_id, "🔥 61-65 Лес пламени")  # или заменить на локацию
+            await self.client.send_message(self.bot_id, "🔥 61-65 Лес пламени")  # выключить для данжей
         elif "Если ты хочешь вернуть группу" in lstr[0]:
             await self.client.send_message(self.bot_id, "22")
             
@@ -540,28 +540,12 @@ class RF:
 
 
         # # данжи
-        # elif any(f"+1 к энергии 🔋{i}/5" in lstr[0] for i in (4, 5)):
-        #     await asyncio.sleep(1)
-        #     await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
-        #     await self.check_arrival_dange()
-        # elif "Ты уверен, что хочешь попробовать пройти данж" in lstr[0]:
-        #     await asyncio.sleep(1)
-        #     await message.click(0)
-        #     await self.dangego()
-        # elif "Что будем делать?" in lstr[-1]:
-        #     print("будем бить")
-        #     await asyncio.sleep(1)
-        #     await self.client.send_message(self.bot_id, "🔪 Атаковать")
-        # elif any(f"Энергия: 🔋{i}/5" in lstr[-1] for i in range(1, 5)):
-        #     print("есть энергия")
-        #     await asyncio.sleep(1)
-        #     await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
-        #     await self.gokragi()  # заменил на краги
-        # elif "Энергия: 🔋0/5" in lstr[-1] or "[недостаточно энергии]" in lstr[0]:
-        #     print("нет энергии")
-        #     await asyncio.sleep(1)
-        #     await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
-        #     await self.gokragi()
+
+        elif "Ты уверен, что хочешь попробовать пройти данж" in lstr[0]:
+            await asyncio.sleep(1)
+            await message.click(0)
+            await self.dangego()
+
         
         # misc
         elif val == 1550650437:  # ⚒ Кузня - 5 ур.
@@ -575,7 +559,9 @@ class RF:
             ]):
             await asyncio.sleep(1)
             await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
-            await self.check_arrival()
+            await self.check_arrival() #для мобов
+            # await self.check_arrival_dange() #для данжей
+
         elif any(phrase in lstr[0] for phrase in [
             "⚠️Прежде чем выполнять какие-то действия в игре",
             "Введите, пожалуйста, текст с картинки."
@@ -1289,9 +1275,12 @@ class RF:
                     await asyncio.sleep(1)  
                     await self.client.send_message(self.bot_id, "⚖️Проверить состав")
                     await event.message.delete()  # Удаляем сообщение
-                elif "_данж" in message_text:  
+                elif "_данж" in message_text and not self.is_moving:
                     await asyncio.sleep(1)  
-                    await self.client.send_message(self.bot_id, "🔥 61-65 Лес пламени")
+                    if self.kopka:  # Проверяем значение self.kopka
+                        await self.client.send_message(self.bot_id, "🔥 61-65 Лес пламени")
+                    else:
+                        await self.client.send_message(self.bot_id, "/go_dange_10014")
                     await event.message.delete()  # Удаляем сообщение
                 elif "_хил" in message_text:  
                     if self.last_bind != self.hp_11999 and self.is_has_hil:
@@ -1598,7 +1587,9 @@ class RF:
         print("есть энергия")
         await asyncio.sleep(5)
         await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
-        await self.check_arrival()
+        await self.check_arrival() #для мобов
+        # await self.gokragi()  # для данжей
+
 
     async def handle_energy(self):
         # Проверяем начальные флаги
@@ -1634,4 +1625,5 @@ class RF:
                 print("Капча решена, продолжаем...")
             
             # После решения капчи или если её не было - проверяем прибытие
-            await self.check_arrival()
+            await self.check_arrival()         #для мобов
+            # await self.check_arrival_dange()    #для данжей
