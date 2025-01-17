@@ -75,6 +75,7 @@ class RF:
         self.got_reward = None
         self.is_training = False
         self.extra_hil = True
+        self.mobs = True
 
 
 
@@ -365,7 +366,10 @@ class RF:
                     if player in self.players:
                         print(f"{player} не в ген. штабе")
                         await self.client.send_message(self.players[player], "Давайте в ген. штаб")
-            await self.client.send_message(self.bot_id, "🔥 61-65 Лес пламени")  # выключить для данжей
+            if self.mobs:  # Проверяем, включен ли флаг для мобов
+                await self.client.send_message(self.bot_id, "🔥 61-65 Лес пламени")  # для мобов
+            else:
+                print("bag bag bag")  # для данжей
         elif "Если ты хочешь вернуть группу" in lstr[0]:
             await self.client.send_message(self.bot_id, "22")
 
@@ -563,8 +567,10 @@ class RF:
             ]):
             await asyncio.sleep(1)
             await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
-            await self.check_arrival() #для мобов
-            # await self.check_arrival_dange() #для данжей
+            if self.mobs:  # Проверяем, включен ли флаг для мобов
+                await self.check_arrival()  # для мобов
+            else:
+                await self.check_arrival_dange()  # для данжей
 
         elif any(phrase in lstr[0] for phrase in [
             "⚠️Прежде чем выполнять какие-то действия в игре",
@@ -637,7 +643,7 @@ class RF:
             if last_message:
                 lstr = last_message[0].message.split('\n')
                 if any(condition in lstr[0] for condition in ["Ты дошел до локации.", "Вы уже находитесь в данной локации.", "Ты снова жив👼"]):
-                    await self.client.send_message(self.bot_id, "/go_dange_10014")  # идти данж
+                    await self.client.send_message(self.bot_id, "/go_dange_10015")  # идти данж
                     return
             await asyncio.sleep(1)
 
@@ -1227,7 +1233,7 @@ class RF:
     def common_cave(self):
         print("Устанавливаем обработчик сообщений для common_cave")
         
-        @self.client.on(events.NewMessage(from_users=[278339710, 353501977, 681431333, 562559122, 255360779, 1757434874]))
+        @self.client.on(events.NewMessage(from_users=[278339710, 715480502, 353501977, 681431333, 562559122, 255360779, 1757434874]))
         async def handle_specific_user_messages(event):
             if event.is_private:  # Проверяем, что сообщение пришло из личного чата
                 print(f"Получено новое личное сообщение от пользователя {event.sender_id}: {event.message.text}")
@@ -1260,6 +1266,16 @@ class RF:
                     await asyncio.sleep(1)  
                     await self.rf_message.click(2)
                     await event.message.delete()  # Удаляем сообщение
+                elif "_мобы" in message_text:  
+                    self.mobs = True  # Устанавливаем флаг для мобов
+                    await self.client.send_message(715480502, "Ходим на мобов")  # Сообщение об изменении флага
+                    await self.client.send_message(self.bot_id, RF.hp)  # переодеться для мобов
+                    await event.message.delete()  # Удаляем сообщение
+                elif "_данжи" in message_text:  
+                    self.mobs = False  # Устанавливаем флаг для данжей
+                    await self.client.send_message(715480502, "Ходим в данжи")  # Сообщение об изменении флага
+                    await self.client.send_message(self.bot_id, "/bind_wear_1729689260746d")
+                    await event.message.delete()  # Удаляем сообщение
                 elif "_выход" in message_text:  
                     await asyncio.sleep(1)  
                     await self.rf_message.click(3)
@@ -1284,7 +1300,7 @@ class RF:
                     if self.kopka:  # Проверяем значение self.kopka
                         await self.client.send_message(self.bot_id, "🔥 61-65 Лес пламени")
                     else:
-                        await self.client.send_message(self.bot_id, "/go_dange_10014")
+                        await self.client.send_message(self.bot_id, "/go_dange_10015")
                     await event.message.delete()  # Удаляем сообщение
                 elif "_хил" in message_text:  
                     if self.last_bind != self.hp_11999 and self.is_has_hil:
@@ -1591,8 +1607,10 @@ class RF:
         print("есть энергия")
         await asyncio.sleep(5)
         await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
-        await self.check_arrival() #для мобов
-        # await self.gokragi()  # для данжей
+        if self.mobs:  # Проверяем, включен ли флаг для мобов
+            await self.check_arrival()  # для мобов
+        else:
+            await self.gokragi()  # для данжей
 
 
     async def handle_energy(self):
@@ -1629,5 +1647,8 @@ class RF:
                 print("Капча решена, продолжаем...")
             
             # После решения капчи или если её не было - проверяем прибытие
-            await self.check_arrival()         #для мобов
-            # await self.check_arrival_dange()    #для данжей
+            if self.mobs:  # Проверяем, включен ли флаг для мобов
+                await self.check_arrival()         # для мобов
+            else:
+                await self.check_arrival_dange()    # для данжей
+
