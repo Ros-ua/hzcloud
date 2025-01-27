@@ -16,6 +16,7 @@ class RF:
     cave_leader_id = 715480502
     my_health = my_max_health = 11999
     hp = "/bind_wear_1723376879927d"
+    chv = "/bind_wear_1737804678971w"
     tomat_id = 278339710
     kroha_id = 353501977
     tamplier_id = 681431333
@@ -256,6 +257,10 @@ class RF:
         ]):    
             self.is_has_hil = self.extra_hil = True
         elif any(phrase in line for line in lstr for phrase in [
+            "Вы больше не можете лечиться"
+        ]):    
+            self.is_has_hil = self.extra_hil = False
+        elif any(phrase in line for line in lstr for phrase in [
             "Ваша группа наткнулась"
         ]):
             await asyncio.sleep(10)
@@ -460,6 +465,10 @@ class RF:
             await asyncio.sleep(1)
             altar_to_send = self.cmd_altar if self.cmd_altar else self.choose_random_altar()
             await self.client.send_message(self.bot_id, altar_to_send)
+            # await self.client.send_message(-1001323974021, altar_to_send) # пересылка алтаря в группу 59
+            await self.client.send_message(681431333, altar_to_send) # пересылка алтаря Валере
+
+
         elif "Ты прибыл в ⛏рудник." in lstr[0]:
             await asyncio.sleep(1)
             await self.client.send_message(self.bot_id, "🖲 Установить АБУ")
@@ -470,7 +479,7 @@ class RF:
                 await self.client.send_message(self.bot_id, "🌋 Краговые шахты")
                 await asyncio.sleep(5)
                 #надеваем бинд для чв
-                await self.client.send_message(self.bot_id, "/bind_wear_1729689260746d")
+                await self.client.send_message(self.bot_id, RF.chv)
         elif any(phrase in line for line in lstr for phrase in [
             "Удачи!"
         ]):  
@@ -643,7 +652,7 @@ class RF:
             if last_message:
                 lstr = last_message[0].message.split('\n')
                 if any(condition in lstr[0] for condition in ["Ты дошел до локации.", "Вы уже находитесь в данной локации.", "Ты снова жив👼"]):
-                    await self.client.send_message(self.bot_id, "/go_dange_10015")  # идти данж
+                    await self.client.send_message(self.bot_id, "/go_dange_10014")  # идти данж
                     return
             await asyncio.sleep(1)
 
@@ -853,6 +862,9 @@ class RF:
                 if self.cmd_altar:
                     print(f"Бездействие. Направляемся к новому алтарю: {self.cmd_altar}")
                     await self.client.send_message(self.bot_id, self.cmd_altar)
+                    await self.client.send_message(681431333, self.cmd_altar) # пересылка алтаря Валере
+
+
                     self.cmd_altar = None
 
                 # Добавляем задержку в 10 секунд перед следующей итерацией
@@ -872,6 +884,7 @@ class RF:
                 print("Победа с получением урона. Отправляемся в ген. штаб.")
                 await asyncio.sleep(2)
                 await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
+                await self.client.send_message(681431333, "Ушел на отхил после пвп") # пересылка алтаря Валере
                 await self.gokragi()
                 self.is_nacheve_active = False
                 return True
@@ -1274,7 +1287,7 @@ class RF:
                 elif "_данжи" in message_text:  
                     self.mobs = False  # Устанавливаем флаг для данжей
                     await self.client.send_message(715480502, "Ходим в данжи")  # Сообщение об изменении флага
-                    await self.client.send_message(self.bot_id, "/bind_wear_1729689260746d")
+                    await self.client.send_message(self.bot_id, RF.chv)
                     await event.message.delete()  # Удаляем сообщение
                 elif "_выход" in message_text:  
                     await asyncio.sleep(1)  
@@ -1300,7 +1313,7 @@ class RF:
                     if self.kopka:  # Проверяем значение self.kopka
                         await self.client.send_message(self.bot_id, "🔥 61-65 Лес пламени")
                     else:
-                        await self.client.send_message(self.bot_id, "/go_dange_10015")
+                        await self.client.send_message(self.bot_id, "/go_dange_10014")
                     await event.message.delete()  # Удаляем сообщение
                 elif "_хил" in message_text:  
                     if self.last_bind != self.hp_11999 and self.is_has_hil:
