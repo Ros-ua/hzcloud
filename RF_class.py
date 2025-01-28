@@ -170,7 +170,7 @@ class RF:
             print(f"Статус has_hil обновлен: {self.is_has_hil}")  # Добавлен вывод статуса has_hil
 
         # Логика смены снаряжения в зависимости от текущего здоровья
-        elif 400 <= self.my_health <= 1600:  # Если здоровье между 400 и 1500
+        elif 400 <= self.my_health <= 1400:  # Если здоровье между 400 и 1400
             await asyncio.sleep(8)  # Ждем 5 секунды
             if not self.isPlayerDead() and self.last_bind != self.hp_11999 and self.is_has_hil and self.extra_hil:  # Перенесено сюда
                 self.is_has_hil = False
