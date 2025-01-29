@@ -498,10 +498,7 @@ class RF:
             print("будем бить")
             await asyncio.sleep(1)
             await self.client.send_message(self.bot_id, "🔪 Атаковать")
-        elif any(phrase in line for line in lstr for phrase in  [
-            "Общая добыча:", 
-            ]):
-            await message.forward_to(5596818972) #группа 59
+
         
         # elif any(phrase in line for line in lstr for phrase in ["Энергия: 🔋0/5", "[недостаточно энергии]"]):
         #     print("нет энергии")
@@ -566,6 +563,10 @@ class RF:
             await asyncio.sleep(1)
             await message.click(0)
             await self.dangego()
+        elif any(phrase in line for line in lstr for phrase in  [
+            "Общая добыча:", 
+            ]):
+            await message.forward_to(5596818972) # результат данж пересылка 
 
         
         # misc
