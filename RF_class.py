@@ -162,8 +162,8 @@ class RF:
     async def autoHeal(self):
         print(f"Проверка здоровья перед автолечением: {self.my_health}")
         
-        # Лечимся, если здоровье ниже 400
-        if self.my_health <= 400 and self.is_has_hil and self.extra_hil:
+        # Лечимся, если здоровье ниже 300
+        if self.my_health <= 300 and self.is_has_hil and self.extra_hil:
             self.is_has_hil = self.extra_hil = False
             print(f"Здоровье критически низкое ({self.my_health}). Отправляем запрос на хил.")
             await self.rf_message.click(0)
