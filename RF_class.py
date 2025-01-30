@@ -164,9 +164,9 @@ class RF:
         
         # Лечимся, если здоровье ниже 300
         if self.my_health <= 300 and self.is_has_hil and self.extra_hil:
+            await self.rf_message.click(0)
             self.is_has_hil = self.extra_hil = False
             print(f"Здоровье критически низкое ({self.my_health}). Отправляем запрос на хил.")
-            await self.rf_message.click(0)
             print(f"Статус has_hil обновлен: {self.is_has_hil}")  # Добавлен вывод статуса has_hil
 
         # Логика смены снаряжения в зависимости от текущего здоровья
