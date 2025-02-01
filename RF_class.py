@@ -16,7 +16,7 @@ class RF:
     cave_leader_id = 715480502
     my_health = my_max_health = 11999
     hp = "/bind_wear_1723376879927d"
-    chv = "/bind_wear_1737804678971w"
+    chv = "/bind_wear_1738302177522v"
     tomat_id = 278339710
     kroha_id = 353501977
     tamplier_id = 681431333
@@ -1313,12 +1313,25 @@ class RF:
                     await asyncio.sleep(1)  
                     await self.client.send_message(self.bot_id, "⚖️Проверить состав")
                     await event.message.delete()  # Удаляем сообщение
-                elif "_данж" in message_text and not self.is_moving:
-                    await asyncio.sleep(1)  
-                    if self.kopka:  # Проверяем значение self.kopka
-                        await self.client.send_message(self.bot_id, "🔥 61-65 Лес пламени")
+                elif "_данж" in message_text:
+                    if self.is_moving:
+                        # Если движение активно, отправляем сообщение пользователю
+                        await self.client.send_message(
+                            event.sender_id,  # ID пользователя, который отправил команду
+                            "Сливаю 1 энку, перезапусти через 3 минуты."
+                        )
                     else:
-                        await self.client.send_message(self.bot_id, "/go_dange_10014")
+                        # Если движение не активно, выполняем команду
+                        await asyncio.sleep(1)
+                        if self.kopka:  # Проверяем значение self.kopka
+                            await self.client.send_message(self.bot_id, "🔥 61-65 Лес пламени")
+                            # Отправляем сообщение пользователю
+                            await self.client.send_message(
+                                event.sender_id,  # ID пользователя, который отправил команду
+                                "Данж будет через 1 минуту."
+                            )
+                        else:
+                            await self.client.send_message(self.bot_id, "/go_dange_10014")
                     await event.message.delete()  # Удаляем сообщение
                 elif "_хил" in message_text:  
                     if self.last_bind != self.hp_11999 and self.is_has_hil:
