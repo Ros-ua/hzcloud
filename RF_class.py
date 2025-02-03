@@ -1280,6 +1280,27 @@ class RF:
                         await asyncio.sleep(2)
                         await self.client.send_message(self.bot_id, "💖 Пополнить здоровье")
                     await event.message.delete()  # Удаляем сообщение
+                elif "_пещера" in message_text:  
+                    if self.kopka:  
+                        print("Отправляем комплект hp_11999")
+                        await self.client.send_message(self.bot_id, self.hp_11999)  # Используем переменную hp_11999 для надевания
+                        self.my_health = self.my_max_health = 11999  # Устанавливаем текущее и максимальное здоровье на 11999
+                        print(f"Здоровье обновлено: {self.my_health}/{self.my_max_health}")
+                        await asyncio.sleep(5)
+                        print("Отправляем команду /go_to_gsh")
+                        await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
+                        await self.arrival_hil()  # Вызываем arrival_hil после отправки в ген. штаб
+                        await asyncio.sleep(2)
+                        await self.client.send_message(self.bot_id, "🚠 Отправиться в пещеры")
+                    else:
+                        await self.client.send_message(self.bot_id, self.hp_11999)
+                        self.my_health = self.my_max_health = 11999  # Устанавливаем текущее и максимальное здоровье на 11999
+                        await asyncio.sleep(2)
+                        await self.client.send_message(self.bot_id, "💖 Пополнить здоровье")
+                        await asyncio.sleep(2)
+                        await self.client.send_message(self.bot_id, "🚠 Отправиться в пещеры")
+
+                    await event.message.delete()  # Удаляем сообщение
                 elif "_шаг" in message_text:  
                     await asyncio.sleep(1)  
                     await self.rf_message.click(2)
