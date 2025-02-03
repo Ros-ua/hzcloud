@@ -413,19 +413,19 @@ class RF:
             print("Персонаж был убит!")
             await self.check_arrival()
 
-        elif any(phrase in line for line in lstr for phrase in [
-            "Алтарь Эйви",
-            "Алтарь Тир",
-        ]):
-            await asyncio.sleep(1)
-            await self.client.send_message(self.bot_id, "🤖 Терминал Aquilla")
+        # elif any(phrase in line for line in lstr for phrase in [
+        #     "Алтарь Эйви",
+        #     "Алтарь Тир",
+        # ]):
+        #     await asyncio.sleep(1)
+        #     await self.client.send_message(self.bot_id, "🤖 Терминал Aquilla")
             
-        elif any(phrase in line for line in lstr for phrase in [
-            "Алтарь Иса",
-            "Алтарь Гебо",
-        ]):
-            await asyncio.sleep(1)
-            await self.client.send_message(self.bot_id, "👩‍🚀 Терминал Basilaris")
+        # elif any(phrase in line for line in lstr for phrase in [
+        #     "Алтарь Иса",
+        #     "Алтарь Гебо",
+        # ]):
+        #     await asyncio.sleep(1)
+        #     await self.client.send_message(self.bot_id, "👩‍🚀 Терминал Basilaris")
 
         elif any(phrase in line for line in lstr for phrase in [
             "Ты прибыл к алтарю",
