@@ -77,6 +77,8 @@ class RF:
         self.is_training = False
         self.extra_hil = True
         self.mobs = True
+        self.my_pvp_health = None  # Изначально значение не определено
+
 
 
 
@@ -476,10 +478,12 @@ class RF:
         elif any(phrase in line for line in lstr for phrase in ["После боевых действий ты снова сможешь"]):
             if not any([self.is_in_caves, self.kopka, self.is_moving, self.waiting_for_captcha]):
                 await asyncio.sleep(15)
-                await self.client.send_message(self.bot_id, "🌋 Краговые шахты")
-                await asyncio.sleep(5)
-                #надеваем бинд для чв
                 await self.client.send_message(self.bot_id, RF.chv)
+                await asyncio.sleep(3)
+                await self.client.send_message(self.bot_id, "💖 Пополнить здоровье")
+                print("Отправлено сообщение: 💖 Пополнить здоровье")
+                await self.wait_for_health_refill()
+                await self.client.send_message(self.bot_id, "🌋 Краговые шахты")
         elif any(phrase in line for line in lstr for phrase in [
             "Удачи!"
         ]):  
@@ -894,20 +898,86 @@ class RF:
             self.is_nacheve_active = False
             print("Завершаем работу на чв")
 
+
+    async def calculate_pvp_health(self, lstr):
+        """
+        Метод для расчета здоровья после PvP-боя.
+        Анализирует строки боя, извлекает урон, нанесенный противником,
+        и обновляет self.my_pvp_health.
+        """
+        total_damage_taken = 0  # Общий урон, полученный от противника
+
+        for line in lstr:
+            if "нанес удар" in line and self.your_name not in line:
+                # Извлекаем значение урона из строки
+                damage_str = line.split("💥")[-1].strip()
+                try:
+                    damage = int(damage_str)
+                    if damage < 0:  # Учитываем только отрицательные значения (урон)
+                        total_damage_taken += abs(damage)
+                except ValueError:
+                    print(f"Не удалось распознать урон в строке: {line}")
+
+        # Вычисляем новое значение здоровья после боя
+        self.my_pvp_health = self.my_health - total_damage_taken
+        print(f"После боя осталось здоровья: {self.my_pvp_health}")
+
+        # Обновляем основное здоровье (my_health) на новое значение
+        self.my_health = self.my_pvp_health
+        print(f"Основное здоровье обновлено до: {self.my_health}")
+
+
     async def process_bot_message(self, lstr):
+        # if any("Ты одержал победу над" in line for line in lstr):
+        #     # Проверяем, есть ли другие игроки, которые нанесли удар
+        #     if any("нанес удар" in line and self.your_name not in line for line in lstr):
+        #         print("Победа с получением урона. Отправляемся в ген. штаб.")
+        #         await asyncio.sleep(2)
+        #         await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
+        #         # await self.client.send_message(681431333, "Ушел на отхил после пвп") # пересылка алтаря Валере
+        #         # Добавляем информацию о текущем здоровье
+        #         health_message = f"Ушел на отхил после пвп. Осталось здоровья: {self.my_health}"
+        #         await self.client.send_message(681431333, health_message)  # пересылка алтаря Валере
+        #         await self.gokragi()
+        #         self.is_nacheve_active = False
+        #         return True
+        #     elif any(f"{self.your_name} нанес удар" in line for line in lstr) and not any("нанес удар" in line and self.your_name not in line for line in lstr):
+        #         print("Победа без получения урона. Переходим к следующему терминалу.")
+        #         return False
+
+
         if any("Ты одержал победу над" in line for line in lstr):
             # Проверяем, есть ли другие игроки, которые нанесли удар
             if any("нанес удар" in line and self.your_name not in line for line in lstr):
-                print("Победа с получением урона. Отправляемся в ген. штаб.")
-                await asyncio.sleep(2)
-                await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
-                await self.client.send_message(681431333, "Ушел на отхил после пвп") # пересылка алтаря Валере
-                await self.gokragi()
-                self.is_nacheve_active = False
-                return True
+                print("Победа с получением урона. Принимаем решение на основе здоровья.")
+                
+                # Вызываем новый метод для расчета здоровья после боя
+                await self.calculate_pvp_health(lstr)
+
+                if self.my_pvp_health > 6000:
+                    print("Здоровье больше 6000. Переходим к следующему алтарю.")
+                    fight_message = f"Дерёмся дальше. Осталось здоровья: {self.my_pvp_health}"
+                    await self.client.send_message(681431333, fight_message)  # пересылка  Валере
+                    return False  # Переход к следующему терминалу
+                else:
+                    print("Здоровье меньше или равно 6000. Отправляемся в ген. штаб для хила.")
+                    await asyncio.sleep(2)
+                    await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
+                    
+                    # Добавляем информацию о текущем здоровье
+                    health_message = f"Ушел на отхил после пвп. Осталось здоровья: {self.my_pvp_health}"
+                    await self.client.send_message(681431333, health_message)  # пересылка  Валере
+                    
+                    await self.gokragi()
+                    self.is_nacheve_active = False
+                    return True
+            
+            # Если только вы наносили удары и никто другой не наносил ударов
             elif any(f"{self.your_name} нанес удар" in line for line in lstr) and not any("нанес удар" in line and self.your_name not in line for line in lstr):
                 print("Победа без получения урона. Переходим к следующему терминалу.")
                 return False
+
+
 
         if lstr[-1].endswith("минут.") or "дождись пока воскреснешь" in lstr[0] or "был убит ядерной ракетой" in lstr[0]:
             print("Обнаружено сообщение о времени. Вызываем gokragi()")
