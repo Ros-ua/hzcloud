@@ -565,8 +565,20 @@ class RF:
             await self.dangego()
         elif any(phrase in line for line in lstr for phrase in  [
             "Общая добыча:", 
+            # "Ресурсы:",
             ]):
-            await message.forward_to(5596818972) # результат данж пересылка 
+            # Пересылаем сообщение
+            forwarded_message = await message.forward_to(5596818972)  # результат данж пересылка 
+
+            # Отправляем сообщение "готово"
+            # sent_message = await message.client.send_message(5596818972, "готово")
+
+            # Ждём 5 секунд
+            await asyncio.sleep(5)
+
+            # Удаляем оба сообщения
+            await forwarded_message.delete()
+            # await sent_message.delete()
 
         
         # misc
