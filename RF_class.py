@@ -16,7 +16,7 @@ class RF:
     cave_leader_id = 715480502
     my_health = my_max_health = 11999
     hp = "/bind_wear_1723376879927d"
-    chv = "/bind_wear_1738302177522v"
+    chv = "/bind_wear_173962210415312"
     tomat_id = 278339710
     kroha_id = 353501977
     tamplier_id = 681431333
@@ -80,6 +80,8 @@ class RF:
         self.extra_hill_hp = 300   # Здоровье, при котором используется экстренный хил
         self.ned_hill_hp = 1300    # Здоровье, при котором нужен обычный хил
         self.go_term_Aquilla = False  # флаг по умолчанию
+        self.bezvgroup = -1002220238697  # ID группы "без в"
+        self.group59 = -1001323974021  # ID группы "59" 
 
 
 
@@ -357,9 +359,9 @@ class RF:
         elif lstr[0].endswith("не в ген. штабе]"):
             # Проверяем, есть ли 🐾ᏦᎮᎧχᏗ в сообщении
             if "🐾ᏦᎮᎧχᏗ" in lstr[0]:
-                await message.forward_to(-1002220238697)  # специальная группа для 🐾ᏦᎮᎧχᏗ без в 
+                await message.forward_to(self.bezvgroup)  # специальная группа для 🐾ᏦᎮᎧχᏗ без в 
             else:
-                await message.forward_to(-1001323974021)  # стандартная группа для остальных 59
+                await message.forward_to(self.group59)  # стандартная группа для остальных 59
 
             # Ищем всех игроков, упомянутых в сообщении
             players_not_in_gh = re.findall(r'(Нежный 🍅|🐾ᏦᎮᎧχᏗ|𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗|John Doe|๖ۣۜᗯαsͥpwͣoͫℝt🐝|kingRagnar🤴🏼)', lstr[0])
@@ -430,7 +432,8 @@ class RF:
         ]):
             
             await asyncio.sleep(30)
-            await self.client.send_message(681431333, "🤖 Терминал Aquilla") # пересылка алтаря Валере
+            # await self.client.send_message(tamplier_id, "🤖 Терминал Aquilla") # пересылка алтаря Валере
+            await self.client.send_message(self.bezvgroup, "🤖 Терминал Aquilla") # пересылка алтаря без в
 
 
         # elif any(phrase in line for line in lstr for phrase in [
@@ -458,11 +461,14 @@ class RF:
                     "Бронза уже у тебя в рюкзаке",
                     "За то, что ты героически сражался",
                 ]) and not self.got_reward:  # Проверка, что got_reward был False
-            if "Бронза уже у тебя в рюкзаке" in [phrase for phrase in lstr]:
+            self.got_reward = True  # Устанавливаем флаг получения награды
+            
+            if any("Бронза уже у тебя в рюкзаке" in line for line in lstr):  # Проверяем вхождение подстроки
                 self.mobs = False  # Устанавливаем флаг для данжей
                 await self.client.send_message(715480502, "Ходим в данжи")  # Сообщение об изменении флага
-            self.got_reward = True
-            
+                await self.client.send_message(self.bezvgroup, "Ходим в данжи")  # Сообщение об изменении флага без в
+                await self.client.send_message(self.group59, "Ходим в данжи")  # Сообщение об изменении флага 59
+
             await asyncio.sleep(1)
             await self.client.send_message(self.bot_id, RF.hp)  # переодеться для мобов
             asyncio.create_task(self.set_nacheve_inactive_after_delay())  # Устанавливаем флаг через 2 минуты
@@ -482,8 +488,9 @@ class RF:
             await asyncio.sleep(1)
             altar_to_send = self.cmd_altar if self.cmd_altar else self.choose_random_altar()
             await self.client.send_message(self.bot_id, altar_to_send)
-            # await self.client.send_message(-1001323974021, altar_to_send) # пересылка алтаря в группу 59
-            await self.client.send_message(681431333, altar_to_send) # пересылка алтаря Валере
+            # await self.client.send_message(self.group59, altar_to_send) # пересылка алтаря в группу 59
+            # await self.client.send_message(tamplier_id, altar_to_send) # пересылка алтаря Валере
+            await self.client.send_message(self.bezvgroup, altar_to_send) # пересылка алтаря без в 
 
 
         elif "Ты прибыл в ⛏рудник." in lstr[0]:
@@ -513,7 +520,7 @@ class RF:
             ]):
             await asyncio.sleep(1)
             await message.click(0)
-        elif "Что будем делать?" in lstr[-1]:
+        elif "Что будем делать?" in lstr[-1] or "Ты наткнулся на" in lstr[-1]:
             print("будем бить")
             await asyncio.sleep(1)
             await self.client.send_message(self.bot_id, "🔪 Атаковать")
@@ -523,7 +530,28 @@ class RF:
             await self.handle_no_energy()
         elif any(phrase in line for line in lstr for phrase in [f"Энергия: 🔋{i}/5" for i in range(1, 5)]):
             print("есть энергия")
-            await self.handle_energy_found()
+            
+            # Ищем строку с информацией о здоровье во всём сообщении с учётом возможных пробелов и символов
+            health_line = next((line for line in lstr if re.search(r"Здоровье: ❤\d+/\d+", line)), None)
+            
+            if health_line:
+                # Извлекаем текущее здоровье
+                health_match = re.search(r"Здоровье: ❤(\d+)/\d+", health_line)
+                if health_match:
+                    current_health = int(health_match.group(1))
+                    print(f"Текущее здоровье: {current_health}")
+                    
+                    # Проверяем, меньше ли здоровье 8000
+                    if current_health < 8000:
+                        await self.handle_energy_found()
+                    else:
+                        print("Здоровье больше или равно 8000, отправляем сообщение 🐺По уровню.")
+                        await asyncio.sleep(1)
+                        await self.client.send_message(self.bot_id, "🐺По уровню")
+                else:
+                    print("Не удалось извлечь здоровье из строки.")
+            else:
+                print("Строка с информацией о здоровье не найдена.")
 
 
         elif any(f"+1 к энергии 🔋{i}/5" in lstr[0] for i in range(1, 6)):
@@ -617,8 +645,8 @@ class RF:
 
         if not message.buttons:
             if val == 3190963077:  # ✨Добыча:
-                await message.forward_to(-1001323974021) #группа 59
-                # await message.forward_to(2220238697) #группа без В
+                await message.forward_to(self.group59) #группа 59
+                # await message.forward_to(self.bezvgroup) #группа без В
             else:
                 await self.checkHealth(lstr)
             return
@@ -852,14 +880,15 @@ class RF:
                 if self.cmd_altar:
                     print(f"Бездействие. Направляемся к новому алтарю: {self.cmd_altar}")
                     await self.client.send_message(self.bot_id, self.cmd_altar)
-                    await self.client.send_message(681431333, self.cmd_altar) # пересылка алтаря Валере
+                    # await self.client.send_message(tamplier_id, self.cmd_altar) # пересылка алтаря Валере
+                    await self.client.send_message(self.bezvgroup, self.cmd_altar) # пересылка алтаря без в 
 
 
                     self.cmd_altar = None
 
                 # Добавляем задержку в 10 секунд перед следующей итерацией
-                print("Ожидание 2 секунд перед следующей проверкой...")
-                await asyncio.sleep(2)
+                print("Ожидание 4 секунд перед следующей проверкой...")
+                await asyncio.sleep(4)
 
         finally:
             # Убираем обработчик событий
@@ -918,7 +947,8 @@ class RF:
                 if self.my_health > 6000:
                     print("Здоровье больше 6000. Переходим к следующему алтарю.")
                     fight_message = f"Дерёмся дальше. Осталось здоровья: {self.my_health}"
-                    await self.client.send_message(681431333, fight_message)  # пересылка Валере
+                    # await self.client.send_message(tamplier_id, fight_message)  # пересылка Валере
+                    await self.client.send_message(self.bezvgroup, fight_message)  # пересылка без в 
                     return False  # Переход к следующему терминалу
                 else:
                     print("Здоровье меньше или равно 6000. Отправляемся в ген. штаб для хила.")
@@ -927,7 +957,9 @@ class RF:
                     
                     # Добавляем информацию о текущем здоровье
                     health_message = f"Ушел на отхил после пвп. Осталось здоровья: {self.my_health}"
-                    await self.client.send_message(681431333, health_message)  # пересылка Валере
+                    # await self.client.send_message(tamplier_id, health_message)  # пересылка Валере
+                    await self.client.send_message(self.bezvgroup, health_message)  # пересылка без в 
+
                     
                     await self.gokragi()
                     self.is_nacheve_active = False
@@ -939,27 +971,6 @@ class RF:
             return True
 
         return False
-
-
-
-    # async def process_bot_message(self, lstr):
-        # if any("Ты одержал победу над" in line for line in lstr):
-        #     # Проверяем, есть ли другие игроки, которые нанесли удар
-        #     if any("нанес удар" in line and self.your_name not in line for line in lstr):
-        #         print("Победа с получением урона. Отправляемся в ген. штаб.")
-        #         await asyncio.sleep(2)
-        #         await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
-        #         # await self.client.send_message(681431333, "Ушел на отхил после пвп") # пересылка алтаря Валере
-        #         # Добавляем информацию о текущем здоровье
-        #         health_message = f"Ушел на отхил после пвп. Осталось здоровья: {self.my_health}"
-        #         await self.client.send_message(681431333, health_message)  # пересылка алтаря Валере
-        #         await self.gokragi()
-        #         self.is_nacheve_active = False
-        #         return True
-        #     elif any(f"{self.your_name} нанес удар" in line for line in lstr) and not any("нанес удар" in line and self.your_name not in line for line in lstr):
-        #         print("Победа без получения урона. Переходим к следующему терминалу.")
-        #         return False
-
 
     async def straj(self):
         print("Начало работы со стражем straj")
@@ -1425,9 +1436,9 @@ class RF:
                         await event.message.delete()  # Удаляем сообщение
                 elif "_энка" in message_text:  
                     if self.last_energy_message:  # Проверяем, что last_energy_message не None
-                        await self.last_energy_message.forward_to(-1002220238697)  # Пересылаем сохраненное сообщение
+                        await self.last_energy_message.forward_to(self.bezvgroup)  # Пересылаем сохраненное сообщение
                     else:
-                        await self.client.send_message(-1002220238697, "ещё не капнуло")  # Отправляем сообщение в группу
+                        await self.client.send_message(self.bezvgroup, "ещё не капнуло")  # Отправляем сообщение в группу
                     await event.message.delete()  # Удаляем сообщение
                 elif "_акры+" in message_text or "_терм+" in message_text:
                     self.go_term_Aquilla = True
