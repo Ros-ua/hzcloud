@@ -522,6 +522,7 @@ class RF:
                 await self.wait_for_health_refill()
                 await self.client.send_message(self.bot_id, "🌋 Краговые шахты")
                 self.pvpgoheal = 5000 
+                self.go_term_Aquilla = True
         elif any(phrase in line for line in lstr for phrase in [
             "Удачи!"
         ]):  
@@ -837,6 +838,21 @@ class RF:
         print("Начало работы parce_4v_logs.")
         lstr = msg_text.split('\n')
         print(f"Количество строк в сообщении: {len(lstr)}")
+
+
+
+        # Проверка HP терминала Aquilla
+        for line in lstr:
+            if "Aquilla терминал:" in line:
+                # Извлечение значения HP из строки
+                hp_info = line.split('❤')[1].split('/')[0].strip()
+                aquilla_hp = int(hp_info)
+                print(f"Aquilla HP: {aquilla_hp}")
+
+                # Проверка, если HP меньше 20 000
+                if aquilla_hp < 20000:
+                    self.go_term_Aquilla = False
+                    print("HP Aquilla меньше 20000, прекращаем ходить.")
 
         if len(lstr) > 24:
             l_altars = []
