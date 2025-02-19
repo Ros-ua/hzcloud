@@ -469,11 +469,13 @@ class RF:
             await self.client.send_message(715480502, "Ходим в данжи")  # Сообщение об изменении флага
             await self.client.send_message(self.bezvgroup, "Ходим в данжи")  # Сообщение об изменении флага без в
             await self.client.send_message(self.group59, "Ходим в данжи")  # Сообщение об изменении флага 59
+            if not self.got_reward:  # Проверка, что got_reward был False
+                self.got_reward = True  # Устанавливаем флаг получения награды
 
-            # Общие действия
-            await asyncio.sleep(1)  # Задержка перед следующим действием
-            await self.client.send_message(self.bot_id, RF.hp)  # Переодеться для мобов
-            asyncio.create_task(self.set_nacheve_inactive_after_delay())  # Устанавливаем флаг через 2 минуты
+                # Общие действия
+                await asyncio.sleep(1)  # Задержка перед следующим действием
+                await self.client.send_message(self.bot_id, RF.hp)  # Переодеться для мобов
+                asyncio.create_task(self.set_nacheve_inactive_after_delay())  # Устанавливаем флаг через 2 минуты
 
 
         # Обрабатываем фразу о героическом сражении
