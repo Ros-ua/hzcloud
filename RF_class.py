@@ -79,9 +79,10 @@ class RF:
         self.mobs = True
         self.extra_hill_hp = 300   # Здоровье, при котором используется экстренный хил
         self.ned_hill_hp = 1300    # Здоровье, при котором нужен обычный хил
-        self.go_term_Aquilla = False  # флаг по умолчанию
+        self.go_term_Aquilla = True  # флаг по умолчанию
         self.bezvgroup = -1002220238697  # ID группы "без в"
         self.group59 = -1001323974021  # ID группы "59" 
+        self.pvpgoheal = 5000
 
 
 
@@ -259,10 +260,12 @@ class RF:
             "ты мертв, дождись пока воскреснешь"
         ]):    
             self.is_has_hil = self.extra_hil = True
+            self.after_bind = self.hp_11999
         elif any(phrase in line for line in lstr for phrase in [
             "Вы больше не можете лечиться"
         ]):    
             self.is_has_hil = self.extra_hil = False
+            self.after_bind = self.hp_11999
         elif any(phrase in line for line in lstr for phrase in [
             "Ваша группа наткнулась"
         ]):
@@ -277,6 +280,7 @@ class RF:
         ]):
             self.is_in_caves = self.is_has_hil = self.is_has_res = self.extra_hil = True
             self.my_health = self.my_max_health = 11999
+            self.after_bind = self.hp_11999
             await asyncio.sleep(randint(4, 6))
             await self.client.send_message(self.bot_id, "⚖️Проверить состав")
             print("в пещерах")
@@ -286,6 +290,7 @@ class RF:
             "Здоровье пополнено",
         ]):
             self.is_has_hil = False  
+            self.after_bind = self.hp_11999
             print(f"Статус has_hil обновлен: {self.is_has_hil}")  # Добавлен вывод статуса has_hil
             self.waiting_for_captcha = False  # Флаг ожидания капчи
 
@@ -295,6 +300,7 @@ class RF:
         ]):
             self.reset_health()
             print(self.my_health, self.my_max_health)
+            self.after_bind = self.hp_11999
         #     # на новый год 
         #     if not self.is_in_caves:  # Используем существующее условие
         #         await asyncio.sleep(1)
@@ -457,21 +463,28 @@ class RF:
             self.got_reward = False  # Сбрасываем флаг получения награды
             await self.nacheve()
 
-        elif any(phrase in line for line in lstr for phrase in [
-                    "Бронза уже у тебя в рюкзаке",
-                    "За то, что ты героически сражался",
-                ]) and not self.got_reward:  # Проверка, что got_reward был False
-            self.got_reward = True  # Устанавливаем флаг получения награды
-            
-            if any("Бронза уже у тебя в рюкзаке" in line for line in lstr):  # Проверяем вхождение подстроки
-                self.mobs = False  # Устанавливаем флаг для данжей
-                await self.client.send_message(715480502, "Ходим в данжи")  # Сообщение об изменении флага
-                await self.client.send_message(self.bezvgroup, "Ходим в данжи")  # Сообщение об изменении флага без в
-                await self.client.send_message(self.group59, "Ходим в данжи")  # Сообщение об изменении флага 59
+        # Обрабатываем фразу о бронзе
+        elif any("Бронза уже у тебя в рюкзаке" in line for line in lstr):  # Проверяем фразу о бронзе
+            self.mobs = False  # Устанавливаем флаг для данжей
+            await self.client.send_message(715480502, "Ходим в данжи")  # Сообщение об изменении флага
+            await self.client.send_message(self.bezvgroup, "Ходим в данжи")  # Сообщение об изменении флага без в
+            await self.client.send_message(self.group59, "Ходим в данжи")  # Сообщение об изменении флага 59
 
-            await asyncio.sleep(1)
-            await self.client.send_message(self.bot_id, RF.hp)  # переодеться для мобов
+            # Общие действия
+            await asyncio.sleep(1)  # Задержка перед следующим действием
+            await self.client.send_message(self.bot_id, RF.hp)  # Переодеться для мобов
             asyncio.create_task(self.set_nacheve_inactive_after_delay())  # Устанавливаем флаг через 2 минуты
+
+
+        # Обрабатываем фразу о героическом сражении
+        elif any("За то, что ты героически сражался" in line for line in lstr):  # Проверяем вхождение подстроки
+            if not self.got_reward:  # Проверка, что got_reward был False
+                self.got_reward = True  # Устанавливаем флаг получения награды
+
+                # Общие действия
+                await asyncio.sleep(1)  # Задержка перед следующим действием
+                await self.client.send_message(self.bot_id, RF.hp)  # Переодеться для мобов
+                asyncio.create_task(self.set_nacheve_inactive_after_delay())  # Устанавливаем флаг через 2 минуты
 
 
 
@@ -506,6 +519,7 @@ class RF:
                 print("Отправлено сообщение: 💖 Пополнить здоровье")
                 await self.wait_for_health_refill()
                 await self.client.send_message(self.bot_id, "🌋 Краговые шахты")
+                self.pvpgoheal = 5000 
         elif any(phrase in line for line in lstr for phrase in [
             "Удачи!"
         ]):  
@@ -886,9 +900,9 @@ class RF:
 
                     self.cmd_altar = None
 
-                # Добавляем задержку в 10 секунд перед следующей итерацией
-                print("Ожидание 4 секунд перед следующей проверкой...")
-                await asyncio.sleep(4)
+                # Добавляем задержку в xx секунд перед следующей итерацией
+                print("Ожидание 6 секунд перед следующей проверкой...")
+                await asyncio.sleep(6)
 
         finally:
             # Убираем обработчик событий
@@ -936,34 +950,29 @@ class RF:
 
         # Проверка на победу над противником
         if any("Ты одержал победу над" in line for line in lstr):
-            # Проверяем, есть ли другие игроки, которые нанесли удар
-            if any("нанес удар" in line and self.your_name not in line for line in lstr):
-                print("Победа с получением урона. Принимаем решение на основе здоровья.")
+            print("Победа в бою. Проверяем здоровье.")
+            
+            # Вызываем метод для получения текущего здоровья
+            await self.calculate_pvp_health(lstr)
+            
+            # Логика принятия решения на основе здоровья
+            if self.my_health > self.pvpgoheal:
+                print("Здоровье больше self.pvpgoheal. Переходим к следующему алтарю.")
+                fight_message = f"Дерёмся дальше. Осталось здоровья: {self.my_health}"
+                await self.client.send_message(self.bezvgroup, fight_message)  # пересылка без в 
+                return False  # Переход к следующему терминалу
+            else:
+                print("Здоровье меньше или равно self.pvpgoheal. Отправляемся в ген. штаб для хила.")
+                await asyncio.sleep(2)
+                await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
                 
-                # Вызываем метод для получения текущего здоровья
-                await self.calculate_pvp_health(lstr)
-                
-                # Логика принятия решения на основе здоровья
-                if self.my_health > 6000:
-                    print("Здоровье больше 6000. Переходим к следующему алтарю.")
-                    fight_message = f"Дерёмся дальше. Осталось здоровья: {self.my_health}"
-                    # await self.client.send_message(tamplier_id, fight_message)  # пересылка Валере
-                    await self.client.send_message(self.bezvgroup, fight_message)  # пересылка без в 
-                    return False  # Переход к следующему терминалу
-                else:
-                    print("Здоровье меньше или равно 6000. Отправляемся в ген. штаб для хила.")
-                    await asyncio.sleep(2)
-                    await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
-                    
-                    # Добавляем информацию о текущем здоровье
-                    health_message = f"Ушел на отхил после пвп. Осталось здоровья: {self.my_health}"
-                    # await self.client.send_message(tamplier_id, health_message)  # пересылка Валере
-                    await self.client.send_message(self.bezvgroup, health_message)  # пересылка без в 
+                # Добавляем информацию о текущем здоровье
+                health_message = f"Ушел на отхил после пвп. Осталось здоровья: {self.my_health}"
+                await self.client.send_message(self.bezvgroup, health_message)  # пересылка без в 
 
-                    
-                    await self.gokragi()
-                    self.is_nacheve_active = False
-                    return True
+                await self.gokragi()
+                self.is_nacheve_active = False
+                return True
 
         # Проверка на начало пути
         if "Ты направляешься" in lstr[0]:
@@ -1447,6 +1456,15 @@ class RF:
                 elif "_акры-" in message_text or "_терм-" in message_text:
                     self.go_term_Aquilla = False
                     await self.client.send_message(715480502, "Ходим алтари")  # Сообщение об изменении флага
+                    await event.message.delete()  # Удаляем сообщение
+                elif "_heal" in message_text:  # Проверяем наличие команды
+                    new_value = int(message_text.split()[-1])
+                    self.pvpgoheal = new_value  # Устанавливаем новое значение
+                    await self.client.send_message(715480502, f"Хил установлен на: {self.pvpgoheal}")  # Сообщение с новым значением
+                    await event.message.delete()  # Удаляем сообщение
+                elif "_chv" in message_text:  # Проверяем наличие команды
+                    new_value = message_text.split()[-1]  # Получаем последнее слово, это и будет новый value
+                    self.chv = new_value  # Устанавливаем новое значение переменной chv
                     await event.message.delete()  # Удаляем сообщение
 
 
