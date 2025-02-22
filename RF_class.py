@@ -529,6 +529,7 @@ class RF:
                 await self.client.send_message(self.bot_id, "🌋 Краговые шахты")
                 self.pvpgoheal = 5000 
                 self.go_term_Aquilla = True
+                self.go_term_Basilaris = True
         elif any(phrase in line for line in lstr for phrase in [
             "Удачи!"
         ]):  
