@@ -452,7 +452,9 @@ class RF:
             # Используем переменную terminal_type для отправки сообщения Валере
             message = f"буду в {self.terminal_type} через тик"
             await self.client.send_message(self.tamplier_id, message)
-            await self.client.send_message(self.group59, message)
+            # Отправляем в группу 59 только если терминал Aquilla
+            if self.terminal_type == "🤖 Терминал Aquilla":
+                await self.client.send_message(self.group59, message)
 
             # await self.client.send_message(self.bezvgroup, "🤖 Терминал Aquilla") # пересылка алтаря без в
 
