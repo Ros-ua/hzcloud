@@ -448,9 +448,11 @@ class RF:
         elif any(phrase in line for line in lstr for phrase in [
             "Ты направляешься к терминалу",
         ]):
-            await asyncio.sleep(30)
+            await asyncio.sleep(1)
             # Используем переменную terminal_type для отправки сообщения Валере
-            await self.client.send_message(self.tamplier_id, self.terminal_type)
+            message = f"буду в {self.terminal_type} через тик"
+            await self.client.send_message(self.tamplier_id, message)
+            await self.client.send_message(self.group59, message)
 
             # await self.client.send_message(self.bezvgroup, "🤖 Терминал Aquilla") # пересылка алтаря без в
 
