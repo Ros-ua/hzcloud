@@ -267,12 +267,36 @@ class RF:
         ]):    
             self.is_has_hil = self.extra_hil = False
             self.after_bind = self.hp_12022
+        
         elif any(phrase in line for line in lstr for phrase in [
             "Ваша группа наткнулась"
         ]):
             await asyncio.sleep(10)
             if self.is_in_caves:  # Изменено на self.is_in_caves
                 await self.client.send_message(self.bot_id, "⚖️Проверить состав")
+                await asyncio.sleep(20)
+                self.last_bind = self.after_bind
+                
+                # Добавляем проверку текущего здоровья перед autoHeal
+                await self.client.send_message(self.bot_id, "/hero")
+                await asyncio.sleep(1)  # Ждем ответа от бота
+                response = await self.client.get_messages(self.bot_id, limit=1)
+                
+                if response:
+                    health_line = next((line for line in response[0].text.split('\n') if '❤Здоровье:' in line), None)
+                    if health_line:
+                        match = re.search(r'❤Здоровье:\s*(\d+)', health_line)
+                        if match:
+                            self.my_health = int(match.group(1))
+                            print(f"Текущее здоровье перед autoHeal: {self.my_health}")
+                        else:
+                            print("Не удалось извлечь здоровье из строки")
+                    else:
+                        print("Не найдена строка с информацией о здоровье")
+                else:
+                    print("Не получен ответ от бота на /hero")
+                
+                await self.autoHeal()  # Вызываем autoHeal() после проверки здоровья
 
         if any(phrase in lstr[0] for phrase in [
             "Панель управления", 
@@ -417,6 +441,7 @@ class RF:
         # на чв
         elif "Ты был убит!" in lstr[0]:  # Добавлено условие для проверки фразы
             print("Персонаж был убит!")
+            await self.client.send_message(self.bot_id, RF.chv)
             await self.check_arrival()
 
         elif any(phrase in line for line in lstr for phrase in [
