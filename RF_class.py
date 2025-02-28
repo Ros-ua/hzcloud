@@ -289,6 +289,21 @@ class RF:
                         if match:
                             self.my_health = int(match.group(1))
                             print(f"Текущее здоровье перед autoHeal: {self.my_health}")
+                            
+                            # Специальная логика: если здоровье ниже extra_hill_hp, ведем себя как между extra и ned
+                            if self.my_health < self.extra_hill_hp:  # Например, 100 HP < 300
+                                print(f"Здоровье ({self.my_health}) ниже {self.extra_hill_hp}, применяем логику как для {self.extra_hill_hp}-{self.ned_hill_hp}")
+                                await asyncio.sleep(8)  # Ждем 8 секунд, как в случае между extra и ned
+                                if not self.isPlayerDead() and self.last_bind != self.hp_12022 and self.is_has_hil and self.extra_hil:
+                                    self.is_has_hil = False
+                                    await self.client.send_message(self.bot_id, self.hp_12022)  # Надеваем 12022 HP
+                                    print(f"Сменили бинд на: {self.hp_12022} (макс. здоровье: 12022)")
+                                    await asyncio.sleep(1)
+                                    await self.rf_message.click(0)  # Выполняем клик для хила
+                                    self.my_health = self.my_max_health = 12022
+                                    self.last_bind = self.hp_12022
+                                    print(f"Статус has_hil обновлен: {self.is_has_hil}")
+                                return  # Завершаем выполнение блока после хила
                         else:
                             print("Не удалось извлечь здоровье из строки")
                     else:
@@ -296,7 +311,7 @@ class RF:
                 else:
                     print("Не получен ответ от бота на /hero")
                 
-                await self.autoHeal()  # Вызываем autoHeal() после проверки здоровья
+                await self.autoHeal()  # Вызываем autoHeal() для всех остальных случаев
 
         if any(phrase in lstr[0] for phrase in [
             "Панель управления", 
@@ -1475,6 +1490,10 @@ class RF:
                 elif "_состав" in message_text:  
                     await asyncio.sleep(1)  
                     await self.client.send_message(self.bot_id, "⚖️Проверить состав")
+                    await event.message.delete()  # Удаляем сообщение
+                elif "_моб" in message_text:  
+                    await asyncio.sleep(1)  
+                    await self.client.send_message(self.bot_id, "🔥 61-65 Лес пламени")
                     await event.message.delete()  # Удаляем сообщение
                 elif "_данж" in message_text:
                     if self.is_moving:
