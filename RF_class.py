@@ -82,8 +82,8 @@ class RF:
         self.bezvgroup = -1002220238697  # ID группы "без в"
         self.group59 = -1001323974021  # ID группы "59" 
         self.pvpgoheal = 5000
-        self.go_term_Aquilla = True  # флаг по умолчанию
-        self.go_term_Basilaris = True  # флаг по умолчанию
+        self.go_term_Aquilla = False  # флаг по умолчанию
+        self.go_term_Basilaris = False   # флаг по умолчанию
         self.terminal_type = None
 
 
@@ -184,7 +184,7 @@ class RF:
         # Логика смены снаряжения в зависимости от текущего здоровья
         elif self.extra_hill_hp <= self.my_health <= self.ned_hill_hp:
 
-            await asyncio.sleep(5)  # Ждем 8 секунды
+            await asyncio.sleep(5)  # Ждем 5 секунды
             if not self.isPlayerDead() and self.last_bind != self.hp_12022 and self.is_has_hil and self.extra_hil:  # Перенесено сюда
                 self.is_has_hil = False
                 await self.client.send_message(self.bot_id, self.hp_12022)  # Надеваем 12022 HP
