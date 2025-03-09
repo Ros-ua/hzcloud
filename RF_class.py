@@ -324,7 +324,6 @@ class RF:
             await asyncio.sleep(randint(4, 6))
             await self.client.send_message(self.bot_id, "⚖️Проверить состав")
             print("в пещерах")
-            await asyncio.sleep(10)
 
         elif any(phrase in line for line in lstr for phrase in [
             "Здоровье пополнено",
@@ -391,6 +390,7 @@ class RF:
                     print("Установлен флаг fast_cave в True, баллы равны 11.")
                 else:
                     print(f"Баллы не равны 11, текущее значение: {score}")  # Отладочное сообщение
+            await asyncio.sleep(1)
             await self.check_group_list(lstr)
             # await asyncio.sleep(2)
             await self.vihod_s_caves(lstr)
@@ -721,7 +721,7 @@ class RF:
 
         if val == 3190963077:  # ✨Добыча:
             self.rf_message = message
-            await asyncio.sleep(10)
+            await asyncio.sleep(1)
             await self.client.send_message(self.bot_id, "⚖️Проверить состав")
             return
         
