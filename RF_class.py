@@ -572,8 +572,8 @@ class RF:
                 await self.wait_for_health_refill()
                 await self.client.send_message(self.bot_id, "🌋 Краговые шахты")
                 self.pvpgoheal = 5000 
-                self.go_term_Aquilla = True
-                self.go_term_Basilaris = True
+                self.go_term_Aquilla = False
+                self.go_term_Basilaris = False
         elif any(phrase in line for line in lstr for phrase in [
             "Удачи!"
         ]):  
