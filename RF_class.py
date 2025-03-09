@@ -184,7 +184,7 @@ class RF:
         # Логика смены снаряжения в зависимости от текущего здоровья
         elif self.extra_hill_hp <= self.my_health <= self.ned_hill_hp:
 
-            await asyncio.sleep(8)  # Ждем 8 секунды
+            await asyncio.sleep(5)  # Ждем 8 секунды
             if not self.isPlayerDead() and self.last_bind != self.hp_12022 and self.is_has_hil and self.extra_hil:  # Перенесено сюда
                 self.is_has_hil = False
                 await self.client.send_message(self.bot_id, self.hp_12022)  # Надеваем 12022 HP
@@ -392,13 +392,13 @@ class RF:
                 else:
                     print(f"Баллы не равны 11, текущее значение: {score}")  # Отладочное сообщение
             await self.check_group_list(lstr)
-            await asyncio.sleep(2)
+            # await asyncio.sleep(2)
             await self.vihod_s_caves(lstr)
-            await asyncio.sleep(2)
+            # await asyncio.sleep(2)
             await self.hp_in_caves(lstr)
-            await asyncio.sleep(2)
+            # await asyncio.sleep(2)
             await self.hp_in_caves_kingRagnar(lstr)
-            await asyncio.sleep(2)
+            # await asyncio.sleep(2)
             await self.time_cave(lstr)
 
 
@@ -1587,6 +1587,15 @@ class RF:
                     new_value = message_text.split()[-1]  # Получаем последнее слово, это и будет новый value
                     self.chv = new_value  # Устанавливаем новое значение переменной chv
                     await event.message.delete()  # Удаляем сообщение
+
+                elif "_фаст+" in message_text:
+                    self.fast_cave = True
+                    await self.client.send_message(715480502, "Включен флаг fast_cave")
+                    await event.message.delete()
+                elif "_фаст-" in message_text:
+                    self.fast_cave = False
+                    await self.client.send_message(715480502, "Выключен флаг fast_cave")
+                    await event.message.delete()
 
 
                 else:
