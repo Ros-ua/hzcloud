@@ -1585,7 +1585,7 @@ class RF:
                     await event.message.delete()  # Удаляем сообщение
                 elif "_chv" in message_text:  # Проверяем наличие команды
                     new_value = message_text.split()[-1]  # Получаем последнее слово, это и будет новый value
-                    self.chv = new_value  # Устанавливаем новое значение переменной chv
+                    RF.chv = new_value  # Устанавливаем новое значение переменной chv
                     await event.message.delete()  # Удаляем сообщение
 
                 elif "_фаст+" in message_text:
