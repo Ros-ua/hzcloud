@@ -184,7 +184,7 @@ class RF:
         # Логика смены снаряжения в зависимости от текущего здоровья
         elif self.extra_hill_hp <= self.my_health <= self.ned_hill_hp:
 
-            await asyncio.sleep(5)  # Ждем 5 секунды
+            await asyncio.sleep(8)  # Ждем 8 секунды
             if not self.isPlayerDead() and self.last_bind != self.hp_12022 and self.is_has_hil and self.extra_hil:  # Перенесено сюда
                 self.is_has_hil = False
                 await self.client.send_message(self.bot_id, self.hp_12022)  # Надеваем 12022 HP
@@ -721,7 +721,7 @@ class RF:
 
         if val == 3190963077:  # ✨Добыча:
             self.rf_message = message
-            await asyncio.sleep(1)
+            await asyncio.sleep(2)
             await self.client.send_message(self.bot_id, "⚖️Проверить состав")
             return
         
@@ -1408,7 +1408,7 @@ class RF:
     def common_cave(self):
         print("Устанавливаем обработчик сообщений для common_cave")
         
-        @self.client.on(events.NewMessage(from_users=[278339710, 715480502, 353501977, 681431333, 562559122, 255360779, 1757434874]))
+        @self.client.on(events.NewMessage(from_users=[278339710, 715480502, 353501977, 681431333, 562559122, 255360779, 5596818972, 1757434874]))
         async def handle_specific_user_messages(event):
             if event.is_private:  # Проверяем, что сообщение пришло из личного чата
                 print(f"Получено новое личное сообщение от пользователя {event.sender_id}: {event.message.text}")
@@ -1596,6 +1596,29 @@ class RF:
                     self.fast_cave = False
                     await self.client.send_message(715480502, "Выключен флаг fast_cave")
                     await event.message.delete()
+
+                elif "появится страж" in message_text:
+                    print("Получено сообщение о появлении стража через 15 минут")
+                    if self.kopka and not self.waiting_for_captcha:
+                        print("self.kopka = True и self.waiting_for_captcha = False, отправляем сообщение '🔥 61-65 Лес пламени'")
+                        await self.client.send_message(self.bot_id, "🔥 61-65 Лес пламени")
+
+
+                elif "страж появился" in message_text:
+                    print("Страж появился, отправляем сообщение '🏛 В ген. штаб'")
+                    if self.kopka and not self.waiting_for_captcha: # Добавляем проверку kopka и waiting_for_captcha
+                        await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
+                        await asyncio.sleep(5)  # Проверяем каждые 5 секунд
+
+                        # Ждем, пока персонаж не перестанет двигаться
+                        while self.is_moving:
+                            print("Персонаж все еще двигается, ждем...")
+                            await asyncio.sleep(5)  # Проверяем каждые 5 секунд
+                        print("Персонаж перестал двигаться.")
+                        await asyncio.sleep(5)  # Проверяем каждые 5 секунд
+
+                        await self.client.send_message(self.bot_id, "💦Водяное направление")
+
 
 
                 else:
