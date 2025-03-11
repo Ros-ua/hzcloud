@@ -16,7 +16,7 @@ class RF:
     cave_leader_id = 715480502
     my_health = my_max_health = 12022
     hp = "/bind_wear_1723376879927d"
-    chv = "/bind_wear_17416091296559"
+    chv = "/bind_wear_1741678312790d"
     tomat_id = 278339710
     kroha_id = 353501977
     tamplier_id = 681431333
