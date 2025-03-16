@@ -84,6 +84,7 @@ class RF:
         self.pvpgoheal = 5000
         self.go_term_Aquilla = False  # флаг по умолчанию
         self.go_term_Basilaris = False   # флаг по умолчанию
+        self.go_term_Castitas = False   # флаг по умолчанию
         self.terminal_type = None
 
 
@@ -460,6 +461,16 @@ class RF:
             await self.check_arrival()
 
         elif any(phrase in line for line in lstr for phrase in [
+            "Алтарь Хагал",
+        ]):
+            self.got_reward = False  # Сбрасываем флаг получения награды
+            await asyncio.sleep(5)
+            await self.client.send_message(self.bot_id, "🧝‍♀ Терминал Castitas")  # Отправляем сообщение в терминал
+            self.terminal_type = "🧝‍♀ Терминал Castitas"  # Определяем тип терминала
+
+
+
+        elif any(phrase in line for line in lstr for phrase in [
             "Алтарь Эйви",
             "Алтарь Тир",
         ]):
@@ -492,9 +503,9 @@ class RF:
             # Используем переменную terminal_type для отправки сообщения Валере
             message = f"буду в {self.terminal_type} через тик"
             await self.client.send_message(self.tamplier_id, message)
-            # Отправляем в группу 59 только если терминал Aquilla
-            if self.terminal_type == "🤖 Терминал Aquilla":
-                await self.client.send_message(self.group59, message)
+            # Отправляем в группу 59 только если терминал Aquilla или Castitas
+            # if self.terminal_type in ["🤖 Терминал Aquilla", "🧝‍♀ Терминал Castitas"]:
+            #     await self.client.send_message(self.group59, message)
 
             # await self.client.send_message(self.bezvgroup, "🤖 Терминал Aquilla") # пересылка алтаря без в
 
@@ -573,7 +584,8 @@ class RF:
                 await self.client.send_message(self.bot_id, "🌋 Краговые шахты")
                 self.pvpgoheal = 5000 
                 self.go_term_Aquilla = False
-                self.go_term_Basilaris = False
+                self.go_term_Basilaris = True
+                self.go_term_Castitas = True
         elif any(phrase in line for line in lstr for phrase in [
             "Удачи!"
         ]):  
@@ -885,63 +897,52 @@ class RF:
 
 
     async def parce_4v_logs(self, msg_text):
-
         print("Начало работы parce_4v_logs.")
         lstr = msg_text.split('\n')
         print(f"Количество строк в сообщении: {len(lstr)}")
 
-
-
-        # Проверка HP терминала Aquilla
+        # Проверка HP терминалов Basilaris и Aquilla
         for line in lstr:
-
-            # Проверка HP терминала Basilaris
             if "Basilaris терминал:" in line:
-                # Извлечение значения HP из строки
                 hp_info = line.split('❤')[1].split('/')[0].strip()
                 basilaris_hp = int(hp_info)
                 print(f"Basilaris HP: {basilaris_hp}")
-
-                # Проверка, если HP меньше 20 000
                 if basilaris_hp < 20000:
                     self.go_term_Basilaris = False
                     print("HP Basilaris меньше 20000, прекращаем ходить.")
 
-
             if "Aquilla терминал:" in line:
-                # Извлечение значения HP из строки
                 hp_info = line.split('❤')[1].split('/')[0].strip()
                 aquilla_hp = int(hp_info)
                 print(f"Aquilla HP: {aquilla_hp}")
-
-                # Проверка, если HP меньше 20 000
                 if aquilla_hp < 20000:
                     self.go_term_Aquilla = False
                     print("HP Aquilla меньше 20000, прекращаем ходить.")
 
-
         if len(lstr) > 24:
-            l_altars = []
-            if not lstr[5].endswith("Castitas"): l_altars.append(0)
-            if not lstr[6].endswith("Castitas"): l_altars.append(1)
-            if not lstr[14].endswith("Castitas"): l_altars.append(2)
-            if not lstr[15].endswith("Castitas"): l_altars.append(3)
-            if not lstr[23].endswith("Castitas"): l_altars.append(4)
-            if not lstr[24].endswith("Castitas"): l_altars.append(5)
-
-            print(f"Найденные алтари: {l_altars}")
-            
-            if l_altars:
-                self.cmd_altar = self.altar_dict.get(random.choice(l_altars))
-                print(f"Выбранный алтарь: {self.cmd_altar}")
+            if self.go_term_Castitas and not lstr[10].endswith("0"):
+                self.cmd_altar = "🧝‍♀Алтарь Хагал"
+                print(f"Значение в 10-й строке не заканчивается на '0', выбран алтарь: {self.cmd_altar}")
             else:
-                # Если персонаж в терминале, не выбираем случайный алтарь
-                if not self.v_terminale:
-                    self.cmd_altar = self.choose_random_altar()
-                    print(f"Алтари не найдены, выбран случайный алтарь: {self.cmd_altar}")
+                # Обычная логика выбора алтаря
+                l_altars = []
+                if not lstr[5].endswith("Castitas"): l_altars.append(0)
+                if not lstr[6].endswith("Castitas"): l_altars.append(1)
+                if not lstr[14].endswith("Castitas"): l_altars.append(2)
+                if not lstr[15].endswith("Castitas"): l_altars.append(3)
+                if not lstr[23].endswith("Castitas"): l_altars.append(4)
+                if not lstr[24].endswith("Castitas"): l_altars.append(5)
+
+                if l_altars:
+                    self.cmd_altar = self.altar_dict.get(random.choice(l_altars))
+                    print(f"Найденные алтари: {l_altars}, выбран случайный алтарь: {self.cmd_altar}")
                 else:
-                    self.cmd_altar = None  # Не выбираем и не посылаем, если персонаж в терминале
-                    print("Находимся в терминале, алтарь не выбран.")
+                    if not self.v_terminale:
+                        self.cmd_altar = self.choose_random_altar()
+                        print(f"Алтари не найдены, выбран случайный алтарь: {self.cmd_altar}")
+                    else:
+                        self.cmd_altar = None
+                        print("Находимся в терминале, алтарь не выбран.")
 
         print("Конец работы parce_4v_logs.")
 
@@ -1561,6 +1562,20 @@ class RF:
                         await self.client.send_message(715480502, "Включен флаг Basilaris")
                     else:
                         await self.client.send_message(715480502, "Выключен флаг Basilaris")
+                    
+                    await event.message.delete()  # Удаляем сообщение
+
+
+
+                elif "_наш+" in message_text or "_наш-" in message_text:
+                    # Управляем флагом Castitas
+                    self.go_term_Castitas = "_наш+" in message_text
+                    
+                    # Отправляем сообщение об изменении флага
+                    if self.go_term_Castitas:
+                        await self.client.send_message(715480502, "Включен флаг Castitas")
+                    else:
+                        await self.client.send_message(715480502, "Выключен флаг Castitas")
                     
                     await event.message.delete()  # Удаляем сообщение
 
