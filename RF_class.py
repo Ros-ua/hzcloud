@@ -88,6 +88,7 @@ class RF:
         self.terminal_type = None
         self.steps = None  # Добавляем атрибут для отслеживания шагов
         self.cave_message_id = None  # Добавляем атрибут для хранения ID сообщения
+        self.cave_message_pinned = False
 
 
 
@@ -392,8 +393,10 @@ class RF:
             self.fast_cave = False
             await self.client.send_message(self.bot_id, RF.hp)  # переодеться для мобов
             await self.check_arrival()
-            self.steps = None  # Сбрасываем счетчик шагов после выхода из пещер
+            
+            self.steps = None  # Сбрасываем счетчик шагов
             self.cave_message_id = None  # Сбрасываем ID сообщения
+            self.cave_message_pinned = False  # Сбрасываем флаг закрепления
 
 
 
@@ -1978,6 +1981,8 @@ class RF:
             else:
                 await self.check_arrival_dange()    # для данжей
 
+
+
     async def cave_profit(self, lstr):
         # Проверяем, находимся ли мы в пещерах
         if not self.is_in_caves:
@@ -2000,7 +2005,7 @@ class RF:
                     
                     # Определяем, выгодно ли текущее значение
                     if experience_per_step > 25000:
-                        efficiency_message = "Выгодно"
+                        efficiency_message = "Выгодно" 
                     else:
                         efficiency_message = "Не выгодно"
                     
@@ -2009,11 +2014,16 @@ class RF:
                     
                     # Если сообщение еще не отправлено, отправляем и сохраняем ID
                     if self.cave_message_id is None:
-                        message = await self.client.send_message(255360779, message_text)
+                        message = await self.client.send_message(self.group59, message_text)
                         self.cave_message_id = message.id
+                        
+                        # Закрепляем сообщение, если оно еще не закреплено
+                        if not self.cave_message_pinned:
+                            await self.client.pin_message(self.group59, message.id)
+                            self.cave_message_pinned = True
                     else:
                         # Если сообщение уже отправлено, редактируем его
-                        await self.client.edit_message(255360779, self.cave_message_id, message_text)
+                        await self.client.edit_message(self.group59, self.cave_message_id, message_text)
                 else:
                     print("Количество шагов равно 0 или не установлено.")
         else:
