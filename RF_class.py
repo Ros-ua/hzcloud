@@ -86,6 +86,9 @@ class RF:
         self.go_term_Basilaris = False   # флаг по умолчанию
         self.go_term_Castitas = False   # флаг по умолчанию
         self.terminal_type = None
+        self.steps = None  # Добавляем атрибут для отслеживания шагов
+        self.cave_message_id = None  # Добавляем атрибут для хранения ID сообщения
+
 
 
 
@@ -322,9 +325,18 @@ class RF:
             self.is_in_caves = self.is_has_hil = self.is_has_res = self.extra_hil = True
             self.my_health = self.my_max_health = 12022
             self.after_bind = self.hp_12022
+            self.steps = 0  # Начинаем отслеживать шаги с 0
             await asyncio.sleep(randint(4, 6))
             await self.client.send_message(self.bot_id, "⚖️Проверить состав")
             print("в пещерах")
+
+        elif any(phrase in lstr[0] for phrase in [
+            "Пещеры заснеженных гор. Пещера",
+            "Ты прибыл в пещеру №"
+        ]):
+            if self.steps is not None:
+                self.steps += 1  # Увеличиваем счетчик шагов
+                print(f"Пройдено шагов: {self.steps}")            
 
         elif any(phrase in line for line in lstr for phrase in [
             "Здоровье пополнено",
@@ -380,6 +392,11 @@ class RF:
             self.fast_cave = False
             await self.client.send_message(self.bot_id, RF.hp)  # переодеться для мобов
             await self.check_arrival()
+            self.steps = None  # Сбрасываем счетчик шагов после выхода из пещер
+            self.cave_message_id = None  # Сбрасываем ID сообщения
+
+
+
         elif lstr[0].startswith("Состав:"):
             print("что там по составу")
             # Проверка баллов
@@ -401,6 +418,8 @@ class RF:
             await self.hp_in_caves_kingRagnar(lstr)
             # await asyncio.sleep(2)
             await self.time_cave(lstr)
+            await self.cave_profit(lstr)
+
 
 
         elif lstr[0].endswith("не в ген. штабе]"):
@@ -1959,3 +1978,43 @@ class RF:
             else:
                 await self.check_arrival_dange()    # для данжей
 
+    async def cave_profit(self, lstr):
+        # Проверяем, находимся ли мы в пещерах
+        if not self.is_in_caves:
+            return  # Если не в пещерах, выходим из метода
+
+        # Ищем строку с информацией о награде
+        reward_line = next((line for line in lstr if "🌕Опыт:" in line), None)
+        
+        if reward_line:
+            # Извлекаем значение опыта из строки
+            match = re.search(r"🌕Опыт:\s*(\d+)\((\d+)\)", reward_line)
+            
+            if match:
+                total_experience = int(match.group(1))  # Общее количество опыта
+                experience_points = int(match.group(2))  # Опыт в скобках
+                
+                if self.steps is not None and self.steps > 0:
+                    # Делим опыт в скобках на количество шагов
+                    experience_per_step = experience_points / self.steps
+                    
+                    # Определяем, выгодно ли текущее значение
+                    if experience_per_step > 25000:
+                        efficiency_message = "Выгодно"
+                    else:
+                        efficiency_message = "Не выгодно"
+                    
+                    message_text = f"Опыт за шаг: {experience_per_step:.2f} ({efficiency_message})"
+                    print(message_text)
+                    
+                    # Если сообщение еще не отправлено, отправляем и сохраняем ID
+                    if self.cave_message_id is None:
+                        message = await self.client.send_message(255360779, message_text)
+                        self.cave_message_id = message.id
+                    else:
+                        # Если сообщение уже отправлено, редактируем его
+                        await self.client.edit_message(255360779, self.cave_message_id, message_text)
+                else:
+                    print("Количество шагов равно 0 или не установлено.")
+        else:
+            print("Не найдена строка с информацией об опыте.")
