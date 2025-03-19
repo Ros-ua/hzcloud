@@ -1997,8 +1997,16 @@ class RF:
                 experience_points = int(match.group(2))
 
                 if self.steps is not None and self.steps > 0:
+                    # Проверяем, изменилось ли количество шагов с прошлого вызова
+                    if self.last_step is not None and self.steps == self.last_step:
+                        print("Количество шагов не изменилось, пропускаем обновление графика.")
+                        return
+
                     experience_per_step = experience_points / self.steps
-                    self.experience_history.append(experience_per_step)  # Добавляем в историю
+                    self.experience_history.append(experience_per_step)
+
+                    # Обновляем предыдущее количество шагов
+                    self.last_step = self.steps
 
                     # Генерируем ASCII-графику
                     ascii_graph = self.generate_ascii_graph(self.experience_history[-40:])  # Последние 40 значений
