@@ -2025,11 +2025,11 @@ class RF:
             return "Нет данных для графика"
 
         # Настройки графика
-        width = 40
+        width = len(data)  # Ширина графика соответствует количеству точек
         height = 12
         max_value = max(data) if data else 1
         min_value = min(data) if data else 0
-        value_range = max_value - min_value if value_range != 0 else 1  # Предотвращаем деление на ноль
+        value_range = max_value - min_value if max_value != min_value else 1  # Предотвращаем деление на ноль
 
         # Нормализация данных
         normalized = [(x - min_value) / value_range for x in data]
@@ -2051,24 +2051,14 @@ class RF:
         y_labels = [f"{int(min_value + (value_range * y/height)):6d}" for y in range(height, 0, -1)]  # Фиксированная ширина
         graph_with_labels = [f"{y_labels[i]} | {graph[i]}" for i in range(height)]
         graph_with_labels.append(f"       | {x_axis}")
-        graph_with_labels.append(f"         {'-' * width}")
         
-        # Метки для оси X с фиксированным шагом
-        x_labels = []
-        step = max(1, len(data) // 20)  # Выбираем шаг для меток X
-        for i in range(0, len(data), step):
-            x_labels.append(f"{i:2d}")
-        
-        # Форматируем метки оси X с равными интервалами
-        x_label_line = "         "
-        for i, label in enumerate(x_labels):
-            position = i * step * width // len(data)
-            # Убедимся, что метка не выходит за границы
-            if position < width:
-                x_label_line = x_label_line[:9 + position] + label + x_label_line[9 + position + len(label):]
-        
-        if len(x_label_line) < 9 + width:
-            x_label_line = x_label_line.ljust(9 + width)
+        # Создаем линию для меток оси X
+        x_label_line = " " * 9
+        for i in range(width):
+            if i % 2 == 0:  # Ставим метку на каждом втором шаге для компактности
+                x_label_line += f"{i}"
+            else:
+                x_label_line += " "
         
         graph_with_labels.append(x_label_line)
 
