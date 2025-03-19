@@ -89,6 +89,7 @@ class RF:
         self.steps = None  # Добавляем атрибут для отслеживания шагов
         self.cave_message_id = None  # Добавляем атрибут для хранения ID сообщения
         self.cave_message_pinned = False
+        self.experience_history = []  # Добавлено: сброс истории опыта
 
 
 
@@ -397,7 +398,7 @@ class RF:
             self.steps = None  # Сбрасываем счетчик шагов
             self.cave_message_id = None  # Сбрасываем ID сообщения
             self.cave_message_pinned = False  # Сбрасываем флаг закрепления
-
+            self.experience_history = []  # Добавлено: сброс истории опыта
 
 
         elif lstr[0].startswith("Состав:"):
@@ -1984,47 +1985,82 @@ class RF:
 
 
     async def cave_profit(self, lstr):
-        # Проверяем, находимся ли мы в пещерах
         if not self.is_in_caves:
-            return  # Если не в пещерах, выходим из метода
+            return
 
-        # Ищем строку с информацией о награде
         reward_line = next((line for line in lstr if "🌕Опыт:" in line), None)
-        
         if reward_line:
-            # Извлекаем значение опыта из строки
             match = re.search(r"🌕Опыт:\s*(\d+)\((\d+)\)", reward_line)
-            
             if match:
-                total_experience = int(match.group(1))  # Общее количество опыта
-                experience_points = int(match.group(2))  # Опыт в скобках
-                
+                total_experience = int(match.group(1))
+                experience_points = int(match.group(2))
+
                 if self.steps is not None and self.steps > 0:
-                    # Делим опыт в скобках на количество шагов
                     experience_per_step = experience_points / self.steps
-                    
-                    # Определяем, выгодно ли текущее значение
-                    if experience_per_step > 25000:
-                        efficiency_message = "Выгодно" 
-                    else:
-                        efficiency_message = "Не выгодно"
-                    
-                    message_text = f"Опыт за шаг: {experience_per_step:.2f} ({efficiency_message})"
+                    self.experience_history.append(experience_per_step)  # Добавляем в историю
+
+                    # Генерируем ASCII-графику
+                    ascii_graph = self.generate_ascii_graph(self.experience_history[-40:])  # Последние 40 значений
+
+                    efficiency_message = "Выгодно" if experience_per_step > 25000 else "Не выгодно"
+                    message_text = f"Опыт за шаг: {experience_per_step:.2f} ({efficiency_message})\n{ascii_graph}"
                     print(message_text)
-                    
-                    # Если сообщение еще не отправлено, отправляем и сохраняем ID
+
+                    # Обновляем сообщение с графиком
                     if self.cave_message_id is None:
                         message = await self.client.send_message(self.group59, message_text)
                         self.cave_message_id = message.id
-                        
-                        # Закрепляем сообщение, если оно еще не закреплено
                         if not self.cave_message_pinned:
                             await self.client.pin_message(self.group59, message.id)
                             self.cave_message_pinned = True
                     else:
-                        # Если сообщение уже отправлено, редактируем его
                         await self.client.edit_message(self.group59, self.cave_message_id, message_text)
                 else:
                     print("Количество шагов равно 0 или не установлено.")
         else:
             print("Не найдена строка с информацией об опыте.")
+
+    def generate_ascii_graph(self, data):
+        if not data:
+            return "Нет данных для графика"
+
+        # Настройки графика
+        width = 40
+        height = 12
+        max_value = max(data) if data else 1
+        min_value = min(data) if data else 0
+        value_range = max_value - min_value
+
+        # Нормализация данных
+        normalized = [(x - min_value) / value_range for x in data]
+
+        # Генерация графика
+        graph = []
+        for y in range(height, 0, -1):
+            line = []
+            for x in normalized:
+                scaled = x * (height - 1)
+                if scaled >= y - 1:
+                    line.append("█")
+                else:
+                    line.append("░")  # Используем полупрозрачный символ
+            graph.append("".join(line))
+
+        # Добавляем оси и метки
+        x_axis = "—" * width
+        y_labels = [f"{int(max_value * y/height):5}" for y in range(height, 0, -1)]  # Точное значение без округления
+        graph_with_labels = [f"{y_labels[i]} | {graph[i]}" for i in range(height)]
+        graph_with_labels.append(f"      | {x_axis}")
+        graph_with_labels.append(f"        {'-' * width}")
+        
+        # Метки для оси X с шагом 2
+        x_labels = []
+        for i in range(0, len(data), 2):
+            label = f"{i:2}"
+            if i + 1 < len(data):
+                label += f" {i+1:2}"
+            x_labels.append(label)
+        
+        graph_with_labels.append(f"        {'  '.join(x_labels[:width//2])}")
+
+        return "\n".join(graph_with_labels)
