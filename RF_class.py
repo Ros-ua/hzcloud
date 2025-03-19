@@ -90,6 +90,7 @@ class RF:
         self.cave_message_id = None  # Добавляем атрибут для хранения ID сообщения
         self.cave_message_pinned = False
         self.experience_history = []  # Добавлено: сброс истории опыта
+        self.last_step = None  # Добавьте эту строку в __init__
 
 
 
