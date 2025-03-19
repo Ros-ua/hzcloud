@@ -2003,7 +2003,7 @@ class RF:
                     ascii_graph = self.generate_ascii_graph(self.experience_history[-40:])  # Последние 40 значений
 
                     efficiency_message = "Выгодно" if experience_per_step > 25000 else "Не выгодно"
-                    message_text = f"Опыт за шаг: {experience_per_step:.2f} ({efficiency_message})\n{ascii_graph}"
+                    message_text = f"```\nОпыт за шаг: {experience_per_step:.2f} ({efficiency_message})\n{ascii_graph}\n```"
                     print(message_text)
 
                     # Обновляем сообщение с графиком
@@ -2029,7 +2029,7 @@ class RF:
         height = 12
         max_value = max(data) if data else 1
         min_value = min(data) if data else 0
-        value_range = max_value - min_value
+        value_range = max_value - min_value if value_range != 0 else 1  # Предотвращаем деление на ноль
 
         # Нормализация данных
         normalized = [(x - min_value) / value_range for x in data]
@@ -2046,21 +2046,30 @@ class RF:
                     line.append("░")  # Используем полупрозрачный символ
             graph.append("".join(line))
 
-        # Добавляем оси и метки
+        # Добавляем оси и метки с фиксированной шириной
         x_axis = "—" * width
-        y_labels = [f"{int(max_value * y/height):5}" for y in range(height, 0, -1)]  # Точное значение без округления
+        y_labels = [f"{int(min_value + (value_range * y/height)):6d}" for y in range(height, 0, -1)]  # Фиксированная ширина
         graph_with_labels = [f"{y_labels[i]} | {graph[i]}" for i in range(height)]
-        graph_with_labels.append(f"      | {x_axis}")
-        graph_with_labels.append(f"        {'-' * width}")
+        graph_with_labels.append(f"       | {x_axis}")
+        graph_with_labels.append(f"         {'-' * width}")
         
-        # Метки для оси X с шагом 2
+        # Метки для оси X с фиксированным шагом
         x_labels = []
-        for i in range(0, len(data), 2):
-            label = f"{i:2}"
-            if i + 1 < len(data):
-                label += f" {i+1:2}"
-            x_labels.append(label)
+        step = max(1, len(data) // 20)  # Выбираем шаг для меток X
+        for i in range(0, len(data), step):
+            x_labels.append(f"{i:2d}")
         
-        graph_with_labels.append(f"        {'  '.join(x_labels[:width//2])}")
+        # Форматируем метки оси X с равными интервалами
+        x_label_line = "         "
+        for i, label in enumerate(x_labels):
+            position = i * step * width // len(data)
+            # Убедимся, что метка не выходит за границы
+            if position < width:
+                x_label_line = x_label_line[:9 + position] + label + x_label_line[9 + position + len(label):]
+        
+        if len(x_label_line) < 9 + width:
+            x_label_line = x_label_line.ljust(9 + width)
+        
+        graph_with_labels.append(x_label_line)
 
         return "\n".join(graph_with_labels)
