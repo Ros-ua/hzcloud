@@ -82,9 +82,9 @@ class RF:
         self.bezvgroup = -1002220238697  # ID группы "без в"
         self.group59 = -1001323974021  # ID группы "59" 
         self.pvpgoheal = 5000
-        self.go_term_Aquilla = False  # флаг по умолчанию
-        self.go_term_Basilaris = False   # флаг по умолчанию
-        self.go_term_Castitas = False   # флаг по умолчанию
+        self.go_term_Aquilla = True  # флаг по умолчанию
+        self.go_term_Basilaris = True   # флаг по умолчанию
+        self.go_term_Castitas = True   # флаг по умолчанию
         self.terminal_type = None
         self.steps = None  # Добавляем атрибут для отслеживания шагов
         self.cave_message_id = None  # Добавляем атрибут для хранения ID сообщения
@@ -607,7 +607,7 @@ class RF:
                 await self.wait_for_health_refill()
                 await self.client.send_message(self.bot_id, "🌋 Краговые шахты")
                 self.pvpgoheal = 5000 
-                self.go_term_Aquilla = False
+                self.go_term_Aquilla = True
                 self.go_term_Basilaris = True
                 self.go_term_Castitas = True
         elif any(phrase in line for line in lstr for phrase in [
@@ -931,7 +931,7 @@ class RF:
                 hp_info = line.split('❤')[1].split('/')[0].strip()
                 basilaris_hp = int(hp_info)
                 print(f"Basilaris HP: {basilaris_hp}")
-                if basilaris_hp < 20000:
+                if basilaris_hp < 10000:
                     self.go_term_Basilaris = False
                     print("HP Basilaris меньше 20000, прекращаем ходить.")
 
@@ -939,7 +939,7 @@ class RF:
                 hp_info = line.split('❤')[1].split('/')[0].strip()
                 aquilla_hp = int(hp_info)
                 print(f"Aquilla HP: {aquilla_hp}")
-                if aquilla_hp < 20000:
+                if aquilla_hp < 10000:
                     self.go_term_Aquilla = False
                     print("HP Aquilla меньше 20000, прекращаем ходить.")
 
