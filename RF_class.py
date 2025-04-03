@@ -191,12 +191,12 @@ class RF:
         # Логика смены снаряжения в зависимости от текущего здоровья
         elif self.extra_hill_hp <= self.my_health <= self.ned_hill_hp:
 
-            await asyncio.sleep(10)  # Ждем 10 секунды
+            await asyncio.sleep(12)  # Ждем 10 секунды
             if not self.isPlayerDead() and self.last_bind != self.hp_12022 and self.is_has_hil and self.extra_hil:  # Перенесено сюда
                 self.is_has_hil = False
                 await self.client.send_message(self.bot_id, self.hp_12022)  # Надеваем 12022 HP
                 print(f"Сменили бинд на: {self.hp_12022} (макс. здоровье: 12022)")
-                await asyncio.sleep (1)
+                await asyncio.sleep (2)
                 await self.rf_message.click(0)  # Выполняем клик
                 self.my_health = self.my_max_health = 12022
                 self.last_bind = self.hp_12022
