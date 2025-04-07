@@ -394,6 +394,15 @@ class RF:
             await asyncio.sleep(1)
             self.fast_cave = False
             self.is_in_caves = False
+
+
+            # Извлечение значения duration из сообщения
+            match = re.search(r"через\s*(\d+)\s*мин", lstr[0])
+            if match:
+                duration = int(match.group(1)) * 60  # Преобразуем минуты в секунды
+                await self.set_moving_flag(duration)  # Устанавливаем флаг движения
+
+
             await self.client.send_message(self.bot_id, RF.hp)  # переодеться для мобов
             await self.check_arrival()
             
