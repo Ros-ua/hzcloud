@@ -81,7 +81,7 @@ class RF:
         self.ned_hill_hp = 1300    # Здоровье, при котором нужен обычный хил
         self.bezvgroup = -1002220238697  # ID группы "без в"
         self.group59 = -1001323974021  # ID группы "59" 
-        self.pvpgoheal = 5000
+        self.pvpgoheal = 4000
         self.go_term_Aquilla = True  # флаг по умолчанию
         self.go_term_Basilaris = True   # флаг по умолчанию
         self.go_term_Castitas = True   # флаг по умолчанию
@@ -616,7 +616,7 @@ class RF:
                 print("Отправлено сообщение: 💖 Пополнить здоровье")
                 await self.wait_for_health_refill()
                 await self.client.send_message(self.bot_id, "🌋 Краговые шахты")
-                self.pvpgoheal = 5000 
+                self.pvpgoheal = 4000 
                 self.go_term_Aquilla = True
                 self.go_term_Basilaris = True
                 self.go_term_Castitas = True
@@ -1059,10 +1059,33 @@ class RF:
         else:
             print("Не получено сообщение от бота.")
 
+    async def change_bind_based_on_health(self):
+        """
+        Метод для динамической смены оборудования в зависимости от текущего здоровья.
+        """
+        if self.my_health > self.pvpgoheal:  # Только если здоровье выше порога, меняем оборудование
+            if 6648 < self.my_health <= 7406:  # Если здоровье между 6648 и 7406
+                await self.client.send_message(self.bot_id, "/bind_wear_17421874906501g")  # Надеваем бинды на 7406 HP
+                print(f"Сменили бинды на: /bind_wear_17421874906501g (здоровье: 7406)")
+            elif 5936 < self.my_health <= 6648:  # Если здоровье между 5936 и 6648
+                await self.client.send_message(self.bot_id, "/bind_wear_17416091296559")  # Надеваем бинды на 6648 HP
+                print(f"Сменили бинды на: /bind_wear_17416091296559 (здоровье: 6648)")
+            elif 5139 < self.my_health <= 5936:  # Если здоровье между 5139 и 5936
+                await self.client.send_message(self.bot_id, "/bind_wear_1741678312790d")  # Надеваем бинды на 5936 HP
+                print(f"Сменили бинды на: /bind_wear_1741678312790d (здоровье: 5936)")
+            elif self.my_health <= 5139:  # Если здоровье меньше или равно 5139
+                await self.client.send_message(self.bot_id, "/bind_wear_171967083952510")  # Надеваем бинды на 5139 HP
+                print(f"Сменили бинды на: /bind_wear_171967083952510 (здоровье: 5139)")
+        await asyncio.sleep(2)
+
+
+
     async def process_bot_message(self, lstr):
         # Проверка сообщения о смерти или времени восстановления
         if lstr[-1].endswith("минут.") or "дождись пока воскреснешь" in lstr[0] or "был убит ядерной ракетой" in lstr[0]:
             print("Обнаружено сообщение о времени. Вызываем gokragi()")
+            await asyncio.sleep(2)
+            await self.client.send_message(self.bot_id, RF.chv)
             await self.gokragi()
             self.is_nacheve_active = False
             return True
@@ -1080,9 +1103,16 @@ class RF:
                 fight_message = f"Дерёмся дальше. Осталось здоровья: {self.my_health}"
                 # await self.client.send_message(self.bezvgroup, fight_message)  # пересылка без в 
                 await self.client.send_message(self.tamplier_id, fight_message)  # пересылка Валере
+                
+                # Динамическая смена оборудования
+                await self.change_bind_based_on_health()
+                await asyncio.sleep(2)
+
                 return False  # Переход к следующему терминалу
             else:
                 print("Здоровье меньше или равно self.pvpgoheal. Отправляемся в ген. штаб для хила.")
+                await asyncio.sleep(2)
+                await self.client.send_message(self.bot_id, RF.chv)
                 await asyncio.sleep(2)
                 await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
                 
