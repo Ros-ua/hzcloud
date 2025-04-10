@@ -16,7 +16,7 @@ class RF:
     cave_leader_id = 715480502
     my_health = my_max_health = 12022
     hp = "/bind_wear_1723376879927d"
-    chv = "/bind_wear_1741678312790d"
+    chv = "/bind_wear_17442591785189"
     tomat_id = 278339710
     kroha_id = 353501977
     tamplier_id = 681431333
@@ -1064,18 +1064,21 @@ class RF:
         Метод для динамической смены оборудования в зависимости от текущего здоровья.
         """
         if self.my_health > self.pvpgoheal:  # Только если здоровье выше порога, меняем оборудование
-            if 6648 < self.my_health <= 7406:  # Если здоровье между 6648 и 7406
-                await self.client.send_message(self.bot_id, "/bind_wear_17421874906501g")  # Надеваем бинды на 7406 HP
-                print(f"Сменили бинды на: /bind_wear_17421874906501g (здоровье: 7406)")
+            if 7406 < self.my_health <= 8166:  # Если здоровье между 7406 и 8166
+                await self.client.send_message(self.bot_id, "/bind_wear_1744259363296d")  # Надеваем бинды на 8166 HP
+                print(f"Сменили бинды на: /bind_wear_1744259363296d (здоровье: 8166)")
+            elif 6648 < self.my_health <= 7406:  # Если здоровье между 6648 и 7406
+                await self.client.send_message(self.bot_id, "/bind_wear_17442593888761h")  # Надеваем бинды на 7406 HP
+                print(f"Сменили бинды на: /bind_wear_17442593888761h (здоровье: 7406)")
             elif 5936 < self.my_health <= 6648:  # Если здоровье между 5936 и 6648
-                await self.client.send_message(self.bot_id, "/bind_wear_17416091296559")  # Надеваем бинды на 6648 HP
-                print(f"Сменили бинды на: /bind_wear_17416091296559 (здоровье: 6648)")
-            elif 5139 < self.my_health <= 5936:  # Если здоровье между 5139 и 5936
-                await self.client.send_message(self.bot_id, "/bind_wear_1741678312790d")  # Надеваем бинды на 5936 HP
-                print(f"Сменили бинды на: /bind_wear_1741678312790d (здоровье: 5936)")
-            elif self.my_health <= 5139:  # Если здоровье меньше или равно 5139
-                await self.client.send_message(self.bot_id, "/bind_wear_171967083952510")  # Надеваем бинды на 5139 HP
-                print(f"Сменили бинды на: /bind_wear_171967083952510 (здоровье: 5139)")
+                await self.client.send_message(self.bot_id, "/bind_wear_1744259424197p")  # Надеваем бинды на 6648 HP
+                print(f"Сменили бинды на: /bind_wear_1744259424197p (здоровье: 6648)")
+            elif 5111 < self.my_health <= 5936:  # Если здоровье между 5111 и 5936
+                await self.client.send_message(self.bot_id, "/bind_wear_1744259546309i")  # Надеваем бинды на 5936 HP
+                print(f"Сменили бинды на: /bind_wear_1744259546309i (здоровье: 5936)")
+            elif self.my_health <= 5111:  # Если здоровье меньше или равно 5111
+                await self.client.send_message(self.bot_id, "/bind_wear_17442609005832r")  # Надеваем бинды на 5111 HP
+                print(f"Сменили бинды на: /bind_wear_17442609005832r (здоровье: 5111)")
         await asyncio.sleep(2)
 
 
