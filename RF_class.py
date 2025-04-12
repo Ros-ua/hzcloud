@@ -1116,7 +1116,7 @@ class RF:
                 print("Здоровье меньше или равно self.pvpgoheal. Отправляемся в ген. штаб для хила.")
                 await asyncio.sleep(2)
                 await self.client.send_message(self.bot_id, RF.chv)
-                await asyncio.sleep(2)
+                await asyncio.sleep(3)
                 await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
                 
                 # Добавляем информацию о текущем здоровье
