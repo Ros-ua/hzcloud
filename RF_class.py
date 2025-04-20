@@ -608,6 +608,11 @@ class RF:
             await self.client.send_message(self.bot_id, "🖲 Установить АБУ")
             
         elif any(phrase in line for line in lstr for phrase in ["После боевых действий ты снова сможешь"]):
+            self.pvpgoheal = 4000 
+            self.go_term_Aquilla = True
+            self.go_term_Basilaris = True
+            self.go_term_Castitas = True
+            
             if not any([self.is_in_caves, self.kopka, self.is_moving, self.waiting_for_captcha]):
                 await asyncio.sleep(15)
                 await self.client.send_message(self.bot_id, RF.chv)
@@ -616,10 +621,7 @@ class RF:
                 print("Отправлено сообщение: 💖 Пополнить здоровье")
                 await self.wait_for_health_refill()
                 await self.client.send_message(self.bot_id, "🌋 Краговые шахты")
-                self.pvpgoheal = 4000 
-                self.go_term_Aquilla = True
-                self.go_term_Basilaris = True
-                self.go_term_Castitas = True
+
         elif any(phrase in line for line in lstr for phrase in [
             "Удачи!"
         ]):  
