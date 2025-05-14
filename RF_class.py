@@ -91,6 +91,8 @@ class RF:
         self.cave_message_pinned = False
         self.experience_history = []  # Добавлено: сброс истории опыта
         self.last_step = None  # Добавьте эту строку в __init__
+        self.active = False
+
 
 
 
@@ -261,9 +263,10 @@ class RF:
 
         # в пещерах
         if any(phrase in line for line in lstr for phrase in [
-            "булочка"
+            "_булочка"
         ]):    
             print("булочка")
+            await self.client.send_message(715480502, "булочка")
         elif any(phrase in line for line in lstr for phrase in [
             "ты мертв, дождись пока воскреснешь"
         ]):    
@@ -616,7 +619,7 @@ class RF:
             if not any([self.is_in_caves, self.kopka, self.is_moving, self.waiting_for_captcha]):
                 await asyncio.sleep(15)
                 await self.client.send_message(self.bot_id, RF.chv)
-                await asyncio.sleep(3)
+                await asyncio.sleep(5)
                 await self.client.send_message(self.bot_id, "💖 Пополнить здоровье")
                 print("Отправлено сообщение: 💖 Пополнить здоровье")
                 await self.wait_for_health_refill()
@@ -759,10 +762,10 @@ class RF:
 
 
 
-        if not message.buttons:
+        if not getattr(message, "buttons", None):
             if val == 3190963077:  # ✨Добыча:
-                await message.forward_to(self.group59) #группа 59
-                # await message.forward_to(self.bezvgroup) #группа без В
+                await message.forward_to(self.group59)  # группа 59
+                # await message.forward_to(self.bezvgroup)  # группа без В
             else:
                 await self.checkHealth(lstr)
             return
@@ -772,7 +775,7 @@ class RF:
             await asyncio.sleep(2)
             await self.client.send_message(self.bot_id, "⚖️Проверить состав")
             return
-        
+
 
     async def set_nacheve_inactive_after_delay(self):
         await asyncio.sleep(120)  # Ожидание 2 минуты
@@ -955,30 +958,36 @@ class RF:
                     self.go_term_Aquilla = False
                     print("HP Aquilla меньше 20000, прекращаем ходить.")
 
-        if len(lstr) > 24:
-            if self.go_term_Castitas and not lstr[10].endswith("0"):
-                self.cmd_altar = "🧝‍♀Алтарь Хагал"
-                print(f"Значение в 10-й строке не заканчивается на '0', выбран алтарь: {self.cmd_altar}")
-            else:
-                # Обычная логика выбора алтаря
-                l_altars = []
-                if not lstr[5].endswith("Castitas"): l_altars.append(0)
-                if not lstr[6].endswith("Castitas"): l_altars.append(1)
-                if not lstr[14].endswith("Castitas"): l_altars.append(2)
-                if not lstr[15].endswith("Castitas"): l_altars.append(3)
-                if not lstr[23].endswith("Castitas"): l_altars.append(4)
-                if not lstr[24].endswith("Castitas"): l_altars.append(5)
-
-                if l_altars:
-                    self.cmd_altar = self.altar_dict.get(random.choice(l_altars))
-                    print(f"Найденные алтари: {l_altars}, выбран случайный алтарь: {self.cmd_altar}")
+            if len(lstr) > 24:
+                if self.go_term_Castitas and not lstr[10].endswith("0"):
+                    self.cmd_altar = "🧝‍♀Алтарь Хагал"
+                    print(f"Значение в 10-й строке не заканчивается на '0', выбран алтарь: {self.cmd_altar}")
                 else:
-                    if not self.v_terminale:
-                        self.cmd_altar = self.choose_random_altar()
-                        print(f"Алтари не найдены, выбран случайный алтарь: {self.cmd_altar}")
+                    # Обычная логика выбора алтаря с учётом флага self.active
+                    l_altars = []
+                    
+                    if self.active:
+                        if not lstr[5].endswith("Castitas"): l_altars.append(0)
+                        if not lstr[6].endswith("Castitas"): l_altars.append(1)
+                        if not lstr[14].endswith("Castitas"): l_altars.append(2)
+                        if not lstr[15].endswith("Castitas"): l_altars.append(3)
+                        if not lstr[23].endswith("Castitas"): l_altars.append(4)
+                        if not lstr[24].endswith("Castitas"): l_altars.append(5)
                     else:
-                        self.cmd_altar = None
-                        print("Находимся в терминале, алтарь не выбран.")
+                        if not lstr[5].endswith("Castitas"): l_altars.append(0)
+                        if not lstr[6].endswith("Castitas"): l_altars.append(1)
+                    
+                    if l_altars:
+                        self.cmd_altar = self.altar_dict.get(random.choice(l_altars))
+                        print(f"Найденные алтари: {l_altars}, выбран случайный алтарь: {self.cmd_altar}")
+                    else:
+                        if not self.v_terminale:
+                            self.cmd_altar = self.choose_random_altar()
+                            print(f"Алтари не найдены, выбран случайный алтарь: {self.cmd_altar}")
+                        else:
+                            self.cmd_altar = None
+                            print("Находимся в терминале, алтарь не выбран.")
+
 
         print("Конец работы parce_4v_logs.")
 
@@ -1565,6 +1574,10 @@ class RF:
                     await asyncio.sleep(1)  
                     await self.client.send_message(self.bot_id, "🔥 61-65 Лес пламени")
                     await event.message.delete()  # Удаляем сообщение
+                elif "_булочка" in message_text:  
+                    await asyncio.sleep(1)  
+                    await self.client.send_message(715480502, "булочка")
+                    await event.message.delete()  # Удаляем сообщение
                 elif "_данж" in message_text:
                     if self.is_moving:
                         # Если движение активно, отправляем сообщение пользователю
@@ -1702,6 +1715,20 @@ class RF:
                         await asyncio.sleep(5)  # Проверяем каждые 5 секунд
 
                         await self.client.send_message(self.bot_id, "💦Водяное направление")
+
+
+                elif "_active+" in message_text or "_active-" in message_text:
+                    # Управляем флагом active
+                    self.active = "_active+" in message_text
+                    
+                    # Отправляем сообщение об изменении флага
+                    if self.active:
+                        await self.client.send_message(715480502, "Флаг active включен")
+                    else:
+                        await self.client.send_message(715480502, "Флаг active выключен")
+                    
+                    await event.message.delete()  # Удаляем сообщение
+
 
 
 
@@ -1963,14 +1990,21 @@ class RF:
         print("Конец prepare_for_caves()")
 
     def choose_random_altar(self):
-        return random.choice([
-            "🧝‍♀Алтарь Дагаз", 
-            "👩‍🚀Алтарь Гебо", 
-            "👩‍🚀Алтарь Иса", 
-            "🧝‍♀Алтарь Исс", 
-            "🤖Алтарь Эйви", 
-            "🤖Алтарь Тир"
-        ])
+        if self.active:
+            return random.choice([
+                "🧝‍♀Алтарь Дагаз", 
+                "👩‍🚀Алтарь Гебо", 
+                "👩‍🚀Алтарь Иса", 
+                "🧝‍♀Алтарь Исс", 
+                "🤖Алтарь Эйви", 
+                "🤖Алтарь Тир"
+            ])
+        else:
+            return random.choice([
+                "👩‍🚀Алтарь Гебо", 
+                "👩‍🚀Алтарь Иса"
+            ])
+
 
 
     async def handle_no_energy(self):
