@@ -104,6 +104,39 @@ proxies:
   network: grpc
   grpc-opts:
     grpc-service-name: p1X9RWLBwIgY28HrakYQVVYxV
+- name: "godrinktea.accesscam.org SSH \xA7 23238 3"
+  type: ssh
+  server: godrinktea.accesscam.org
+  port: '23238'
+  username: c9eaa86a-a90b-46ce-a3ba-f63494d38f5e
+  private-key: '-----BEGIN OPENSSH PRIVATE KEY-----
+
+    b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZWQyNTUx
+
+    OQAAACA8FF2xQrrWjqwBpSHQ6DLVxRwqGy49uosBpw5YHI7cGwAAAIhu6liYbupYmAAAAAtzc2gt
+
+    ZWQyNTUxOQAAACA8FF2xQrrWjqwBpSHQ6DLVxRwqGy49uosBpw5YHI7cGwAAAEDM/RmWL98sb8ed
+
+    hazQor2xQ9KhIenA5se8byiBAv3FUDwUXbFCutaOrAGlIdDoMtXFHCobLj26iwGnDlgcjtwbAAAA
+
+    AAECAwQF
+
+    -----END OPENSSH PRIVATE KEY-----
+
+    '
+  host-key:
+  - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOsEYBQn5QfKdST5KYzVCFiESblAs8ff2XYTdk03OpKq
+    hiddify-panel@linux.b59f9e.com
+
+    '
+  - 'ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBILYWa7gskYLLXimFMJ0cbpTxwmFguIwt5168EhlR5YbFtJTiIi0ul+dyR/84q9U7OQwr3BLnpa1btghLxhnZ9M=
+    hiddify-panel@linux.b59f9e.com
+
+    '
+  - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDa2GjSKbOx0jtI9oHJHpFL42VxuEzLl87B6QDOXYjbBykb/gzIvBDqWF8Eonp6YNlCLnrPoOUpSA0pToWKhLsePlNI7Zab6HHoobRR6S+zznsQ20FV+1kUDvVVzXjTnOZmcBb6RddRmgQ8myJGuzixcAVFzVwtOVqAmZ5PsxAbxMoK+Frgk08jUI79rYxoXFczUKuQlAXPREhKwocx+17CmNIWN1ZeKGScOHBF8RdShQKFePTazIKLqKoGWkE8QTeMWt0wlRfwBMI8u+JBGl7yY0SR+tLTCTAd9duZjWstfnCgyz5w5y5JfdHAwXxj1wW/YsZUByuYjYYXyQFzfnshqxhifBXFe+XSvuE/fVP4SrJe5PdSqHjjh/EcZR8Ji/3RsNh8unygr7+0tcoiep7nEtkBu8PPArBeBOnfCKQEzXbUF9NovcIT3EcuYqHzezbIK4JwRx/OJbptncmhJF1OSOnqzoyvwIogt6TVjwRrDP+VgJxnRuI4ac/vBwJy8Ik=
+    hiddify-panel@linux.b59f9e.com
+
+    '
 - name: "godrinktea.accesscam.org WireGuard \xA7 38553 3"
   type: wireguard
   server: godrinktea.accesscam.org
@@ -152,6 +185,7 @@ proxy-groups:
       - "godrinktea.accesscam.org tls grpc direct vless \xA7 443 3"
       - "godrinktea.accesscam.org tls grpc direct trojan \xA7 443 3"
       - "godrinktea.accesscam.org tls grpc direct vmess \xA7 443 3"
+      - "godrinktea.accesscam.org SSH \xA7 23238 3"
       - "godrinktea.accesscam.org WireGuard \xA7 38553 3"
       - "godrinktea.accesscam.org TUIC \xA7 32351 3"
       - "godrinktea.accesscam.org Hysteria2 \xA7 11267 3"
