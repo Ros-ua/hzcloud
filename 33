@@ -1,0 +1,162 @@
+mode: rule
+secret: ros_ua
+
+proxy-providers:  
+  cbliaiuubp_provider:
+    type: http
+    path: ./cbliaiuubp_provider.yaml
+    url: https://self-care-day.duckdns.org:30370/s/clashMeta/846ed0b9c76817085e9468e25637dc71
+    interval: 3600
+    health-check:
+      enable: false
+      url: http://www.gstatic.com/generate_204
+      interval: 300
+
+  jgxhqjukcg_provider:
+    type: http
+    path: ./jgxhqjukcg_provider.yaml
+    url: https://fromhott.duckdns.org:38546/s/clashMeta/acce0fb26d0a9698f5753dcd8d57c3b6
+    interval: 3600
+    proxy: DIRECT
+    health-check:
+      enable: true
+      url: https://cp.cloudflare.com/generate_204
+      interval: 300
+
+proxies:
+- name: "pirateparty.org.au reality XTLS direct vless \xA7 443 2"
+  type: vless
+  server: godrinktea.accesscam.org
+  port: 443
+  udp: true
+  alpn:
+  - http/1.1
+  skip-cert-verify: false
+  client-fingerprint: chrome
+  uuid: c9eaa86a-a90b-46ce-a3ba-f63494d38f5e
+  servername: pirateparty.org.au
+  tls: true
+  packet-encoding: xudp
+  flow: xtls-rprx-vision
+  network: tcp
+  reality-opts:
+    public-key: lxD_7RernBFz9oHa2nKvyZUFZl0cZnPZC5gYqVt8PkA
+    short-id: 95835f
+- name: "godrinktea.accesscam.org tls_h2 grpc direct trojan \xA7 443 3"
+  type: trojan
+  server: godrinktea.accesscam.org
+  port: 443
+  udp: true
+  alpn:
+  - h2
+  skip-cert-verify: false
+  client-fingerprint: chrome
+  password: c9eaa86a-a90b-46ce-a3ba-f63494d38f5e
+  sni: godrinktea.accesscam.org
+  network: grpc
+  grpc-opts:
+    grpc-service-name: r1Nseh7KjFq8HrakYQVVYxV
+- name: "godrinktea.accesscam.org tls grpc direct vless \xA7 443 3"
+  type: vless
+  server: godrinktea.accesscam.org
+  port: 443
+  udp: true
+  alpn:
+  - h2
+  skip-cert-verify: false
+  client-fingerprint: chrome
+  uuid: c9eaa86a-a90b-46ce-a3ba-f63494d38f5e
+  servername: godrinktea.accesscam.org
+  tls: true
+  packet-encoding: xudp
+  network: grpc
+  grpc-opts:
+    grpc-service-name: 873RxxFK8HrakYQVVYxV
+- name: "godrinktea.accesscam.org tls grpc direct trojan \xA7 443 3"
+  type: trojan
+  server: godrinktea.accesscam.org
+  port: 443
+  udp: true
+  alpn:
+  - h2
+  skip-cert-verify: false
+  client-fingerprint: chrome
+  password: c9eaa86a-a90b-46ce-a3ba-f63494d38f5e
+  sni: godrinktea.accesscam.org
+  network: grpc
+  grpc-opts:
+    grpc-service-name: r1Nseh7KjFq8HrakYQVVYxV
+- name: "godrinktea.accesscam.org tls grpc direct vmess \xA7 443 3"
+  type: vmess
+  server: godrinktea.accesscam.org
+  port: 443
+  udp: true
+  alpn:
+  - h2
+  skip-cert-verify: false
+  client-fingerprint: chrome
+  uuid: c9eaa86a-a90b-46ce-a3ba-f63494d38f5e
+  servername: godrinktea.accesscam.org
+  tls: true
+  packet-encoding: xudp
+  alterId: 0
+  cipher: auto
+  network: grpc
+  grpc-opts:
+    grpc-service-name: p1X9RWLBwIgY28HrakYQVVYxV
+- name: "godrinktea.accesscam.org WireGuard \xA7 38553 3"
+  type: wireguard
+  server: godrinktea.accesscam.org
+  port: '38553'
+  udp: true
+  private-key: wNvijtBvxHnnAUID619Lrcnx8G1VtFDr3DdLVxC4v3E=
+  ip: 10.90.0.2/32
+  public-key: hJnW67UNv6z2r7M+biPHxce6AhQWHklHhNf2bXxxV1w=
+  pre-shared-key: 1r69FfMAu3+ugN7zem3MIp1bfhoADzRvXl4slhb/H7A=
+- name: "godrinktea.accesscam.org TUIC \xA7 32351 3"
+  type: tuic
+  server: godrinktea.accesscam.org
+  port: 32351
+  udp: true
+  udp-relay-mode: native
+  reduce-rtt: true
+  skip-cert-verify: false
+  sni: godrinktea.accesscam.org
+  password: c9eaa86a-a90b-46ce-a3ba-f63494d38f5e
+  uuid: c9eaa86a-a90b-46ce-a3ba-f63494d38f5e
+- name: "godrinktea.accesscam.org Hysteria2 \xA7 11267 3"
+  type: hysteria2
+  server: godrinktea.accesscam.org
+  port: 11267
+  udp: true
+  alpn:
+  - h3
+  skip-cert-verify: false
+  client-fingerprint: chrome
+  password: c9eaa86a-a90b-46ce-a3ba-f63494d38f5e
+  obfs: salamander
+  obfs-password: NDNGd6mYYZ1h0Aj2FjF2m7kW
+
+proxy-groups:
+  - name: load
+    type: load-balance
+    url: http://www.gstatic.com/generate_204
+    interval: 45
+    strategy: round-robin
+    use:
+      - cbliaiuubp_provider
+      - jgxhqjukcg_provider
+    proxies:
+      - "pirateparty.org.au reality XTLS direct vless \xA7 443 2"
+      - "godrinktea.accesscam.org tls_h2 grpc direct trojan \xA7 443 3"
+      - "godrinktea.accesscam.org tls grpc direct vless \xA7 443 3"
+      - "godrinktea.accesscam.org tls grpc direct trojan \xA7 443 3"
+      - "godrinktea.accesscam.org tls grpc direct vmess \xA7 443 3"
+      - "godrinktea.accesscam.org WireGuard \xA7 38553 3"
+      - "godrinktea.accesscam.org TUIC \xA7 32351 3"
+      - "godrinktea.accesscam.org Hysteria2 \xA7 11267 3"
+    
+
+rules:
+- GEOIP,CN,DIRECT
+- MATCH,load
