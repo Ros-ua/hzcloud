@@ -1579,8 +1579,6 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await self.client.send_message(event.chat_id, "Перезапуск бота...")
-                    await self.client.send_message(event.chat_id, "а вот эта строка это тест. тест на изменение")
-
                     await self.client.disconnect()
                     import os, sys
                     os.execv(sys.executable, [sys.executable] + sys.argv)
