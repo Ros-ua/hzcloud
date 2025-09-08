@@ -1021,26 +1021,45 @@ class RF:
         Метод для расчета здоровья после PvP-боя.
         Теперь мы отправляем команду /hero, получаем ответ и обновляем self.my_health.
         """
-        await asyncio.sleep(5)  # Можно увеличить задержку, если бот отвечает медленно
+        await asyncio.sleep(5)
+        
+        # Получаем последнее сообщение перед отправкой команды для сравнения
+        messages_before = await self.client.get_messages(self.bot_id, limit=1)
+        last_message_id_before = messages_before[0].id if messages_before else 0
+        
         await self.client.send_message(self.bot_id, "/hero")
-        await asyncio.sleep(5)  # Можно увеличить задержку, если бот отвечает медленно
-        # Получаем последнее сообщение от бота
-        response = await self.client.get_messages(self.bot_id, limit=1)
-        if response:
-            # Ищем строку с информацией о здоровье
-            health_line = next((line for line in response[0].text.split('\n') if '❤Здоровье:' in line), None)
-            if health_line:
-                # Извлекаем текущее здоровье
-                match = re.search(r'❤Здоровье:\s*(\d+)', health_line)
-                if match:
-                    self.my_health = int(match.group(1))  # Обновляем основное здоровье
-                    print(f"Текущее здоровье обновлено: {self.my_health}")
+        print("Отправлена команда /hero, ожидаем ответ от бота...")
+        
+        # Ждем новое сообщение от бота максимум 60 секунд
+        max_wait_time = 60  # максимальное время ожидания
+        check_interval = 2   # интервал проверки
+        waited_time = 0
+        
+        while waited_time < max_wait_time:
+            await asyncio.sleep(check_interval)
+            waited_time += check_interval
+            
+            # Получаем последнее сообщение
+            response = await self.client.get_messages(self.bot_id, limit=1)
+            
+            if response and response[0].id > last_message_id_before:
+                # Получили новое сообщение, проверяем содержит ли оно информацию о здоровье
+                message_text = response[0].text or response[0].message
+                if '❤Здоровье:' in message_text:
+                    # Ищем строку с информацией о здоровье
+                    health_line = next((line for line in message_text.split('\n') if '❤Здоровье:' in line), None)
+                    # Извлекаем текущее здоровье
+                    match = re.search(r'❤Здоровье:\s*(\d+)', health_line)
+                    self.my_health = int(match.group(1))
+                    print(f"Текущее здоровье обновлено: {self.my_health} (ожидали {waited_time}s)")
+                    return
                 else:
-                    print("Не удалось извлечь здоровье из ответа.")
+                    print(f"Получено сообщение без информации о здоровье, продолжаем ждать... ({waited_time}s)")
             else:
-                print("Не найдено информации о здоровье в ответе.")
-        else:
-            print("Не получено сообщение от бота.")
+                print(f"Ждем ответ от бота... ({waited_time}s)")
+        
+        print(f"Бот не ответил за {max_wait_time} секунд, возможно лаги или проблемы с ботом.")
+        # Можно добавить дополнительную логику или повторную попытку
 
     async def process_bot_message(self, lstr):
         # Проверка сообщения о смерти или времени восстановления
