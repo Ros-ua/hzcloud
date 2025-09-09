@@ -1240,24 +1240,14 @@ class RF:
 
 
     async def wait_for_set_change(self):
-        await asyncio.sleep(3)
-        # Если появилась капча - ждём её решения
-        if self.waiting_for_captcha:
-            print("Обнаружена капча при смене сета...")
-            while self.waiting_for_captcha:
-                print("Проверка статуса капчи...")
-                await asyncio.sleep(20)  # Проверяем каждые 20 секунд
-            print("Капча решена, продолжаем...")
-            await self.client.send_message(self.group59, "Капча пройдена")  # Отправляем сообщение
-        # Ожидание смены сета после решения капчи
+        # Ожидание смены сета
         while True:
             last_message = await self.client.get_messages(self.bot_id, limit=2)
             if last_message:
                 lstr = last_message[0].message.split('\n')
                 if any("Ты успешно надел комлект!" in line for line in lstr):
-                    # await asyncio.sleep(1) 
                     return
-            await asyncio.sleep(1)            
+            await asyncio.sleep(1)    
 
     async def wait_for_confirmation(self):
         try:
@@ -1634,7 +1624,7 @@ class RF:
 
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
-                    await self.client.send_message(event.chat_id, "Ver.9.09")
+                    await self.client.send_message(event.chat_id, "Ver.2.9.09")
                     await self.client.disconnect()
                     import os, sys
                     os.execv(sys.executable, [sys.executable] + sys.argv)
