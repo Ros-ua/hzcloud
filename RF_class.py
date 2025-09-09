@@ -120,7 +120,7 @@ class RF:
             if not self.is_player_dead and self.last_bind != self.hp_binds[0][1] and self.is_has_hil and self.extra_hil:
                 self.is_has_hil = False
                 await self.client.send_message(self.bot_id, self.hp_binds[0][1])  # Максимальный HP-сет
-                await self.wait_for_set_change()
+                await self.wait_for_set_change() #жалоба
                 print(f"Сменили бинд на: {self.hp_binds[0][1]} (макс. здоровье: {self.hp_binds[0][0]})")
                 await asyncio.sleep(1)
                 await self.rf_message.click(0)  # Выполняем клик
@@ -163,7 +163,7 @@ class RF:
         else:
             print(f"Сменили бинды на: {selected_cmd} (здоровье ≤ {selected_threshold})")
         await self.client.send_message(self.bot_id, selected_cmd)
-        await self.wait_for_set_change()
+        await self.wait_for_set_change() #работает
         await asyncio.sleep(1)
 
     async def hp_in_caves(self, lstr):
@@ -367,7 +367,7 @@ class RF:
                                         if not self.is_player_dead and self.last_bind != self.hp_binds[0][1] and self.is_has_hil and self.extra_hil:
                                             self.is_has_hil = False
                                             await self.client.send_message(self.bot_id, self.hp_binds[0][1])  # Надеваем {self.hp_binds[0][0]}) HP
-                                            await self.wait_for_set_change()
+                                            await self.wait_for_set_change() #жалоба повтор
                                             print(f"Сменили бинд на: {self.hp_binds[0][1]} (макс. здоровье: {self.hp_binds[0][0]}))")
                                             await asyncio.sleep(1)
                                             await self.rf_message.click(0)  # Выполняем клик для хила
@@ -447,7 +447,7 @@ class RF:
                 self.is_has_res = False
                 await asyncio.sleep(10)
                 await self.client.send_message(self.bot_id, self.hp_binds[0][1])  # Надеваем бинд на самое большое HP
-                await self.wait_for_set_change()
+                await self.wait_for_set_change() #жалоба
                 await asyncio.sleep(1)  # Ждем 3 секунды перед кликом
                 await self.rf_message.click(1)
                 print(self.my_health, self.my_max_health)
@@ -1091,7 +1091,7 @@ class RF:
                     print("Здоровье меньше или равно self.pvpgoheal. Отправляемся в ген. штаб для хила.")
                     await asyncio.sleep(2)
                     await self.client.send_message(self.bot_id, RF.chv)
-                    await self.wait_for_set_change()
+                    await self.wait_for_set_change() #не проверено
                     await asyncio.sleep(1)
                     await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
                     # Добавляем информацию о текущем здоровье
@@ -1103,7 +1103,7 @@ class RF:
                     return True
                 else:
                     await self.client.send_message(self.bot_id, RF.chv)
-                    await self.wait_for_set_change()
+                    await self.wait_for_set_change() # не проверено
                     await asyncio.sleep(1)
                     
                     # Проверяем имя пользователя для команды drink_103
@@ -1255,7 +1255,7 @@ class RF:
             if last_message:
                 lstr = last_message[0].message.split('\n')
                 if any("Ты успешно надел комлект!" in line for line in lstr):
-                    await asyncio.sleep(1)
+                    # await asyncio.sleep(1) 
                     return
             await asyncio.sleep(1)            
 
@@ -1457,7 +1457,7 @@ class RF:
                 if not any([self.is_in_caves, self.kopka, self.is_moving]):
                     await asyncio.sleep(12)
                     await self.client.send_message(self.bot_id, RF.chv)
-                    await self.wait_for_set_change()
+                    await self.wait_for_set_change() #работает
                     await asyncio.sleep(1)
                     await self.client.send_message(self.bot_id, "💖 Пополнить здоровье")
                     print("Отправлено сообщение: 💖 Пополнить здоровье")
@@ -1466,7 +1466,7 @@ class RF:
             if any("Война окончена!" in ln for ln in lines):
                 await asyncio.sleep(80)
                 await self.client.send_message(self.bot_id, RF.hp)  # Переодеться для мобов
-                await self.wait_for_set_change()
+                await self.wait_for_set_change() #работает
                 await asyncio.sleep(1)
                 if self.is_nacheve_active and not self.is_moving:
                     await asyncio.sleep(3)  # Задержка перед следующим действием
@@ -1476,7 +1476,7 @@ class RF:
                 if not self.is_in_caves:
                     await asyncio.sleep(15)
                     await self.client.send_message(self.bot_id, RF.hp)
-                    await self.wait_for_set_change()
+                    await self.wait_for_set_change() #работает
                     await asyncio.sleep(1)
                     if not self.is_moving and not self.in_castle:
                         await asyncio.sleep(5)
@@ -1503,7 +1503,7 @@ class RF:
                         await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
                         await asyncio.sleep(5)
                         await self.client.send_message(self.bot_id, RF.chv)
-                        await self.wait_for_set_change()
+                        await self.wait_for_set_change() #работает
                         await asyncio.sleep(1)
                         while self.is_moving:
                             print("Персонаж все еще двигается, ждем...")
@@ -1513,7 +1513,7 @@ class RF:
                         await self.client.send_message(self.bot_id, chosen_direction)
                     else:
                         await self.client.send_message(self.bot_id, RF.chv)
-                        await self.wait_for_set_change()
+                        await self.wait_for_set_change() #работает
                         await asyncio.sleep(1)  
                         print(f"Копка не активна, сразу отправляем '{chosen_direction}'")
                         await self.client.send_message(self.bot_id, chosen_direction)
@@ -1613,7 +1613,7 @@ class RF:
                     if self.kopka:  
                         print("Отправляем комплект hp_{self.hp_binds[0][0]})")
                         await self.client.send_message(self.bot_id, self.hp_binds[0][1])  # Используем переменную hp_{self.hp_binds[0][0]}) для надевания
-                        await self.wait_for_set_change()
+                        await self.wait_for_set_change() #работает
                         await asyncio.sleep(1)
                         self.my_health = self.my_max_health = self.hp_binds[0][0]
                         print(f"Здоровье обновлено: {self.my_health}/{self.my_max_health}")
@@ -1622,7 +1622,7 @@ class RF:
                         await self.arrival_hil()  # Вызываем arrival_hil после отправки в ген. штаб
                     else:
                         await self.client.send_message(self.bot_id, self.hp_binds[0][1])
-                        await self.wait_for_set_change()
+                        await self.wait_for_set_change() #работает
                         await asyncio.sleep(1)
                         self.my_health = self.my_max_health = self.hp_binds[0][0]
                         await self.client.send_message(self.bot_id, "💖 Пополнить здоровье")
@@ -1634,7 +1634,7 @@ class RF:
 
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
-                    await self.client.send_message(event.chat_id, "Ver.2.8.09")
+                    await self.client.send_message(event.chat_id, "Ver.9.09")
                     await self.client.disconnect()
                     import os, sys
                     os.execv(sys.executable, [sys.executable] + sys.argv)
@@ -1647,7 +1647,7 @@ class RF:
                     if self.kopka:  
                         print("Отправляем комплект hp_{self.hp_binds[0][0]})")
                         await self.client.send_message(self.bot_id, self.hp_binds[0][1])  # Используем переменную hp_{self.hp_binds[0][0]}) для надевания
-                        await self.wait_for_set_change()
+                        await self.wait_for_set_change() #работает 
                         await asyncio.sleep(1)
                         self.my_health = self.my_max_health = self.hp_binds[0][0]
                         print(f"Здоровье обновлено: {self.my_health}/{self.my_max_health}")
@@ -1673,7 +1673,7 @@ class RF:
                     self.mobs = True  # Устанавливаем флаг для мобов
                     # await self.client.send_message(self.cave_leader_id, "Ходим на мобов")  # Сообщение об изменении флага
                     await self.client.send_message(self.bot_id, RF.hp)  # переодеться для мобов
-                    await self.wait_for_set_change()
+                    await self.wait_for_set_change() #работает
                     await asyncio.sleep(1)
                     await event.message.delete()  # Удаляем сообщение
                 elif "_данжи" in message_text:  
@@ -1737,7 +1737,7 @@ class RF:
                                     if not self.is_player_dead and self.last_bind != self.hp_binds[0][1] and self.is_has_hil and self.extra_hil:
                                         self.is_has_hil = False
                                         await self.client.send_message(self.bot_id, self.hp_binds[0][1])  # Надеваем {self.hp_binds[0][0]}) HP
-                                        await self.wait_for_set_change()
+                                        await self.wait_for_set_change() #надо проверить
                                         await asyncio.sleep(1)
                                         print(f"Сменили бинд на: {self.hp_binds[0][1]} (макс. здоровье: {self.hp_binds[0][0]}))")
                                         await self.rf_message.click(0)  # Выполняем клик для хила
@@ -1792,7 +1792,7 @@ class RF:
                         self.is_has_hil = False
                         await asyncio.sleep(5)  # Ждем 3 секунды
                         await self.client.send_message(self.bot_id, self.hp_binds[0][1])  # Надеваем {self.hp_binds[0][0]}) HP
-                        await self.wait_for_set_change()
+                        await self.wait_for_set_change() #надо проверить
                         await asyncio.sleep(1)
                         await self.rf_message.click(0)  # Выполняем клик
                         print(f"Сменили бинд на: {self.hp_binds[0][1]} (макс. здоровье: {self.hp_binds[0][0]}))")
