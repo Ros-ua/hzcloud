@@ -31,7 +31,7 @@ class RF:
         self.is_run = self.is_player_dead = self.fast_cave = self.cave_task_running = self.waiting_for_captcha = self.is_moving = self.in_castle = self.v_terminale = self.kopka = self.is_training = self.cave_message_pinned = self.prem = self.go_term_Aquilla = self.go_term_Basilaris = self.go_term_Castitas = self.is_in_caves = self.is_in_gh = self.is_has_hil = self.is_has_res = self.is_nacheve_active = self.in_battle = False
         
         # === ВСЕ ЧТО РАВНО NONE ===
-        self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = None
+        self.cave_buttons_message = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = None
         
         # === ЧИСЛА ===
         self.bot_id = 577009581
@@ -110,7 +110,7 @@ class RF:
             return
         # Лечимся, если здоровье ниже 300
         if self.my_health <= self.extra_hill_hp and self.is_has_hil and self.extra_hil:
-            await self.rf_message.click(0)
+            await self.cave_buttons_message.click(0)
             self.is_has_hil = self.extra_hil = False
             print(f"Здоровье критически низкое ({self.my_health}). Отправляем запрос на хил.")
             print(f"Статус has_hil обновлен: {self.is_has_hil}")
@@ -120,10 +120,10 @@ class RF:
             if not self.is_player_dead and self.last_bind != self.hp_binds[0][1] and self.is_has_hil and self.extra_hil:
                 self.is_has_hil = False
                 await self.client.send_message(self.bot_id, self.hp_binds[0][1])  # Максимальный HP-сет
-                # await self.wait_for_set_change() #жалоба
+                await self.wait_for_set_change() #жалоба
                 print(f"Сменили бинд на: {self.hp_binds[0][1]} (макс. здоровье: {self.hp_binds[0][0]})")
-                await asyncio.sleep(3)
-                await self.rf_message.click(0)  # Выполняем клик
+                await asyncio.sleep(1)
+                await self.cave_buttons_message.click(0)  # Выполняем клик
                 self.my_health = self.my_max_health = self.hp_binds[0][0]
                 self.last_bind = self.hp_binds[0][1]
                 print(f"Статус has_hil обновлен: {self.is_has_hil}")
@@ -367,10 +367,10 @@ class RF:
                                         if not self.is_player_dead and self.last_bind != self.hp_binds[0][1] and self.is_has_hil and self.extra_hil:
                                             self.is_has_hil = False
                                             await self.client.send_message(self.bot_id, self.hp_binds[0][1])  # Надеваем {self.hp_binds[0][0]}) HP
-                                            # await self.wait_for_set_change() #жалоба повтор
+                                            await self.wait_for_set_change() #жалоба повтор
                                             print(f"Сменили бинд на: {self.hp_binds[0][1]} (макс. здоровье: {self.hp_binds[0][0]}))")
-                                            await asyncio.sleep(3)
-                                            await self.rf_message.click(0)  # Выполняем клик для хила
+                                            await asyncio.sleep(1)
+                                            await self.cave_buttons_message.click(0)  # Выполняем клик для хила
                                             self.my_health = self.my_max_health = self.hp_binds[0][0]
                                             self.last_bind = self.hp_binds[0][1]
                                             print(f"Статус has_hil обновлен: {self.is_has_hil}")
@@ -378,7 +378,7 @@ class RF:
                                         # Ждем 90 секунд и делаем клик, если все еще в пещере
                                         await asyncio.sleep(90)
                                         if self.is_in_caves and self.is_cave_leader and not self.is_moving:
-                                            await self.rf_message.click(2)
+                                            await self.cave_buttons_message.click(2)
                                             print("Выполнен клик (2) после 90 секунд ожидания")
                                         return  # Завершаем выполнение блока после хила
                                 else:
@@ -392,7 +392,7 @@ class RF:
                         # Ждем 90 секунд и делаем клик, если все еще в пещере (для случаев с autoHeal)
                         await asyncio.sleep(90)
                         if self.is_in_caves and self.is_cave_leader and not self.is_moving:
-                            await self.rf_message.click(2)
+                            await self.cave_buttons_message.click(2)
                             print("Выполнен клик (2) после autoHeal и 90 секунд ожидания")
 
         if any(phrase in lstr[0] for phrase in [
@@ -445,11 +445,11 @@ class RF:
             await asyncio.sleep(5)
             if self.is_has_res and self.is_in_caves:  # Проверяем, что is_has_res равно True и мы в пещерах
                 self.is_has_res = False
-                await asyncio.sleep(10)
+                await asyncio.sleep(5)
                 await self.client.send_message(self.bot_id, self.hp_binds[0][1])  # Надеваем бинд на самое большое HP
-                # await self.wait_for_set_change() #жалоба
-                await asyncio.sleep(3)  # Ждем 3 секунды перед кликом
-                await self.rf_message.click(1)
+                await self.wait_for_set_change() #жалоба
+                await asyncio.sleep(1)  # Ждем 3 секунды перед кликом
+                await self.cave_buttons_message.click(1)
                 print(self.my_health, self.my_max_health)
 
         elif "Сражение с" in lstr[0] and not any("Рюкзак" in line for line in lstr):
@@ -786,6 +786,7 @@ class RF:
             return
         if val == 3190963077:  # ✨Добыча:
             self.rf_message = message
+            self.cave_buttons_message = message  # ← сохраняем кнопки отдельно
             await asyncio.sleep(2)
             await self.client.send_message(self.bot_id, "⚖️Проверить состав")
             return
@@ -1624,7 +1625,7 @@ class RF:
 
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
-                    await self.client.send_message(event.chat_id, "Ver.4.9.09")
+                    await self.client.send_message(event.chat_id, "Ver.5.9.09")
                     await self.client.disconnect()
                     import os, sys
                     os.execv(sys.executable, [sys.executable] + sys.argv)
@@ -1649,10 +1650,11 @@ class RF:
                         await self.client.send_message(self.bot_id, "🚠 Отправиться в пещеры")
                     else:
                         await self.client.send_message(self.bot_id, self.hp_binds[0][1])
+                        await self.wait_for_set_change() #работает 
+                        await asyncio.sleep(1)
                         self.my_health = self.my_max_health = self.hp_binds[0][0]
-                        await asyncio.sleep(2)
                         await self.client.send_message(self.bot_id, "💖 Пополнить здоровье")
-                        await asyncio.sleep(2)
+                        await asyncio.sleep(3)
                         await self.client.send_message(self.bot_id, "🚠 Отправиться в пещеры")
                     await event.message.delete()  # Удаляем сообщение
                 elif "_шаг" in message_text:  
@@ -1680,13 +1682,17 @@ class RF:
                     await self.rf_message.click(3)
                     await event.message.delete()  # Удаляем сообщение
                 elif "_рес" in message_text:  
+                    # Проверяем, что отправитель не является cave leader
+                    if event.sender_id == self.cave_leader_id:
+                        print(f"Команда _рес от cave leader {event.sender_id} игнорируется")
+                        return
                     if self.is_has_res:  # Проверяем, что is_has_res равно True
                             self.is_has_res = False
                             await asyncio.sleep(randint(14, 20))
                             await self.client.send_message(self.bot_id, self.hp_binds[0][1])  # Надеваем бинд на самое большое HP
-                            # await self.wait_for_set_change()
-                            await asyncio.sleep(3)
-                            await self.rf_message.click(1)
+                            await self.wait_for_set_change()
+                            await asyncio.sleep(1)
+                            await self.cave_buttons_message.click(1)
                             print(self.my_health, self.my_max_health)
                             self.my_health = self.my_max_health = self.hp_binds[0][0]
                             self.last_bind = self.hp_binds[0][1]
@@ -1727,8 +1733,8 @@ class RF:
                                     if not self.is_player_dead and self.last_bind != self.hp_binds[0][1] and self.is_has_hil and self.extra_hil:
                                         self.is_has_hil = False
                                         await self.client.send_message(self.bot_id, self.hp_binds[0][1])  # Надеваем {self.hp_binds[0][0]}) HP
-                                        # await self.wait_for_set_change() #надо проверить
-                                        await asyncio.sleep(3)
+                                        await self.wait_for_set_change() #надо проверить
+                                        await asyncio.sleep(1)
                                         print(f"Сменили бинд на: {self.hp_binds[0][1]} (макс. здоровье: {self.hp_binds[0][0]}))")
                                         await self.rf_message.click(0)  # Выполняем клик для хила
                                         self.my_health = self.my_max_health = self.hp_binds[0][0]
@@ -1782,9 +1788,9 @@ class RF:
                         self.is_has_hil = False
                         await asyncio.sleep(5)  # Ждем 3 секунды
                         await self.client.send_message(self.bot_id, self.hp_binds[0][1])  # Надеваем {self.hp_binds[0][0]}) HP
-                        # await self.wait_for_set_change() #надо проверить
-                        await asyncio.sleep(3)
-                        await self.rf_message.click(0)  # Выполняем клик
+                        await self.wait_for_set_change() #надо проверить
+                        await asyncio.sleep(1)
+                        await self.cave_buttons_message.click(0)  # Выполняем клик
                         print(f"Сменили бинд на: {self.hp_binds[0][1]} (макс. здоровье: {self.hp_binds[0][0]}))")
                         self.my_health = self.my_max_health = self.hp_binds[0][0]
                         self.last_bind = self.hp_binds[0][1]
