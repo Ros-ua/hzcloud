@@ -120,9 +120,9 @@ class RF:
             if not self.is_player_dead and self.last_bind != self.hp_binds[0][1] and self.is_has_hil and self.extra_hil:
                 self.is_has_hil = False
                 await self.client.send_message(self.bot_id, self.hp_binds[0][1])  # Максимальный HP-сет
-                await self.wait_for_set_change() #жалоба
+                # await self.wait_for_set_change() #жалоба
                 print(f"Сменили бинд на: {self.hp_binds[0][1]} (макс. здоровье: {self.hp_binds[0][0]})")
-                await asyncio.sleep(1)
+                await asyncio.sleep(3)
                 await self.rf_message.click(0)  # Выполняем клик
                 self.my_health = self.my_max_health = self.hp_binds[0][0]
                 self.last_bind = self.hp_binds[0][1]
@@ -367,9 +367,9 @@ class RF:
                                         if not self.is_player_dead and self.last_bind != self.hp_binds[0][1] and self.is_has_hil and self.extra_hil:
                                             self.is_has_hil = False
                                             await self.client.send_message(self.bot_id, self.hp_binds[0][1])  # Надеваем {self.hp_binds[0][0]}) HP
-                                            await self.wait_for_set_change() #жалоба повтор
+                                            # await self.wait_for_set_change() #жалоба повтор
                                             print(f"Сменили бинд на: {self.hp_binds[0][1]} (макс. здоровье: {self.hp_binds[0][0]}))")
-                                            await asyncio.sleep(1)
+                                            await asyncio.sleep(3)
                                             await self.rf_message.click(0)  # Выполняем клик для хила
                                             self.my_health = self.my_max_health = self.hp_binds[0][0]
                                             self.last_bind = self.hp_binds[0][1]
@@ -447,8 +447,8 @@ class RF:
                 self.is_has_res = False
                 await asyncio.sleep(10)
                 await self.client.send_message(self.bot_id, self.hp_binds[0][1])  # Надеваем бинд на самое большое HP
-                await self.wait_for_set_change() #жалоба
-                await asyncio.sleep(1)  # Ждем 3 секунды перед кликом
+                # await self.wait_for_set_change() #жалоба
+                await asyncio.sleep(3)  # Ждем 3 секунды перед кликом
                 await self.rf_message.click(1)
                 print(self.my_health, self.my_max_health)
 
@@ -1624,7 +1624,7 @@ class RF:
 
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
-                    await self.client.send_message(event.chat_id, "Ver.3.9.09")
+                    await self.client.send_message(event.chat_id, "Ver.4.9.09")
                     await self.client.disconnect()
                     import os, sys
                     os.execv(sys.executable, [sys.executable] + sys.argv)
@@ -1684,8 +1684,8 @@ class RF:
                             self.is_has_res = False
                             await asyncio.sleep(randint(14, 20))
                             await self.client.send_message(self.bot_id, self.hp_binds[0][1])  # Надеваем бинд на самое большое HP
-                            await self.wait_for_set_change()
-                            await asyncio.sleep(1)
+                            # await self.wait_for_set_change()
+                            await asyncio.sleep(3)
                             await self.rf_message.click(1)
                             print(self.my_health, self.my_max_health)
                             self.my_health = self.my_max_health = self.hp_binds[0][0]
@@ -1727,8 +1727,8 @@ class RF:
                                     if not self.is_player_dead and self.last_bind != self.hp_binds[0][1] and self.is_has_hil and self.extra_hil:
                                         self.is_has_hil = False
                                         await self.client.send_message(self.bot_id, self.hp_binds[0][1])  # Надеваем {self.hp_binds[0][0]}) HP
-                                        await self.wait_for_set_change() #надо проверить
-                                        await asyncio.sleep(1)
+                                        # await self.wait_for_set_change() #надо проверить
+                                        await asyncio.sleep(3)
                                         print(f"Сменили бинд на: {self.hp_binds[0][1]} (макс. здоровье: {self.hp_binds[0][0]}))")
                                         await self.rf_message.click(0)  # Выполняем клик для хила
                                         self.my_health = self.my_max_health = self.hp_binds[0][0]
@@ -1782,8 +1782,8 @@ class RF:
                         self.is_has_hil = False
                         await asyncio.sleep(5)  # Ждем 3 секунды
                         await self.client.send_message(self.bot_id, self.hp_binds[0][1])  # Надеваем {self.hp_binds[0][0]}) HP
-                        await self.wait_for_set_change() #надо проверить
-                        await asyncio.sleep(1)
+                        # await self.wait_for_set_change() #надо проверить
+                        await asyncio.sleep(3)
                         await self.rf_message.click(0)  # Выполняем клик
                         print(f"Сменили бинд на: {self.hp_binds[0][1]} (макс. здоровье: {self.hp_binds[0][0]}))")
                         self.my_health = self.my_max_health = self.hp_binds[0][0]
