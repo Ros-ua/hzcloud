@@ -1021,7 +1021,7 @@ class RF:
         Метод для расчета здоровья после PvP-боя.
         Теперь мы отправляем команду /hero, получаем ответ и обновляем self.my_health.
         """
-        await asyncio.sleep(5)
+        await asyncio.sleep(10)
         
         # Получаем последнее сообщение перед отправкой команды для сравнения
         messages_before = await self.client.get_messages(self.bot_id, limit=1)
@@ -1624,7 +1624,7 @@ class RF:
 
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
-                    await self.client.send_message(event.chat_id, "Ver.2.9.09")
+                    await self.client.send_message(event.chat_id, "Ver.3.9.09")
                     await self.client.disconnect()
                     import os, sys
                     os.execv(sys.executable, [sys.executable] + sys.argv)
