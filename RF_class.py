@@ -17,6 +17,8 @@ import datetime
 import threading
 
 import RF_config  # Добавить в начало файла с остальными импортами
+import time
+
 
 
 
@@ -2046,7 +2048,7 @@ class RF:
 
         """
 
-        await asyncio.sleep(10)
+        await asyncio.sleep(1)
 
         
 
@@ -2123,128 +2125,219 @@ class RF:
         print(f"Бот не ответил за {max_wait_time} секунд, возможно лаги или проблемы с ботом.")
 
         # Можно добавить дополнительную логику или повторную попытку
-
-
-
     async def process_bot_message(self, lstr):
-
         # Проверка сообщения о смерти или времени восстановления
-
         if lstr[-1].endswith("минут.") or "дождись пока воскреснешь" in lstr[0] or "был убит ядерной ракетой" in lstr[0]:
-
             print("Обнаружено сообщение о времени. Вызываем gokragi()")
-
+            
+            # Отменяем ожидающую задачу победы, если есть
+            if hasattr(self, 'victory_timer_task') and self.victory_timer_task and not self.victory_timer_task.done():
+                print("Отменяем таймер побед из-за смерти")
+                self.victory_timer_task.cancel()
+                
             await asyncio.sleep(2)
-
             await self.client.send_message(self.bot_id, RF.chv)
-
             await self.gokragi()
-
             self.is_nacheve_active = False
-
             return True
 
         # Проверка на победу над противником
-
         if any("Ты одержал победу над" in line for line in lstr):
-
-            print("Победа в бою. Проверяем здоровье.")
-
-            # Вызываем метод для получения текущего здоровья
-
-            await self.calculate_pvp_health(lstr)
-
-            # Логика принятия решения на основе здоровья
-
-            if self.my_health > self.pvpgoheal:
-
-                print("Здоровье больше self.pvpgoheal. Переходим к следующему алтарю.")
-
-                fight_message = f"Дерёмся дальше. Осталось здоровья: {self.my_health}"
-
-                # await self.client.send_message(self.bezvgroup, fight_message)  # пересылка без в 
-
-                # await self.client.send_message(self.tamplier_id, fight_message)  # пересылка Валере
-
-                await asyncio.sleep(1)
-
-                # Динамическая смена оборудования
-
-                await self.change_bind_based_on_health()
-
-                await asyncio.sleep(3)
-
-                return False  # Переход к следующему терминалу
-
-            else:
-
-                if self.go_to_heal:
-
-                    print("Здоровье меньше или равно self.pvpgoheal. Отправляемся в ген. штаб для хила.")
-
-                    await asyncio.sleep(2)
-
-                    await self.client.send_message(self.bot_id, RF.chv)
-
-                    await self.wait_for_set_change() #не проверено
-
-                    await asyncio.sleep(1)
-
-                    await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
-
-                    # Добавляем информацию о текущем здоровье
-
-                    health_message = f"Ушел на отхил после пвп. Осталось здоровья: {self.my_health}"
-
-                    # await self.client.send_message(self.bezvgroup, health_message)  # пересылка без в 
-
-                    # await self.client.send_message(self.tamplier_id, health_message)  # пересылка Валере
-
-                    await self.gokragi()
-
-                    self.is_nacheve_active = False
-
-                    return True
-
-                else:
-
-                    await self.client.send_message(self.bot_id, RF.chv)
-
-                    await self.wait_for_set_change() # не проверено
-
-                    await asyncio.sleep(1)
-
-                    
-
-                    # Проверяем имя пользователя для команды drink_103
-
-                    if self.your_name in ["Ros_Hangzhou", ]:
-
-                        await self.client.send_message(self.bot_id, "/drink_103")
-
-                        await asyncio.sleep(3)
-
-                    else:
-
-                        # Если имя не подходит, можно использовать альтернативную команду или просто пропустить
-
-                        print(f"Пользователь {self.your_name} не имеет доступа к команде /drink_103")
-
-                        # Или можно добавить альтернативную логику здесь
-
-                    
-
-                    return False               
+            print("Победа в бою. Запускаем/перезапускаем таймер.")
+            
+            # Отменяем предыдущий таймер, если он есть
+            if hasattr(self, 'victory_timer_task') and self.victory_timer_task and not self.victory_timer_task.done():
+                self.victory_timer_task.cancel()
+            
+            # Создаем новую задачу таймера
+            self.victory_timer_task = asyncio.create_task(self._victory_timer_handler(lstr))
+            
+            return False
 
         # Проверка на начало пути
-
         if "Ты направляешься" in lstr[0]:
-
             self.is_nacheve_active = False
-
             return True
 
         return False
+
+    async def _victory_timer_handler(self, lstr):
+        """Обработчик таймера побед - отдельный метод класса"""
+        try:
+            print("Ждем 5 секунд...")
+            await asyncio.sleep(5)
+            
+            print("Прошло 5 секунд без новых побед/смертей. Проверяем здоровье.")
+            
+            # Вызываем метод для получения текущего здоровья
+            await self.calculate_pvp_health(lstr)
+            
+            # Логика принятия решения на основе здоровья
+            if self.my_health > self.pvpgoheal:
+                print("Здоровье больше self.pvpgoheal. Переходим к следующему алтарю.")
+                fight_message = f"Дерёмся дальше. Осталось здоровья: {self.my_health}"
+                # await self.client.send_message(self.bezvgroup, fight_message)  # пересылка без в 
+                # await self.client.send_message(self.tamplier_id, fight_message)  # пересылка Валере
+                await asyncio.sleep(1)
+                # Динамическая смена оборудования
+                await self.change_bind_based_on_health()
+                await asyncio.sleep(3)
+                # Здесь нужно как-то продолжить основной цикл к следующему терминалу
+            else:
+                if self.go_to_heal:
+                    print("Здоровье меньше или равно self.pvpgoheal. Отправляемся в ген. штаб для хила.")
+                    await asyncio.sleep(2)
+                    await self.client.send_message(self.bot_id, RF.chv)
+                    await self.wait_for_set_change() #не проверено
+                    await asyncio.sleep(1)
+                    await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
+                    # Добавляем информацию о текущем здоровье
+                    health_message = f"Ушел на отхил после пвп. Осталось здоровья: {self.my_health}"
+                    # await self.client.send_message(self.bezvgroup, health_message)  # пересылка без в 
+                    # await self.client.send_message(self.tamplier_id, health_message)  # пересылка Валере
+                    await self.gokragi()
+                    self.is_nacheve_active = False
+                else:
+                    await self.client.send_message(self.bot_id, RF.chv)
+                    await self.wait_for_set_change() # не проверено
+                    await asyncio.sleep(1)
+                    
+                    # Проверяем имя пользователя для команды drink_103
+                    if self.your_name in ["Ros_Hangzhou", ]:
+                        await self.client.send_message(self.bot_id, "/drink_103")
+                        await asyncio.sleep(3)
+                    else:
+                        # Если имя не подходит, можно использовать альтернативную команду или просто пропустить
+                        print(f"Пользователь {self.your_name} не имеет доступа к команде /drink_103")
+                        # Или можно добавить альтернативную логику здесь
+        
+        except asyncio.CancelledError:
+            print("Таймер побед был отменен (новая победа или смерть)")
+        finally:
+            # Очищаем ссылку на задачу
+            if hasattr(self, 'victory_timer_task'):
+                self.victory_timer_task = None
+
+
+    # async def process_bot_message(self, lstr):
+
+    #     # Проверка сообщения о смерти или времени восстановления
+
+    #     if lstr[-1].endswith("минут.") or "дождись пока воскреснешь" in lstr[0] or "был убит ядерной ракетой" in lstr[0]:
+
+    #         print("Обнаружено сообщение о времени. Вызываем gokragi()")
+
+    #         await asyncio.sleep(2)
+
+    #         await self.client.send_message(self.bot_id, RF.chv)
+
+    #         await self.gokragi()
+
+    #         self.is_nacheve_active = False
+
+    #         return True
+
+    #     # Проверка на победу над противником
+
+    #     if any("Ты одержал победу над" in line for line in lstr):
+
+    #         print("Победа в бою. Проверяем здоровье.")
+
+    #         # Вызываем метод для получения текущего здоровья
+
+    #         await self.calculate_pvp_health(lstr)
+
+    #         # Логика принятия решения на основе здоровья
+
+    #         if self.my_health > self.pvpgoheal:
+
+    #             print("Здоровье больше self.pvpgoheal. Переходим к следующему алтарю.")
+
+    #             fight_message = f"Дерёмся дальше. Осталось здоровья: {self.my_health}"
+
+    #             # await self.client.send_message(self.bezvgroup, fight_message)  # пересылка без в 
+
+    #             # await self.client.send_message(self.tamplier_id, fight_message)  # пересылка Валере
+
+    #             await asyncio.sleep(1)
+
+    #             # Динамическая смена оборудования
+
+    #             await self.change_bind_based_on_health()
+
+    #             await asyncio.sleep(3)
+
+    #             return False  # Переход к следующему терминалу
+
+    #         else:
+
+    #             if self.go_to_heal:
+
+    #                 print("Здоровье меньше или равно self.pvpgoheal. Отправляемся в ген. штаб для хила.")
+
+    #                 await asyncio.sleep(2)
+
+    #                 await self.client.send_message(self.bot_id, RF.chv)
+
+    #                 await self.wait_for_set_change() #не проверено
+
+    #                 await asyncio.sleep(1)
+
+    #                 await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
+
+    #                 # Добавляем информацию о текущем здоровье
+
+    #                 health_message = f"Ушел на отхил после пвп. Осталось здоровья: {self.my_health}"
+
+    #                 # await self.client.send_message(self.bezvgroup, health_message)  # пересылка без в 
+
+    #                 # await self.client.send_message(self.tamplier_id, health_message)  # пересылка Валере
+
+    #                 await self.gokragi()
+
+    #                 self.is_nacheve_active = False
+
+    #                 return True
+
+    #             else:
+
+    #                 await self.client.send_message(self.bot_id, RF.chv)
+
+    #                 await self.wait_for_set_change() # не проверено
+
+    #                 await asyncio.sleep(1)
+
+                    
+
+    #                 # Проверяем имя пользователя для команды drink_103
+
+    #                 if self.your_name in ["Ros_Hangzhou", ]:
+
+    #                     await self.client.send_message(self.bot_id, "/drink_103")
+
+    #                     await asyncio.sleep(3)
+
+    #                 else:
+
+    #                     # Если имя не подходит, можно использовать альтернативную команду или просто пропустить
+
+    #                     print(f"Пользователь {self.your_name} не имеет доступа к команде /drink_103")
+
+    #                     # Или можно добавить альтернативную логику здесь
+
+                    
+
+    #                 return False               
+
+    #     # Проверка на начало пути
+
+    #     if "Ты направляешься" in lstr[0]:
+
+    #         self.is_nacheve_active = False
+
+    #         return True
+
+    #     return False
 
 
 
@@ -3252,7 +3345,7 @@ class RF:
 
                     print("Получена команда перезапуска")
 
-                    await self.client.send_message(event.chat_id, "Ver.4.10.09")
+                    await self.client.send_message(event.chat_id, "Ver.5.10.09")
 
                     await self.client.disconnect()
 
