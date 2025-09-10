@@ -1625,7 +1625,7 @@ class RF:
 
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
-                    await self.client.send_message(event.chat_id, "Ver.5.9.09")
+                    await self.client.send_message(event.chat_id, "Ver.10.09")
                     await self.client.disconnect()
                     import os, sys
                     os.execv(sys.executable, [sys.executable] + sys.argv)
@@ -1659,7 +1659,7 @@ class RF:
                     await event.message.delete()  # Удаляем сообщение
                 elif "_шаг" in message_text:  
                     await asyncio.sleep(1)  
-                    await self.rf_message.click(2)
+                    await self.cave_buttons_message.click(2)
                     await event.message.delete()  # Удаляем сообщение
                 elif "_мобы" in message_text:  
                     self.mobs = True  # Устанавливаем флаг для мобов
