@@ -458,11 +458,11 @@ class RF:
             self.in_battle = False     
         elif "Ваша группа замерзнет через 5 минут" in lstr[0]:
             await asyncio.sleep(1)
-            await self.rf_message.click(2)
+            await self.cave_buttons_message.click(2)
         elif "Ваша группа восстановила силы" in lstr[0]:
             if self.fast_cave:  # Проверка значения fast_ceve
                 await asyncio.sleep(1)
-                await self.rf_message.click(2)
+                await self.cave_buttons_message.click(2)
         elif "Ваша группа прибудет в ген. штаб через" in lstr[0]:
             print("чувачок, ты закончил пещеру")
             await asyncio.sleep(1)
@@ -1625,7 +1625,7 @@ class RF:
 
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
-                    await self.client.send_message(event.chat_id, "Ver.10.09")
+                    await self.client.send_message(event.chat_id, "Ver.2.10.09")
                     await self.client.disconnect()
                     import os, sys
                     os.execv(sys.executable, [sys.executable] + sys.argv)
