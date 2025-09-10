@@ -1043,7 +1043,7 @@ class RF:
                 print("bag bag bag")  # для данжей
 
         elif "Если ты хочешь вернуть группу" in lstr[0]:
-
+            await asyncio.sleep(2)
             await self.client.send_message(self.bot_id, "22")
 
 
@@ -3252,7 +3252,7 @@ class RF:
 
                     print("Получена команда перезапуска")
 
-                    await self.client.send_message(event.chat_id, "Ver.3.10.09")
+                    await self.client.send_message(event.chat_id, "Ver.4.10.09")
 
                     await self.client.disconnect()
 
@@ -3895,7 +3895,7 @@ class RF:
 
                         print(f"Отправлено сообщение участнику {member_id}: Выходим из пещеры _фольт")
 
-                await asyncio.sleep(10) 
+                await asyncio.sleep(15) 
 
                 await self.rf_message.click(3)
 
