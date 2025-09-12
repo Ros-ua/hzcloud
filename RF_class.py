@@ -1032,7 +1032,7 @@ class RF:
                     await self.wait_for_set_change() # не проверено
                     await asyncio.sleep(1)
                     # Проверяем имя пользователя для команды drink_103
-                    if self.your_name in ["Ros_Hangzhou", ]:
+                    if self.your_name in ["Ros_Hangzhou", "๖ۣۜᗯαsͥpwͣoͫℝt🐝"]:
                         await self.client.send_message(self.bot_id, "/drink_103")
                         await asyncio.sleep(3)
                     else:
@@ -1514,7 +1514,7 @@ class RF:
                     await event.message.delete()  # Удаляем сообщение
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
-                    await self.client.send_message(event.chat_id, "Ver.11.09")
+                    await self.client.send_message(event.chat_id, "Ver.12.09")
                     await self.client.disconnect()
                     import os, sys
                     os.execv(sys.executable, [sys.executable] + sys.argv)
