@@ -1381,6 +1381,14 @@ class RF:
                         await self.client.send_message(self.bot_id, "🔥 61-65 Лес пламени")
             if any("Осада замков закончилась" in ln for ln in lines):
                 self.in_castle = False
+                if not self.is_in_caves and not self.waiting_for_captcha and not self.is_moving:
+                    await asyncio.sleep(5)
+                    await self.client.send_message(self.bot_id, RF.hp)
+                    await self.wait_for_set_change() #работает
+                    await asyncio.sleep(2)
+                    await self.client.send_message(self.bot_id, "💖 Пополнить здоровье")
+                    await self.wait_for_health_refill()
+                    await self.client.send_message(self.bot_id, "🔥 61-65 Лес пламени") 
             if any("Страж будет уязвим для атак расы" in ln and "Castitas" in ln for ln in lines):
                 print("Получено сообщение о появлении стража через 15 минут")
                 if not self.is_in_caves and not self.in_castle:
@@ -1514,7 +1522,7 @@ class RF:
                     await event.message.delete()  # Удаляем сообщение
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
-                    await self.client.send_message(event.chat_id, "Ver.12.09")
+                    await self.client.send_message(event.chat_id, "Ver.13.09")
                     await self.client.disconnect()
                     import os, sys
                     os.execv(sys.executable, [sys.executable] + sys.argv)
