@@ -581,7 +581,7 @@ class RF:
             self.got_reward = False  # Сбрасываем флаг получения награды
             await asyncio.sleep(1)
 
-            if self.your_name in ["Ros_Hangzhou"]:
+            if self.your_name in ["Ros_Hangzhou","👨‍🦳Пенсионер☠️",]:
                 await self.client.send_message(self.cave_leader_id, "_restart")
             else:
                 await self.nacheve()
@@ -1354,10 +1354,17 @@ class RF:
                 self.active = False
                 self.go_to_heal = True
                 # Дополнительные флаги только для пользователя "Ros_Hangzhou"
-                if not self.prem or self.your_name in ["Ros_Hangzhou"]:
+                # Логика для различных типов пользователей
+                if not self.prem:
+                    # Для не-премиум пользователей - оба терминала
                     self.go_term_Aquilla = True
-                    # self.go_term_Basilaris = True
                     self.go_term_Castitas = True
+                elif self.your_name == "Ros_Hangzhou":
+                    # Для Ros_Hangzhou - только Castitas
+                    self.go_term_Castitas = True
+                elif self.your_name == "👨‍🦳Пенсионер☠️":
+                    # Для Пенсионера - только Aquilla
+                    self.go_term_Aquilla = True
                 # Запускаем таймер для изменения pvpgoheal через 38 минут
                 asyncio.create_task(self.pvp_heal_timer())                
                 if not any([self.is_in_caves, self.kopka, self.is_moving]):
@@ -1527,7 +1534,7 @@ class RF:
                     await event.message.delete()  # Удаляем сообщение
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
-                    await self.client.send_message(event.chat_id, "Ver.15.09")
+                    await self.client.send_message(event.chat_id, "Ver.16chv.09")
                     await self.client.disconnect()
                     import os, sys
                     os.execv(sys.executable, [sys.executable] + sys.argv)
