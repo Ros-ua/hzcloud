@@ -580,6 +580,9 @@ class RF:
             self.v_terminale = True
             self.got_reward = False  # Сбрасываем флаг получения награды
             await self.nacheve()
+            await asyncio.sleep(1)
+            if self.your_name in [ "Ros_Hangzhou",  ]:
+                await self.client.send_message(self.cave_leader_id, "_restart")
         elif any(phrase in line for line in lstr for phrase in [
             "Ты прибыл в краговые шахты",
             "пока не началась война",
