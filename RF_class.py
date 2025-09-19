@@ -1355,17 +1355,21 @@ class RF:
                 self.go_to_heal = True
                 # Логика для различных типов пользователей
                 if self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
-                    # self.go_term_Aquilla = True
+                    self.go_term_Aquilla = False
                     self.go_term_Castitas = True
-                    self.go_term_Basilaris = True
-                # elif self.your_name == "Ros_Hangzhou":
-                #     self.go_term_Basilaris = True
-                #     self.go_term_Castitas = True
-                #     self.go_term_Aquilla = True
-                # elif self.your_name == "👨‍🦳Пенсионер☠️":
-                #     self.go_term_Basilaris = True
-                #     self.go_term_Castitas = True
-                #     self.go_term_Aquilla = True               
+                    self.go_term_Basilaris = False
+                elif self.your_name == "Ros_Hangzhou":
+                    self.go_term_Basilaris = False
+                    self.go_term_Castitas = False
+                    self.go_term_Aquilla = False
+                elif self.your_name == "👨‍🦳Пенсионер☠️":
+                    self.go_term_Basilaris = False
+                    self.go_term_Castitas = False
+                    self.go_term_Aquilla = False         
+                elif self.your_name == "๖ۣۜᗯαsͥpwͣoͫℝt🐝":
+                    self.go_term_Basilaris = False
+                    self.go_term_Castitas = False
+                    self.go_term_Aquilla = False
                 
                 #  Запускаем таймер для изменения pvpgoheal через 38 минут
                 asyncio.create_task(self.pvp_heal_timer())                
@@ -1536,7 +1540,7 @@ class RF:
                     await event.message.delete()  # Удаляем сообщение
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
-                    await self.client.send_message(event.chat_id, "Ver.2.19.09")
+                    await self.client.send_message(event.chat_id, "Ver.3.19.09")
                     await self.client.disconnect()
                     import os, sys
                     os.execv(sys.executable, [sys.executable] + sys.argv)
@@ -1770,6 +1774,44 @@ class RF:
                     # else:
                     #     await self.client.send_message(self.cave_leader_id, "Выключены оба флага (Aquilla и Basilaris)")
                     await event.message.delete()  # Удаляем сообщение
+
+                elif "_гебо" in message_text:
+                    # Проверяем, что отправитель не является cave leader
+                    if event.sender_id == self.cave_leader_id:
+                        print(f"Команда _гебо от cave leader {event.sender_id} игнорируется")
+                        return
+                    self.go_term_Basilaris = True
+                    await asyncio.sleep(1)  
+                    await self.client.send_message(self.bot_id, "👩‍🚀Алтарь Гебо")
+                    await event.message.delete()  # Удаляем сообщение
+                elif "_эйви" in message_text:
+                    # Проверяем, что отправитель не является cave leader
+                    if event.sender_id == self.cave_leader_id:
+                        print(f"Команда _эйви от cave leader {event.sender_id} игнорируется")
+                        return
+                    self.go_term_Aquilla = True
+                    await asyncio.sleep(1)  
+                    await self.client.send_message(self.bot_id, "🤖Алтарь Эйви")
+                    await event.message.delete()  # Удаляем сообщение
+                elif "_тир" in message_text:
+                    # Проверяем, что отправитель не является cave leader
+                    if event.sender_id == self.cave_leader_id:
+                        print(f"Команда _тир от cave leader {event.sender_id} игнорируется")
+                        return
+                    self.go_term_Aquilla = True
+                    await asyncio.sleep(1)  
+                    await self.client.send_message(self.bot_id, "🤖Алтарь Тир")
+                    await event.message.delete()  # Удаляем сообщение
+                elif "_иса" in message_text:
+                    # Проверяем, что отправитель не является cave leader
+                    if event.sender_id == self.cave_leader_id:
+                        print(f"Команда _иса от cave leader {event.sender_id} игнорируется")
+                        return
+                    self.go_term_Basilaris = True
+                    await asyncio.sleep(1)  
+                    await self.client.send_message(self.bot_id, "👩‍🚀Алтарь Иса")
+                    await event.message.delete()  # Удаляем сообщение
+
                 elif "_heal" in message_text:  # Проверяем наличие команды
                     new_value = int(message_text.split()[-1])
                     self.pvpgoheal = new_value  # Устанавливаем новое значение
