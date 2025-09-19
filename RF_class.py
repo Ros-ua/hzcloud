@@ -1353,17 +1353,12 @@ class RF:
                 # self.pvpgoheal = 4500
                 self.active = False
                 self.go_to_heal = True
-                # Дополнительные флаги только для пользователя "Ros_Hangzhou"
                 # Логика для различных типов пользователей
-                if not self.prem:
-                    # Для не-премиум пользователей - оба терминала
-                    self.go_term_Aquilla = True
-                    self.go_term_Castitas = True
+                if self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
+                    self.go_term_Aquilla = self.go_term_Castitas = True
                 elif self.your_name == "Ros_Hangzhou":
-                    # Для Ros_Hangzhou - только Castitas
-                    self.go_term_Castitas = True
+                    self.go_term_Aquilla = self.go_term_Castitas = True
                 elif self.your_name == "👨‍🦳Пенсионер☠️":
-                    # Для Пенсионера - только Aquilla
                     self.go_term_Aquilla = True
                 # Запускаем таймер для изменения pvpgoheal через 38 минут
                 asyncio.create_task(self.pvp_heal_timer())                
@@ -1534,7 +1529,7 @@ class RF:
                     await event.message.delete()  # Удаляем сообщение
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
-                    await self.client.send_message(event.chat_id, "Ver.16chv.09")
+                    await self.client.send_message(event.chat_id, "Ver.19.09")
                     await self.client.disconnect()
                     import os, sys
                     os.execv(sys.executable, [sys.executable] + sys.argv)
