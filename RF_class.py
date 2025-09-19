@@ -1365,7 +1365,9 @@ class RF:
                 # elif self.your_name == "👨‍🦳Пенсионер☠️":
                 #     self.go_term_Basilaris = True
                 #     self.go_term_Castitas = True
-                #     self.go_term_Aquilla = True                # Запускаем таймер для изменения pvpgoheal через 38 минут
+                #     self.go_term_Aquilla = True               
+                
+                #  Запускаем таймер для изменения pvpgoheal через 38 минут
                 asyncio.create_task(self.pvp_heal_timer())                
                 if not any([self.is_in_caves, self.kopka, self.is_moving]):
                     await asyncio.sleep(12)
@@ -1534,7 +1536,7 @@ class RF:
                     await event.message.delete()  # Удаляем сообщение
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
-                    await self.client.send_message(event.chat_id, "Ver.19.09")
+                    await self.client.send_message(event.chat_id, "Ver.2.19.09")
                     await self.client.disconnect()
                     import os, sys
                     os.execv(sys.executable, [sys.executable] + sys.argv)
