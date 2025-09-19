@@ -1355,12 +1355,17 @@ class RF:
                 self.go_to_heal = True
                 # Логика для различных типов пользователей
                 if self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
-                    self.go_term_Aquilla = self.go_term_Castitas = True
-                elif self.your_name == "Ros_Hangzhou":
-                    self.go_term_Aquilla = self.go_term_Castitas = True
-                elif self.your_name == "👨‍🦳Пенсионер☠️":
-                    self.go_term_Aquilla = True
-                # Запускаем таймер для изменения pvpgoheal через 38 минут
+                    # self.go_term_Aquilla = True
+                    self.go_term_Castitas = True
+                    self.go_term_Basilaris = True
+                # elif self.your_name == "Ros_Hangzhou":
+                #     self.go_term_Basilaris = True
+                #     self.go_term_Castitas = True
+                #     self.go_term_Aquilla = True
+                # elif self.your_name == "👨‍🦳Пенсионер☠️":
+                #     self.go_term_Basilaris = True
+                #     self.go_term_Castitas = True
+                #     self.go_term_Aquilla = True                # Запускаем таймер для изменения pvpgoheal через 38 минут
                 asyncio.create_task(self.pvp_heal_timer())                
                 if not any([self.is_in_caves, self.kopka, self.is_moving]):
                     await asyncio.sleep(12)
