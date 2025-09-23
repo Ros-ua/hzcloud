@@ -804,6 +804,9 @@ class RF:
             await asyncio.sleep(1)
     async def check_arrival(self):  # ходим на моба
         print("check_arrival")
+        # Если в ожидании капчи, то сразу выходим
+        if self.waiting_for_captcha:
+            return
         while True:
             last_message = await self.client.get_messages(self.bot_id, limit=1)
             if last_message:
@@ -824,9 +827,10 @@ class RF:
                 ]):    
                     self.is_in_caves = False  # Сбрасываем флаг здесь
                     await asyncio.sleep(2)
-                    await self.client.send_message(self.bot_id, "💖 Пополнить здоровье")
-                    await self.wait_for_health_refill()
-                    await self.client.send_message(self.bot_id, "🔥 61-65 Лес пламени")
+                    if not self.waiting_for_captcha:
+                        await self.client.send_message(self.bot_id, "💖 Пополнить здоровье")
+                        await self.wait_for_health_refill()
+                        await self.client.send_message(self.bot_id, "🔥 61-65 Лес пламени")
                     return
             await asyncio.sleep(1)
     async def arrival_hil(self):  # ходим на моба
@@ -1490,7 +1494,7 @@ class RF:
             return
         # Ждём 20 минут и проверяем kopka и prem
         await asyncio.sleep(1 * 60)  # 20 минут в секундах
-        if self.kopka and not self.prem:
+        if self.kopka and not self.prem and not self.waiting_for_captcha:
             print("Через 1 минут kopka=True и prem=False, отправляем в Лес пламени")
             await self.client.send_message(self.bot_id, "🔥 61-65 Лес пламени")
         else:
@@ -1500,7 +1504,7 @@ class RF:
                 print("Через 1 минут prem=True (есть АБУ)")
         # Ждём ещё 25 минут (итого 45 минут от начала)
         await asyncio.sleep(44 * 60)
-        if self.kopka and self.prem:
+        if self.kopka and self.prem and not self.waiting_for_captcha:
             print("Через 45 минут kopka=True и prem=True, отправляем в Лес пламени")
             await self.client.send_message(self.bot_id, "🔥 61-65 Лес пламени")
         else:
@@ -1510,7 +1514,7 @@ class RF:
                 print("Через 45 минут prem=False (нет АБУ)")
         # Ждём ещё 12 минут (итого 58 минут от начала)
         await asyncio.sleep(12 * 60)
-        if self.kopka:
+        if self.kopka and not self.waiting_for_captcha:
             print("Через 57 минут kopka=True, отправляем в ген. штаб")
             await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
         else:
@@ -1544,7 +1548,7 @@ class RF:
                     else:
                         print("Фольт бинды не настроены, просто удаляем сообщение")
                     await event.message.delete()  # Удаляем сообщение
-                elif "_гш" in message_text:  
+                elif "_гш" in message_text and not self.waiting_for_captcha:  
                     if self.kopka:  
                         print("Отправляем комплект hp_{self.hp_binds[0][0]})")
                         await self.client.send_message(self.bot_id, self.hp_binds[0][1])  # Используем переменную hp_{self.hp_binds[0][0]}) для надевания
@@ -1568,7 +1572,7 @@ class RF:
                     await event.message.delete()  # Удаляем сообщение
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
-                    await self.client.send_message(event.chat_id, "Ver.23.09")
+                    await self.client.send_message(event.chat_id, "Ver.2.23.09")
                     await self.client.disconnect()
                     import os, sys
                     os.execv(sys.executable, [sys.executable] + sys.argv)
