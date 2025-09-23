@@ -501,9 +501,9 @@ class RF:
                     if match:
                         ros_score = int(match.group(1))
             if gerain_score is not None and avada_score is not None and ros_score is not None:
-                # Разница GERAIN - Ros_Hangzhou
+                # Разница GERAIN - player name
                 diff_gerain_ros = gerain_score - ros_score
-                # Разница AvadaKedavra - Ros_Hangzhou
+                # Разница AvadaKedavra - player name
                 diff_avada_ros = avada_score - ros_score
                 msg = (
                     f"Разница с GERAIN : {diff_gerain_ros}\n"
@@ -581,7 +581,7 @@ class RF:
             self.got_reward = False  # Сбрасываем флаг получения награды
             await asyncio.sleep(1)
 
-            if self.your_name in ["Ros_Hangzhou","👨‍🦳Пенсионер☠️",]:
+            if self.your_name in ["👨‍🦳Пенсионер☠️",]:
                 await self.client.send_message(self.cave_leader_id, "_restart")
             else:
                 await self.nacheve()
@@ -1355,13 +1355,13 @@ class RF:
                 self.go_to_heal = True
                 # Логика для различных типов пользователей
                 if self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
-                    self.go_term_Aquilla = False
+                    self.go_term_Aquilla = True
                     self.go_term_Castitas = True
                     self.go_term_Basilaris = False
                 elif self.your_name == "Ros_Hangzhou":
                     self.go_term_Basilaris = False
                     self.go_term_Castitas = False
-                    self.go_term_Aquilla = False
+                    self.go_term_Aquilla = True
                 elif self.your_name == "👨‍🦳Пенсионер☠️":
                     self.go_term_Basilaris = False
                     self.go_term_Castitas = False
@@ -1540,7 +1540,7 @@ class RF:
                     await event.message.delete()  # Удаляем сообщение
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
-                    await self.client.send_message(event.chat_id, "Ver.3.19.09")
+                    await self.client.send_message(event.chat_id, "Ver.23.09")
                     await self.client.disconnect()
                     import os, sys
                     os.execv(sys.executable, [sys.executable] + sys.argv)
