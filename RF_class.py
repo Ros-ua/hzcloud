@@ -580,12 +580,10 @@ class RF:
             self.v_terminale = True
             self.got_reward = False  # Сбрасываем флаг получения награды
             await asyncio.sleep(1)
-
             if self.your_name in ["👨‍🦳Пенсионер☠️",]:
                 await self.client.send_message(self.cave_leader_id, "_restart")
             else:
                 await self.nacheve()
-            
         elif any(phrase in line for line in lstr for phrase in [
             "Ты прибыл в краговые шахты",
             "пока не началась война",
@@ -966,22 +964,17 @@ class RF:
         wait_interval = 5  # сколько секунд ждем между проверками
         max_total_wait = 60  # максимальное общее время ожидания
         total_waited = 0
-        
         print(f"Начинаем ожидание завершения серии побед...")
-        
         # Запоминаем ID последнего сообщения, чтобы искать только новые
         messages_before = await self.client.get_messages(self.bot_id, limit=1)
         last_checked_message_id = messages_before[0].id if messages_before else 0
-        
         # Цикл ожидания с проверкой новых побед
         while total_waited < max_total_wait:
             await asyncio.sleep(wait_interval)
             total_waited += wait_interval
-            
             # Проверяем есть ли новые сообщения
             new_messages = await self.client.get_messages(self.bot_id, limit=10)
             new_victory_found = False
-            
             # Ищем новые сообщения о победе
             for message in new_messages:
                 if message.id > last_checked_message_id:
@@ -992,21 +985,16 @@ class RF:
                         last_checked_message_id = message.id
                         total_waited = 0  # ВАЖНО: сбрасываем счетчик времени
                         break
-            
             # Если новых побед не было - выходим из цикла
             if not new_victory_found:
                 print(f"За {wait_interval}s новых побед не было. Отправляем /hero")
                 break
-        
         if total_waited >= max_total_wait:
             print(f"Достигнуто максимальное время ожидания {max_total_wait}s. Отправляем /hero")
-        
         # Теперь отправляем /hero и получаем информацию о здоровье
         # Получаем последнее сообщение перед отправкой команды для сравнения
         messages_before = await self.client.get_messages(self.bot_id, limit=1)
         last_message_id_before = messages_before[0].id if messages_before else 0
-    
-            
         await self.client.send_message(self.bot_id, "/hero")
         print("Отправлена команда /hero, ожидаем ответ от бота...")
         # Ждем новое сообщение от бота максимум 60 секунд
@@ -1411,7 +1399,6 @@ class RF:
                     self.go_term_Basilaris = False
                     self.go_term_Castitas = False
                     self.go_term_Aquilla = False
-                
                 #  Запускаем таймер для изменения pvpgoheal через 38 минут
                 asyncio.create_task(self.pvp_heal_timer())                
                 if not any([self.is_in_caves, self.kopka, self.is_moving]):
@@ -1815,7 +1802,6 @@ class RF:
                     # else:
                     #     await self.client.send_message(self.cave_leader_id, "Выключены оба флага (Aquilla и Basilaris)")
                     await event.message.delete()  # Удаляем сообщение
-
                 elif "_гебо" in message_text:
                     # Проверяем, что отправитель не является cave leader
                     if event.sender_id == self.cave_leader_id:
@@ -1852,7 +1838,6 @@ class RF:
                     await asyncio.sleep(1)  
                     await self.client.send_message(self.bot_id, "👩‍🚀Алтарь Иса")
                     await event.message.delete()  # Удаляем сообщение
-
                 elif "_heal" in message_text:  # Проверяем наличие команды
                     new_value = int(message_text.split()[-1])
                     self.pvpgoheal = new_value  # Устанавливаем новое значение
