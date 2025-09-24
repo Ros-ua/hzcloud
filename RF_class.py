@@ -1572,7 +1572,7 @@ class RF:
                     await event.message.delete()  # Удаляем сообщение
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
-                    await self.client.send_message(event.chat_id, "Ver.2.23.09")
+                    await self.client.send_message(event.chat_id, "Ver.24.09")
                     await self.client.disconnect()
                     import os, sys
                     os.execv(sys.executable, [sys.executable] + sys.argv)
@@ -1604,6 +1604,8 @@ class RF:
                         await self.client.send_message(self.bot_id, "🚠 Отправиться в пещеры")
                     await event.message.delete()  # Удаляем сообщение
                 elif "_шаг" in message_text:  
+                    if not self.is_in_caves:
+                        return
                     await asyncio.sleep(1)  
                     await self.cave_buttons_message.click(2)
                     await event.message.delete()  # Удаляем сообщение
@@ -1648,6 +1650,8 @@ class RF:
                     await self.client.send_message(self.bot_id, "⚖️Проверить состав")
                     await event.message.delete()  # Удаляем сообщение
                 elif "_моб" in message_text:  
+                    if self.is_in_caves:
+                        return
                     await asyncio.sleep(1)  
                     await self.client.send_message(self.bot_id, "🔥 61-65 Лес пламени")
                     await event.message.delete()  # Удаляем сообщение
