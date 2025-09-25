@@ -1,4 +1,4 @@
-import re
+nimport re
 import sys
 import asyncio
 import random
@@ -1428,14 +1428,12 @@ class RF:
                 await asyncio.sleep(1)
                 if not self.is_moving and not self.killed_on_chv:
                     await self.client.send_message(self.bot_id, "⛏Рудник")
-
                 # if self.is_nacheve_active and not self.is_moving:
                 #     await asyncio.sleep(3)  # Задержка перед следующим действием
                 #     await self.client.send_message(self.bot_id, "⛏Рудник")
                 # else:
                 #     await asyncio.sleep(3)
                 #     await self.client.send_message(self.bot_id, "⛏Рудник")
-                    
             if any(("Castitas одолела" in ln or "Castitas не смогла одолеть" in ln) for ln in lines):
                 if not self.is_in_caves:
                     await asyncio.sleep(15)
@@ -1593,7 +1591,7 @@ class RF:
                     await event.message.delete()  # Удаляем сообщение
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
-                    await self.client.send_message(event.chat_id, "Ver.2.25.09")
+                    await self.client.send_message(event.chat_id, "Ver.3.25.09")
                     await self.client.disconnect()
                     import os, sys
                     os.execv(sys.executable, [sys.executable] + sys.argv)
@@ -1837,7 +1835,15 @@ class RF:
                         print(f"Команда _гебо от cave leader {event.sender_id} игнорируется")
                         return
                     self.go_term_Basilaris = True
-                    await asyncio.sleep(1)  
+                    if self.is_moving:
+                        await asyncio.sleep(1)
+                        while self.is_moving:
+                            print("Персонаж все еще двигается, ждем...")
+                            await asyncio.sleep(5)
+                        print("Персонаж перестал двигаться.")
+                        await asyncio.sleep(5)
+                    else:
+                        await asyncio.sleep(1)
                     await self.client.send_message(self.bot_id, "👩‍🚀Алтарь Гебо")
                     await event.message.delete()  # Удаляем сообщение
                 elif "_эйви" in message_text:
@@ -1846,7 +1852,15 @@ class RF:
                         print(f"Команда _эйви от cave leader {event.sender_id} игнорируется")
                         return
                     self.go_term_Aquilla = True
-                    await asyncio.sleep(1)  
+                    if self.is_moving:
+                        await asyncio.sleep(1)
+                        while self.is_moving:
+                            print("Персонаж все еще двигается, ждем...")
+                            await asyncio.sleep(5)
+                        print("Персонаж перестал двигаться.")
+                        await asyncio.sleep(5)
+                    else:
+                        await asyncio.sleep(1)
                     await self.client.send_message(self.bot_id, "🤖Алтарь Эйви")
                     await event.message.delete()  # Удаляем сообщение
                 elif "_тир" in message_text:
@@ -1855,7 +1869,15 @@ class RF:
                         print(f"Команда _тир от cave leader {event.sender_id} игнорируется")
                         return
                     self.go_term_Aquilla = True
-                    await asyncio.sleep(1)  
+                    if self.is_moving:
+                        await asyncio.sleep(1)
+                        while self.is_moving:
+                            print("Персонаж все еще двигается, ждем...")
+                            await asyncio.sleep(5)
+                        print("Персонаж перестал двигаться.")
+                        await asyncio.sleep(5)
+                    else:
+                        await asyncio.sleep(1)
                     await self.client.send_message(self.bot_id, "🤖Алтарь Тир")
                     await event.message.delete()  # Удаляем сообщение
                 elif "_иса" in message_text:
@@ -1864,7 +1886,15 @@ class RF:
                         print(f"Команда _иса от cave leader {event.sender_id} игнорируется")
                         return
                     self.go_term_Basilaris = True
-                    await asyncio.sleep(1)  
+                    if self.is_moving:
+                        await asyncio.sleep(1)
+                        while self.is_moving:
+                            print("Персонаж все еще двигается, ждем...")
+                            await asyncio.sleep(5)
+                        print("Персонаж перестал двигаться.")
+                        await asyncio.sleep(5)
+                    else:
+                        await asyncio.sleep(1)
                     await self.client.send_message(self.bot_id, "👩‍🚀Алтарь Иса")
                     await event.message.delete()  # Удаляем сообщение
                 elif "_heal" in message_text:  # Проверяем наличие команды
