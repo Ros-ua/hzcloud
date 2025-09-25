@@ -28,7 +28,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО FALSE ===
         self.is_run = self.is_player_dead = self.fast_cave = self.cave_task_running = self.waiting_for_captcha = self.is_moving = self.in_castle = self.v_terminale = self.kopka = self.is_training = self.cave_message_pinned = self.prem = self.go_term_Aquilla = self.go_term_Basilaris = self.go_term_Castitas = self.is_in_caves = self.is_in_gh = self.is_has_hil = self.is_has_res = self.is_nacheve_active = self.in_battle = False
         # === ВСЕ ЧТО РАВНО NONE ===
-        self.cave_buttons_message = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = None
+        self.cave_buttons_message = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = None
         # === ЧИСЛА ===
         self.bot_id = 577009581
         self.tomat_id = 278339710
@@ -273,6 +273,7 @@ class RF:
                     print("Здоровье равно или меньше нуля. Игрок умер.")
     async def set_moving_flag(self, duration):
         self.is_moving = True
+        self.killed_on_chv = False
         self.in_castle = False
         self.is_nacheve_active = False
         self.kopka = False  # Сбрасываем флаг замка при начале движения
@@ -1031,6 +1032,7 @@ class RF:
         # Проверка сообщения о смерти или времени восстановления
         if lstr[-1].endswith("минут.") or "дождись пока воскреснешь" in lstr[0] or "был убит ядерной ракетой" in lstr[0]:
             print("Обнаружено сообщение о времени. Вызываем gokragi()")
+            self.killed_on_chv = True
             await asyncio.sleep(2)
             await self.client.send_message(self.bot_id, RF.chv)
             await self.gokragi()
@@ -1388,13 +1390,13 @@ class RF:
                 self.go_to_heal = True
                 # Логика для различных типов пользователей
                 if self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
-                    self.go_term_Aquilla = True
-                    self.go_term_Castitas = True
+                    self.go_term_Aquilla = False
+                    self.go_term_Castitas = False
                     self.go_term_Basilaris = False
                 elif self.your_name == "Ros_Hangzhou":
                     self.go_term_Basilaris = False
                     self.go_term_Castitas = False
-                    self.go_term_Aquilla = True
+                    self.go_term_Aquilla = False
                 elif self.your_name == "👨‍🦳Пенсионер☠️":
                     self.go_term_Basilaris = False
                     self.go_term_Castitas = False
@@ -1419,9 +1421,16 @@ class RF:
                 await self.client.send_message(self.bot_id, RF.hp)  # Переодеться для мобов
                 await self.wait_for_set_change() #работает
                 await asyncio.sleep(1)
-                if self.is_nacheve_active and not self.is_moving:
-                    await asyncio.sleep(3)  # Задержка перед следующим действием
+                if not self.is_moving and not self.killed_on_chv:
                     await self.client.send_message(self.bot_id, "⛏Рудник")
+
+                # if self.is_nacheve_active and not self.is_moving:
+                #     await asyncio.sleep(3)  # Задержка перед следующим действием
+                #     await self.client.send_message(self.bot_id, "⛏Рудник")
+                # else:
+                #     await asyncio.sleep(3)
+                #     await self.client.send_message(self.bot_id, "⛏Рудник")
+                    
             if any(("Castitas одолела" in ln or "Castitas не смогла одолеть" in ln) for ln in lines):
                 if not self.is_in_caves:
                     await asyncio.sleep(15)
@@ -1570,9 +1579,16 @@ class RF:
                     if self.is_moving:
                         await self.client.send_message(self.bot_id, "🏃‍♂️Отменить переход")
                     await event.message.delete()  # Удаляем сообщение
+                elif "_краги" in message_text:  
+                    # Проверяем, что отправитель не является cave leader
+                    if event.sender_id == self.cave_leader_id:
+                        print(f"Команда _краги от cave leader {event.sender_id} игнорируется")
+                        return  
+                    await self.client.send_message(self.bot_id, "🌋 Краговые шахты")
+                    await event.message.delete()  # Удаляем сообщение
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
-                    await self.client.send_message(event.chat_id, "Ver.24.09")
+                    await self.client.send_message(event.chat_id, "Ver.25.09")
                     await self.client.disconnect()
                     import os, sys
                     os.execv(sys.executable, [sys.executable] + sys.argv)
