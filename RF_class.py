@@ -26,7 +26,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО TRUE ===
         self.is_cave_leader = self.extra_hil = self.mobs = self.active = self.go_to_heal = True
         # === ВСЕ ЧТО РАВНО FALSE ===
-        self.is_run = self.is_player_dead = self.fast_cave = self.cave_task_running = self.waiting_for_captcha = self.is_moving = self.in_castle = self.v_terminale = self.kopka = self.is_training = self.cave_message_pinned = self.prem = self.go_term_Aquilla = self.go_term_Basilaris = self.go_term_Castitas = self.is_in_caves = self.is_in_gh = self.is_has_hil = self.is_has_res = self.is_nacheve_active = self.in_battle = False
+        self.is_run = self.na_straj = self.is_player_dead = self.fast_cave = self.cave_task_running = self.waiting_for_captcha = self.is_moving = self.in_castle = self.v_terminale = self.kopka = self.is_training = self.cave_message_pinned = self.prem = self.go_term_Aquilla = self.go_term_Basilaris = self.go_term_Castitas = self.is_in_caves = self.is_in_gh = self.is_has_hil = self.is_has_res = self.is_nacheve_active = self.in_battle = False
         # === ВСЕ ЧТО РАВНО NONE ===
         self.cave_buttons_message = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = None
         # === ЧИСЛА ===
@@ -274,6 +274,7 @@ class RF:
     async def set_moving_flag(self, duration):
         self.is_moving = True
         self.killed_on_chv = False
+        self.na_straj = False
         self.in_castle = False
         self.is_nacheve_active = False
         self.kopka = False  # Сбрасываем флаг замка при начале движения
@@ -393,10 +394,10 @@ class RF:
             self.reset_health()
             self.kopka = False
             print(self.my_health, self.my_max_health)
-        #     # на новый год идти в краги после реса
-        #     if not self.is_in_caves:  # Используем существующее условие
-        #         await asyncio.sleep(1)
-        #         await self.client.send_message(self.bot_id, "🌋 Краговые шахты")
+            # на новый год идти в краги после реса
+            if not self.is_in_caves and not self.na_straj and not self.in_castle and not self.waiting_for_captcha and not self.is_nacheve_active:  # Используем существующее условие
+                await asyncio.sleep(3)
+                await self.client.send_message(self.bot_id, "🌋 Краговые шахты")
         elif any(
             phrase in line for line in lstr for phrase in [
                 "Ожидай завершения",
@@ -514,6 +515,7 @@ class RF:
         # на страже
         elif "Бой с боссом будет происходить в автоматическом режиме." in lstr[0]:
             print("дошел до стража")
+            self.na_straj = True
             await self.straj()
         elif "Босс еще не появился. Проход в локацию закрыт!" in lstr[0]:  # если умер на страже и снова хочешь идти на стража
             await asyncio.sleep(1)
