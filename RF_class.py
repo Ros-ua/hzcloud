@@ -583,7 +583,10 @@ class RF:
             self.v_terminale = True
             self.got_reward = False  # Сбрасываем флаг получения награды
             await asyncio.sleep(1)
-            if self.your_name in ["👨‍🦳Пенсионер☠️",]:
+            if self.your_name in ["👨‍🦳Пенсионер☠️", 
+            "Ros_Hangzhou",
+            "๖ۣۜᗯαsͥpwͣoͫℝt🐝",
+            ]:
                 await self.client.send_message(self.cave_leader_id, "_restart")
             else:
                 await self.nacheve()
@@ -1590,7 +1593,7 @@ class RF:
                     await event.message.delete()  # Удаляем сообщение
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
-                    await self.client.send_message(event.chat_id, "Ver.25.09")
+                    await self.client.send_message(event.chat_id, "Ver.2.25.09")
                     await self.client.disconnect()
                     import os, sys
                     os.execv(sys.executable, [sys.executable] + sys.argv)
