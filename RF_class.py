@@ -585,6 +585,7 @@ class RF:
             await asyncio.sleep(1)
             if self.your_name in ["👨‍🦳Пенсионер☠️", 
             "Ros_Hangzhou",
+            "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗",
             "๖ۣۜᗯαsͥpwͣoͫℝt🐝",
             ]:
                 await self.client.send_message(self.cave_leader_id, "_restart")
@@ -1591,7 +1592,7 @@ class RF:
                     await event.message.delete()  # Удаляем сообщение
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
-                    await self.client.send_message(event.chat_id, "Ver.3.25.09")
+                    await self.client.send_message(event.chat_id, "Ver.26.09")
                     await self.client.disconnect()
                     import os, sys
                     os.execv(sys.executable, [sys.executable] + sys.argv)
