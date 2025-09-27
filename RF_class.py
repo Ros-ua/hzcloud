@@ -1592,7 +1592,7 @@ class RF:
                     await event.message.delete()  # Удаляем сообщение
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
-                    await self.client.send_message(event.chat_id, "Ver.26.09")
+                    await self.client.send_message(event.chat_id, "Ver.27.09")
                     await self.client.disconnect()
                     import os, sys
                     os.execv(sys.executable, [sys.executable] + sys.argv)
@@ -1654,17 +1654,17 @@ class RF:
                     if event.sender_id == self.cave_leader_id:
                         print(f"Команда _рес от cave leader {event.sender_id} игнорируется")
                         return
-                    if self.is_has_res:  # Проверяем, что is_has_res равно True
-                            self.is_has_res = False
-                            await asyncio.sleep(randint(14, 20))
-                            await self.client.send_message(self.bot_id, self.hp_binds[0][1])  # Надеваем бинд на самое большое HP
-                            await self.wait_for_set_change()
-                            await asyncio.sleep(1)
-                            await self.cave_buttons_message.click(1)
-                            print(self.my_health, self.my_max_health)
-                            self.my_health = self.my_max_health = self.hp_binds[0][0]
-                            self.last_bind = self.hp_binds[0][1]
-                            await event.message.delete()  # Удаляем сообщение
+                    # if self.is_has_res:  # Проверяем, что is_has_res равно True
+                    self.is_has_res = False
+                    await asyncio.sleep(randint(14, 20))
+                    await self.client.send_message(self.bot_id, self.hp_binds[0][1])  # Надеваем бинд на самое большое HP
+                    await self.wait_for_set_change()
+                    await asyncio.sleep(1)
+                    await self.cave_buttons_message.click(1)
+                    print(self.my_health, self.my_max_health)
+                    self.my_health = self.my_max_health = self.hp_binds[0][0]
+                    self.last_bind = self.hp_binds[0][1]
+                    await event.message.delete()  # Удаляем сообщение
                 elif "_состав" in message_text:  
                     await asyncio.sleep(1)  
                     await self.client.send_message(self.bot_id, "⚖️Проверить состав")
