@@ -584,7 +584,7 @@ class RF:
             self.got_reward = False  # Сбрасываем флаг получения награды
             await asyncio.sleep(1)
             if self.your_name in ["👨‍🦳Пенсионер☠️", 
-            "Ros_Hangzhou",
+            # "Ros_Hangzhou",
             "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗",
             "๖ۣۜᗯαsͥpwͣoͫℝt🐝",
             ]:
