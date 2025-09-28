@@ -1402,7 +1402,7 @@ class RF:
                 elif self.your_name == "Ros_Hangzhou":
                     self.go_term_Basilaris = False
                     self.go_term_Castitas = True
-                    self.go_term_Aquilla = True
+                    self.go_term_Aquilla = False
                 elif self.your_name == "👨‍🦳Пенсионер☠️":
                     self.go_term_Basilaris = False
                     self.go_term_Castitas = False
