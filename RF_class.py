@@ -1423,12 +1423,19 @@ class RF:
                     await self.wait_for_health_refill()
                     await self.client.send_message(self.bot_id, "🌋 Краговые шахты")
             if any("Война окончена!" in ln for ln in lines):
-                await asyncio.sleep(80)
-                await self.client.send_message(self.bot_id, RF.hp)  # Переодеться для мобов
-                await self.wait_for_set_change() #работает
-                await asyncio.sleep(1)
+                await asyncio.sleep(70)
                 if not self.is_moving and not self.killed_on_chv:
                     await self.client.send_message(self.bot_id, "⛏Рудник")
+                await asyncio.sleep(900)  # 15 минут = 900 секунд
+                if not self.is_in_caves:
+                    await self.client.send_message(self.bot_id, RF.hp)  # Переодеться для мобов
+                
+                
+                
+                
+                
+                # # await self.wait_for_set_change() #работает
+                # await asyncio.sleep(1)
                 # if self.is_nacheve_active and not self.is_moving:
                 #     await asyncio.sleep(3)  # Задержка перед следующим действием
                 #     await self.client.send_message(self.bot_id, "⛏Рудник")
@@ -1503,8 +1510,8 @@ class RF:
         """Таймер подготовки к войне - проверяем kopka через 20, 45 и 58 минут"""
         print("Запущен таймер подготовки к войне")
         # Если в ожидании капчи, то сразу выходим
-        if self.waiting_for_captcha:
-            return
+        # if self.waiting_for_captcha:
+        #     return
         # Ждём 20 минут и проверяем kopka и prem
         await asyncio.sleep(1 * 60)  # 20 минут в секундах
         if self.kopka and not self.prem and not self.waiting_for_captcha:
@@ -1593,7 +1600,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    await self.client.send_message(event.chat_id, "Ver.28.09")
+                    await self.client.send_message(event.chat_id, "Ver.29.09")
                     await self.client.disconnect()
                     import os, sys
                     os.execv(sys.executable, [sys.executable] + sys.argv)
