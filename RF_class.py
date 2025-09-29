@@ -1429,11 +1429,6 @@ class RF:
                 await asyncio.sleep(900)  # 15 минут = 900 секунд
                 if not self.is_in_caves:
                     await self.client.send_message(self.bot_id, RF.hp)  # Переодеться для мобов
-                
-                
-                
-                
-                
                 # # await self.wait_for_set_change() #работает
                 # await asyncio.sleep(1)
                 # if self.is_nacheve_active and not self.is_moving:
@@ -1906,6 +1901,38 @@ class RF:
                         await asyncio.sleep(1)
                     await self.client.send_message(self.bot_id, "👩‍🚀Алтарь Иса")
                     await event.message.delete()  # Удаляем сообщение
+                elif "_исс" in message_text:
+                    # Проверяем, что отправитель не является cave leader
+                    if event.sender_id == self.cave_leader_id:
+                        print(f"Команда _исс от cave leader {event.sender_id} игнорируется")
+                        return
+                    if self.is_moving:
+                        await asyncio.sleep(1)
+                        while self.is_moving:
+                            print("Персонаж все еще двигается, ждем...")
+                            await asyncio.sleep(5)
+                        print("Персонаж перестал двигаться.")
+                        await asyncio.sleep(5)
+                    else:
+                        await asyncio.sleep(1)
+                    await self.client.send_message(self.bot_id, "🧝‍♀Алтарь Исс")
+                    await event.message.delete()  # Удаляем сообщение
+                elif "_дагаз" in message_text:
+                    # Проверяем, что отправитель не является cave leader
+                    if event.sender_id == self.cave_leader_id:
+                        print(f"Команда _дагаз от cave leader {event.sender_id} игнорируется")
+                        return
+                    if self.is_moving:
+                        await asyncio.sleep(1)
+                        while self.is_moving:
+                            print("Персонаж все еще двигается, ждем...")
+                            await asyncio.sleep(5)
+                        print("Персонаж перестал двигаться.")
+                        await asyncio.sleep(5)
+                    else:
+                        await asyncio.sleep(1)
+                    await self.client.send_message(self.bot_id, "🧝‍♀Алтарь Дагаз")
+                    await event.message.delete()  # Удаляем сообщение                
                 elif "_heal" in message_text:  # Проверяем наличие команды
                     new_value = int(message_text.split()[-1])
                     self.pvpgoheal = new_value  # Устанавливаем новое значение
