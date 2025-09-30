@@ -1498,6 +1498,7 @@ class RF:
         self.go_term_Basilaris = False        
         await asyncio.sleep(6 * 60)  # 6 минут в секундах (итого 39 минут)
         self.go_to_heal = False
+        self.go_term_Castitas = False
         await asyncio.sleep(4 * 60)  # 4 минуты в секундах (итого 43 минуты)
         self.go_to_heal = True
         print("Через 43 минуты после начала войны установлено go_to_heal = True")
@@ -1595,7 +1596,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    await self.client.send_message(event.chat_id, "Ver.29.09")
+                    await self.client.send_message(event.chat_id, "Ver.30.09")
                     await self.client.disconnect()
                     import os, sys
                     os.execv(sys.executable, [sys.executable] + sys.argv)
