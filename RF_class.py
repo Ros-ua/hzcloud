@@ -77,6 +77,9 @@ class RF:
         if self.your_name == "👨‍🦳Пенсионер☠️":
             self.mob_heal = 2000
             self.pvpgoheal = 3500
+        elif self.your_name == "๖ۣۜᗯαsͥpwͣoͫℝt🐝":
+            self.mob_heal = 7500
+            self.pvpgoheal = 4500
         else:
             self.mob_heal = 6400
             self.pvpgoheal = 4500
@@ -1596,7 +1599,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    await self.client.send_message(event.chat_id, "Ver.30.09")
+                    await self.client.send_message(event.chat_id, "Ver.01.10")
                     await self.client.disconnect()
                     import os, sys
                     os.execv(sys.executable, [sys.executable] + sys.argv)
