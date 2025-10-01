@@ -1440,7 +1440,7 @@ class RF:
                 # else:
                 #     await asyncio.sleep(3)
                 #     await self.client.send_message(self.bot_id, "⛏Рудник")
-            if any(("Castitas одолела" in ln or "Castitas не смогла одолеть" in ln) for ln in lines):
+            if any(("Castitas одолела" in ln or "Castitas не смогла одолеть" in ln or "Босс" in ln and "пал!" in ln) for ln in lines):
                 if not self.is_in_caves:
                     await asyncio.sleep(15)
                     await self.client.send_message(self.bot_id, RF.hp)
@@ -1487,6 +1487,97 @@ class RF:
                         await asyncio.sleep(1)  
                         print(f"Копка не активна, сразу отправляем '{chosen_direction}'")
                         await self.client.send_message(self.bot_id, chosen_direction)
+
+            elif any("Стальной аргол для расы" in ln and "Castitas" in ln for ln in lines):
+                print("Аргол появился")
+                if not self.is_in_caves and not self.in_castle:
+                    # Выбираем случайное направление
+                    chosen_direction = random.choice(RF.directions)
+                    print(f"Выбрано направление: {chosen_direction}")
+                    if self.kopka:
+                        print("Копка активна, отправляем сообщение '🏛 В ген. штаб'")
+                        await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
+                        await asyncio.sleep(5)
+                        await self.client.send_message(self.bot_id, RF.chv)
+                        await self.wait_for_set_change()
+                        await asyncio.sleep(1)
+                        while self.is_moving:
+                            print("Персонаж все еще двигается, ждем...")
+                            await asyncio.sleep(5)
+                        print("Персонаж перестал двигаться.")
+                        await asyncio.sleep(5)
+                        await self.client.send_message(self.bot_id, chosen_direction + "'")
+                    else:
+                        await self.client.send_message(self.bot_id, RF.chv)
+                        await self.wait_for_set_change()
+                        await asyncio.sleep(1)  
+                        print(f"Копка не активна, сразу отправляем '{chosen_direction}'")
+                        await self.client.send_message(self.bot_id, chosen_direction + "'")
+
+            elif any("Варасса для расы" in ln and "Castitas" in ln for ln in lines):
+                print("Варасса появилась")
+                if not self.is_in_caves and not self.in_castle:
+                    # Выбираем случайное направление
+                    chosen_direction = random.choice(RF.directions)
+                    print(f"Выбрано направление: {chosen_direction}")
+                    if self.kopka:
+                        print("Копка активна, отправляем сообщение '🏛 В ген. штаб'")
+                        await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
+                        await asyncio.sleep(5)
+                        await self.client.send_message(self.bot_id, RF.chv)
+                        await self.wait_for_set_change()
+                        await asyncio.sleep(1)
+                        while self.is_moving:
+                            print("Персонаж все еще двигается, ждем...")
+                            await asyncio.sleep(5)
+                        print("Персонаж перестал двигаться.")
+                        await asyncio.sleep(5)
+                        await self.client.send_message(self.bot_id, chosen_direction + "''")
+                    else:
+                        await self.client.send_message(self.bot_id, RF.chv)
+                        await self.wait_for_set_change()
+                        await asyncio.sleep(1)  
+                        print(f"Копка не активна, сразу отправляем '{chosen_direction}''")
+                        await self.client.send_message(self.bot_id, chosen_direction + "''")
+
+            elif any("Трашер для расы" in ln and "Castitas" in ln for ln in lines):
+                print("Трашер появился")
+                if not self.is_in_caves and not self.in_castle:
+                    # Выбираем случайное направление
+                    chosen_direction = random.choice(RF.directions)
+                    print(f"Выбрано направление: {chosen_direction}")
+                    if self.kopka:
+                        print("Копка активна, отправляем сообщение '🏛 В ген. штаб'")
+                        await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
+                        await asyncio.sleep(5)
+                        await self.client.send_message(self.bot_id, RF.chv)
+                        await self.wait_for_set_change()
+                        await asyncio.sleep(1)
+                        while self.is_moving:
+                            print("Персонаж все еще двигается, ждем...")
+                            await asyncio.sleep(5)
+                        print("Персонаж перестал двигаться.")
+                        await asyncio.sleep(5)
+                        await self.client.send_message(self.bot_id, chosen_direction + "'''")
+                    else:
+                        await self.client.send_message(self.bot_id, RF.chv)
+                        await self.wait_for_set_change()
+                        await asyncio.sleep(1)  
+                        print(f"Копка не активна, сразу отправляем '{chosen_direction}'''")
+                        await self.client.send_message(self.bot_id, chosen_direction + "'''")
+
+
+
+
+
+
+
+
+
+
+
+
+
             # Обработка предупреждения о войне через час
             if any("Война в краговых шахтах начнется через час!" in ln for ln in lines):
                 print("Обнаружено предупреждение о войне через час!")
@@ -1599,7 +1690,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    await self.client.send_message(event.chat_id, "Ver.01.10")
+                    await self.client.send_message(event.chat_id, "Ver.b.01.10")
                     await self.client.disconnect()
                     import os, sys
                     os.execv(sys.executable, [sys.executable] + sys.argv)
