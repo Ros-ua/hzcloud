@@ -1487,7 +1487,6 @@ class RF:
                         await asyncio.sleep(1)  
                         print(f"Копка не активна, сразу отправляем '{chosen_direction}'")
                         await self.client.send_message(self.bot_id, chosen_direction)
-
             elif any("Стальной аргол для расы" in ln and "Castitas" in ln for ln in lines):
                 print("Аргол появился")
                 if not self.is_in_caves and not self.in_castle:
@@ -1513,7 +1512,6 @@ class RF:
                         await asyncio.sleep(1)  
                         print(f"Копка не активна, сразу отправляем '{chosen_direction}'")
                         await self.client.send_message(self.bot_id, chosen_direction + "'")
-
             elif any("Варасса для расы" in ln and "Castitas" in ln for ln in lines):
                 print("Варасса появилась")
                 if not self.is_in_caves and not self.in_castle:
@@ -1539,7 +1537,6 @@ class RF:
                         await asyncio.sleep(1)  
                         print(f"Копка не активна, сразу отправляем '{chosen_direction}''")
                         await self.client.send_message(self.bot_id, chosen_direction + "''")
-
             elif any("Трашер для расы" in ln and "Castitas" in ln for ln in lines):
                 print("Трашер появился")
                 if not self.is_in_caves and not self.in_castle:
@@ -1565,19 +1562,6 @@ class RF:
                         await asyncio.sleep(1)  
                         print(f"Копка не активна, сразу отправляем '{chosen_direction}'''")
                         await self.client.send_message(self.bot_id, chosen_direction + "'''")
-
-
-
-
-
-
-
-
-
-
-
-
-
             # Обработка предупреждения о войне через час
             if any("Война в краговых шахтах начнется через час!" in ln for ln in lines):
                 print("Обнаружено предупреждение о войне через час!")
@@ -1690,7 +1674,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    await self.client.send_message(event.chat_id, "Ver.02.10")
+                    await self.client.send_message(event.chat_id, "Ver.h.02.10")
                     await self.client.disconnect()
                     import os, sys
                     os.execv(sys.executable, [sys.executable] + sys.argv)
@@ -2027,7 +2011,24 @@ class RF:
                     else:
                         await asyncio.sleep(1)
                     await self.client.send_message(self.bot_id, "🧝‍♀Алтарь Дагаз")
-                    await event.message.delete()  # Удаляем сообщение                
+                    await event.message.delete()  # Удаляем сообщение 
+                elif "_хагал" in message_text:
+                    # Проверяем, что отправитель не является cave leader
+                    if event.sender_id == self.cave_leader_id:
+                        print(f"Команда _хагал от cave leader {event.sender_id} игнорируется")
+                        return
+                    self.go_term_Castitas = True
+                    if self.is_moving:
+                        await asyncio.sleep(1)
+                        while self.is_moving:
+                            print("Персонаж все еще двигается, ждем...")
+                            await asyncio.sleep(5)
+                        print("Персонаж перестал двигаться.")
+                        await asyncio.sleep(5)
+                    else:
+                        await asyncio.sleep(1)
+                    await self.client.send_message(self.bot_id, "🧝‍♀Алтарь Хагал")
+                    await event.message.delete()  # Удаляем сообщение
                 elif "_heal" in message_text:  # Проверяем наличие команды
                     new_value = int(message_text.split()[-1])
                     self.pvpgoheal = new_value  # Устанавливаем новое значение
