@@ -1401,7 +1401,7 @@ class RF:
                 if self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
                     self.go_term_Aquilla = False
                     self.go_term_Castitas = False
-                    self.go_term_Basilaris = False
+                    self.go_term_Basilaris = True
                 elif self.your_name == "Ros_Hangzhou":
                     self.go_term_Basilaris = False
                     self.go_term_Castitas = False
@@ -1413,7 +1413,7 @@ class RF:
                 elif self.your_name == "๖ۣۜᗯαsͥpwͣoͫℝt🐝":
                     self.go_term_Basilaris = False
                     self.go_term_Castitas = False
-                    self.go_term_Aquilla = False
+                    self.go_term_Aquilla = True
                 #  Запускаем таймер для изменения pvpgoheal через 38 минут
                 asyncio.create_task(self.pvp_heal_timer())                
                 if not any([self.is_in_caves, self.kopka, self.is_moving]):
@@ -1674,7 +1674,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    await self.client.send_message(event.chat_id, "Ver.d.02.10")
+                    await self.client.send_message(event.chat_id, "Ver.e.02.10")
                     await self.client.disconnect()
                     import os, sys
                     os.execv(sys.executable, [sys.executable] + sys.argv)
