@@ -1404,11 +1404,11 @@ class RF:
                     self.go_term_Basilaris = False
                 elif self.your_name == "Ros_Hangzhou":
                     self.go_term_Basilaris = False
-                    self.go_term_Castitas = True
+                    self.go_term_Castitas = False
                     self.go_term_Aquilla = True
                 elif self.your_name == "👨‍🦳Пенсионер☠️":
                     self.go_term_Basilaris = False
-                    self.go_term_Castitas = False
+                    self.go_term_Castitas = True
                     self.go_term_Aquilla = False         
                 elif self.your_name == "๖ۣۜᗯαsͥpwͣoͫℝt🐝":
                     self.go_term_Basilaris = False
@@ -1674,7 +1674,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    await self.client.send_message(event.chat_id, "Ver.h.02.10")
+                    await self.client.send_message(event.chat_id, "Ver.d.02.10")
                     await self.client.disconnect()
                     import os, sys
                     os.execv(sys.executable, [sys.executable] + sys.argv)
