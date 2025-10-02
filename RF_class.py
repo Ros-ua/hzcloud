@@ -1690,7 +1690,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    await self.client.send_message(event.chat_id, "Ver.b.01.10")
+                    await self.client.send_message(event.chat_id, "Ver.02.10")
                     await self.client.disconnect()
                     import os, sys
                     os.execv(sys.executable, [sys.executable] + sys.argv)
@@ -2194,8 +2194,9 @@ class RF:
             # Условие выхода из цикла (например, по какому-то флагу)
             if not self.is_in_caves or not self.is_cave_leader:  # Если не в пещере или не лидер, выходим из цикла
                 # await self.client.send_message(self.cave_leader_id, "Вы не были в пещере или не нажали кнопку.")  # Сообщение о том, что не нажали
-                await asyncio.sleep(3)
-                await self.client.send_message(self.bot_id, "/daily")
+                if not self.waiting_for_captcha:  # Если не ждём капчу, отправляем /daily
+                    await asyncio.sleep(3)
+                    await self.client.send_message(self.bot_id, "/daily")
                 break
             # Если `self.is_moving` активен, ждем, пока он не станет `False`
             while self.is_moving:
