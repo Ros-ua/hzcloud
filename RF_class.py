@@ -1681,29 +1681,27 @@ class RF:
                 #     os.execv(sys.executable, [sys.executable] + sys.argv)
 
                 elif message_text.startswith("_restart"):
-                    # --- парсим аргумент -------------------------------------------------
                     parts = message_text.split()
-                    delay = 0
+                    delay = 0  # по умолчанию — сразу
                     if len(parts) == 2 and parts[1].isdigit():
-                        delay = int(parts[1])          # минуты
-                    # ---------------------------------------------------------------------
+                        delay = int(parts[1])
 
-                    await event.message.delete()       # убираем саму команду
-
-                    if delay:
-                        await self.client.send_message(
-                            event.chat_id,
-                            f"⏱ Перезапуск через **{delay}** мин."
-                        )
-                        await asyncio.sleep(delay * 60)  # ждём N минут
-
+                    await event.message.delete()
                     await self.client.send_message(
                         event.chat_id,
-                        "🔄 **Ver.3.3.10** – перезапускаюсь…"
+                        f"⏱ Выключаюсь и перезапущусь через {delay} мин."
                     )
+
+                    import os, sys, shlex, subprocess
+                    # Планируем перезапуск через ОС
+                    subprocess.Popen([
+                        "bash", "-c",
+                        f"sleep {delay * 60} && cd {shlex.quote(os.getcwd())} && "
+                        f"{shlex.quote(sys.executable)} {shlex.quote(sys.argv[0])} &"
+                    ])
+
                     await self.client.disconnect()
-                    import os, sys
-                    os.execv(sys.executable, [sys.executable] + sys.argv)
+                    os._exit(0)  # <-- ВЫХОД, без возврата
 
 
                 elif "_пещера" in message_text:  
