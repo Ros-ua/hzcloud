@@ -1675,7 +1675,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    await self.client.send_message(event.chat_id, "Ver.2.3.10")
+                    await self.client.send_message(event.chat_id, "Ver.3.3.10")
                     await self.client.disconnect()
                     import os, sys
                     os.execv(sys.executable, [sys.executable] + sys.argv)
@@ -1712,8 +1712,6 @@ class RF:
                     await asyncio.sleep(1)  
                     await self.cave_buttons_message.click(2)
                     await event.message.delete()  # Удаляем сообщение
-                
-                
                 elif "_мобы" in message_text:  
                     self.mobs = True
                     self.location = "🔥 61-65 Лес пламени"  # Добавьте эту строку
@@ -1721,7 +1719,6 @@ class RF:
                     await self.wait_for_set_change()
                     await asyncio.sleep(1)
                     await event.message.delete()
-
                 elif "_этер" in message_text:
                     self.mobs = True  # или False, в зависимости от вашей логики
                     self.location = "🏔 Этер"
@@ -1729,8 +1726,6 @@ class RF:
                     await self.wait_for_set_change()
                     await asyncio.sleep(1)
                     await event.message.delete()
-                
-                
                 elif "_данжи" in message_text:  
                     self.mobs = False  # Устанавливаем флаг для данжей
                     # await self.client.send_message(self.cave_leader_id, "Ходим в данжи")  # Сообщение об изменении флага
