@@ -43,6 +43,7 @@ class RF:
         self.ned_hill_hp = 1500
         self.bezvgroup = -1002220238697
         self.group59 = -1001323974021
+        self.location = "🔥 61-65 Лес пламени"  # Локация по умолчанию
         # === КОНФИГ И ВЫЧИСЛЕНИЯ ===
         self.pvp_binds = RF_config.pvp_binds
         self.hp_binds = RF_config.hp_binds
@@ -481,7 +482,7 @@ class RF:
                         print(f"{player} не в ген. штабе")
                         await self.client.send_message(self.players[player], "Давайте в ген. штаб")
             if self.mobs:  # Проверяем, включен ли флаг для мобов
-                await self.client.send_message(self.bot_id, "🔥 61-65 Лес пламени")  # для мобов
+                await self.client.send_message(self.bot_id, self.location))  # для мобов
             else:
                 print("bag bag bag")  # для данжей
         elif "Если ты хочешь вернуть группу" in lstr[0]:
@@ -522,7 +523,7 @@ class RF:
             await self.straj()
         elif "Босс еще не появился. Проход в локацию закрыт!" in lstr[0]:  # если умер на страже и снова хочешь идти на стража
             await asyncio.sleep(1)
-            await self.client.send_message(self.bot_id, "🔥 61-65 Лес пламени")
+            await self.client.send_message(self.bot_id, self.location))
         # на чв
         elif "Ты был убит!" in lstr[0]:  # Добавлено условие для проверки фразы
             # Проверяем, если в ожидании капчи
@@ -722,7 +723,7 @@ class RF:
         elif "Ты закончил тренировку" in lstr[0]:
             self.is_training = False
             await asyncio.sleep(1)
-            await self.client.send_message(self.bot_id, "🔥 61-65 Лес пламени")
+            await self.client.send_message(self.bot_id, self.location))
         elif "Ты начал тренировку" in lstr[0]:
             self.is_training = True
         # elif "Как долго ты хочешь тренировать питомца" in lstr[0]:
@@ -793,7 +794,7 @@ class RF:
             if energy_low:
                 print("нет энергии или кто-то не в гш")
                 await asyncio.sleep(1)
-                await self.client.send_message(self.bot_id, "🔥 61-65 Лес пламени")
+                await self.client.send_message(self.bot_id, self.location))
                 print("Отправлено сообщение: 🔥 61-65 Лес пламени")
                 return
             if is_dead:
@@ -840,7 +841,7 @@ class RF:
                     if not self.waiting_for_captcha:
                         await self.client.send_message(self.bot_id, "💖 Пополнить здоровье")
                         await self.wait_for_health_refill()
-                        await self.client.send_message(self.bot_id, "🔥 61-65 Лес пламени")
+                        await self.client.send_message(self.bot_id, self.location))
                     return
             await asyncio.sleep(1)
     async def arrival_hil(self):  # ходим на моба
@@ -1448,7 +1449,7 @@ class RF:
                     await asyncio.sleep(1)
                     if not self.is_moving and not self.in_castle:
                         await asyncio.sleep(5)
-                        await self.client.send_message(self.bot_id, "🔥 61-65 Лес пламени")
+                        await self.client.send_message(self.bot_id, self.location))
             if any("Осада замков закончилась" in ln for ln in lines):
                 self.in_castle = False
                 if not self.is_in_caves and not self.waiting_for_captcha and not self.is_moving:
@@ -1456,12 +1457,12 @@ class RF:
                     await self.client.send_message(self.bot_id, RF.hp)
                     await self.wait_for_set_change() 
                     await asyncio.sleep(2)
-                    await self.client.send_message(self.bot_id, "🔥 61-65 Лес пламени") 
+                    await self.client.send_message(self.bot_id, self.location)) 
             if any("Страж будет уязвим для атак расы" in ln and "Castitas" in ln for ln in lines):
                 print("Получено сообщение о появлении стража через 15 минут")
                 if not self.is_in_caves and not self.in_castle:
                     print("Отправляем сообщение '🔥 61-65 Лес пламени'")
-                    await self.client.send_message(self.bot_id, "🔥 61-65 Лес пламени")   
+                    await self.client.send_message(self.bot_id, self.location))   
             if any("Он уязвим только для атак расы" in ln and "Castitas" in ln for ln in lines):
                 print("Страж появился")
                 if not self.is_in_caves and not self.in_castle:
@@ -1590,7 +1591,7 @@ class RF:
         await asyncio.sleep(1 * 60)  # 20 минут в секундах
         if self.kopka and not self.prem and not self.waiting_for_captcha:
             print("Через 1 минут kopka=True и prem=False, отправляем в Лес пламени")
-            await self.client.send_message(self.bot_id, "🔥 61-65 Лес пламени")
+            await self.client.send_message(self.bot_id, self.location))
         else:
             if not self.kopka:
                 print("Через 1 минут kopka=False")
@@ -1600,7 +1601,7 @@ class RF:
         await asyncio.sleep(44 * 60)
         if self.kopka and self.prem and not self.waiting_for_captcha:
             print("Через 45 минут kopka=True и prem=True, отправляем в Лес пламени")
-            await self.client.send_message(self.bot_id, "🔥 61-65 Лес пламени")
+            await self.client.send_message(self.bot_id, self.location))
         else:
             if not self.kopka:
                 print("Через 45 минут kopka=False")
@@ -1674,7 +1675,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    await self.client.send_message(event.chat_id, "Ver.e.02.10")
+                    await self.client.send_message(event.chat_id, "Ver.3.10")
                     await self.client.disconnect()
                     import os, sys
                     os.execv(sys.executable, [sys.executable] + sys.argv)
@@ -1711,13 +1712,25 @@ class RF:
                     await asyncio.sleep(1)  
                     await self.cave_buttons_message.click(2)
                     await event.message.delete()  # Удаляем сообщение
+                
+                
                 elif "_мобы" in message_text:  
-                    self.mobs = True  # Устанавливаем флаг для мобов
-                    # await self.client.send_message(self.cave_leader_id, "Ходим на мобов")  # Сообщение об изменении флага
-                    await self.client.send_message(self.bot_id, RF.hp)  # переодеться для мобов
-                    await self.wait_for_set_change() #работает
+                    self.mobs = True
+                    self.location = "🔥 61-65 Лес пламени"  # Добавьте эту строку
+                    await self.client.send_message(self.bot_id, RF.hp)
+                    await self.wait_for_set_change()
                     await asyncio.sleep(1)
-                    await event.message.delete()  # Удаляем сообщение
+                    await event.message.delete()
+
+                elif "_этер" in message_text:
+                    self.mobs = True  # или False, в зависимости от вашей логики
+                    self.location = "🏔 Этер"
+                    await self.client.send_message(self.bot_id, RF.hp)
+                    await self.wait_for_set_change()
+                    await asyncio.sleep(1)
+                    await event.message.delete()
+                
+                
                 elif "_данжи" in message_text:  
                     self.mobs = False  # Устанавливаем флаг для данжей
                     # await self.client.send_message(self.cave_leader_id, "Ходим в данжи")  # Сообщение об изменении флага
@@ -1755,7 +1768,7 @@ class RF:
                     if self.is_in_caves:
                         return
                     await asyncio.sleep(1)  
-                    await self.client.send_message(self.bot_id, "🔥 61-65 Лес пламени")
+                    await self.client.send_message(self.bot_id, self.location))
                     await event.message.delete()  # Удаляем сообщение
                 elif "_булочка" in message_text:  
                     await asyncio.sleep(1)  
@@ -1816,12 +1829,12 @@ class RF:
                             await asyncio.sleep(5)  # Проверяем каждые 5 секунд
                         # Отправляем команду боту
                         await asyncio.sleep(2)  # Ждем 2 секунды
-                        await self.client.send_message(self.bot_id, "🔥 61-65 Лес пламени")
+                        await self.client.send_message(self.bot_id, self.location))
                     else:
                         # Если движение не активно, выполняем команду
                         await asyncio.sleep(1)
                         if self.kopka:  # Проверяем значение self.kopka
-                            await self.client.send_message(self.bot_id, "🔥 61-65 Лес пламени")
+                            await self.client.send_message(self.bot_id, self.location))
                             # Отправляем сообщение пользователю
                             await self.client.send_message(
                                 event.sender_id,  # ID пользователя, который отправил команду
