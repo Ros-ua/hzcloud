@@ -1689,25 +1689,19 @@ class RF:
                     await event.message.delete()
                     await self.client.send_message(
                         event.chat_id,
-                        f"⏱ Выключаюсь и перезапущусь через {delay} мин."
+                        f"⏱ Перезапуск через {delay} мин."
                     )
 
-                    import os, sys, shlex, subprocess
-                    # 1. Корректно закрываем клиента и сессию
+                    # 1. Корректно закрываем клиента
                     await self.client.disconnect()
-                    if hasattr(self.client, 'session'):
-                        await self.client.session.close()   # Telethon 1.24+
+                    if hasattr(self.client, 'session') and hasattr(self.client.session, 'close'):
+                        self.client.session.close()
 
-                    # 2. Планируем перезапуск
-                    subprocess.Popen([
-                        "bash", "-c",
-                        f"sleep {delay * 60} && cd {shlex.quote(os.getcwd())} && "
-                        f"{shlex.quote(sys.executable)} {shlex.quote(sys.argv[0])} &"
-                    ])
+                    # 2. Ждём N минут внутри Python
+                    await asyncio.sleep(delay * 60)
 
-                    # 3. Теперь можно выходить
-                    os._exit(0)
-
+                    # 3. Перезапускаемся внутри того же процесса
+                    os.execv(sys.executable, [sys.executable] + sys.argv)
 
                 elif "_пещера" in message_text:  
                     # Проверяем, что отправитель не является cave leader
