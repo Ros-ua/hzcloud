@@ -1672,37 +1672,13 @@ class RF:
                         return  
                     await self.client.send_message(self.bot_id, "🌋 Краговые шахты")
                     await event.message.delete()  # Удаляем сообщение
-                # elif "_restart" in message_text:
-                #     print("Получена команда перезапуска")
-                #     await event.message.delete()  # Удаляем сообщение
-                #     await self.client.send_message(event.chat_id, "Ver.3.3.10")
-                #     await self.client.disconnect()
-                #     import os, sys
-                #     os.execv(sys.executable, [sys.executable] + sys.argv)
-
-                elif message_text.startswith("_restart"):
-                    parts = message_text.split()
-                    delay = 0
-                    if len(parts) == 2 and parts[1].isdigit():
-                        delay = int(parts[1])
-
-                    await event.message.delete()
-                    await self.client.send_message(
-                        event.chat_id,
-                        f"⏱ Перезапуск через {delay} мин."
-                    )
-
-                    # 1. Корректно закрываем клиента
+                elif "_restart" in message_text:
+                    print("Получена команда перезапуска")
+                    await event.message.delete()  # Удаляем сообщение
+                    await self.client.send_message(event.chat_id, "Ver.3.3.10")
                     await self.client.disconnect()
-                    if hasattr(self.client, 'session') and hasattr(self.client.session, 'close'):
-                        self.client.session.close()
-
-                    # 2. Ждём N минут внутри Python
-                    await asyncio.sleep(delay * 60)
-
-                    # 3. Перезапускаемся внутри того же процесса
+                    import os, sys
                     os.execv(sys.executable, [sys.executable] + sys.argv)
-
                 elif "_пещера" in message_text:  
                     # Проверяем, что отправитель не является cave leader
                     if event.sender_id == self.cave_leader_id:
