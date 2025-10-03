@@ -1682,7 +1682,7 @@ class RF:
 
                 elif message_text.startswith("_restart"):
                     parts = message_text.split()
-                    delay = 0  # по умолчанию — сразу
+                    delay = 0
                     if len(parts) == 2 and parts[1].isdigit():
                         delay = int(parts[1])
 
@@ -1693,15 +1693,20 @@ class RF:
                     )
 
                     import os, sys, shlex, subprocess
-                    # Планируем перезапуск через ОС
+                    # 1. Корректно закрываем клиента и сессию
+                    await self.client.disconnect()
+                    if hasattr(self.client, 'session'):
+                        await self.client.session.close()   # Telethon 1.24+
+
+                    # 2. Планируем перезапуск
                     subprocess.Popen([
                         "bash", "-c",
                         f"sleep {delay * 60} && cd {shlex.quote(os.getcwd())} && "
                         f"{shlex.quote(sys.executable)} {shlex.quote(sys.argv[0])} &"
                     ])
 
-                    await self.client.disconnect()
-                    os._exit(0)  # <-- ВЫХОД, без возврата
+                    # 3. Теперь можно выходить
+                    os._exit(0)
 
 
                 elif "_пещера" in message_text:  
