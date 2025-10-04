@@ -9,7 +9,7 @@ import datetime
 import threading
 import RF_config  # Добавить в начало файла с остальными импортами
 import time
-#^\s*$\n в поиске
+#       ^\s*$\n            в поиске
 class RF:
     # Берем настройки из конфига
     cave_leader_id = RF_config.cave_leader_id
@@ -433,6 +433,10 @@ class RF:
         elif lstr[0].endswith("✅"): 
             await asyncio.sleep(1)
             await self.client.send_message(self.group59, "Капча пройдена")  # Отправляем сообщение
+        # ── новое условие для пересылки «Ты направляешься в замок» ──
+        elif lstr[0].startswith("Ты направляешься в замок"):
+            await message.forward_to(self.group59)   # пересылаем в группу 59
+            print("Переслано сообщение о направлении в замок")
         elif "Ваша группа прибудет в ген. штаб через" in lstr[0]:
             print("чувачок, ты закончил пещеру")
             await asyncio.sleep(5)
@@ -1679,7 +1683,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    await self.client.send_message(event.chat_id, "Ver.7.10")
+                    await self.client.send_message(event.chat_id, "Ver.8.10")
                     await self.client.disconnect()
                     import os, sys
                     os.execv(sys.executable, [sys.executable] + sys.argv)
