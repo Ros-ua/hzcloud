@@ -1639,12 +1639,13 @@ class RF:
                     print("Отправляем команду /drink_102")
                     await self.client.send_message(self.bot_id, "/drink_102")
                     await event.message.delete()  # Удаляем сообщение
-              elif any(key in message_text for key in [
+                elif any(key in message_text for key in [
                     "_🕌 нова", "_🕌 мира", "_🕌 антарес", "_🕌 фобос", "_🕌 арэс", 
                     "_🕌 торн", "_🕌 кастор", "_🕌 конкорд", "_🕌 гром", "_🕌 алькор", 
                     "_🏯 беллатрикс", "_🏯 иерихон", "_🏯 цефея", "_🏯 супер нова", 
                     "_🏰 альдебаран", "_🏰 бетельгейзе"
-                ]):                    # Проверяем, что отправитель не является cave leader
+                ]):                    
+                # Проверяем, что отправитель не является cave leader
                     if event.sender_id == self.cave_leader_id:
                         print(f"Команда замка от cave leader {event.sender_id} игнорируется")
                         return
@@ -1736,7 +1737,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    await self.client.send_message(event.chat_id, "Ver.c.10")
+                    await self.client.send_message(event.chat_id, "Ver.c9.10")
                     await self.client.disconnect()
                     import os, sys
                     os.execv(sys.executable, [sys.executable] + sys.argv)
