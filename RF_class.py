@@ -430,6 +430,11 @@ class RF:
             if self.fast_cave:  # Проверка значения fast_ceve
                 await asyncio.sleep(1)
                 await self.cave_buttons_message.click(2)
+
+        elif "✅" in lstr[0]:
+            await asyncio.sleep(1)
+            await self.client.send_message(self.group59, "Капча пройдена")  # Отправляем сообщение
+                
         elif "Ваша группа прибудет в ген. штаб через" in lstr[0]:
             print("чувачок, ты закончил пещеру")
             await asyncio.sleep(5)
@@ -1201,7 +1206,7 @@ class RF:
                 print("Проверка статуса капчи...")
                 await asyncio.sleep(20)  # Проверяем каждые 20 секунд
             print("Капча решена, продолжаем...")
-            await self.client.send_message(self.group59, "Капча пройдена")  # Отправляем сообщение
+            # await self.client.send_message(self.group59, "Капча пройдена")  # Отправляем сообщение
         # Ожидание пополнения здоровья после решения капчи
         while True:
             last_message = await self.client.get_messages(self.bot_id, limit=2)
@@ -1675,7 +1680,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    await self.client.send_message(event.chat_id, "Ver.4.10")
+                    await self.client.send_message(event.chat_id, "Ver.c.4.10")
                     await self.client.disconnect()
                     import os, sys
                     os.execv(sys.executable, [sys.executable] + sys.argv)
@@ -2295,7 +2300,7 @@ class RF:
                     print("Проверка статуса капчи...")
                     await asyncio.sleep(20)  # Проверяем каждые 20 секунд
                 print("Капча решена, продолжаем...")
-                await self.client.send_message(self.group59, "Капча пройдена")  # Отправляем сообщение
+                # await self.client.send_message(self.group59, "Капча пройдена")  # Отправляем сообщение
             # После решения капчи или если её не было - проверяем прибытие
             if self.mobs:  # Проверяем, включен ли флаг для мобов
                 await self.check_arrival()         # для мобов
