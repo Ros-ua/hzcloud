@@ -1400,9 +1400,9 @@ class RF:
                 self.go_to_heal = True
                 # Логика для различных типов пользователей
                 if self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
-                    self.go_term_Aquilla = False
+                    self.go_term_Basilaris = False
                     self.go_term_Castitas = False
-                    self.go_term_Basilaris = True
+                    self.go_term_Aquilla = True
                 elif self.your_name == "Ros_Hangzhou":
                     self.go_term_Basilaris = False
                     self.go_term_Castitas = True
@@ -1675,7 +1675,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    await self.client.send_message(event.chat_id, "Ver.3.3.10")
+                    await self.client.send_message(event.chat_id, "Ver.4.10")
                     await self.client.disconnect()
                     import os, sys
                     os.execv(sys.executable, [sys.executable] + sys.argv)
