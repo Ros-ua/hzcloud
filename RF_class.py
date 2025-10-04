@@ -1639,6 +1639,59 @@ class RF:
                     print("Отправляем команду /drink_102")
                     await self.client.send_message(self.bot_id, "/drink_102")
                     await event.message.delete()  # Удаляем сообщение
+              elif any(key in message_text for key in [
+                    "_🕌 нова", "_🕌 мира", "_🕌 антарес", "_🕌 фобос", "_🕌 арэс", 
+                    "_🕌 торн", "_🕌 кастор", "_🕌 конкорд", "_🕌 гром", "_🕌 алькор", 
+                    "_🏯 беллатрикс", "_🏯 иерихон", "_🏯 цефея", "_🏯 супер нова", 
+                    "_🏰 альдебаран", "_🏰 бетельгейзе"
+                ]):                    # Проверяем, что отправитель не является cave leader
+                    if event.sender_id == self.cave_leader_id:
+                        print(f"Команда замка от cave leader {event.sender_id} игнорируется")
+                        return
+                  # Словарь команд замков
+                    castle_commands = {
+                        "_🕌 нова": "🕌 Нова",
+                        "_🕌 мира": "🕌 Мира",
+                        "_🕌 антарес": "🕌 Антарес",
+                        "_🕌 фобос": "🕌 Фобос",
+                        "_🕌 арэс": "🕌 Арэс",
+                        "_🕌 торн": "🕌 Торн",
+                        "_🕌 кастор": "🕌 Кастор",
+                        "_🕌 конкорд": "🕌 Конкорд",
+                        "_🕌 гром": "🕌 Гром",
+                        "_🕌 алькор": "🕌 Алькор",
+                        "_🏯 беллатрикс": "🏯 Беллатрикс",
+                        "_🏯 иерихон": "🏯 Иерихон",
+                        "_🏯 цефея": "🏯 Цефея",
+                        "_🏯 супер нова": "🏯 Супер нова",
+                        "_🏰 альдебаран": "🏰 Альдебаран",
+                        "_🏰 бетельгейзе": "🏰 Бетельгейзе"
+                    }
+                  # Находим соответствующую команду
+                    castle_command = None
+                    for key, value in castle_commands.items():
+                        if key in message_text:
+                            castle_command = value
+                            break
+                    if castle_command:
+                        if self.kopka:  
+                            print(f"Отправляем комплект chv для замка {castle_command}")
+                            await self.client.send_message(self.bot_id, RF.chv)
+                            await self.wait_for_set_change()
+                            await asyncio.sleep(1)
+                            print(f"Отправляем команду в ген. штаб")
+                            await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
+                            await self.arrival_hil()
+                            await asyncio.sleep(2)
+                            await self.client.send_message(self.bot_id, castle_command)
+                        else:
+                            await self.client.send_message(self.bot_id, RF.chv)
+                            await self.wait_for_set_change()
+                            await asyncio.sleep(1)
+                            await self.client.send_message(self.bot_id, "💖 Пополнить здоровье")
+                            await asyncio.sleep(3)
+                            await self.client.send_message(self.bot_id, castle_command)
+                        await event.message.delete()
                 elif "_фольт" in message_text:
                     # Проверяем, что отправитель не является cave leader
                     # if event.sender_id == self.cave_leader_id:
@@ -1683,7 +1736,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    await self.client.send_message(event.chat_id, "Ver.8.10")
+                    await self.client.send_message(event.chat_id, "Ver.c.10")
                     await self.client.disconnect()
                     import os, sys
                     os.execv(sys.executable, [sys.executable] + sys.argv)
