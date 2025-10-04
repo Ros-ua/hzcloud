@@ -1679,7 +1679,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    await self.client.send_message(event.chat_id, "Ver.6.10")
+                    await self.client.send_message(event.chat_id, "Ver.7.10")
                     await self.client.disconnect()
                     import os, sys
                     os.execv(sys.executable, [sys.executable] + sys.argv)
