@@ -432,7 +432,7 @@ class RF:
                 await self.cave_buttons_message.click(2)
         elif "✅" in lstr[0]:
             await asyncio.sleep(1)
-            await self.client.send_message(self.group59, "Капча пройдена")  # Отправляем сообщение
+            # await self.client.send_message(self.group59, "Капча пройдена")  # Отправляем сообщение
         elif "Ваша группа прибудет в ген. штаб через" in lstr[0]:
             print("чувачок, ты закончил пещеру")
             await asyncio.sleep(5)
