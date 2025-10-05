@@ -1737,12 +1737,13 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    await self.client.send_message(event.chat_id, "Ver.5.10")
+                    msg = await self.client.send_message(event.chat_id, "Ver.6.10")
                     await asyncio.sleep(1)
-                    await event.message.delete()  # Удаляем сообщение о версии
+                    await msg.delete()  # Удаляем сообщение о версии
+                    await asyncio.sleep(1)
                     await self.client.disconnect()
                     import os, sys
-                    os.execv(sys.executable, [sys.executable] + sys.argv)
+                    os.execv(sys.executable, [sys.executable] + sys.argv) #перезапуск скрипта
                 elif "_пещера" in message_text:  
                     # Проверяем, что отправитель не является cave leader
                     if event.sender_id == self.cave_leader_id:
