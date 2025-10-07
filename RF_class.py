@@ -1735,7 +1735,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.7.10")
+                    msg = await self.client.send_message(event.chat_id, "Ver.8.10")
                     await asyncio.sleep(1)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -2345,7 +2345,7 @@ class RF:
                 print("Пересылка сообщения о восполнении энергии в группу")
             return
         # Обработка вне пещер
-        if not (self.is_nacheve_active or self.is_training or self.in_castle):
+        if not (self.is_nacheve_active or self.is_training or self.in_castle or self.v_terminale):
             print("Восполнение энергии вне пещер")
             await asyncio.sleep(1)
             await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
