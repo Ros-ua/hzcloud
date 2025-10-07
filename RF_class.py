@@ -595,13 +595,11 @@ class RF:
             self.got_reward = False  # Сбрасываем флаг получения награды
             await asyncio.sleep(1)
             if self.your_name in [
-            "👨‍🦳Пенсионер☠️", 
-            # "Ros_Hangzhou",
-            "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗",
-            "๖ۣۜᗯαsͥpwͣoͫℝt🐝",
+            # "👨‍🦳Пенсионер☠️", 
+            "Ros_Hangzhou",
+            # "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗",
+            # "๖ۣۜᗯαsͥpwͣoͫℝt🐝",
             ]:
-                await self.client.send_message(self.cave_leader_id, "_restart")
-            else:
                 await self.nacheve()
         elif any(phrase in line for line in lstr for phrase in [
             "Ты прибыл в краговые шахты",
@@ -1596,7 +1594,7 @@ class RF:
         # if self.waiting_for_captcha:
         #     return
         # Ждём 20 минут и проверяем kopka и prem
-        await asyncio.sleep(1 * 60)  # 20 минут в секундах
+        await asyncio.sleep(15 * 60)  # 20 минут в секундах
         if self.kopka and not self.prem and not self.waiting_for_captcha:
             print("Через 1 минут kopka=True и prem=False, отправляем в Лес пламени")
             await self.client.send_message(self.bot_id, self.location)
@@ -1606,7 +1604,7 @@ class RF:
             if self.prem:
                 print("Через 1 минут prem=True (есть АБУ)")
         # Ждём ещё 25 минут (итого 45 минут от начала)
-        await asyncio.sleep(44 * 60)
+        await asyncio.sleep(30 * 60)
         if self.kopka and self.prem and not self.waiting_for_captcha:
             print("Через 45 минут kopka=True и prem=True, отправляем в Лес пламени")
             await self.client.send_message(self.bot_id, self.location)
@@ -1737,7 +1735,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.6.10")
+                    msg = await self.client.send_message(event.chat_id, "Ver.7.10")
                     await asyncio.sleep(1)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
