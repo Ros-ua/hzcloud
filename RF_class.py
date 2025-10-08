@@ -895,6 +895,7 @@ class RF:
                     self.go_to_heal = False
                     self.go_term_Basilaris = False
                     self.go_term_Aquilla = False
+                    self.go_term_Castitas = False
                     print("HP Basilaris меньше 15000, прекращаем ходить.")
             if "Aquilla терминал:" in line:
                 hp_info = line.split('❤')[1].split('/')[0].strip()
@@ -904,6 +905,7 @@ class RF:
                     self.go_to_heal = False
                     self.go_term_Aquilla = False
                     self.go_term_Basilaris = False
+                    self.go_term_Castitas = False
                     print("HP Aquilla меньше 15000, прекращаем ходить.")
             if len(lstr) > 24:
                 if self.go_term_Castitas and not lstr[10].endswith(" 0"):
@@ -1735,7 +1737,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.8.10")
+                    msg = await self.client.send_message(event.chat_id, "Ver.2.8.10")
                     await asyncio.sleep(1)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
