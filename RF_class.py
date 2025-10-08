@@ -302,6 +302,8 @@ class RF:
         ]):    
             print("булочка")
             await self.client.send_message(self.cave_leader_id, "булочка")
+        elif (lstr[-1].endswith("и воскреснешь через 10 минут.") or lstr[-1].startswith("Ты одержал победу над")) and self.in_castle:
+            await message.forward_to(self.group59)        
         elif any(phrase in line for line in lstr for phrase in [
             "ты мертв, дождись пока воскреснешь"
         ]):    
@@ -1737,7 +1739,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.3.8.10")
+                    msg = await self.client.send_message(event.chat_id, "Ver.c3.8.10")
                     await asyncio.sleep(1)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
