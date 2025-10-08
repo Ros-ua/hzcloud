@@ -1596,7 +1596,7 @@ class RF:
         # if self.waiting_for_captcha:
         #     return
         # Ждём 20 минут и проверяем kopka и prem
-        await asyncio.sleep(15 * 60)  # 20 минут в секундах
+        await asyncio.sleep(20 * 60)  # 20 минут в секундах
         if self.kopka and not self.prem and not self.waiting_for_captcha:
             print("Через 1 минут kopka=True и prem=False, отправляем в Лес пламени")
             await self.client.send_message(self.bot_id, self.location)
@@ -1606,7 +1606,7 @@ class RF:
             if self.prem:
                 print("Через 1 минут prem=True (есть АБУ)")
         # Ждём ещё 25 минут (итого 45 минут от начала)
-        await asyncio.sleep(30 * 60)
+        await asyncio.sleep(25 * 60)
         if self.kopka and self.prem and not self.waiting_for_captcha:
             print("Через 45 минут kopka=True и prem=True, отправляем в Лес пламени")
             await self.client.send_message(self.bot_id, self.location)
@@ -1737,7 +1737,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.2.8.10")
+                    msg = await self.client.send_message(event.chat_id, "Ver.3.8.10")
                     await asyncio.sleep(1)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
