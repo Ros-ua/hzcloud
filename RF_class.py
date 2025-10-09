@@ -305,6 +305,7 @@ class RF:
         elif any(phrase in line for line in lstr for phrase in [
             "Ты уже находишься в данной локации!"
         ]):
+            await asyncio.sleep(1)
             await self.client.send_message(self.bot_id, "🤖Алтарь Тир")
         elif (lstr[-1].endswith("и воскреснешь через 10 минут.") or lstr[-1].startswith("Ты одержал победу над")) and self.in_castle:
             await message.forward_to(self.group59)        
@@ -1743,7 +1744,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.10.10")
+                    msg = await self.client.send_message(event.chat_id, "Ver.2.10.10")
                     await asyncio.sleep(1)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
