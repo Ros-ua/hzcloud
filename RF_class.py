@@ -1744,7 +1744,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.2.10.10")
+                    msg = await self.client.send_message(event.chat_id, "Ver.3.10")
                     await asyncio.sleep(1)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -2322,8 +2322,8 @@ class RF:
             ])
         else:
             return random.choice([
-                "👩‍🚀Алтарь Гебо", 
-                "🧝‍♀Алтарь Дагаз", 
+                # "👩‍🚀Алтарь Гебо", 
+                # "🧝‍♀Алтарь Дагаз", 
                 "🤖Алтарь Эйви", 
             ])
     async def handle_no_energy(self):
