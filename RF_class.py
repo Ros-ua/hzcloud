@@ -1586,14 +1586,12 @@ class RF:
     async def pvp_heal_timer(self):
         """Таймер для изменения pvpgoheal через 43 минуты после начала войны"""
         print("Запущен таймер pvpgoheal на 43 минуты")
-        # Ждём 33 минуты
-        await asyncio.sleep(33 * 60)  # 33 минуты в секундах
-        self.go_term_Aquilla = False
-        self.go_term_Basilaris = False        
-        await asyncio.sleep(6 * 60)  # 6 минут в секундах (итого 39 минут)
+        await asyncio.sleep(41 * 60)  # 41 минута в секундах 
         self.go_to_heal = False
+        self.go_term_Aquilla = False
+        self.go_term_Basilaris = False   
         self.go_term_Castitas = False
-        await asyncio.sleep(4 * 60)  # 4 минуты в секундах (итого 43 минуты)
+        await asyncio.sleep(2 * 60)  # 2 минуты в секундах (итого 43 минуты)
         self.go_to_heal = True
         print("Через 43 минуты после начала войны установлено go_to_heal = True")
     async def war_preparation_timer(self):
@@ -1744,7 +1742,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.3.10")
+                    msg = await self.client.send_message(event.chat_id, "Ver.2.10.10")
                     await asyncio.sleep(1)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -2449,3 +2447,246 @@ class RF:
                 x_label_line += " "
         graph_with_labels.append(x_label_line)
         return "\n".join(graph_with_labels)
+
+
+
+
+
+
+
+
+import re
+import asyncio
+from collections import defaultdict
+
+class RecipeAnalyzer:
+    """Класс для анализа и структурирования рецептов"""
+    
+    def __init__(self, client, bot_id):
+        self.client = client
+        self.bot_id = bot_id
+        self.recipes_data = []
+        
+    async def parse_recipe_list(self, recipe_text):
+        """Извлекает команды рецептов из текста"""
+        pattern = r'/info_item_\w+'
+        commands = re.findall(pattern, recipe_text)
+        return commands
+    
+    async def get_recipe_info(self, command):
+        """Получает информацию о конкретном рецепте"""
+        print(f"Запрашиваю информацию: {command}")
+        
+        # Отправляем команду
+        await self.client.send_message(self.bot_id, command)
+        await asyncio.sleep(2)  # Ждем ответ
+        
+        # Получаем последнее сообщение
+        messages = await self.client.get_messages(self.bot_id, limit=1)
+        if not messages:
+            return None
+            
+        return self.parse_recipe_response(messages[0].text, command)
+    
+    def parse_recipe_response(self, text, command):
+        """Парсит ответ с информацией о рецепте"""
+        data = {
+            'command': command,
+            'name': '',
+            'grade': 0,
+            'level': 0,
+            'craft_chance': 0.0,
+            'stats': {}
+        }
+        
+        lines = text.split('\n')
+        
+        # Извлекаем название и грейд
+        if lines:
+            name_match = re.search(r'📜 Рецепт антиграва (\d+) грейда', lines[0])
+            if name_match:
+                data['grade'] = int(name_match.group(1))
+                data['name'] = lines[0].strip()
+        
+        # Извлекаем уровень
+        level_match = re.search(r'Уровень: (\d+)', text)
+        if level_match:
+            data['level'] = int(level_match.group(1))
+        
+        # Извлекаем шанс крафта
+        chance_match = re.search(r'Шанс крафта: ([\d.]+)%', text)
+        if chance_match:
+            data['craft_chance'] = float(chance_match.group(1))
+        
+        # Извлекаем характеристики
+        stats_section = False
+        for line in lines:
+            if 'Доп. к существующим характеристикам' in line:
+                stats_section = True
+                continue
+            
+            if stats_section and line.strip():
+                # Парсим строки типа "💨 +24.83%"
+                stat_match = re.search(r'([💨🎯❤⏳])\s*\+([\d.]+)%', line)
+                if stat_match:
+                    emoji = stat_match.group(1)
+                    value = float(stat_match.group(2))
+                    
+                    # Маппинг эмодзи на названия
+                    emoji_names = {
+                        '💨': 'dodge',      # Уворот
+                        '🎯': 'critical',   # Крит
+                        '❤': 'health',      # Жизни
+                        '⏳': 'accuracy'    # Точность
+                    }
+                    
+                    if emoji in emoji_names:
+                        data['stats'][emoji_names[emoji]] = value
+        
+        return data
+    
+    async def analyze_all_recipes(self, recipe_text):
+        """Анализирует все рецепты из списка"""
+        print("Начинаю анализ рецептов...")
+        
+        # Извлекаем команды
+        commands = await self.parse_recipe_list(recipe_text)
+        print(f"Найдено команд: {len(commands)}")
+        
+        # Собираем информацию о каждом рецепте
+        for cmd in commands:
+            recipe_data = await self.get_recipe_info(cmd)
+            if recipe_data:
+                self.recipes_data.append(recipe_data)
+                print(f"Обработано: {recipe_data['name']} - {recipe_data['craft_chance']}%")
+            
+            await asyncio.sleep(1)  # Пауза между запросами
+        
+        print(f"\nВсего обработано рецептов: {len(self.recipes_data)}")
+        return self.recipes_data
+    
+    def generate_report(self):
+        """Генерирует структурированный отчет"""
+        if not self.recipes_data:
+            return "Нет данных для анализа"
+        
+        # Группируем по грейду
+        by_grade = defaultdict(list)
+        for recipe in self.recipes_data:
+            by_grade[recipe['grade']].append(recipe)
+        
+        report = []
+        report.append("=" * 80)
+        report.append("АНАЛИЗ РЕЦЕПТОВ АНТИГРАВА")
+        report.append("=" * 80)
+        
+        for grade in sorted(by_grade.keys()):
+            recipes = by_grade[grade]
+            report.append(f"\n{'='*80}")
+            report.append(f"ГРЕЙД {grade} ({len(recipes)} рецептов)")
+            report.append(f"{'='*80}")
+            
+            # Сортируем по шансу крафта
+            recipes.sort(key=lambda x: x['craft_chance'], reverse=True)
+            
+            # Таблица рецептов
+            report.append(f"\n{'Шанс':<8} {'Уворот':<10} {'Крит':<10} {'Жизни':<10} {'Точность':<10} {'Команда'}")
+            report.append("-" * 80)
+            
+            for recipe in recipes:
+                dodge = recipe['stats'].get('dodge', 0)
+                critical = recipe['stats'].get('critical', 0)
+                health = recipe['stats'].get('health', 0)
+                accuracy = recipe['stats'].get('accuracy', 0)
+                
+                report.append(
+                    f"{recipe['craft_chance']:<8.1f} "
+                    f"{dodge:<10.2f} "
+                    f"{critical:<10.2f} "
+                    f"{health:<10.2f} "
+                    f"{accuracy:<10.2f} "
+                    f"{recipe['command']}"
+                )
+            
+            # Статистика по грейду
+            report.append(f"\nСТАТИСТИКА ГРЕЙДА {grade}:")
+            report.append("-" * 40)
+            
+            avg_chance = sum(r['craft_chance'] for r in recipes) / len(recipes)
+            max_chance = max(r['craft_chance'] for r in recipes)
+            min_chance = min(r['craft_chance'] for r in recipes)
+            
+            report.append(f"Средний шанс крафта: {avg_chance:.2f}%")
+            report.append(f"Максимальный шанс: {max_chance:.2f}%")
+            report.append(f"Минимальный шанс: {min_chance:.2f}%")
+            
+            # Лучший рецепт по каждой характеристике
+            if recipes:
+                best_dodge = max(recipes, key=lambda x: x['stats'].get('dodge', 0))
+                best_critical = max(recipes, key=lambda x: x['stats'].get('critical', 0))
+                best_health = max(recipes, key=lambda x: x['stats'].get('health', 0))
+                best_accuracy = max(recipes, key=lambda x: x['stats'].get('accuracy', 0))
+                
+                report.append(f"\nЛУЧШИЕ РЕЦЕПТЫ:")
+                report.append(f"💨 Уворот: {best_dodge['craft_chance']}% (+{best_dodge['stats'].get('dodge', 0):.2f}%) - {best_dodge['command']}")
+                report.append(f"🎯 Крит: {best_critical['craft_chance']}% (+{best_critical['stats'].get('critical', 0):.2f}%) - {best_critical['command']}")
+                report.append(f"❤ Жизни: {best_health['craft_chance']}% (+{best_health['stats'].get('health', 0):.2f}%) - {best_health['command']}")
+                report.append(f"⏳ Точность: {best_accuracy['craft_chance']}% (+{best_accuracy['stats'].get('accuracy', 0):.2f}%) - {best_accuracy['command']}")
+        
+        # Общие рекомендации
+        report.append(f"\n{'='*80}")
+        report.append("РЕКОМЕНДАЦИИ")
+        report.append("="*80)
+        
+        all_recipes = self.recipes_data
+        best_overall = max(all_recipes, key=lambda x: x['craft_chance'])
+        
+        report.append(f"\nЛучший рецепт по шансу крафта:")
+        report.append(f"  {best_overall['name']}")
+        report.append(f"  Шанс: {best_overall['craft_chance']}%")
+        report.append(f"  Команда: {best_overall['command']}")
+        
+        return "\n".join(report)
+    
+    def save_to_file(self, filename="recipes_analysis.txt"):
+        """Сохраняет отчет в файл"""
+        report = self.generate_report()
+        with open(filename, 'w', encoding='utf-8') as f:
+            f.write(report)
+        print(f"\nОтчет сохранен в файл: {filename}")
+
+
+# Добавить в класс RF:
+async def analyze_recipes(self, recipe_text):
+    """
+    Анализирует рецепты из текста
+    
+    Использование:
+    recipe_text = '''
+    📜 Рецепт антиграва 2 грейда. 34.1% /info_item_S4Y0mJH6O
+    📜 Рецепт антиграва 2 грейда. 33.5% /info_item_eGHfZwcOL
+    ...
+    '''
+    await rf.analyze_recipes(recipe_text)
+    """
+    analyzer = RecipeAnalyzer(self.client, self.bot_id)
+    
+    # Анализируем все рецепты
+    await analyzer.analyze_all_recipes(recipe_text)
+    
+    # Выводим отчет
+    report = analyzer.generate_report()
+    print(report)
+    
+    # Сохраняем в файл
+    analyzer.save_to_file()
+    
+    # Отправляем отчет лидеру
+    # Разбиваем на части по 4000 символов (лимит Telegram)
+    for i in range(0, len(report), 4000):
+        chunk = report[i:i+4000]
+        await self.client.send_message(self.cave_leader_id, f"```\n{chunk}\n```")
+        await asyncio.sleep(1)
+
+
+
