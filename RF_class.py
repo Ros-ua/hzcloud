@@ -288,6 +288,23 @@ class RF:
     async def reset_moving_flag(self, duration):
         await asyncio.sleep(duration)
         self.is_moving = False
+
+
+    # Добавить метод в класс:
+    async def _delayed_restart(self):
+        # Ожидаем пока self.kopka станет True
+        while not self.kopka:
+            print("Ожидание завершения копки...")
+            await asyncio.sleep(5)
+        
+        print("Копка завершена, перезапуск через 1 минуту")
+        await asyncio.sleep(60)
+        await self.client.disconnect()
+        import os, sys
+        os.execv(sys.executable, [sys.executable] + sys.argv)
+
+
+
     async def msg_parce(self, message):
         if not self.is_run:
             return
@@ -308,7 +325,15 @@ class RF:
             await asyncio.sleep(1)
             await self.client.send_message(self.bot_id, "🤖Алтарь Тир")
         elif (lstr[-1].endswith("и воскреснешь через 10 минут.") or lstr[-1].startswith("Ты одержал победу над")) and self.in_castle:
-            await message.forward_to(self.group59)        
+            await message.forward_to(self.group59) 
+
+        elif any("Посейдона был активирован автоматическим пожертвованием!" in line for line in lstr) and not self.is_in_caves:
+            print("Обнаружено автоматическое пожертвование Посейдона")
+            asyncio.create_task(self._delayed_restart())
+            
+
+
+
         elif any(phrase in line for line in lstr for phrase in [
             "ты мертв, дождись пока воскреснешь"
         ]):    
@@ -604,7 +629,7 @@ class RF:
             if self.your_name in [
             "👨‍🦳Пенсионер☠️", 
             "Ros_Hangzhou",
-            # "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗",
+            "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗",
             # "๖ۣۜᗯαsͥpwͣoͫℝt🐝",
             ]:
                 await self.nacheve()
@@ -1425,7 +1450,7 @@ class RF:
                 elif self.your_name == "👨‍🦳Пенсионер☠️":
                     self.go_term_Basilaris = False
                     self.go_term_Castitas = True
-                    self.go_term_Aquilla = False         
+                    self.go_term_Aquilla = True         
                 elif self.your_name == "๖ۣۜᗯαsͥpwͣoͫℝt🐝":
                     self.go_term_Basilaris = False
                     self.go_term_Castitas = False
@@ -1742,7 +1767,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.4.10.10")
+                    msg = await self.client.send_message(event.chat_id, "Ver.d.10.10")
                     await asyncio.sleep(1)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
