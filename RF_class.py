@@ -1492,7 +1492,7 @@ class RF:
                         await self.client.send_message(self.bot_id, self.location)
             if any("Осада замков закончилась" in ln for ln in lines):
                 self.in_castle = False
-                if not self.is_in_caves and not self.waiting_for_captcha and not self.is_moving:
+                if not self.is_in_caves and not self.waiting_for_captcha and not self.kopka and not self.is_moving:
                     await asyncio.sleep(5)
                     await self.client.send_message(self.bot_id, RF.hp)
                     await self.wait_for_set_change() 
