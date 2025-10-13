@@ -1471,7 +1471,7 @@ class RF:
                 if not self.is_moving and not self.killed_on_chv:
                     await self.client.send_message(self.bot_id, "⛏Рудник")
                 await asyncio.sleep(900)  # 15 минут = 900 секунд
-                if not self.is_in_caves:
+                if not self.is_in_caves and not self.waiting_for_captcha:
                     await self.client.send_message(self.bot_id, RF.hp)  # Переодеться для мобов
                 # # await self.wait_for_set_change() #работает
                 # await asyncio.sleep(1)
@@ -1767,7 +1767,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.b.13.10")
+                    msg = await self.client.send_message(event.chat_id, "Ver.c.13.10")
                     await asyncio.sleep(1)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
