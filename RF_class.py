@@ -1500,7 +1500,7 @@ class RF:
                     await self.client.send_message(self.bot_id, self.location)
             if any("Страж будет уязвим для атак расы" in ln and "Castitas" in ln for ln in lines):
                 print("Получено сообщение о появлении стража через 15 минут")
-                if not self.is_in_caves and not self.in_castle:
+                if not self.is_in_caves and not self.is_moving and not self.in_castle:
                     print("Отправляем сообщение '🔥 61-65 Лес пламени'")
                     await self.client.send_message(self.bot_id, self.location)
             if any("Он уязвим только для атак расы" in ln and "Castitas" in ln for ln in lines):
@@ -1767,7 +1767,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.13.10")
+                    msg = await self.client.send_message(event.chat_id, "Ver.b.13.10")
                     await asyncio.sleep(1)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
