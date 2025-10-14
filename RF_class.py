@@ -623,6 +623,18 @@ class RF:
             ]:
                 await self.nacheve()
         elif any(phrase in line for line in lstr for phrase in [
+            "Адена уже на твоем счете.",
+        ]):
+            print("Получена Адена")
+            if self.your_name in [
+                # "👨‍🦳Пенсионер☠️",
+                "Ros_Hangzhou",
+                # "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗",
+                # "๖ۣۜᗯαsͥpwͣoͫℝt🐝",
+            ]:
+                self.location = "🏔 Этер"
+                print(f"Локация изменена на: {self.location}")
+        elif any(phrase in line for line in lstr for phrase in [
             "Ты прибыл в краговые шахты",
             "пока не началась война",
             "Ты прибыл на"
@@ -1756,7 +1768,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.p.14.10")
+                    msg = await self.client.send_message(event.chat_id, "Ver.e.14.10")
                     await asyncio.sleep(1)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
