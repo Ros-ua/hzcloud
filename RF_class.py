@@ -288,23 +288,17 @@ class RF:
     async def reset_moving_flag(self, duration):
         await asyncio.sleep(duration)
         self.is_moving = False
-
-
     # Добавить метод в класс:
     async def _delayed_restart(self):
         # Ожидаем пока self.kopka станет True
         while not self.kopka:
             print("Ожидание завершения копки...")
             await asyncio.sleep(5)
-        
         print("Копка завершена, перезапуск через 1 минуту")
         await asyncio.sleep(60)
         await self.client.disconnect()
         import os, sys
         os.execv(sys.executable, [sys.executable] + sys.argv)
-
-
-
     async def msg_parce(self, message):
         if not self.is_run:
             return
@@ -326,14 +320,9 @@ class RF:
             await self.client.send_message(self.bot_id, "🤖Алтарь Тир")
         elif (lstr[-1].endswith("и воскреснешь через 10 минут.") or lstr[-1].startswith("Ты одержал победу над")) and self.in_castle:
             await message.forward_to(self.group59) 
-
         elif any("Посейдона был активирован автоматическим пожертвованием!" in line for line in lstr) and not self.is_in_caves:
             print("Обнаружено автоматическое пожертвование Посейдона")
             asyncio.create_task(self._delayed_restart())
-            
-
-
-
         elif any(phrase in line for line in lstr for phrase in [
             "ты мертв, дождись пока воскреснешь"
         ]):    
@@ -1767,7 +1756,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.14.10")
+                    msg = await self.client.send_message(event.chat_id, "Ver.p.14.10")
                     await asyncio.sleep(1)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -2472,4 +2461,3 @@ class RF:
                 x_label_line += " "
         graph_with_labels.append(x_label_line)
         return "\n".join(graph_with_labels)
-
