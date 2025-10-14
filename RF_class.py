@@ -615,15 +615,14 @@ class RF:
             self.v_terminale = True
             self.got_reward = False  # Сбрасываем флаг получения награды
             await asyncio.sleep(1)
-            if self.your_name in [
-            # "👨‍🦳Пенсионер☠️", 
-            "Ros_Hangzhou",
-            # "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗",
-            # "๖ۣۜᗯαsͥpwͣoͫℝt🐝",
-            ]:
-                # await self.nacheve()
+            if self.your_name == "👨‍🦳Пенсионер☠️":
+                await self.nacheve()
+            elif self.your_name == "Ros_Hangzhou":
                 await self.vterminale()
-
+            elif self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
+                await asyncio.sleep(1)
+            elif self.your_name == "๖ۣۜᗯαsͥpwͣoͫℝt🐝":
+                await asyncio.sleep(1)
         elif any(phrase in line for line in lstr for phrase in [
             "Адена уже на твоем счете.",
         ]):
@@ -1770,7 +1769,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.t.14.10")
+                    msg = await self.client.send_message(event.chat_id, "Ver.vt.14.10")
                     await asyncio.sleep(1)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -2479,14 +2478,12 @@ class RF:
         print("работаем в терминале")
         self.is_nacheve_active = True
         self.cmd_altar = None  # не нужен, но для совместимости сбрасываем
-
         @self.client.on(events.NewMessage(chats=-1001284047611))
         async def handle_rf_info(event):
             print("Получено новое сообщение от RF чата.")
             first_line = event.message.text.split('\n')[0]
             print(f"Первая строка сообщения: {first_line}")
             await self.parce_4v_logs(event.message.text)
-
         try:
             while self.is_nacheve_active:
                 bot_message = await self.client.get_messages(self.bot_id, limit=1)
