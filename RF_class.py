@@ -633,7 +633,7 @@ class RF:
                 # "👨‍🦳Пенсионер☠️",
                 "Ros_Hangzhou",
                 # "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗",
-                # "๖ۣۜᗯαsͥpwͣoͫℝt🐝",
+                "๖ۣۜᗯαsͥpwͣoͫℝt🐝",
             ]:
                 self.location = "🏔 Этер"
                 print(f"Локация изменена на: {self.location}")
@@ -1771,7 +1771,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.t.15.10")
+                    msg = await self.client.send_message(event.chat_id, "Ver.i.15.10")
                     await asyncio.sleep(1)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
