@@ -933,22 +933,22 @@ class RF:
                 hp_info = line.split('❤')[1].split('/')[0].strip()
                 basilaris_hp = int(hp_info)
                 print(f"Basilaris HP: {basilaris_hp}")
-                if basilaris_hp < 15000 and basilaris_hp > 1:
+                if basilaris_hp < 12000 and basilaris_hp > 1:
                     self.go_to_heal = False
                     self.go_term_Basilaris = False
                     self.go_term_Aquilla = False
                     self.go_term_Castitas = False
-                    print("HP Basilaris меньше 15000, прекращаем ходить.")
+                    print("HP Basilaris меньше 12000, прекращаем ходить.")
             if "Aquilla терминал:" in line:
                 hp_info = line.split('❤')[1].split('/')[0].strip()
                 aquilla_hp = int(hp_info)
                 print(f"Aquilla HP: {aquilla_hp}")
-                if aquilla_hp < 15000 and aquilla_hp > 1:
+                if aquilla_hp < 12000 and aquilla_hp > 1:
                     self.go_to_heal = False
                     self.go_term_Aquilla = False
                     self.go_term_Basilaris = False
                     self.go_term_Castitas = False
-                    print("HP Aquilla меньше 15000, прекращаем ходить.")
+                    print("HP Aquilla меньше 12000, прекращаем ходить.")
             if len(lstr) > 24:
                 if self.go_term_Castitas and not lstr[10].endswith(" 0"):
                     self.cmd_altar = "🧝‍♀Алтарь Хагал"
@@ -1630,23 +1630,23 @@ class RF:
         self.go_to_heal = True
         print("Через 43 минуты после начала войны установлено go_to_heal = True")
     async def war_preparation_timer(self):
-        """Таймер подготовки к войне - проверяем kopka через 20, 45 и 58 минут"""
+        """Таймер подготовки к войне - проверяем kopka через 25, 45 и 52 минут"""
         print("Запущен таймер подготовки к войне")
         # Если в ожидании капчи, то сразу выходим
         # if self.waiting_for_captcha:
         #     return
-        # Ждём 20 минут и проверяем kopka и prem
-        await asyncio.sleep(20 * 60)  # 20 минут в секундах
+        # Ждём 25 минут и проверяем kopka и prem
+        await asyncio.sleep(25 * 60)  # 25 минут в секундах
         if self.kopka and not self.prem and not self.waiting_for_captcha:
-            print("Через 1 минут kopka=True и prem=False, отправляем в Лес пламени")
+            print("Через 25 минут kopka=True и prem=False, отправляем в Лес пламени")
             await self.client.send_message(self.bot_id, self.location)
         else:
             if not self.kopka:
-                print("Через 1 минут kopka=False")
+                print("Через 25 минут kopka=False")
             if self.prem:
-                print("Через 1 минут prem=True (есть АБУ)")
-        # Ждём ещё 25 минут (итого 45 минут от начала)
-        await asyncio.sleep(25 * 60)
+                print("Через 25 минут prem=True (есть АБУ)")
+        # Ждём ещё 20 минут (итого 45 минут от начала)
+        await asyncio.sleep(20 * 60)
         if self.kopka and self.prem and not self.waiting_for_captcha:
             print("Через 45 минут kopka=True и prem=True, отправляем в Лес пламени")
             await self.client.send_message(self.bot_id, self.location)
@@ -1655,13 +1655,13 @@ class RF:
                 print("Через 45 минут kopka=False")
             if not self.prem:
                 print("Через 45 минут prem=False (нет АБУ)")
-        # Ждём ещё 12 минут (итого 58 минут от начала)
-        await asyncio.sleep(12 * 60)
+        # Ждём ещё 13 минут (итого 58 минут от начала)
+        await asyncio.sleep(13 * 60)
         if self.kopka and not self.waiting_for_captcha:
-            print("Через 57 минут kopka=True, отправляем в ген. штаб")
+            print("Через 58 минут kopka=True, отправляем в ген. штаб")
             await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
         else:
-            print("Через 57 минут kopka=False, остаёмся на месте")
+            print("Через 58 минут kopka=False, остаёмся на месте")
     def common_cave(self):
         print("Устанавливаем обработчик сообщений для common_cave")
         @self.client.on(events.NewMessage(from_users=[self.tomat_id, self.ros_id, self.kroha_id, self.tamplier_id, self.john_id, self.pchelka_id, 5596818972, self.ded_id]))
@@ -1777,7 +1777,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.i2.15.10")
+                    msg = await self.client.send_message(event.chat_id, "Ver.16.10")
                     await asyncio.sleep(1)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
