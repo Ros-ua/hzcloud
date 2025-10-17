@@ -79,7 +79,10 @@ class RF:
             self.mob_heal = 2000
             self.pvpgoheal = 3500
         elif self.your_name == "๖ۣۜᗯαsͥpwͣoͫℝt🐝":
-            self.mob_heal = 7500
+            self.mob_heal = 4000
+            self.pvpgoheal = 4500
+        elif self.your_name == "Ros_Hangzhou":
+            self.mob_heal = 4000
             self.pvpgoheal = 4500
         else:
             self.mob_heal = 6400
@@ -685,6 +688,10 @@ class RF:
             await self.client.send_message(self.bot_id, "🔪 Атаковать")
         elif any(phrase in line for line in lstr for phrase in ["Энергия: 🔋0/5", "[недостаточно энергии]"]):
             print("нет энергии")
+            await asyncio.sleep(1)
+            await self.client.send_message(self.bot_id, RF.hp)
+            await self.wait_for_set_change()
+            await asyncio.sleep(1)
             await self.handle_no_energy()
         elif any(phrase in line for line in lstr for phrase in [f"Энергия: 🔋{i}/5" for i in range(1, 5)]):
             print("есть энергия")
@@ -1802,7 +1809,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.mob.17.10")
+                    msg = await self.client.send_message(event.chat_id, "Ver.mob2222.17.10")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
