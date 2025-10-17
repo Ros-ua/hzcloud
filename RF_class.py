@@ -719,16 +719,9 @@ class RF:
                             if current_health <= threshold and threshold < selected_threshold:
                                 selected_cmd = cmd
                                 selected_threshold = threshold
-                        
                         if selected_cmd:
                             await self.client.send_message(self.bot_id, selected_cmd)
                             await self.wait_for_set_change()
-
-
-
-
-
-
                         await asyncio.sleep(1)
                         await self.client.send_message(self.bot_id, "🐺По уровню")
                 else:
@@ -1809,7 +1802,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.mob2222.17.10")
+                    msg = await self.client.send_message(event.chat_id, "Ver.mob333.17.10")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
