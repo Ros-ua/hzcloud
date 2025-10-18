@@ -1805,7 +1805,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.2.18.10")
+                    msg = await self.client.send_message(event.chat_id, "Ver.t.18.10")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -1891,6 +1891,23 @@ class RF:
                 elif "_состав" in message_text:  
                     await asyncio.sleep(1)  
                     await self.client.send_message(self.bot_id, "⚖️Проверить состав")
+                    
+                    # Ожидаем сообщение, начинающееся с "Состав:"
+                    while True:
+                        # await asyncio.sleep(1)
+                        last_message = await self.client.get_messages(self.bot_id, limit=1)
+                        if last_message:
+                            message_text_check = last_message[0].message.split('\n')[0]
+                            if message_text_check.startswith("Состав:"):
+                                print(f"Получено сообщение о составе: {message_text_check}")
+                                break
+                    
+                    # Ждем 1 секунду
+                    await asyncio.sleep(2)
+                    
+                    # Отправляем второе сообщение
+                    await self.client.send_message(self.bot_id, "⚖️Проверить состав")
+                    
                     await event.message.delete()  # Удаляем сообщение
                 elif "_моб" in message_text:  
                     if self.is_in_caves:
