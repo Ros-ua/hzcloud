@@ -322,7 +322,7 @@ class RF:
             await asyncio.sleep(1)
             # await self.client.send_message(self.bot_id, "🤖Алтарь Тир")
             await self.client.send_message(self.bot_id, "👩‍🚀Алтарь Иса")
-       elif (lstr[-1].endswith("и воскреснешь через 10 минут.") or lstr[-1].startswith("Ты одержал победу над")) and self.in_castle:
+        elif (lstr[-1].endswith("и воскреснешь через 10 минут.") or lstr[-1].startswith("Ты одержал победу над")) and self.in_castle:
             await message.forward_to(self.group59) 
         elif any("Посейдона был активирован автоматическим пожертвованием!" in line for line in lstr) and not self.is_in_caves:
             print("Обнаружено автоматическое пожертвование Посейдона")
@@ -1806,7 +1806,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.bel3.18.10")
+                    msg = await self.client.send_message(event.chat_id, "Ver.becccl3.18.10")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
