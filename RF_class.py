@@ -320,8 +320,9 @@ class RF:
             "Ты уже находишься в данной локации!"
         ]):
             await asyncio.sleep(1)
-            await self.client.send_message(self.bot_id, "🤖Алтарь Тир")
-        elif (lstr[-1].endswith("и воскреснешь через 10 минут.") or lstr[-1].startswith("Ты одержал победу над")) and self.in_castle:
+            # await self.client.send_message(self.bot_id, "🤖Алтарь Тир")
+            await self.client.send_message(self.bot_id, "👩‍🚀Алтарь Иса")
+       elif (lstr[-1].endswith("и воскреснешь через 10 минут.") or lstr[-1].startswith("Ты одержал победу над")) and self.in_castle:
             await message.forward_to(self.group59) 
         elif any("Посейдона был активирован автоматическим пожертвованием!" in line for line in lstr) and not self.is_in_caves:
             print("Обнаружено автоматическое пожертвование Посейдона")
@@ -1271,7 +1272,7 @@ class RF:
                     await asyncio.sleep(1)
             print("Ни одно из условий не выполнено, повторная проверка через 10 секунд")
     async def wait_for_health_refill(self):
-        await asyncio.sleep(3)
+        await asyncio.sleep(2)
         # Если появилась капча - ждём её решения
         if self.waiting_for_captcha:
             print("Обнаружена капча при пополнении здоровья...")
@@ -1286,7 +1287,7 @@ class RF:
             if last_message:
                 lstr = last_message[0].message.split('\n')
                 if any("Здоровье пополнено" in line for line in lstr):
-                    await asyncio.sleep(1)
+                    await asyncio.sleep(0.1)
                     return
             await asyncio.sleep(1)
     async def wait_for_set_change(self):
@@ -1478,21 +1479,21 @@ class RF:
                 self.go_to_heal = True
                 # Логика для различных типов пользователей
                 if self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
-                    self.go_term_Basilaris = False
+                    self.go_term_Basilaris = True
                     self.go_term_Castitas = False
-                    self.go_term_Aquilla = True
+                    self.go_term_Aquilla = False
                 elif self.your_name == "Ros_Hangzhou":
-                    self.go_term_Basilaris = False
+                    self.go_term_Basilaris = True
                     self.go_term_Castitas = True
-                    self.go_term_Aquilla = True
+                    self.go_term_Aquilla = False
                 elif self.your_name == "👨‍🦳Пенсионер☠️":
-                    self.go_term_Basilaris = False
+                    self.go_term_Basilaris = True
                     self.go_term_Castitas = True
-                    self.go_term_Aquilla = True         
+                    self.go_term_Aquilla = False        
                 elif self.your_name == "๖ۣۜᗯαsͥpwͣoͫℝt🐝":
-                    self.go_term_Basilaris = False
+                    self.go_term_Basilaris = True
                     self.go_term_Castitas = False
-                    self.go_term_Aquilla = True
+                    self.go_term_Aquilla = False
                 #  Запускаем таймер для изменения pvpgoheal через 38 минут
                 asyncio.create_task(self.pvp_heal_timer())                
                 if not any([self.is_in_caves, self.kopka, self.is_moving]):
@@ -1805,7 +1806,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.3.18.10")
+                    msg = await self.client.send_message(event.chat_id, "Ver.bel3.18.10")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -2396,9 +2397,9 @@ class RF:
             ])
         else:
             return random.choice([
-                # "👩‍🚀Алтарь Гебо", 
+                "👩‍🚀Алтарь Гебо", 
                 # "🧝‍♀Алтарь Дагаз", 
-                "🤖Алтарь Эйви", 
+                # "🤖Алтарь Эйви", 
             ])
     async def handle_no_energy(self):
         print("нет энергии")
