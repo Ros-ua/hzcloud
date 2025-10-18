@@ -706,6 +706,7 @@ class RF:
                     # Проверяем, меньше ли здоровье self.mob_heal
                     if current_health < self.mob_heal:
                         # Переодеваем в сет для мобов перед energy_found
+                        await asyncio.sleep(1)
                         await self.client.send_message(self.bot_id, RF.hp)
                         await self.wait_for_set_change()
                         await asyncio.sleep(1)                        
@@ -720,8 +721,10 @@ class RF:
                                 selected_cmd = cmd
                                 selected_threshold = threshold
                         if selected_cmd:
+                            await asyncio.sleep(1)
                             await self.client.send_message(self.bot_id, selected_cmd)
                             await self.wait_for_set_change()
+                            await asyncio.sleep(1)
                         await asyncio.sleep(1)
                         await self.client.send_message(self.bot_id, "🐺По уровню")
                 else:
@@ -1802,7 +1805,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.mob333.17.10")
+                    msg = await self.client.send_message(event.chat_id, "Ver.18.10")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
