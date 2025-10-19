@@ -82,7 +82,7 @@ class RF:
             self.mob_heal = 4000
             self.pvpgoheal = 4500
         elif self.your_name == "Ros_Hangzhou":
-            self.mob_heal = 4000
+            self.mob_heal = 4500
             self.pvpgoheal = 4500
         else:
             self.mob_heal = 6400
