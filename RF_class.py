@@ -619,10 +619,34 @@ class RF:
             self.v_terminale = True
             self.got_reward = False  # Сбрасываем флаг получения награды
             await asyncio.sleep(1)
-            if self.terminal_type == "🧝‍♀ Терминал Castitas":
-                await self.nacheve()
-            elif self.terminal_type in ["🤖 Терминал Aquilla", "👩‍🚀 Терминал Basilaris"]:
-                await self.vterminale()
+            if self.your_name == "👨‍🦳Пенсионер☠️":
+                    await asyncio.sleep(1)
+                    if self.terminal_type == "🧝‍♀ Терминал Castitas":
+                        await self.nacheve()
+                    else:
+                        await self.vterminale()
+            if self.your_name == "Ros_Hangzhou":
+                    await asyncio.sleep(1)
+                    if self.terminal_type == "🧝‍♀ Терминал Castitas":
+                        await self.nacheve()
+                    else:
+                        await self.nacheve()
+            if self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
+                    await asyncio.sleep(1)
+                    if self.terminal_type == "🧝‍♀ Терминал Castitas":
+                        await self.nacheve()
+                    else:
+                        await self.vterminale()
+            if self.your_name == "๖ۣۜᗯαsͥpwͣoͫℝt🐝":
+                    await asyncio.sleep(1)
+                    if self.terminal_type == "🧝‍♀ Терминал Castitas":
+                        await self.nacheve()
+                    else:
+                        await self.vterminale()
+           # if self.terminal_type == "🧝‍♀ Терминал Castitas":
+            #     await self.nacheve()
+            # elif self.terminal_type in ["🤖 Терминал Aquilla", "👩‍🚀 Терминал Basilaris"]:
+            #     await self.vterminale()
             # if self.your_name == "👨‍🦳Пенсионер☠️":
             #     await asyncio.sleep(1)
             #     # await self.nacheve()
@@ -1806,7 +1830,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.becccl3.18.10")
+                    msg = await self.client.send_message(event.chat_id, "Ver.19.18.10")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
