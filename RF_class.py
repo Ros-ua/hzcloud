@@ -731,7 +731,7 @@ class RF:
                     # Проверяем, меньше ли здоровье self.mob_heal
                     if current_health < self.mob_heal:
                         # Переодеваем в сет для мобов перед energy_found
-                        await asyncio.sleep(2)
+                        await asyncio.sleep(4)
                         await self.client.send_message(self.bot_id, RF.hp)
                         await self.wait_for_set_change()
                         await asyncio.sleep(2)                        
@@ -746,7 +746,7 @@ class RF:
                                 selected_cmd = cmd
                                 selected_threshold = threshold
                         if selected_cmd:
-                            await asyncio.sleep(2)
+                            await asyncio.sleep(4)
                             await self.client.send_message(self.bot_id, selected_cmd)
                             await self.wait_for_set_change()
                             await asyncio.sleep(2)
