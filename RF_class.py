@@ -92,14 +92,10 @@ class RF:
         self.setup_war_listener()
     def isIdCompare(self, id):
         return id == self.bot_id
-
     async def send_command(self, command):
         """Отправляет команду боту и сохраняет её для повтора после CAPTCHA"""
         self.last_command = command
         await self.client.send_message(self.bot_id, command)
-
-
-
     async def autoHeal(self):
         print(f"Проверка здоровья перед автолечением: {self.my_health}")
         # Проверяем, что персонаж не мертв
@@ -463,7 +459,6 @@ class RF:
             if self.fast_cave:  # Проверка значения fast_ceve
                 await asyncio.sleep(1)
                 await self.cave_buttons_message.click(2)
-
         elif lstr[0].endswith("✅"): 
             # await asyncio.sleep(1)
             await self.client.send_message(self.group59, "Капча пройдена")  # Отправляем сообщение
@@ -472,8 +467,6 @@ class RF:
             if self.last_command:
                 await self.send_command(self.last_command)
                 self.last_command = None
-
-
         # ── новое условие для пересылки «Ты направляешься в замок» ──
         elif lstr[0].startswith("Ты направляешься в замок"):
             await message.forward_to(self.group59)   # пересылаем в группу 59
@@ -1846,7 +1839,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.20testing.18.10")
+                    msg = await self.client.send_message(event.chat_id, "Ver.21.18.10")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
