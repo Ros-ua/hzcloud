@@ -28,7 +28,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО FALSE ===
         self.is_run = self.na_straj = self.is_player_dead = self.fast_cave = self.cave_task_running = self.waiting_for_captcha = self.is_moving = self.in_castle = self.v_terminale = self.kopka = self.is_training = self.cave_message_pinned = self.prem = self.go_term_Aquilla = self.go_term_Basilaris = self.go_term_Castitas = self.is_in_caves = self.is_in_gh = self.is_has_hil = self.is_has_res = self.is_nacheve_active = self.in_battle = False
         # === ВСЕ ЧТО РАВНО NONE ===
-        self.cave_buttons_message = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = None
+        self.cave_buttons_message = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = None
         # === ЧИСЛА ===
         self.bot_id = 577009581
         self.tomat_id = 278339710
@@ -92,6 +92,14 @@ class RF:
         self.setup_war_listener()
     def isIdCompare(self, id):
         return id == self.bot_id
+
+    async def send_command(self, command):
+        """Отправляет команду боту и сохраняет её для повтора после CAPTCHA"""
+        self.last_command = command
+        await self.client.send_message(self.bot_id, command)
+
+
+
     async def autoHeal(self):
         print(f"Проверка здоровья перед автолечением: {self.my_health}")
         # Проверяем, что персонаж не мертв
@@ -113,7 +121,7 @@ class RF:
             await asyncio.sleep(15)  # Ждем 15 секунд
             if not self.is_player_dead and self.last_bind != self.hp_binds[0][1] and self.is_has_hil and self.extra_hil:
                 self.is_has_hil = False
-                await self.client.send_message(self.bot_id, self.hp_binds[0][1])  # Максимальный HP-сет
+                await self.send_command( self.hp_binds[0][1])  # Максимальный HP-сет
                 await self.wait_for_set_change() #жалоба
                 print(f"Сменили бинд на: {self.hp_binds[0][1]} (макс. здоровье: {self.hp_binds[0][0]})")
                 await asyncio.sleep(1)
@@ -132,7 +140,7 @@ class RF:
                     selected_threshold = threshold
             # Меняем сет, если он отличается от текущего
             if selected_cmd and self.last_bind != selected_cmd:
-                await self.client.send_message(self.bot_id, selected_cmd)
+                await self.send_command( selected_cmd)
                 print(f"Сменили бинд на: {selected_cmd} (макс. здоровье: {selected_threshold})")
                 self.last_bind = selected_cmd
         else:
@@ -155,7 +163,7 @@ class RF:
             print(f"Сменили бинды на: {selected_cmd} (здоровье выше всех порогов)")
         else:
             print(f"Сменили бинды на: {selected_cmd} (здоровье ≤ {selected_threshold})")
-        await self.client.send_message(self.bot_id, selected_cmd)
+        await self.send_command( selected_cmd)
         await self.wait_for_set_change() #работает
         await asyncio.sleep(1)
     async def hp_in_caves(self, lstr):
@@ -206,7 +214,7 @@ class RF:
                     print("Режим движения: используем минимальный подходящий HP-сет")
                 if selected_cmd and self.after_bind != selected_cmd:
                     try:
-                        await self.client.send_message(self.bot_id, selected_cmd)
+                        await self.send_command( selected_cmd)
                         print(f"Сменили бинд на {selected_threshold} HP: {selected_cmd}")
                         self.after_bind = selected_cmd
                     except Exception as e:
@@ -320,8 +328,8 @@ class RF:
             "Ты уже находишься в данной локации!"
         ]):
             await asyncio.sleep(1)
-            # await self.client.send_message(self.bot_id, "🤖Алтарь Тир")
-            await self.client.send_message(self.bot_id, "👩‍🚀Алтарь Иса")
+            # await self.send_command( "🤖Алтарь Тир")
+            await self.send_command( "👩‍🚀Алтарь Иса")
         elif (lstr[-1].endswith("и воскреснешь через 10 минут.") or lstr[-1].startswith("Ты одержал победу над")) and self.in_castle:
             await message.forward_to(self.group59) 
         elif any("Посейдона был активирован автоматическим пожертвованием!" in line for line in lstr) and not self.is_in_caves:
@@ -342,11 +350,11 @@ class RF:
                 ]):
                     await asyncio.sleep(10)
                     if self.is_in_caves:  # Изменено на self.is_in_caves
-                        await self.client.send_message(self.bot_id, "⚖️Проверить состав")
+                        await self.send_command( "⚖️Проверить состав")
                         await asyncio.sleep(20)
                         self.last_bind = self.after_bind
                         # Добавляем проверку текущего здоровья перед autoHeal
-                        await self.client.send_message(self.bot_id, "/hero")
+                        await self.send_command( "/hero")
                         await asyncio.sleep(3)  # Ждем ответа от бота
                         response = await self.client.get_messages(self.bot_id, limit=1)
                         if response:
@@ -362,7 +370,7 @@ class RF:
                                         await asyncio.sleep(8)  # Ждем 8 секунд, как в случае между extra и ned
                                         if not self.is_player_dead and self.last_bind != self.hp_binds[0][1] and self.is_has_hil and self.extra_hil:
                                             self.is_has_hil = False
-                                            await self.client.send_message(self.bot_id, self.hp_binds[0][1])  # Надеваем {self.hp_binds[0][0]}) HP
+                                            await self.send_command( self.hp_binds[0][1])  # Надеваем {self.hp_binds[0][0]}) HP
                                             await self.wait_for_set_change() #жалоба повтор
                                             print(f"Сменили бинд на: {self.hp_binds[0][1]} (макс. здоровье: {self.hp_binds[0][0]}))")
                                             await asyncio.sleep(1)
@@ -398,7 +406,7 @@ class RF:
             self.after_bind = self.hp_binds[0][1]
             self.steps = 0  # Начинаем отслеживать шаги с 0
             await asyncio.sleep(randint(4, 6))
-            await self.client.send_message(self.bot_id, "⚖️Проверить состав")
+            await self.send_command( "⚖️Проверить состав")
             print("в пещерах")
         elif any(phrase in lstr[0] for phrase in [
             "Пещеры заснеженных гор. Пещера",
@@ -426,7 +434,7 @@ class RF:
             # на новый год идти в краги после реса
             if not self.is_in_caves and not self.na_straj and not self.in_castle and not self.waiting_for_captcha and not self.is_nacheve_active:  # Используем существующее условие
                 await asyncio.sleep(3)
-                await self.client.send_message(self.bot_id, "🌋 Краговые шахты")
+                await self.send_command( "🌋 Краговые шахты")
         elif any(
             phrase in line for line in lstr for phrase in [
                 "Ожидай завершения",
@@ -439,7 +447,7 @@ class RF:
             if self.is_has_res and self.is_in_caves:  # Проверяем, что is_has_res равно True и мы в пещерах
                 self.is_has_res = False
                 await asyncio.sleep(5)
-                await self.client.send_message(self.bot_id, self.hp_binds[0][1])  # Надеваем бинд на самое большое HP
+                await self.send_command( self.hp_binds[0][1])  # Надеваем бинд на самое большое HP
                 await self.wait_for_set_change() #жалоба
                 await asyncio.sleep(1)  # Ждем 3 секунды перед кликом
                 await self.cave_buttons_message.click(1)
@@ -455,9 +463,17 @@ class RF:
             if self.fast_cave:  # Проверка значения fast_ceve
                 await asyncio.sleep(1)
                 await self.cave_buttons_message.click(2)
+
         elif lstr[0].endswith("✅"): 
-            await asyncio.sleep(1)
+            # await asyncio.sleep(1)
             await self.client.send_message(self.group59, "Капча пройдена")  # Отправляем сообщение
+            await asyncio.sleep(2)
+            # Повторяем последнюю команду после CAPTCHA
+            if self.last_command:
+                await self.send_command(self.last_command)
+                self.last_command = None
+
+
         # ── новое условие для пересылки «Ты направляешься в замок» ──
         elif lstr[0].startswith("Ты направляешься в замок"):
             await message.forward_to(self.group59)   # пересылаем в группу 59
@@ -472,7 +488,7 @@ class RF:
             if match:
                 duration = int(match.group(1)) * 60  # Преобразуем минуты в секунды
                 await self.set_moving_flag(duration)  # Устанавливаем флаг движения
-            await self.client.send_message(self.bot_id, RF.hp)  # переодеться для мобов
+            await self.send_command( RF.hp)  # переодеться для мобов
             await self.check_arrival()
             self.steps = None  # Сбрасываем счетчик шагов
             self.cave_message_id = None  # Сбрасываем ID сообщения
@@ -514,12 +530,12 @@ class RF:
                         print(f"{player} не в ген. штабе")
                         await self.client.send_message(self.players[player], "Давайте в ген. штаб")
             if self.mobs:  # Проверяем, включен ли флаг для мобов
-                await self.client.send_message(self.bot_id, self.location)  # для мобов
+                await self.send_command( self.location)  # для мобов
             else:
                 print("bag bag bag")  # для данжей
         elif "Если ты хочешь вернуть группу" in lstr[0]:
             await asyncio.sleep(2)
-            await self.client.send_message(self.bot_id, "22")
+            await self.send_command( "22")
         # если сообщение начинается на "🏅Топ по уровню"
         elif lstr[0].startswith("🏅Топ по уровню"):
             gerain_score = None
@@ -555,7 +571,7 @@ class RF:
             await self.straj()
         elif "Босс еще не появился. Проход в локацию закрыт!" in lstr[0]:  # если умер на страже и снова хочешь идти на стража
             await asyncio.sleep(1)
-            await self.client.send_message(self.bot_id, self.location)
+            await self.send_command( self.location)
         # на чв
         elif "Ты был убит!" in lstr[0]:  # Добавлено условие для проверки фразы
             # Проверяем, если в ожидании капчи
@@ -563,14 +579,14 @@ class RF:
                 print("Ожидание CAPTCHA, действия не выполняются.")
                 return  # Прерываем выполнение, если ожидаем CAPTCHA
             print("Персонаж был убит!")
-            # await self.client.send_message(self.bot_id, RF.chv)
+            # await self.send_command( RF.chv)
             await self.check_arrival()
         elif any(phrase in line for line in lstr for phrase in [
             "Алтарь Хагал",
         ]):
             self.got_reward = False  # Сбрасываем флаг получения награды
             await asyncio.sleep(5)
-            await self.client.send_message(self.bot_id, "🧝‍♀ Терминал Castitas")  # Отправляем сообщение в терминал
+            await self.send_command( "🧝‍♀ Терминал Castitas")  # Отправляем сообщение в терминал
             self.terminal_type = "🧝‍♀ Терминал Castitas"  # Определяем тип терминала
         elif any(phrase in line for line in lstr for phrase in [
             "Алтарь Эйви",
@@ -579,7 +595,7 @@ class RF:
             self.got_reward = False  # Сбрасываем флаг получения награды
             if self.go_term_Aquilla:  # проверка флага
                 await asyncio.sleep(5)
-                await self.client.send_message(self.bot_id, "🤖 Терминал Aquilla")
+                await self.send_command( "🤖 Терминал Aquilla")
             else:
                 # Если флаг не сработал, вызываем nacheve()
                 await self.nacheve()
@@ -591,7 +607,7 @@ class RF:
             self.got_reward = False  # Сбрасываем флаг получения награды
             if self.go_term_Basilaris:  # проверка флага
                 await asyncio.sleep(5)
-                await self.client.send_message(self.bot_id, "👩‍🚀 Терминал Basilaris")
+                await self.send_command( "👩‍🚀 Терминал Basilaris")
             else:
                 # Если флаг не сработал, вызываем nacheve()
                 await self.nacheve()
@@ -681,20 +697,20 @@ class RF:
             "Ты прибыл на"
         ]):
             await asyncio.sleep(1)
-            await self.client.send_message(self.bot_id, "⛏Рудник")
+            await self.send_command( "⛏Рудник")
         elif "[на время боевых действий проход закрыт]" in lstr[0]:
             print("Проход закрыт. Подготовка к выбору алтаря.")
             await self.prepare_for_caves()
             await asyncio.sleep(1)
             altar_to_send = self.cmd_altar if self.cmd_altar else self.choose_random_altar()
-            await self.client.send_message(self.bot_id, altar_to_send)
+            await self.send_command( altar_to_send)
             # await self.client.send_message(self.group59, altar_to_send) # пересылка алтаря в группу 59
             # await self.client.send_message(self.tamplier_id, altar_to_send) # пересылка алтаря Валере
             # await self.client.send_message(self.bezvgroup, altar_to_send) # пересылка алтаря без в 
         elif "Ты прибыл в ⛏рудник." in lstr[0]:
             self.kopka = True
             await asyncio.sleep(1)
-            await self.client.send_message(self.bot_id, "🖲 Установить АБУ")
+            await self.send_command( "🖲 Установить АБУ")
         elif any(phrase in line for line in lstr for phrase in [
             "Удачи!"
         ]):  
@@ -710,11 +726,11 @@ class RF:
         elif "Что будем делать?" in lstr[-1] or "Ты наткнулся на" in lstr[-1]:
             print("будем бить")
             await asyncio.sleep(1)
-            await self.client.send_message(self.bot_id, "🔪 Атаковать")
+            await self.send_command( "🔪 Атаковать")
         elif any(phrase in line for line in lstr for phrase in ["Энергия: 🔋0/5", "[недостаточно энергии]"]):
             print("нет энергии")
             await asyncio.sleep(1)
-            await self.client.send_message(self.bot_id, RF.hp)
+            await self.send_command( RF.hp)
             await self.wait_for_set_change()
             await asyncio.sleep(1)
             await self.handle_no_energy()
@@ -732,7 +748,7 @@ class RF:
                     if current_health < self.mob_heal:
                         # Переодеваем в сет для мобов перед energy_found
                         await asyncio.sleep(4)
-                        await self.client.send_message(self.bot_id, RF.hp)
+                        await self.send_command( RF.hp)
                         await self.wait_for_set_change()
                         await asyncio.sleep(2)                        
                         await self.handle_energy_found()
@@ -747,11 +763,11 @@ class RF:
                                 selected_threshold = threshold
                         if selected_cmd:
                             await asyncio.sleep(4)
-                            await self.client.send_message(self.bot_id, selected_cmd)
+                            await self.send_command( selected_cmd)
                             await self.wait_for_set_change()
                             await asyncio.sleep(2)
                         await asyncio.sleep(2)
-                        await self.client.send_message(self.bot_id, "🐺По уровню")
+                        await self.send_command( "🐺По уровню")
                 else:
                     print("Не удалось извлечь здоровье из строки.")
             else:
@@ -786,7 +802,7 @@ class RF:
             # "У тебя нет" # использовать на хелоуин
             ]):
             await asyncio.sleep(1)
-            await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
+            await self.send_command( "🏛 В ген. штаб")
             if self.mobs:  # Проверяем, включен ли флаг для мобов
                 await self.check_arrival()  # для мобов
             else:
@@ -810,7 +826,7 @@ class RF:
             # Добавляем проверку нахождения в пещерах и отправку проверки состава
             if self.is_in_caves:
                 await asyncio.sleep(5)  # Ждем 5 секунд
-                await self.client.send_message(self.bot_id, "⚖️Проверить состав")
+                await self.send_command( "⚖️Проверить состав")
                 print("Отправлено сообщение: ⚖️Проверить состав (из-за движения в пещере)")
         elif "Ты прибыл в замок" in lstr[0]:
             self.in_castle = True
@@ -824,12 +840,12 @@ class RF:
         elif "Ты закончил тренировку" in lstr[0]:
             self.is_training = False
             await asyncio.sleep(1)
-            await self.client.send_message(self.bot_id, self.location)
+            await self.send_command( self.location)
         elif "Ты начал тренировку" in lstr[0]:
             self.is_training = True
         # elif "Как долго ты хочешь тренировать питомца" in lstr[0]:
         #     await asyncio.sleep(1)
-        #     await self.client.send_message(self.bot_id, "1")
+        #     await self.send_command( "1")
         elif "Начать тренировку?" in lstr[-1]:
             await message.click(0)
         elif any(phrase in line for line in lstr for phrase in [
@@ -847,7 +863,7 @@ class RF:
             self.rf_message = message
             self.cave_buttons_message = message  # ← сохраняем кнопки отдельно
             await asyncio.sleep(2)
-            await self.client.send_message(self.bot_id, "⚖️Проверить состав")
+            await self.send_command( "⚖️Проверить состав")
             return
     async def check_arrival_dange(self):  # ходим данжи
         print("check_arrival_dange")
@@ -856,7 +872,7 @@ class RF:
             if last_message:
                 lstr = last_message[0].message.split('\n')
                 if any(condition in lstr[0] for condition in ["Ты дошел до локации.", "Вы уже находитесь в данной локации.", "Ты снова жив👼"]):
-                    await self.client.send_message(self.bot_id, "/go_dange_10014")  # идти данж
+                    await self.send_command( "/go_dange_10014")  # идти данж
                     return
             await asyncio.sleep(1)
     async def dangego(self):
@@ -895,7 +911,7 @@ class RF:
             if energy_low:
                 print("нет энергии или кто-то не в гш")
                 await asyncio.sleep(1)
-                await self.client.send_message(self.bot_id, self.location)
+                await self.send_command( self.location)
                 print("Отправлено сообщение: 🔥 61-65 Лес пламени")
                 return
             if is_dead:
@@ -906,10 +922,10 @@ class RF:
             if dungeon_completed:
                 print("все в гш был данж и жив на данже")
                 await asyncio.sleep(2)
-                await self.client.send_message(self.bot_id, "💖 Пополнить здоровье")
+                await self.send_command( "💖 Пополнить здоровье")
                 print("Отправлено сообщение: 💖 Пополнить здоровье")
                 await self.wait_for_health_refill()
-                await self.client.send_message(self.bot_id, "🌋 Краговые шахты")
+                await self.send_command( "🌋 Краговые шахты")
                 print("Отправлено сообщение: 🌋 Краговые шахты")
                 return
             print("Ни одно из условий не выполнено, повторная проверка через 5 секунд")
@@ -940,9 +956,9 @@ class RF:
                     self.is_in_caves = False  # Сбрасываем флаг здесь
                     await asyncio.sleep(2)
                     if not self.waiting_for_captcha:
-                        await self.client.send_message(self.bot_id, "💖 Пополнить здоровье")
+                        await self.send_command( "💖 Пополнить здоровье")
                         await self.wait_for_health_refill()
-                        await self.client.send_message(self.bot_id, self.location)
+                        await self.send_command( self.location)
                     return
             await asyncio.sleep(1)
     async def arrival_hil(self):  # ходим на моба
@@ -959,7 +975,7 @@ class RF:
                     "успешно надел комлект"
                 ]):    
                     await asyncio.sleep(2)
-                    await self.client.send_message(self.bot_id, "💖 Пополнить здоровье")
+                    await self.send_command( "💖 Пополнить здоровье")
                     await self.wait_for_health_refill()
                     return
             await asyncio.sleep(1)
@@ -971,9 +987,9 @@ class RF:
                 lstr = last_message[0].message.split('\n')
                 if any(phrase in lstr[0] for phrase in ["Ты дошел до локации.", "Вы уже находитесь в данной локации.", "Ты снова жив👼", "Ваша группа вернулась в ген. штаб!"]):  
                     await asyncio.sleep(2)
-                    await self.client.send_message(self.bot_id, "💖 Пополнить здоровье")
+                    await self.send_command( "💖 Пополнить здоровье")
                     await self.wait_for_health_refill()
-                    await self.client.send_message(self.bot_id, "🌋 Краговые шахты")
+                    await self.send_command( "🌋 Краговые шахты")
                     return
             await asyncio.sleep(1)
     async def parce_4v_logs(self, msg_text):
@@ -1061,7 +1077,7 @@ class RF:
                 # Проверка необходимости перехода к новому алтарю
                 if self.cmd_altar:
                     print(f"Бездействие. Направляемся к новому алтарю: {self.cmd_altar}")
-                    await self.client.send_message(self.bot_id, self.cmd_altar)
+                    await self.send_command( self.cmd_altar)
                     # await self.client.send_message(self.tamplier_id, self.cmd_altar) # пересылка алтаря Валере
                     # await self.client.send_message(self.bezvgroup, self.cmd_altar) # пересылка алтаря без в 
                     self.cmd_altar = None
@@ -1113,7 +1129,7 @@ class RF:
         # Получаем последнее сообщение перед отправкой команды для сравнения
         messages_before = await self.client.get_messages(self.bot_id, limit=1)
         last_message_id_before = messages_before[0].id if messages_before else 0
-        await self.client.send_message(self.bot_id, "/hero")
+        await self.send_command( "/hero")
         print("Отправлена команда /hero, ожидаем ответ от бота...")
         # Ждем новое сообщение от бота максимум 60 секунд
         max_wait_time = 60  # максимальное время ожидания
@@ -1147,7 +1163,7 @@ class RF:
             print("Обнаружено сообщение о времени. Вызываем gokragi()")
             self.killed_on_chv = True
             await asyncio.sleep(2)
-            await self.client.send_message(self.bot_id, RF.chv)
+            await self.send_command( RF.chv)
             await self.gokragi()
             self.is_nacheve_active = False
             return True
@@ -1171,10 +1187,10 @@ class RF:
                 if self.go_to_heal:
                     print("Здоровье меньше или равно self.pvpgoheal. Отправляемся в ген. штаб для хила.")
                     await asyncio.sleep(2)
-                    await self.client.send_message(self.bot_id, RF.chv)
+                    await self.send_command( RF.chv)
                     await self.wait_for_set_change() #не проверено
                     await asyncio.sleep(1)
-                    await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
+                    await self.send_command( "🏛 В ген. штаб")
                     # Добавляем информацию о текущем здоровье
                     health_message = f"Ушел на отхил после пвп. Осталось здоровья: {self.my_health}"
                     # await self.client.send_message(self.bezvgroup, health_message)  # пересылка без в 
@@ -1183,12 +1199,12 @@ class RF:
                     self.is_nacheve_active = False
                     return True
                 else:
-                    await self.client.send_message(self.bot_id, RF.chv)
+                    await self.send_command( RF.chv)
                     await self.wait_for_set_change() # не проверено
                     await asyncio.sleep(1)
                     # Проверяем имя пользователя для команды drink_103
                     if self.your_name in ["Ros_Hangzhou", "๖ۣۜᗯαsͥpwͣoͫℝt🐝"]:
-                        await self.client.send_message(self.bot_id, "/drink_103")
+                        await self.send_command( "/drink_103")
                         await asyncio.sleep(3)
                     else:
                         # Если имя не подходит, можно использовать альтернативную команду или просто пропустить
@@ -1270,14 +1286,14 @@ class RF:
                         if "Ты снова жив" in lstr[0]:
                             print("Персонаж снова жив")
                             await asyncio.sleep(2)
-                            await self.client.send_message(self.bot_id, damage_type)
+                            await self.send_command( damage_type)
                             print(f"Отправлено сообщение: {damage_type}")
                             return
                     await asyncio.sleep(1)
             if is_damaged:
                 print("Персонаж получил урон, возвращение в ген. штаб")
                 await asyncio.sleep(1)
-                await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
+                await self.send_command( "🏛 В ген. штаб")
                 print("Отправлено сообщение: 🏛 В ген. штаб")
                 # Ожидаем достижения ген. штаба
                 while True:
@@ -1287,10 +1303,10 @@ class RF:
                         if "Ты дошел до локации." in lstr[0]:
                             print("Достигнут ген. штаб")
                             await asyncio.sleep(2)
-                            await self.client.send_message(self.bot_id, "💖 Пополнить здоровье")
+                            await self.send_command( "💖 Пополнить здоровье")
                             print("Отправлено сообщение: 💖 Пополнить здоровье")
                             await self.wait_for_health_refill()
-                            await self.client.send_message(self.bot_id, damage_type)
+                            await self.send_command( damage_type)
                             print(f"Отправлено сообщение: {damage_type}")
                             return
                     await asyncio.sleep(1)
@@ -1357,7 +1373,7 @@ class RF:
                 craft_cmd = re.search(r" (/.*)$", str_line)
                 if craft_cmd:
                     print(f"Отправляем команду крафта: {craft_cmd.group(1)}")
-                    await self.client.send_message(self.bot_id, craft_cmd.group(1))                                
+                    await self.send_command( craft_cmd.group(1))                                
                     # Ожидание подтверждения
                     confirmation = await self.wait_for_confirmation()
                     if not confirmation:
@@ -1366,7 +1382,7 @@ class RF:
                     await asyncio.sleep(2) 
             # Отправка команды "🔨 Скрафтить"
             await asyncio.sleep(2)
-            await self.client.send_message(self.bot_id, "🔨 Скрафтить")
+            await self.send_command( "🔨 Скрафтить")
         else:
             print(" Илье оно нафиг не надо")
             # Проверяем наличие составляющих
@@ -1412,7 +1428,7 @@ class RF:
         print(f"# Получены данные: talisman_type={talisman_type}, talisman_level={talisman_level}")
         print("# Вставка талисмана и камня")
         await asyncio.sleep(1)
-        await self.client.send_message(self.bot_id, "👨‍🏭 Помощник")
+        await self.send_command( "👨‍🏭 Помощник")
         await asyncio.sleep(2)
         # Получаем последнее сообщение с кнопками
         self.rf_message = await self.get_latest_message_with_buttons()
@@ -1436,7 +1452,7 @@ class RF:
     async def _craft_and_process_result(self):
         await asyncio.sleep(1)
         print("# Крафт и проверка результата")
-        await self.client.send_message(self.bot_id, "🔨 Скрафтить")
+        await self.send_command( "🔨 Скрафтить")
     async def get_latest_message_with_buttons(self):
         print("# Получаем последнее сообщение с кнопками")
         messages = await self.client.get_messages(self.bot_id, limit=1)
@@ -1522,50 +1538,50 @@ class RF:
                 asyncio.create_task(self.pvp_heal_timer())                
                 if not any([self.is_in_caves, self.kopka, self.is_moving]):
                     await asyncio.sleep(12)
-                    await self.client.send_message(self.bot_id, RF.chv)
+                    await self.send_command( RF.chv)
                     await self.wait_for_set_change() #работает
                     await asyncio.sleep(1)
-                    await self.client.send_message(self.bot_id, "💖 Пополнить здоровье")
+                    await self.send_command( "💖 Пополнить здоровье")
                     print("Отправлено сообщение: 💖 Пополнить здоровье")
                     await self.wait_for_health_refill()
-                    await self.client.send_message(self.bot_id, "🌋 Краговые шахты")
+                    await self.send_command( "🌋 Краговые шахты")
             if any("Война окончена!" in ln for ln in lines):
                 await asyncio.sleep(70)
                 if not self.is_moving and not self.killed_on_chv:
-                    await self.client.send_message(self.bot_id, "⛏Рудник")
+                    await self.send_command( "⛏Рудник")
                 await asyncio.sleep(900)  # 15 минут = 900 секунд
                 if not self.is_in_caves and not self.waiting_for_captcha:
-                    await self.client.send_message(self.bot_id, RF.hp)  # Переодеться для мобов
+                    await self.send_command( RF.hp)  # Переодеться для мобов
                 # # await self.wait_for_set_change() #работает
                 # await asyncio.sleep(1)
                 # if self.is_nacheve_active and not self.is_moving:
                 #     await asyncio.sleep(3)  # Задержка перед следующим действием
-                #     await self.client.send_message(self.bot_id, "⛏Рудник")
+                #     await self.send_command( "⛏Рудник")
                 # else:
                 #     await asyncio.sleep(3)
-                #     await self.client.send_message(self.bot_id, "⛏Рудник")
+                #     await self.send_command( "⛏Рудник")
             if any(("Castitas одолела" in ln or "Castitas не смогла одолеть" in ln or "Босс" in ln and "пал!" in ln) for ln in lines):
                 if not self.is_in_caves:
                     await asyncio.sleep(15)
-                    await self.client.send_message(self.bot_id, RF.hp)
+                    await self.send_command( RF.hp)
                     await self.wait_for_set_change() #работает
                     await asyncio.sleep(1)
                     if not self.is_moving and not self.in_castle:
                         await asyncio.sleep(5)
-                        await self.client.send_message(self.bot_id, self.location)
+                        await self.send_command( self.location)
             if any("Осада замков закончилась" in ln for ln in lines):
                 self.in_castle = False
                 if not self.is_in_caves and not self.waiting_for_captcha and not self.kopka and not self.is_moving:
                     await asyncio.sleep(5)
-                    await self.client.send_message(self.bot_id, RF.hp)
+                    await self.send_command( RF.hp)
                     await self.wait_for_set_change() 
                     await asyncio.sleep(2)
-                    await self.client.send_message(self.bot_id, self.location)
+                    await self.send_command( self.location)
             if any("Страж будет уязвим для атак расы" in ln and "Castitas" in ln for ln in lines):
                 print("Получено сообщение о появлении стража через 15 минут")
                 if not self.is_in_caves and not self.is_moving and not self.in_castle:
                     print("Отправляем сообщение '🔥 61-65 Лес пламени'")
-                    await self.client.send_message(self.bot_id, self.location)
+                    await self.send_command( self.location)
             if any("Он уязвим только для атак расы" in ln and "Castitas" in ln for ln in lines):
                 print("Страж появился")
                 if not self.is_in_caves and not self.in_castle:
@@ -1574,9 +1590,9 @@ class RF:
                     print(f"Выбрано направление: {chosen_direction}")
                     if self.kopka:
                         print("Копка активна, отправляем сообщение '🏛 В ген. штаб'")
-                        await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
+                        await self.send_command( "🏛 В ген. штаб")
                         await asyncio.sleep(5)
-                        await self.client.send_message(self.bot_id, RF.chv)
+                        await self.send_command( RF.chv)
                         await self.wait_for_set_change() #работает
                         await asyncio.sleep(1)
                         while self.is_moving:
@@ -1584,13 +1600,13 @@ class RF:
                             await asyncio.sleep(5)
                         print("Персонаж перестал двигаться.")
                         await asyncio.sleep(5)
-                        await self.client.send_message(self.bot_id, chosen_direction)
+                        await self.send_command( chosen_direction)
                     else:
-                        await self.client.send_message(self.bot_id, RF.chv)
+                        await self.send_command( RF.chv)
                         await self.wait_for_set_change() #работает
                         await asyncio.sleep(1)  
                         print(f"Копка не активна, сразу отправляем '{chosen_direction}'")
-                        await self.client.send_message(self.bot_id, chosen_direction)
+                        await self.send_command( chosen_direction)
             elif any("Стальной аргол для расы" in ln and "Castitas" in ln for ln in lines):
                 print("Аргол появился")
                 if not self.is_in_caves and not self.in_castle:
@@ -1599,9 +1615,9 @@ class RF:
                     print(f"Выбрано направление: {chosen_direction}")
                     if self.kopka:
                         print("Копка активна, отправляем сообщение '🏛 В ген. штаб'")
-                        await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
+                        await self.send_command( "🏛 В ген. штаб")
                         await asyncio.sleep(5)
-                        await self.client.send_message(self.bot_id, RF.chv)
+                        await self.send_command( RF.chv)
                         await self.wait_for_set_change()
                         await asyncio.sleep(1)
                         while self.is_moving:
@@ -1609,13 +1625,13 @@ class RF:
                             await asyncio.sleep(5)
                         print("Персонаж перестал двигаться.")
                         await asyncio.sleep(5)
-                        await self.client.send_message(self.bot_id, chosen_direction + "'")
+                        await self.send_command( chosen_direction + "'")
                     else:
-                        await self.client.send_message(self.bot_id, RF.chv)
+                        await self.send_command( RF.chv)
                         await self.wait_for_set_change()
                         await asyncio.sleep(1)  
                         print(f"Копка не активна, сразу отправляем '{chosen_direction}'")
-                        await self.client.send_message(self.bot_id, chosen_direction + "'")
+                        await self.send_command( chosen_direction + "'")
             elif any("Варасса для расы" in ln and "Castitas" in ln for ln in lines):
                 print("Варасса появилась")
                 if not self.is_in_caves and not self.in_castle:
@@ -1624,9 +1640,9 @@ class RF:
                     print(f"Выбрано направление: {chosen_direction}")
                     if self.kopka:
                         print("Копка активна, отправляем сообщение '🏛 В ген. штаб'")
-                        await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
+                        await self.send_command( "🏛 В ген. штаб")
                         await asyncio.sleep(5)
-                        await self.client.send_message(self.bot_id, RF.chv)
+                        await self.send_command( RF.chv)
                         await self.wait_for_set_change()
                         await asyncio.sleep(1)
                         while self.is_moving:
@@ -1634,13 +1650,13 @@ class RF:
                             await asyncio.sleep(5)
                         print("Персонаж перестал двигаться.")
                         await asyncio.sleep(5)
-                        await self.client.send_message(self.bot_id, chosen_direction + "''")
+                        await self.send_command( chosen_direction + "''")
                     else:
-                        await self.client.send_message(self.bot_id, RF.chv)
+                        await self.send_command( RF.chv)
                         await self.wait_for_set_change()
                         await asyncio.sleep(1)  
                         print(f"Копка не активна, сразу отправляем '{chosen_direction}''")
-                        await self.client.send_message(self.bot_id, chosen_direction + "''")
+                        await self.send_command( chosen_direction + "''")
             elif any("Трашер для расы" in ln and "Castitas" in ln for ln in lines):
                 print("Трашер появился")
                 if not self.is_in_caves and not self.in_castle:
@@ -1649,9 +1665,9 @@ class RF:
                     print(f"Выбрано направление: {chosen_direction}")
                     if self.kopka:
                         print("Копка активна, отправляем сообщение '🏛 В ген. штаб'")
-                        await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
+                        await self.send_command( "🏛 В ген. штаб")
                         await asyncio.sleep(5)
-                        await self.client.send_message(self.bot_id, RF.chv)
+                        await self.send_command( RF.chv)
                         await self.wait_for_set_change()
                         await asyncio.sleep(1)
                         while self.is_moving:
@@ -1659,13 +1675,13 @@ class RF:
                             await asyncio.sleep(5)
                         print("Персонаж перестал двигаться.")
                         await asyncio.sleep(5)
-                        await self.client.send_message(self.bot_id, chosen_direction + "'''")
+                        await self.send_command( chosen_direction + "'''")
                     else:
-                        await self.client.send_message(self.bot_id, RF.chv)
+                        await self.send_command( RF.chv)
                         await self.wait_for_set_change()
                         await asyncio.sleep(1)  
                         print(f"Копка не активна, сразу отправляем '{chosen_direction}'''")
-                        await self.client.send_message(self.bot_id, chosen_direction + "'''")
+                        await self.send_command( chosen_direction + "'''")
             # Обработка предупреждения о войне через час
             if any("Война в краговых шахтах начнется через час!" in ln for ln in lines):
                 print("Обнаружено предупреждение о войне через час!")
@@ -1692,7 +1708,7 @@ class RF:
         await asyncio.sleep(25 * 60)  # 25 минут в секундах
         if self.kopka and not self.prem and not self.waiting_for_captcha:
             print("Через 25 минут kopka=True и prem=False, отправляем в Лес пламени")
-            await self.client.send_message(self.bot_id, self.location)
+            await self.send_command( self.location)
         else:
             if not self.kopka:
                 print("Через 25 минут kopka=False")
@@ -1702,7 +1718,7 @@ class RF:
         await asyncio.sleep(21 * 60)
         if self.kopka and self.prem and not self.waiting_for_captcha:
             print("Через 46 минут kopka=True и prem=True, отправляем в Лес пламени")
-            await self.client.send_message(self.bot_id, self.location)
+            await self.send_command( self.location)
         else:
             if not self.kopka:
                 print("Через 46 минут kopka=False")
@@ -1712,7 +1728,7 @@ class RF:
         await asyncio.sleep(12 * 60)
         if self.kopka and not self.waiting_for_captcha:
             print("Через 58 минут kopka=True, отправляем в ген. штаб")
-            await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
+            await self.send_command( "🏛 В ген. штаб")
         else:
             print("Через 58 минут kopka=False, остаёмся на месте")
     def common_cave(self):
@@ -1730,7 +1746,7 @@ class RF:
                         print(f"Команда _банка от cave leader {event.sender_id} игнорируется")
                         return
                     print("Отправляем команду /drink_102")
-                    await self.client.send_message(self.bot_id, "/drink_102")
+                    await self.send_command( "/drink_102")
                     await event.message.delete()  # Удаляем сообщение
                 elif any(key in message_text for key in [
                     "_🕌 нова", "_🕌 мира", "_🕌 антарес", "_🕌 фобос", "_🕌 арэс", 
@@ -1770,21 +1786,21 @@ class RF:
                     if castle_command:
                         if self.kopka:  
                             print(f"Отправляем комплект chv для замка {castle_command}")
-                            await self.client.send_message(self.bot_id, RF.chv)
+                            await self.send_command( RF.chv)
                             await self.wait_for_set_change()
                             await asyncio.sleep(1)
                             print(f"Отправляем команду в ген. штаб")
-                            await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
+                            await self.send_command( "🏛 В ген. штаб")
                             await self.arrival_hil()
                             await asyncio.sleep(2)
-                            await self.client.send_message(self.bot_id, castle_command)
+                            await self.send_command( castle_command)
                         else:
-                            await self.client.send_message(self.bot_id, RF.chv)
+                            await self.send_command( RF.chv)
                             await self.wait_for_set_change()
                             await asyncio.sleep(1)
-                            await self.client.send_message(self.bot_id, "💖 Пополнить здоровье")
+                            await self.send_command( "💖 Пополнить здоровье")
                             await asyncio.sleep(3)
-                            await self.client.send_message(self.bot_id, castle_command)
+                            await self.send_command( castle_command)
                         await event.message.delete()
                 elif "_фольт" in message_text:
                     # Проверяем, что отправитель не является cave leader
@@ -1794,43 +1810,43 @@ class RF:
                     # Проверяем наличие фольт биндов
                     if hasattr(self, 'folt_binds') and self.folt_binds:
                         print("Отправляем команду folt_binds")
-                        await self.client.send_message(self.bot_id, self.folt_binds[0][1])
+                        await self.send_command( self.folt_binds[0][1])
                     else:
                         print("Фольт бинды не настроены, просто удаляем сообщение")
                     await event.message.delete()  # Удаляем сообщение
                 elif "_гш" in message_text and not self.waiting_for_captcha:  
                     if self.kopka:  
                         print("Отправляем комплект hp_{self.hp_binds[0][0]})")
-                        await self.client.send_message(self.bot_id, self.hp_binds[0][1])  # Используем переменную hp_{self.hp_binds[0][0]}) для надевания
+                        await self.send_command( self.hp_binds[0][1])  # Используем переменную hp_{self.hp_binds[0][0]}) для надевания
                         await self.wait_for_set_change() #работает
                         await asyncio.sleep(1)
                         self.my_health = self.my_max_health = self.hp_binds[0][0]
                         print(f"Здоровье обновлено: {self.my_health}/{self.my_max_health}")
                         print("Отправляем команду /go_to_gsh")
-                        await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
+                        await self.send_command( "🏛 В ген. штаб")
                         await self.arrival_hil()  # Вызываем arrival_hil после отправки в ген. штаб
                     else:
-                        await self.client.send_message(self.bot_id, self.hp_binds[0][1])
+                        await self.send_command( self.hp_binds[0][1])
                         await self.wait_for_set_change() #работает
                         await asyncio.sleep(1)
                         self.my_health = self.my_max_health = self.hp_binds[0][0]
-                        await self.client.send_message(self.bot_id, "💖 Пополнить здоровье")
+                        await self.send_command( "💖 Пополнить здоровье")
                     await event.message.delete()  # Удаляем сообщение
                 elif "_стоп" in message_text or "_стой" in message_text:
                     if self.is_moving:
-                        await self.client.send_message(self.bot_id, "🏃‍♂️Отменить переход")
+                        await self.send_command( "🏃‍♂️Отменить переход")
                     await event.message.delete()  # Удаляем сообщение
                 elif "_краги" in message_text:  
                     # Проверяем, что отправитель не является cave leader
                     if event.sender_id == self.cave_leader_id:
                         print(f"Команда _краги от cave leader {event.sender_id} игнорируется")
                         return  
-                    await self.client.send_message(self.bot_id, "🌋 Краговые шахты")
+                    await self.send_command( "🌋 Краговые шахты")
                     await event.message.delete()  # Удаляем сообщение
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.19.18.10")
+                    msg = await self.client.send_message(event.chat_id, "Ver.20testing.18.10")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -1844,25 +1860,25 @@ class RF:
                         return                    
                     if self.kopka:  
                         print("Отправляем комплект hp_{self.hp_binds[0][0]})")
-                        await self.client.send_message(self.bot_id, self.hp_binds[0][1])  # Используем переменную hp_{self.hp_binds[0][0]}) для надевания
+                        await self.send_command( self.hp_binds[0][1])  # Используем переменную hp_{self.hp_binds[0][0]}) для надевания
                         await self.wait_for_set_change() #работает 
                         await asyncio.sleep(1)
                         self.my_health = self.my_max_health = self.hp_binds[0][0]
                         print(f"Здоровье обновлено: {self.my_health}/{self.my_max_health}")
                         await asyncio.sleep(5)
                         print("Отправляем команду /go_to_gsh")
-                        await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
+                        await self.send_command( "🏛 В ген. штаб")
                         await self.arrival_hil()  # Вызываем arrival_hil после отправки в ген. штаб
                         await asyncio.sleep(2)
-                        await self.client.send_message(self.bot_id, "🚠 Отправиться в пещеры")
+                        await self.send_command( "🚠 Отправиться в пещеры")
                     else:
-                        await self.client.send_message(self.bot_id, self.hp_binds[0][1])
+                        await self.send_command( self.hp_binds[0][1])
                         await self.wait_for_set_change() #работает 
                         await asyncio.sleep(1)
                         self.my_health = self.my_max_health = self.hp_binds[0][0]
-                        await self.client.send_message(self.bot_id, "💖 Пополнить здоровье")
+                        await self.send_command( "💖 Пополнить здоровье")
                         await asyncio.sleep(3)
-                        await self.client.send_message(self.bot_id, "🚠 Отправиться в пещеры")
+                        await self.send_command( "🚠 Отправиться в пещеры")
                     await event.message.delete()  # Удаляем сообщение
                 elif "_шаг" in message_text:  
                     if not self.is_in_caves:
@@ -1873,21 +1889,21 @@ class RF:
                 elif "_мобы" in message_text:  
                     self.mobs = True
                     self.location = "🔥 61-65 Лес пламени"  # Добавьте эту строку
-                    await self.client.send_message(self.bot_id, RF.hp)
+                    await self.send_command( RF.hp)
                     await self.wait_for_set_change()
                     await asyncio.sleep(1)
                     await event.message.delete()
                 elif "_этер" in message_text:
                     self.mobs = True  # или False, в зависимости от вашей логики
                     self.location = "🏔 Этер"
-                    await self.client.send_message(self.bot_id, RF.hp)
+                    await self.send_command( RF.hp)
                     await self.wait_for_set_change()
                     await asyncio.sleep(1)
                     await event.message.delete()
                 elif "_данжи" in message_text:  
                     self.mobs = False  # Устанавливаем флаг для данжей
                     # await self.client.send_message(self.cave_leader_id, "Ходим в данжи")  # Сообщение об изменении флага
-                    # await self.client.send_message(self.bot_id, RF.chv)
+                    # await self.send_command( RF.chv)
                     await event.message.delete()  # Удаляем сообщение
                 elif "_выход" in message_text:  
                     # Проверяем, что отправитель не является cave leader
@@ -1905,7 +1921,7 @@ class RF:
                     # if self.is_has_res:  # Проверяем, что is_has_res равно True
                     self.is_has_res = False
                     await asyncio.sleep(randint(14, 20))
-                    await self.client.send_message(self.bot_id, self.hp_binds[0][1])  # Надеваем бинд на самое большое HP
+                    await self.send_command( self.hp_binds[0][1])  # Надеваем бинд на самое большое HP
                     await self.wait_for_set_change()
                     await asyncio.sleep(1)
                     await self.cave_buttons_message.click(1)
@@ -1915,7 +1931,7 @@ class RF:
                     await event.message.delete()  # Удаляем сообщение
                 elif "_состав" in message_text:  
                     await asyncio.sleep(1)  
-                    await self.client.send_message(self.bot_id, "⚖️Проверить состав")
+                    await self.send_command( "⚖️Проверить состав")
                     # Ожидаем сообщение, начинающееся с "Состав:"
                     while True:
                         await asyncio.sleep(0.1)  # Добавите задержку 
@@ -1928,13 +1944,13 @@ class RF:
                     # Ждем 1 секунду
                     await asyncio.sleep(2)
                     # Отправляем второе сообщение
-                    await self.client.send_message(self.bot_id, "⚖️ Проверить состав")
+                    await self.send_command( "⚖️ Проверить состав")
                     await event.message.delete()  # Удаляем сообщение
                 elif "_моб" in message_text:  
                     if self.is_in_caves:
                         return
                     await asyncio.sleep(1)  
-                    await self.client.send_message(self.bot_id, self.location)
+                    await self.send_command( self.location)
                     await event.message.delete()  # Удаляем сообщение
                 elif "_булочка" in message_text:  
                     await asyncio.sleep(1)  
@@ -1943,11 +1959,11 @@ class RF:
                     await event.message.delete()  # Удаляем сообщение
                     await asyncio.sleep(10)
                     # if self.is_in_caves:  # Изменено на self.is_in_caves
-                    await self.client.send_message(self.bot_id, "⚖️Проверить состав")
+                    await self.send_command( "⚖️Проверить состав")
                     await asyncio.sleep(20)
                     self.last_bind = self.after_bind
                     # Добавляем проверку текущего здоровья перед autoHeal
-                    await self.client.send_message(self.bot_id, "/hero")
+                    await self.send_command( "/hero")
                     await asyncio.sleep(3)  # Ждем ответа от бота
                     response = await self.client.get_messages(self.bot_id, limit=1)
                     if response:
@@ -1963,7 +1979,7 @@ class RF:
                                     await asyncio.sleep(8)  # Ждем 8 секунд, как в случае между extra и ned
                                     if not self.is_player_dead and self.last_bind != self.hp_binds[0][1] and self.is_has_hil and self.extra_hil:
                                         self.is_has_hil = False
-                                        await self.client.send_message(self.bot_id, self.hp_binds[0][1])  # Надеваем {self.hp_binds[0][0]}) HP
+                                        await self.send_command( self.hp_binds[0][1])  # Надеваем {self.hp_binds[0][0]}) HP
                                         await self.wait_for_set_change() #надо проверить
                                         await asyncio.sleep(1)
                                         print(f"Сменили бинд на: {self.hp_binds[0][1]} (макс. здоровье: {self.hp_binds[0][0]}))")
@@ -1995,19 +2011,19 @@ class RF:
                             await asyncio.sleep(5)  # Проверяем каждые 5 секунд
                         # Отправляем команду боту
                         await asyncio.sleep(2)  # Ждем 2 секунды
-                        await self.client.send_message(self.bot_id, self.location)
+                        await self.send_command( self.location)
                     else:
                         # Если движение не активно, выполняем команду
                         await asyncio.sleep(1)
                         if self.kopka:  # Проверяем значение self.kopka
-                            await self.client.send_message(self.bot_id, self.location)
+                            await self.send_command( self.location)
                             # Отправляем сообщение пользователю
                             await self.client.send_message(
                                 event.sender_id,  # ID пользователя, который отправил команду
                                 "Данж будет через 1 минуту."
                             )
                         else:
-                            await self.client.send_message(self.bot_id, "/go_dange_10014")
+                            await self.send_command( "/go_dange_10014")
                     await event.message.delete()  # Удаляем сообщение
                 elif "_хил" in message_text:  
                     # Проверяем, что отправитель не является cave leader
@@ -2017,7 +2033,7 @@ class RF:
                     if self.last_bind != self.hp_binds[0][1] and self.is_has_hil:
                         self.is_has_hil = False
                         await asyncio.sleep(5)  # Ждем 3 секунды
-                        await self.client.send_message(self.bot_id, self.hp_binds[0][1])  # Надеваем {self.hp_binds[0][0]}) HP
+                        await self.send_command( self.hp_binds[0][1])  # Надеваем {self.hp_binds[0][0]}) HP
                         await self.wait_for_set_change() #надо проверить
                         await asyncio.sleep(1)
                         await self.cave_buttons_message.click(0)  # Выполняем клик
@@ -2106,7 +2122,7 @@ class RF:
                         await asyncio.sleep(5)
                     else:
                         await asyncio.sleep(1)
-                    await self.client.send_message(self.bot_id, "👩‍🚀Алтарь Гебо")
+                    await self.send_command( "👩‍🚀Алтарь Гебо")
                     await event.message.delete()  # Удаляем сообщение
                 elif "_эйви" in message_text:
                     # Проверяем, что отправитель не является cave leader
@@ -2123,7 +2139,7 @@ class RF:
                         await asyncio.sleep(5)
                     else:
                         await asyncio.sleep(1)
-                    await self.client.send_message(self.bot_id, "🤖Алтарь Эйви")
+                    await self.send_command( "🤖Алтарь Эйви")
                     await event.message.delete()  # Удаляем сообщение
                 elif "_тир" in message_text:
                     # Проверяем, что отправитель не является cave leader
@@ -2140,7 +2156,7 @@ class RF:
                         await asyncio.sleep(5)
                     else:
                         await asyncio.sleep(1)
-                    await self.client.send_message(self.bot_id, "🤖Алтарь Тир")
+                    await self.send_command( "🤖Алтарь Тир")
                     await event.message.delete()  # Удаляем сообщение
                 elif "_иса" in message_text:
                     # Проверяем, что отправитель не является cave leader
@@ -2157,7 +2173,7 @@ class RF:
                         await asyncio.sleep(5)
                     else:
                         await asyncio.sleep(1)
-                    await self.client.send_message(self.bot_id, "👩‍🚀Алтарь Иса")
+                    await self.send_command( "👩‍🚀Алтарь Иса")
                     await event.message.delete()  # Удаляем сообщение
                 elif "_исс" in message_text:
                     # Проверяем, что отправитель не является cave leader
@@ -2173,7 +2189,7 @@ class RF:
                         await asyncio.sleep(5)
                     else:
                         await asyncio.sleep(1)
-                    await self.client.send_message(self.bot_id, "🧝‍♀Алтарь Исс")
+                    await self.send_command( "🧝‍♀Алтарь Исс")
                     await event.message.delete()  # Удаляем сообщение
                 elif "_дагаз" in message_text:
                     # Проверяем, что отправитель не является cave leader
@@ -2189,7 +2205,7 @@ class RF:
                         await asyncio.sleep(5)
                     else:
                         await asyncio.sleep(1)
-                    await self.client.send_message(self.bot_id, "🧝‍♀Алтарь Дагаз")
+                    await self.send_command( "🧝‍♀Алтарь Дагаз")
                     await event.message.delete()  # Удаляем сообщение 
                 elif "_хагал" in message_text:
                     # Проверяем, что отправитель не является cave leader
@@ -2206,7 +2222,7 @@ class RF:
                         await asyncio.sleep(5)
                     else:
                         await asyncio.sleep(1)
-                    await self.client.send_message(self.bot_id, "🧝‍♀Алтарь Хагал")
+                    await self.send_command( "🧝‍♀Алтарь Хагал")
                     await event.message.delete()  # Удаляем сообщение
                 elif "_heal" in message_text:  # Проверяем наличие команды
                     new_value = int(message_text.split()[-1])
@@ -2376,7 +2392,7 @@ class RF:
                 # await self.client.send_message(self.cave_leader_id, "Вы не были в пещере или не нажали кнопку.")  # Сообщение о том, что не нажали
                 if not self.waiting_for_captcha:  # Если не ждём капчу, отправляем /daily
                     await asyncio.sleep(3)
-                    await self.client.send_message(self.bot_id, "/daily")
+                    await self.send_command( "/daily")
                 break
             # Если `self.is_moving` активен, ждем, пока он не станет `False`
             while self.is_moving:
@@ -2384,7 +2400,7 @@ class RF:
             await asyncio.sleep(randint(10, 50))
             await self.rf_message.click(3)
             await asyncio.sleep(5)
-            await self.client.send_message(self.bot_id, "/daily")
+            await self.send_command( "/daily")
             # await self.client.send_message(self.cave_leader_id, "Вы были в пещере и нажали кнопку.")  # Сообщение о нажатии
             break  # Выход из цикла сразу после нажатия кнопки
         self.cave_task_running = False  # Сбрасываем флаг, когда задача завершена
@@ -2428,12 +2444,12 @@ class RF:
     async def handle_no_energy(self):
         print("нет энергии")
         await asyncio.sleep(5)
-        await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
+        await self.send_command( "🏛 В ген. штаб")
         await self.gokragi()
     async def handle_energy_found(self):
         print("есть энергия")
         await asyncio.sleep(5)
-        await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
+        await self.send_command( "🏛 В ген. штаб")
         if self.mobs:  # Проверяем, включен ли флаг для мобов
             await self.check_arrival()  # для мобов
         else:
@@ -2456,7 +2472,7 @@ class RF:
         if not (self.is_nacheve_active or self.is_training or self.in_castle or self.v_terminale):
             print("Восполнение энергии вне пещер")
             await asyncio.sleep(1)
-            await self.client.send_message(self.bot_id, "🏛 В ген. штаб")
+            await self.send_command( "🏛 В ген. штаб")
             # Ждем 3 секунды и проверяем появление капчи
             await asyncio.sleep(3)
             # Если появилась капча - ждём её решения
