@@ -320,6 +320,18 @@ class RF:
         ]):    
             print("булочка")
             await self.client.send_message(self.cave_leader_id, "булочка")
+
+
+
+        elif any("Вы полны энергии" in line for line in lstr):
+            if self.kopka:
+                await asyncio.sleep(2)
+                await self.send_command("🏛 В ген. штаб")
+                await self.check_arrival()
+
+
+
+
         elif any(phrase in line for line in lstr for phrase in [
             "Ты уже находишься в данной локации!"
         ]):
@@ -1839,7 +1851,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.21.18.10")
+                    msg = await self.client.send_message(event.chat_id, "Ver.banka.21.18.10")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
