@@ -722,9 +722,9 @@ class RF:
             # если _моб N был задан и остались повторы
             if hasattr(self, "mob_drink_counter") and self.mob_drink_counter > 0 and not prev_state:
                 await asyncio.sleep(3)
-                await self.send_command("/drink_103")
+                await self.send_command("/drink_102")
                 self.mob_drink_counter -= 1
-                print(f"Выпито /drink_103, осталось: {self.mob_drink_counter}")
+                print(f"Выпито /drink_102, осталось: {self.mob_drink_counter}")
         
         elif any(phrase in line for line in lstr for phrase in [
             "Удачи!"
@@ -1861,7 +1861,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.bankatesting.21.18.10")
+                    msg = await self.client.send_message(event.chat_id, "Ver.bankatestingbankatestingbankatesting.21.18.10")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
