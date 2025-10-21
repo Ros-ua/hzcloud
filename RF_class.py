@@ -320,18 +320,11 @@ class RF:
         ]):    
             print("булочка")
             await self.client.send_message(self.cave_leader_id, "булочка")
-
-
-
         elif any("Вы полны энергии" in line for line in lstr):
             if self.kopka:
                 await asyncio.sleep(2)
                 await self.send_command("🏛 В ген. штаб")
                 await self.check_arrival()
-
-
-
-
         elif any(phrase in line for line in lstr for phrase in [
             "Ты уже находишься в данной локации!"
         ]):
@@ -712,20 +705,17 @@ class RF:
             # await self.client.send_message(self.group59, altar_to_send) # пересылка алтаря в группу 59
             # await self.client.send_message(self.tamplier_id, altar_to_send) # пересылка алтаря Валере
             # await self.client.send_message(self.bezvgroup, altar_to_send) # пересылка алтаря без в 
-        
         elif "Ты прибыл в ⛏рудник." in lstr[0]:
             prev_state = self.kopka
             self.kopka = True
             await asyncio.sleep(1)
             await self.send_command("🖲 Установить АБУ")
-
             # если _моб N был задан и остались повторы
             if hasattr(self, "mob_drink_counter") and self.mob_drink_counter > 0 and not prev_state:
                 await asyncio.sleep(3)
                 await self.send_command("/drink_102")
                 self.mob_drink_counter -= 1
                 print(f"Выпито /drink_102, осталось: {self.mob_drink_counter}")
-        
         elif any(phrase in line for line in lstr for phrase in [
             "Удачи!"
         ]):  
@@ -1861,7 +1851,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.22.10")
+                    msg = await self.client.send_message(event.chat_id, "Ver.nb.22.10")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -1961,18 +1951,14 @@ class RF:
                     # Отправляем второе сообщение
                     await self.send_command( "⚖️ Проверить состав")
                     await event.message.delete()  # Удаляем сообщение
-                
                 elif "_моб" in message_text:  
                     if self.is_in_caves:
                         return
-
                     match = re.search(r"_моб\s+(\d+)", message_text)
                     self.mob_drink_counter = int(match.group(1)) if match else 0  # 0 = не пить
-
                     await asyncio.sleep(1)
                     await self.send_command(self.location)
                     await event.message.delete()
-                
                 elif "_булочка" in message_text:  
                     await asyncio.sleep(1)  
                     # await self.client.send_message(self.cave_leader_id, "булочка")
