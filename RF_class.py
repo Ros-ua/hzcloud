@@ -1704,38 +1704,38 @@ class RF:
         self.go_to_heal = True
         print("Через 43 минуты после начала войны установлено go_to_heal = True")
     async def war_preparation_timer(self):
-        """Таймер подготовки к войне - проверяем kopka через 25, 46 и 58 минут"""
-        print("Запущен таймер подготовки к войне")
-        # Если в ожидании капчи, то сразу выходим
-        # if self.waiting_for_captcha:
-        #     return
-        # Ждём 25 минут и проверяем kopka и prem
-        await asyncio.sleep(25 * 60)  # 25 минут в секундах
-        if self.kopka and not self.prem and not self.waiting_for_captcha:
-            print("Через 25 минут kopka=True и prem=False, отправляем в Лес пламени")
-            await self.send_command( self.location)
-        else:
-            if not self.kopka:
-                print("Через 25 минут kopka=False")
-            if self.prem:
-                print("Через 25 минут prem=True (есть АБУ)")
-        # Ждём ещё 21 минуту (итого 46 минут от начала)
-        await asyncio.sleep(21 * 60)
-        if self.kopka and self.prem and not self.waiting_for_captcha:
-            print("Через 46 минут kopka=True и prem=True, отправляем в Лес пламени")
-            await self.send_command( self.location)
-        else:
-            if not self.kopka:
-                print("Через 46 минут kopka=False")
-            if not self.prem:
-                print("Через 46 минут prem=False (нет АБУ)")
-        # Ждём ещё 12 минут (итого 58 минут от начала)
-        await asyncio.sleep(12 * 60)
-        if self.kopka and not self.waiting_for_captcha:
-            print("Через 58 минут kopka=True, отправляем в ген. штаб")
-            await self.send_command( "🏛 В ген. штаб")
-        else:
-            print("Через 58 минут kopka=False, остаёмся на месте")
+            """Таймер подготовки к войне - проверяем kopka через 25, 50 и 59 минут"""
+            print("Запущен таймер подготовки к войне")
+            # Если в ожидании капчи, то сразу выходим
+            # if self.waiting_for_captcha:
+            #     return
+            # Ждём 25 минут и проверяем kopka и prem (Итого 25 минут)
+            await asyncio.sleep(25 * 60)  # 25 минут в секундах
+            if self.kopka and not self.prem and not self.waiting_for_captcha:
+                print("Через 25 минут kopka=True и prem=False, отправляем в Лес пламени")
+                await self.send_command( self.location)
+            else:
+                if not self.kopka:
+                    print("Через 25 минут kopka=False")
+                if self.prem:
+                    print("Через 25 минут prem=True (есть АБУ)")
+            # Ждём ещё 25 минут (итого 50 минут от начала)
+            await asyncio.sleep(25 * 60)
+            if self.kopka and self.prem and not self.waiting_for_captcha:
+                print("Через 50 минут kopka=True и prem=True, отправляем в Лес пламени")
+                await self.send_command( self.location)
+            else:
+                if not self.kopka:
+                    print("Через 50 минут kopka=False")
+                if not self.prem:
+                    print("Через 50 минут prem=False (нет АБУ)")
+            # Ждём ещё 9 минут (итого 59 минут от начала)
+            await asyncio.sleep(9 * 60)
+            if self.kopka and not self.waiting_for_captcha:
+                print("Через 59 минут kopka=True, отправляем в ген. штаб")
+                await self.send_command( "🏛 В ген. штаб")
+            else:
+                print("Через 59 минут kopka=False, остаёмся на месте")
     def common_cave(self):
         print("Устанавливаем обработчик сообщений для common_cave")
         @self.client.on(events.NewMessage(from_users=[self.tomat_id, self.ros_id, self.kroha_id, self.tamplier_id, self.john_id, self.pchelka_id, 5596818972, self.ded_id]))
