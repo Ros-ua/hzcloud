@@ -1704,11 +1704,11 @@ class RF:
         self.go_to_heal = True
         print("Через 43 минуты после начала войны установлено go_to_heal = True")
     async def war_preparation_timer(self):
-        """Таймер подготовки к войне - проверяем kopka через 25, 50 и 59 минут"""
+        """Таймер подготовки к войне - проверяем kopka через 25, 50 и 58 минут"""
         print("Запущен таймер подготовки к войне")
         # Если в ожидании капчи, то сразу выходим
         # if self.waiting_for_captcha:
-        #     return
+        #     return
         # Ждём 25 минут и проверяем kopka и prem (Итого 25 минут)
         await asyncio.sleep(25 * 60)  # 25 минут в секундах
         if self.kopka and not self.prem and not self.waiting_for_captcha:
@@ -1729,13 +1729,13 @@ class RF:
                 print("Через 50 минут kopka=False")
             if not self.prem:
                 print("Через 50 минут prem=False (нет АБУ)")
-        # Ждём ещё 9 минут (итого 59 минут от начала)
-        await asyncio.sleep(9 * 60)
+        # Ждём ещё 8 минут (итого 58 минут от начала)
+        await asyncio.sleep(8 * 60)  # Изменено с 9 на 8
         if self.kopka and not self.waiting_for_captcha:
-            print("Через 59 минут kopka=True, отправляем в ген. штаб")
+            print("Через 58 минут kopka=True, отправляем в ген. штаб") # Изменено время в print
             await self.send_command( "🏛 В ген. штаб")
         else:
-            print("Через 59 минут kopka=False, остаёмся на месте")
+            print("Через 58 минут kopka=False, остаёмся на месте") # Изменено время в print
     def common_cave(self):
         print("Устанавливаем обработчик сообщений для common_cave")
         @self.client.on(events.NewMessage(from_users=[self.tomat_id, self.ros_id, self.kroha_id, self.tamplier_id, self.john_id, self.pchelka_id, 5596818972, self.ded_id]))
