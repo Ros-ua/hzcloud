@@ -638,7 +638,7 @@ class RF:
                     if self.terminal_type == "🧝‍♀ Терминал Castitas":
                         await self.nacheve()
                     else:
-                        await self.nacheve()
+                        await self.vterminale()
             if self.your_name == "Ros_Hangzhou":
                     await asyncio.sleep(1)
                     if self.terminal_type == "🧝‍♀ Терминал Castitas":
