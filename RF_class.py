@@ -468,6 +468,7 @@ class RF:
             # await asyncio.sleep(1)
             await self.client.send_message(self.group59, "Капча пройдена")  # Отправляем сообщение
             await asyncio.sleep(2)
+            self.waiting_for_captcha = False
             # Повторяем последнюю команду после CAPTCHA
             if self.last_command:
                 await self.send_command(self.last_command)
@@ -683,9 +684,10 @@ class RF:
             print("Получена Адена")
             if self.your_name in [
                 # "👨‍🦳Пенсионер☠️",
-                "Ros_Hangzhou",
+                # "Ros_Hangzhou",
                 # "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗",
-                "๖ۣۜᗯαsͥpwͣoͫℝt🐝",
+                # "๖ۣۜᗯαsͥpwͣoͫℝt🐝",
+                "фрилансер"
             ]:
                 self.location = "🏔 Этер"
                 print(f"Локация изменена на: {self.location}")
@@ -1851,7 +1853,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.nb.22.10")
+                    msg = await self.client.send_message(event.chat_id, "Ver.27.10")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
