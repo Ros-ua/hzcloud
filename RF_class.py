@@ -323,14 +323,16 @@ class RF:
 
         if any(phrase in line for line in lstr for phrase in [
             "Ты пробрался к кладбищу",
-            "Ты открыл "
+            "Ты открыл",
+
         ]):    
             print("булочка")
             await asyncio.sleep(2)
-            await self.client.send_message(self.cave_leader_id, "💀Закопать скелет")
+            await self.client.send_message(self.bot_id, "💀Закопать скелет")
 
         if any(phrase in line for line in lstr for phrase in [
-            "💀Закопать скелет"
+            "Закопать скелет",
+            "Выбери один",
         ]):    
             print("булочка")
             await asyncio.sleep(2)
@@ -828,7 +830,7 @@ class RF:
         elif any(phrase in line for line in lstr for phrase in  [
             "данное действие можно выполнять только из ген. штаба",
             "В данную локацию можно перейти из ген. штаба!",
-            # "У тебя нет" # использовать на хелоуин
+            "У тебя нет" # использовать на хелоуин
             ]):
             await asyncio.sleep(1)
             await self.send_command( "🏛 В ген. штаб")
@@ -1875,7 +1877,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.2.31.10")
+                    msg = await self.client.send_message(event.chat_id, "Ver.3.31.10")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
