@@ -756,6 +756,7 @@ class RF:
               # на мобах
         elif any(phrase in line for line in lstr for phrase in  [
             "пойти в 61-65 Лес пламени", 
+            "хочешь пойти в Земли Изгнанников?",
             "что хочешь отправиться в пещеры?",
             "попробуй"
             ]):
@@ -1900,7 +1901,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.3testD.31.10")
+                    msg = await self.client.send_message(event.chat_id, "Ver.444testD.31.10")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
