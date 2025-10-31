@@ -320,7 +320,6 @@ class RF:
         ]):    
             print("булочка")
             await self.client.send_message(self.cave_leader_id, "булочка")
-
         if any(phrase in line for line in lstr for phrase in [
             "нет предмета",
         ]):
@@ -330,32 +329,21 @@ class RF:
             await asyncio.sleep(2)
             self.location = "🔥 61-65 Лес пламени"  # Добавьте эту строку
             await self.handle_energy_found()
-
-
-
         if any(phrase in line for line in lstr for phrase in [
             "Ты пробрался к кладбищу",
             "Ты открыл",
-
         ]):    
             print("булочка")
-            await asyncio.sleep(2)
-            await self.client.send_message(self.bot_id, "💀Закопать скелет")
-
+            await asyncio.sleep(3)
+            await self.send_command("💀Закопать скелет")
         if any(phrase in line for line in lstr for phrase in [
             "Закопать скелет",
             "Выбери один",
         ]):    
             print("булочка")
-            await asyncio.sleep(2)
+            await asyncio.sleep(3)
             random_index = random.randint(0, 4) 
             await message.click(random_index)
-
-
-
-
-
-
         elif any("Вы полны энергии" in line for line in lstr):
             if self.kopka and self.location != "🦇 51-60 Земли Изгнанников":
                 await asyncio.sleep(2)
@@ -364,10 +352,6 @@ class RF:
             else:
                 await asyncio.sleep(2)
                 await self.send_command("🐺По уровню")
-
-
-
-            
         elif any(phrase in line for line in lstr for phrase in [
             "Ты уже находишься в данной локации!"
         ]):
@@ -781,8 +765,6 @@ class RF:
         elif any(phrase in line for line in lstr for phrase in ["Энергия: 🔋0/5", "[недостаточно энергии]"]):
             print("нет энергии")
             await asyncio.sleep(4)
-
-
             if self.location != "🦇 51-60 Земли Изгнанников":
                 await self.send_command(RF.hp)
                 await self.wait_for_set_change()
@@ -791,15 +773,10 @@ class RF:
             else:
                 # Здесь напишешь, что нужно выполнить в случае другого местоположения
                 await self.send_command( "/drink_102")
-
-            # await self.send_command( RF.hp)
+           # await self.send_command( RF.hp)
             # await self.wait_for_set_change()
             # await asyncio.sleep(2)
             # await self.handle_no_energy()
-
-
-
-
         elif any(phrase in line for line in lstr for phrase in [f"Энергия: 🔋{i}/5" for i in range(1, 5)]):
             print("есть энергия")
             # Ищем строку с информацией о здоровье во всём сообщении с учётом возможных пробелов и символов
@@ -1915,7 +1892,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.2D.31.10")
+                    msg = await self.client.send_message(event.chat_id, "Ver.2D333333.31.10")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -1962,9 +1939,6 @@ class RF:
                     await self.wait_for_set_change()
                     await asyncio.sleep(1)
                     await event.message.delete()
-
-
-
                 elif "_этер" in message_text:
                     self.mobs = True  # или False, в зависимости от вашей логики
                     self.location = "🏔 Этер"
@@ -2026,21 +2000,14 @@ class RF:
                     await asyncio.sleep(1)
                     await self.send_command(self.location)
                     await event.message.delete()
-
-
                 elif "_ивент" in message_text:  
                     self.mobs = True
                     self.location = "🦇 51-60 Земли Изгнанников"  # Добавьте эту строку
                     await asyncio.sleep(1)
                     await self.send_command(self.location)
-                    
                     if self.your_name == "👨‍🦳Пенсионер☠️":
                         self.mob_heal = 500
-                    
                     await event.message.delete()
-
-
-
                 elif "_булочка" in message_text:  
                     await asyncio.sleep(1)  
                     # await self.client.send_message(self.cave_leader_id, "булочка")
