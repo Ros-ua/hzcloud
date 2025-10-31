@@ -76,7 +76,7 @@ class RF:
         self.arrival_re = re.compile(r'.*прибудешь через\s*(\d+)\s*мин\.\s*(\d+(?:\.\d+)?)\s*сек\.')
         # === УСЛОВНАЯ НАСТРОЙКА ===
         if self.your_name == "👨‍🦳Пенсионер☠️":
-            self.mob_heal = 2000
+            self.mob_heal = 500
             self.pvpgoheal = 3500
         elif self.your_name == "๖ۣۜᗯαsͥpwͣoͫℝt🐝":
             self.mob_heal = 4000
@@ -320,6 +320,18 @@ class RF:
         ]):    
             print("булочка")
             await self.client.send_message(self.cave_leader_id, "булочка")
+
+        if any(phrase in line for line in lstr for phrase in [
+            "нет предмета",
+        ]):
+            await asyncio.sleep(4)
+            await self.send_command(RF.hp)
+            await self.wait_for_set_change()
+            await asyncio.sleep(2)
+            self.location = "🔥 61-65 Лес пламени"  # Добавьте эту строку
+            await self.handle_energy_found()
+
+
 
         if any(phrase in line for line in lstr for phrase in [
             "Ты пробрался к кладбищу",
@@ -1901,7 +1913,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.444testD.31.10")
+                    msg = await self.client.send_message(event.chat_id, "Ver.D.31.10")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
