@@ -320,6 +320,28 @@ class RF:
         ]):    
             print("булочка")
             await self.client.send_message(self.cave_leader_id, "булочка")
+
+        if any(phrase in line for line in lstr for phrase in [
+            "Ты пробрался к кладбищу",
+            "Ты открыл "
+        ]):    
+            print("булочка")
+            await asyncio.sleep(2)
+            await self.client.send_message(self.cave_leader_id, "💀Закопать скелет")
+
+        if any(phrase in line for line in lstr for phrase in [
+            "💀Закопать скелет"
+        ]):    
+            print("булочка")
+            await asyncio.sleep(2)
+            random_index = random.randint(0, 4) 
+            await message.click(random_index)
+
+
+
+
+
+
         elif any("Вы полны энергии" in line for line in lstr):
             if self.kopka:
                 await asyncio.sleep(2)
@@ -1853,7 +1875,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.31.10")
+                    msg = await self.client.send_message(event.chat_id, "Ver.2.31.10")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
