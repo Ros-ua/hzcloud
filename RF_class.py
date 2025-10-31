@@ -76,7 +76,7 @@ class RF:
         self.arrival_re = re.compile(r'.*прибудешь через\s*(\d+)\s*мин\.\s*(\d+(?:\.\d+)?)\s*сек\.')
         # === УСЛОВНАЯ НАСТРОЙКА ===
         if self.your_name == "👨‍🦳Пенсионер☠️":
-            self.mob_heal = 500
+            self.mob_heal = 2000
             self.pvpgoheal = 3500
         elif self.your_name == "๖ۣۜᗯαsͥpwͣoͫℝt🐝":
             self.mob_heal = 4000
@@ -818,6 +818,8 @@ class RF:
                         await self.wait_for_set_change()
                         await asyncio.sleep(2)
                         self.location = "🔥 61-65 Лес пламени"  # Добавьте эту строку
+                        if self.your_name == "👨‍🦳Пенсионер☠️":
+                            self.mob_heal = 2000
                         await self.handle_energy_found()
                     else:
                         print(f"Здоровье больше или равно {self.mob_heal}, отправляем сообщение 🐺По уровню.")
@@ -1913,7 +1915,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.D.31.10")
+                    msg = await self.client.send_message(event.chat_id, "Ver.2D.31.10")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -2031,8 +2033,11 @@ class RF:
                     self.location = "🦇 51-60 Земли Изгнанников"  # Добавьте эту строку
                     await asyncio.sleep(1)
                     await self.send_command(self.location)
+                    
+                    if self.your_name == "👨‍🦳Пенсионер☠️":
+                        self.mob_heal = 500
+                    
                     await event.message.delete()
-
 
 
 
