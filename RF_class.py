@@ -494,7 +494,7 @@ class RF:
         elif lstr[0].endswith("✅"): 
             # await asyncio.sleep(1)
             await self.client.send_message(self.group59, "Капча пройдена")  # Отправляем сообщение
-            await asyncio.sleep(2)
+            await asyncio.sleep(3)
             self.waiting_for_captcha = False
             # Повторяем последнюю команду после CAPTCHA
             if self.last_command:
@@ -1892,7 +1892,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.4444.31.10")
+                    msg = await self.client.send_message(event.chat_id, "Ver.1.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
