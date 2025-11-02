@@ -772,8 +772,29 @@ class RF:
                 await asyncio.sleep(2)
                 await self.handle_no_energy()
             else:
-                # Здесь напишешь, что нужно выполнить в случае другого местоположения
-                await self.send_command( "/drink_102")
+                # Проверяем здоровье перед /drink_102
+                health_line = next((line for line in lstr if re.search(r"Здоровье: ❤\d+/\d+", line)), None)
+                if health_line:
+                    health_match = re.search(r"Здоровье: ❤(\d+)/\d+", health_line)
+                    if health_match:
+                        current_health = int(health_match.group(1))
+                        print(f"Текущее здоровье: {current_health}")
+                        
+                        # Выбираем минимальный подходящий HP-сет
+                        selected_cmd = None
+                        selected_threshold = float('inf')
+                        for threshold, cmd in self.hp_binds:
+                            if current_health <= threshold and threshold < selected_threshold:
+                                selected_cmd = cmd
+                                selected_threshold = threshold
+                        
+                        if selected_cmd:
+                            await asyncio.sleep(4)
+                            await self.send_command(selected_cmd)
+                            await self.wait_for_set_change()
+                            await asyncio.sleep(2)
+                
+                await self.send_command("/drink_102")
            # await self.send_command( RF.hp)
             # await self.wait_for_set_change()
             # await asyncio.sleep(2)
@@ -1893,7 +1914,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.2.2.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.2t.2.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
