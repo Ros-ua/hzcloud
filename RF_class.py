@@ -1914,7 +1914,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.2t.2.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.D.2.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -2268,6 +2268,7 @@ class RF:
                     else:
                         await asyncio.sleep(1)
                     await self.send_command( "🧝‍♀Алтарь Исс")
+                    self.active = True
                     await event.message.delete()  # Удаляем сообщение
                 elif "_дагаз" in message_text:
                     # Проверяем, что отправитель не является cave leader
@@ -2284,6 +2285,7 @@ class RF:
                     else:
                         await asyncio.sleep(1)
                     await self.send_command( "🧝‍♀Алтарь Дагаз")
+                    self.active = True
                     await event.message.delete()  # Удаляем сообщение 
                 elif "_хагал" in message_text:
                     # Проверяем, что отправитель не является cave leader
