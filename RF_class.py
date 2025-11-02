@@ -357,8 +357,8 @@ class RF:
             "Ты уже находишься в данной локации!"
         ]):
             await asyncio.sleep(1)
-            # await self.send_command( "🤖Алтарь Тир")
-            await self.send_command( "👩‍🚀Алтарь Иса")
+            altar = random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])
+            await self.send_command(altar)
         elif (lstr[-1].endswith("и воскреснешь через 10 минут.") or lstr[-1].startswith("Ты одержал победу над")) and self.in_castle:
             await message.forward_to(self.group59) 
         elif any("Посейдона был активирован автоматическим пожертвованием!" in line for line in lstr) and not self.is_in_caves:
@@ -1893,7 +1893,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.2.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.2.2.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
