@@ -77,7 +77,7 @@ class RF:
         self.arrival_re = re.compile(r'.*прибудешь через\s*(\d+)\s*мин\.\s*(\d+(?:\.\d+)?)\s*сек\.')
         # === УСЛОВНАЯ НАСТРОЙКА ===
         if self.your_name == "👨‍🦳Пенсионер☠️":
-            self.mob_heal = 2000
+            self.mob_heal = 2500
             self.pvpgoheal = 3500
         elif self.your_name == "๖ۣۜᗯαsͥpwͣoͫℝt🐝":
             self.mob_heal = 4000
@@ -86,7 +86,7 @@ class RF:
             self.mob_heal = 4500
             self.pvpgoheal = 4500
         else:
-            self.mob_heal = 6400
+            self.mob_heal = 6000
             self.pvpgoheal = 4500
         # === ИНИЦИАЛИЗАЦИЯ КОМПОНЕНТОВ ===
         self.common_cave()
