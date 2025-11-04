@@ -327,7 +327,7 @@ class RF:
             await asyncio.sleep(4)
             await self.send_command(RF.hp)
             await self.wait_for_set_change()
-            await asyncio.sleep(2)
+            await asyncio.sleep(1)
             self.location = "🔥 61-65 Лес пламени"  # Добавьте эту строку
             await self.handle_energy_found()
         if any(phrase in line for line in lstr for phrase in [
@@ -769,7 +769,7 @@ class RF:
             if self.location != "🦇 51-60 Земли Изгнанников":
                 await self.send_command(RF.hp)
                 await self.wait_for_set_change()
-                await asyncio.sleep(2)
+                await asyncio.sleep(1)
                 await self.handle_no_energy()
             else:
                 # Проверяем здоровье перед /drink_102
@@ -792,7 +792,7 @@ class RF:
                             await asyncio.sleep(4)
                             await self.send_command(selected_cmd)
                             await self.wait_for_set_change()
-                            await asyncio.sleep(2)
+                            await asyncio.sleep(1)
                 
                 await self.send_command("/drink_102")
            # await self.send_command( RF.hp)
@@ -815,7 +815,7 @@ class RF:
                         await asyncio.sleep(4)
                         await self.send_command( RF.hp)
                         await self.wait_for_set_change()
-                        await asyncio.sleep(2)
+                        await asyncio.sleep(1)
                         self.location = "🔥 61-65 Лес пламени"  # Добавьте эту строку
                         if self.your_name == "👨‍🦳Пенсионер☠️":
                             self.mob_heal = 2000
@@ -833,8 +833,8 @@ class RF:
                             await asyncio.sleep(4)
                             await self.send_command( selected_cmd)
                             await self.wait_for_set_change()
-                            await asyncio.sleep(2)
-                        await asyncio.sleep(2)
+                            await asyncio.sleep(1)
+                        await asyncio.sleep(1)
                         await self.send_command( "🐺По уровню")
                 else:
                     print("Не удалось извлечь здоровье из строки.")
@@ -1643,7 +1643,7 @@ class RF:
                     await asyncio.sleep(5)
                     await self.send_command( RF.hp)
                     await self.wait_for_set_change() 
-                    await asyncio.sleep(2)
+                    await asyncio.sleep(1)
                     await self.send_command( self.location)
             if any("Страж будет уязвим для атак расы" in ln and "Castitas" in ln for ln in lines):
                 print("Получено сообщение о появлении стража через 15 минут")
@@ -1914,7 +1914,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.D.2.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.4.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
