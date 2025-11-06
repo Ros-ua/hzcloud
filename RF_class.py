@@ -2026,7 +2026,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.6aaa.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.6aaabbbbbbbbbbb.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -2630,13 +2630,13 @@ class RF:
         else:
             # Возвращаем алтарь в зависимости от имени
             if self.your_name == "👨‍🦳Пенсионер☠️":
-                return "🤖Алтарь Эйви"
+                return random.choice(["🤖Алтарь Эйви", "🤖Алтарь Тир"])
             elif self.your_name == "๖ۣۜᗯαsͥpwͣoͫℝt🐝":
-                return "👩‍🚀Алтарь Гебо"
+                return random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])
             elif self.your_name == "Ros_Hangzhou":
-                return "👩‍🚀Алтарь Гебо"
+                return random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])
             elif self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
-                return "👩‍🚀Алтарь Гебо"
+                return random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])
     async def handle_no_energy(self):
         print("нет энергии")
         await asyncio.sleep(5)
