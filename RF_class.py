@@ -1900,6 +1900,105 @@ class RF:
                         self.my_health = self.my_max_health = self.hp_binds[0][0]
                         await self.send_command( "💖 Пополнить здоровье")
                     await event.message.delete()  # Удаляем сообщение
+
+
+                elif "_аргол" in message_text:
+                    # Проверяем, что отправитель не является cave leader
+                    if event.sender_id == self.cave_leader_id:
+                        print(f"Команда _аргол от cave leader {event.sender_id} игнорируется")
+                        return
+                    print("Обработка команды _аргол")
+                    if not self.is_in_caves and not self.in_castle:
+                        chosen_direction = random.choice(RF.directions)
+                        print(f"Выбрано направление: {chosen_direction}")
+                        if self.kopka:
+                            print("Копка активна, отправляем сообщение '🏛 В ген. штаб'")
+                            await self.send_command("🏛 В ген. штаб")
+                            await asyncio.sleep(5)
+                            await self.send_command(RF.chv)
+                            await self.wait_for_set_change()
+                            await asyncio.sleep(1)
+                            while self.is_moving:
+                                print("Персонаж все еще двигается, ждем...")
+                                await asyncio.sleep(5)
+                            print("Персонаж перестал двигаться.")
+                            await asyncio.sleep(5)
+                            await self.send_command(chosen_direction + "'")
+                        else:
+                            await self.send_command(RF.chv)
+                            await self.wait_for_set_change()
+                            await asyncio.sleep(1)
+                            print(f"Копка не активна, сразу отправляем '{chosen_direction}'")
+                            await self.send_command(chosen_direction + "'")
+                    await event.message.delete()
+
+                elif "_варасса" in message_text:
+                    # Проверяем, что отправитель не является cave leader
+                    if event.sender_id == self.cave_leader_id:
+                        print(f"Команда _варасса от cave leader {event.sender_id} игнорируется")
+                        return
+                    print("Обработка команды _варасса")
+                    if not self.is_in_caves and not self.in_castle:
+                        chosen_direction = random.choice(RF.directions)
+                        print(f"Выбрано направление: {chosen_direction}")
+                        if self.kopka:
+                            print("Копка активна, отправляем сообщение '🏛 В ген. штаб'")
+                            await self.send_command("🏛 В ген. штаб")
+                            await asyncio.sleep(5)
+                            await self.send_command(RF.chv)
+                            await self.wait_for_set_change()
+                            await asyncio.sleep(1)
+                            while self.is_moving:
+                                print("Персонаж все еще двигается, ждем...")
+                                await asyncio.sleep(5)
+                            print("Персонаж перестал двигаться.")
+                            await asyncio.sleep(5)
+                            await self.send_command(chosen_direction + "''")
+                        else:
+                            await self.send_command(RF.chv)
+                            await self.wait_for_set_change()
+                            await asyncio.sleep(1)
+                            print(f"Копка не активна, сразу отправляем '{chosen_direction}''")
+                            await self.send_command(chosen_direction + "''")
+                    await event.message.delete()
+
+                elif "_трашер" in message_text:
+                    # Проверяем, что отправитель не является cave leader
+                    if event.sender_id == self.cave_leader_id:
+                        print(f"Команда _трашер от cave leader {event.sender_id} игнорируется")
+                        return
+                    print("Обработка команды _трашер")
+                    if not self.is_in_caves and not self.in_castle:
+                        chosen_direction = random.choice(RF.directions)
+                        print(f"Выбрано направление: {chosen_direction}")
+                        if self.kopka:
+                            print("Копка активна, отправляем сообщение '🏛 В ген. штаб'")
+                            await self.send_command("🏛 В ген. штаб")
+                            await asyncio.sleep(5)
+                            await self.send_command(RF.chv)
+                            await self.wait_for_set_change()
+                            await asyncio.sleep(1)
+                            while self.is_moving:
+                                print("Персонаж все еще двигается, ждем...")
+                                await asyncio.sleep(5)
+                            print("Персонаж перестал двигаться.")
+                            await asyncio.sleep(5)
+                            await self.send_command(chosen_direction + "'''")
+                        else:
+                            await self.send_command(RF.chv)
+                            await self.wait_for_set_change()
+                            await asyncio.sleep(1)
+                            print(f"Копка не активна, сразу отправляем '{chosen_direction}'''")
+                            await self.send_command(chosen_direction + "'''")
+                    await event.message.delete()
+
+
+
+
+
+
+
+
                 elif "_стоп" in message_text or "_стой" in message_text:
                     if self.is_moving:
                         await self.send_command( "🏃‍♂️Отменить переход")
@@ -1914,7 +2013,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.4.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.6.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
