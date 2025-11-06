@@ -357,7 +357,6 @@ class RF:
             "Ты уже находишься в данной локации!"
         ]):
             await asyncio.sleep(1)
-            
             if self.your_name == "👨‍🦳Пенсионер☠️":
                 altar = random.choice(["🤖Алтарь Эйви", "🤖Алтарь Тир"])
             elif self.your_name == "๖ۣۜᗯαsͥpwͣoͫℝt🐝":
@@ -366,7 +365,6 @@ class RF:
                 altar = random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])
             elif self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
                 altar = random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])
-            
             await self.send_command(altar)
         elif (lstr[-1].endswith("и воскреснешь через 10 минут.") or lstr[-1].startswith("Ты одержал победу над")) and self.in_castle:
             await message.forward_to(self.group59) 
@@ -788,21 +786,18 @@ class RF:
                     if health_match:
                         current_health = int(health_match.group(1))
                         print(f"Текущее здоровье: {current_health}")
-                        
-                        # Выбираем минимальный подходящий HP-сет
+                       # Выбираем минимальный подходящий HP-сет
                         selected_cmd = None
                         selected_threshold = float('inf')
                         for threshold, cmd in self.hp_binds:
                             if current_health <= threshold and threshold < selected_threshold:
                                 selected_cmd = cmd
                                 selected_threshold = threshold
-                        
                         if selected_cmd:
                             await asyncio.sleep(4)
                             await self.send_command(selected_cmd)
                             await self.wait_for_set_change()
                             await asyncio.sleep(1)
-                
                 await self.send_command("/drink_102")
            # await self.send_command( RF.hp)
             # await self.wait_for_set_change()
@@ -1825,10 +1820,8 @@ class RF:
                     print("Отправляем команду /drink_102")
                     await self.send_command( "/drink_102")
                     await event.message.delete()  # Удаляем сообщение
-
                 elif "_антики" in message_text:
                     await self.handle_antiki_command(event)
-
                 elif any(key in message_text for key in [
                     "_🕌 нова", "_🕌 мира", "_🕌 антарес", "_🕌 фобос", "_🕌 арэс", 
                     "_🕌 торн", "_🕌 кастор", "_🕌 конкорд", "_🕌 гром", "_🕌 алькор", 
@@ -1913,8 +1906,6 @@ class RF:
                         self.my_health = self.my_max_health = self.hp_binds[0][0]
                         await self.send_command( "💖 Пополнить здоровье")
                     await event.message.delete()  # Удаляем сообщение
-
-
                 elif "_аргол" in message_text:
                     # Проверяем, что отправитель не является cave leader
                     if event.sender_id == self.cave_leader_id:
@@ -1944,7 +1935,6 @@ class RF:
                             print(f"Копка не активна, сразу отправляем '{chosen_direction}'")
                             await self.send_command(chosen_direction + "'")
                     await event.message.delete()
-
                 elif "_варасса" in message_text:
                     # Проверяем, что отправитель не является cave leader
                     if event.sender_id == self.cave_leader_id:
@@ -1974,7 +1964,6 @@ class RF:
                             print(f"Копка не активна, сразу отправляем '{chosen_direction}''")
                             await self.send_command(chosen_direction + "''")
                     await event.message.delete()
-
                 elif "_трашер" in message_text:
                     # Проверяем, что отправитель не является cave leader
                     if event.sender_id == self.cave_leader_id:
@@ -2004,14 +1993,6 @@ class RF:
                             print(f"Копка не активна, сразу отправляем '{chosen_direction}'''")
                             await self.send_command(chosen_direction + "'''")
                     await event.message.delete()
-
-
-
-
-
-
-
-
                 elif "_стоп" in message_text or "_стой" in message_text:
                     if self.is_moving:
                         await self.send_command( "🏃‍♂️Отменить переход")
@@ -2026,7 +2007,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.6aaabbbbbbbbbbb.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.3.6.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -2788,31 +2769,22 @@ class RF:
             self.client.remove_event_handler(handle_rf_info)
             self.is_nacheve_active = False
             print("Завершаем работу в терминале")
-
-
-
-
     async def handle_antiki_command(self, event):
         """Обработчик команды _антики - анализ рецептов антигравов"""
         print("Получена команда _антики")
         await self.send_command("/recipes")
-        
         # Ждём ответа с рецептами
         await asyncio.sleep(3)
         last_message = await self.client.get_messages(self.bot_id, limit=1)
-        
         if not last_message:
             print("Не получен ответ на /recipes")
             await self.client.send_message(event.sender_id, "❌ Не удалось получить список рецептов")
             await event.message.delete()
             return
-        
         lstr = last_message[0].message.split('\n')
-        
         # Парсим только антигравы 2-4 грейда
         recipes = []
         pattern = re.compile(r'📜 Рецепт антиграва ([234]) грейда\.\s+([\d.]+)%\s+(/info_item_\w+)')
-        
         for line in lstr:
             match = pattern.search(line)
             if match:
@@ -2824,62 +2796,50 @@ class RF:
                     'chance': chance,
                     'command': command
                 })
-        
         if not recipes:
             print("Не найдено рецептов 2-4 грейда")
             await self.client.send_message(event.sender_id, "❌ Не найдено рецептов антиграва 2-4 грейда")
             await event.message.delete()
             return
-        
         print(f"Найдено рецептов: {len(recipes)}")
         # Отправляем прогресс отправителю команды
         await self.client.send_message(event.sender_id, f"⏳ Обработка {len(recipes)} рецептов...")
-        
         # Обрабатываем каждый рецепт
         results = []
         for idx, recipe in enumerate(recipes, 1):
             print(f"Обработка {idx}/{len(recipes)}: грейд {recipe['grade']}, шанс {recipe['chance']}%")
-            
             # Отправляем команду рецепта
             await self.send_command(recipe['command'])
-            await asyncio.sleep(2)
-            
+            await asyncio.sleep(3)
             # Получаем детали
             detail_msg = await self.client.get_messages(self.bot_id, limit=1)
             if not detail_msg:
                 print(f"  Пропуск: не получен ответ")
                 continue
-                
             detail_lines = detail_msg[0].message.split('\n')
-            
             # Извлекаем характеристики
             stats = {}
             stat_pattern = re.compile(r'([💨🎯❤⏳])\s+\+([\d.]+)%')
-            
             for line in detail_lines:
                 stat_match = stat_pattern.search(line)
                 if stat_match:
                     emoji = stat_match.group(1)
                     value = float(stat_match.group(2))
                     stats[emoji] = value
-            
-            # Находим максимальную характеристику
+           # Находим максимальную характеристику
             if stats:
                 max_stat_emoji = max(stats, key=stats.get)
                 max_stat_value = stats[max_stat_emoji]
-                
                 result_line = f"{recipe['grade']} грейд {max_stat_emoji} +{max_stat_value}% {recipe['command']}"
                 results.append(result_line)
                 print(f"  → Макс: {max_stat_emoji} +{max_stat_value}%")
             else:
                 print(f"  Пропуск: не найдены характеристики")
-        
-        # Отправляем итоговый список на cave_leader_id
+       # Отправляем итоговый список на cave_leader_id
         if results:
             final_message = "📋 **Антики (макс. характеристики):**\n\n" + "\n".join(results)
             await self.client.send_message(self.cave_leader_id, final_message)
             print(f"\n✅ Отправлен итоговый список из {len(results)} позиций на cave_leader_id")
         else:
             await self.client.send_message(self.cave_leader_id, "❌ Не удалось обработать ни одного рецепта")
-        
         await event.message.delete()
