@@ -357,7 +357,16 @@ class RF:
             "Ты уже находишься в данной локации!"
         ]):
             await asyncio.sleep(1)
-            altar = random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])
+            
+            if self.your_name == "👨‍🦳Пенсионер☠️":
+                altar = random.choice(["🤖Алтарь Эйви", "🤖Алтарь Тир"])
+            elif self.your_name == "๖ۣۜᗯαsͥpwͣoͫℝt🐝":
+                altar = random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])
+            elif self.your_name == "Ros_Hangzhou":
+                altar = random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])
+            elif self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
+                altar = random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])
+            
             await self.send_command(altar)
         elif (lstr[-1].endswith("и воскреснешь через 10 минут.") or lstr[-1].startswith("Ты одержал победу над")) and self.in_castle:
             await message.forward_to(self.group59) 
@@ -667,7 +676,7 @@ class RF:
                     if self.terminal_type == "🧝‍♀ Терминал Castitas":
                         await self.nacheve()
                     else:
-                        await self.vterminale()
+                        await self.nacheve()
             if self.your_name == "Ros_Hangzhou":
                     await asyncio.sleep(1)
                     if self.terminal_type == "🧝‍♀ Терминал Castitas":
@@ -1595,9 +1604,9 @@ class RF:
                     self.go_term_Castitas = True
                     self.go_term_Aquilla = False
                 elif self.your_name == "👨‍🦳Пенсионер☠️":
-                    self.go_term_Basilaris = True
+                    self.go_term_Basilaris = False
                     self.go_term_Castitas = True
-                    self.go_term_Aquilla = False        
+                    self.go_term_Aquilla = True     
                 elif self.your_name == "๖ۣۜᗯαsͥpwͣoͫℝt🐝":
                     self.go_term_Basilaris = True
                     self.go_term_Castitas = False
@@ -2017,7 +2026,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.aaa234234aaaaa6.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.6aaa.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -2619,11 +2628,15 @@ class RF:
                 "🤖Алтарь Тир"
             ])
         else:
-            return random.choice([
-                "👩‍🚀Алтарь Гебо", 
-                # "🧝‍♀Алтарь Дагаз", 
-                # "🤖Алтарь Эйви", 
-            ])
+            # Возвращаем алтарь в зависимости от имени
+            if self.your_name == "👨‍🦳Пенсионер☠️":
+                return "🤖Алтарь Эйви"
+            elif self.your_name == "๖ۣۜᗯαsͥpwͣoͫℝt🐝":
+                return "👩‍🚀Алтарь Гебо"
+            elif self.your_name == "Ros_Hangzhou":
+                return "👩‍🚀Алтарь Гебо"
+            elif self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
+                return "👩‍🚀Алтарь Гебо"
     async def handle_no_energy(self):
         print("нет энергии")
         await asyncio.sleep(5)
