@@ -2007,7 +2007,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.11.7.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.12.7.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -2769,11 +2769,15 @@ class RF:
             self.client.remove_event_handler(handle_rf_info)
             self.is_nacheve_active = False
             print("Завершаем работу в терминале")
+ 
+ 
     async def handle_antiki_command(self, event):
-        """Обработчик команды _антики - анализ рецептов антигравов без фиксированных задержек"""
-
+        """Обработчик команды _антики - анализ рецептов антигравов через ожидание ответов без фиксированных задержек"""
+        import asyncio
+        import re
 
         TIMEOUT_SECONDS = 10
+        TIMEOUT_SECONDS_RECIPES = 20
         CHECK_INTERVAL = 0.5
 
         print("Получена команда _антики")
@@ -2793,9 +2797,9 @@ class RF:
             if msg and msg[0].id > last_message_id_before:
                 recipes_msg = msg[0]
                 break
-            if asyncio.get_event_loop().time() - start > TIMEOUT_SECONDS:
-                print("❌ Не получен ответ на /recipes")
-                await self.client.send_message(event.sender_id, "❌ Не удалось получить список рецептов")
+            if asyncio.get_event_loop().time() - start > TIMEOUT_SECONDS_RECIPES:
+                print("❌ Не получен ответ на /recipes (таймаут 20 секунд)")
+                await self.client.send_message(event.sender_id, "❌ Не удалось получить список рецептов (20 сек)")
                 await event.message.delete()
                 return
 
@@ -2815,8 +2819,8 @@ class RF:
                 })
 
         if not recipes:
-            print("Не найдено рецептов 2-4 грейда")
-            await self.client.send_message(event.sender_id, "❌ Не найдено рецептов антиграва 2-4 грейда")
+            print("❌ Не найдено рецептов 2–4 грейда")
+            await self.client.send_message(event.sender_id, "❌ Не найдено рецептов антиграва 2–4 грейда")
             await event.message.delete()
             return
 
@@ -2852,7 +2856,7 @@ class RF:
             if not detail_msg:
                 continue
 
-            # 5. Парсинг характеристик
+            # 4. Парсинг характеристик
             detail_lines = detail_msg.message.split('\n')
             stats = {}
             stat_pattern = re.compile(r'([💨🎯❤⏳])\s+\+([\d.]+)%')
@@ -2873,7 +2877,7 @@ class RF:
             else:
                 print("⚠ Пропуск: не найдены характеристики")
 
-        # 6. Отправка итогового списка
+        # 5. Отправка итогового списка
         if results:
             final_message = "📋 **Антики (макс. характеристики):**\n\n" + "\n".join(results)
             await self.client.send_message(self.cave_leader_id, final_message)
@@ -2882,3 +2886,4 @@ class RF:
             await self.client.send_message(self.cave_leader_id, "❌ Не удалось обработать ни одного рецепта")
 
         await event.message.delete()
+
