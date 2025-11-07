@@ -2007,7 +2007,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.8.7.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.9.7.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -2784,7 +2784,7 @@ class RF:
         # 1. Запрос списка рецептов
         await self.send_command("/recipes")
         
-        await asyncio.sleep(1) 
+        await asyncio.sleep(5) 
         
         last_message = await self.client.get_messages(self.bot_id, limit=1)
         if not last_message:
