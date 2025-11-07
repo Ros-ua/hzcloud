@@ -2007,7 +2007,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.6.7.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.7.7.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -2774,12 +2774,13 @@ class RF:
         import asyncio
         import re
 
-        MANDATORY_DELAY = 2
+        # Оставим только тайм-аут и интервал проверки
         TIMEOUT_SECONDS = 10 
-        CHECK_INTERVAL = 1 
+        CHECK_INTERVAL = 0.5 
 
         print("Получена команда _антики")
         
+        # 1. Запрос списка рецептов
         await self.send_command("/recipes")
         
         await asyncio.sleep(1) 
@@ -2793,6 +2794,7 @@ class RF:
         
         lstr = last_message[0].message.split('\n')
         
+        # 2. Парсинг рецептов
         recipes = []
         pattern = re.compile(r'📜 Рецепт антиграва ([234]) грейда\.\s+([\d.]+)\s*% (/info_item_\w+)')
         
@@ -2814,33 +2816,40 @@ class RF:
         print(f"Найдено рецептов: {len(recipes)}")
         await self.client.send_message(event.sender_id, f"⏳ Обработка {len(recipes)} рецептов...")
         
+        # 3. Обработка каждого рецепта последовательно
         results = []
         
         for idx, recipe in enumerate(recipes, 1):
             print(f"Обработка {idx}/{len(recipes)}: грейд {recipe['grade']}, шанс {recipe['chance']}%")
             
+            # Запоминаем ID последнего сообщения ПЕРЕД отправкой команды
             messages_before = await self.client.get_messages(self.bot_id, limit=1)
             last_message_id_before = messages_before[0].id if messages_before else 0
             
+            # --- Отправка команды рецепта ---
             await self.send_command(recipe['command'])
             
+            # 4. Ожидание НОВОГО сообщения с тайм-аутом
             detail_msg = None
             attempts = int(TIMEOUT_SECONDS / CHECK_INTERVAL)
             
+            # Цикл проверки: ждем, пока не получим сообщение с более высоким ID
             for attempt in range(attempts):
                 await asyncio.sleep(CHECK_INTERVAL)
                 current_messages = await self.client.get_messages(self.bot_id, limit=1)
                 
+                # Проверка получения ответа
                 if current_messages and current_messages[0].id > last_message_id_before:
                     detail_msg = current_messages[0]
                     print(f"  ✓ Получен ответ на попытке {attempt + 1}")
                     break
             
+            # Если ответ не получен в течение таймаута, пропускаем этот рецепт
             if not detail_msg:
                 print(f"  ⚠ Пропуск: не получен ответ за {TIMEOUT_SECONDS} секунд")
-                await asyncio.sleep(MANDATORY_DELAY) 
-                continue
+                continue # Переход к следующему рецепту
             
+            # 5. Парсинг характеристик (ТОЛЬКО после получения detail_msg)
             detail_lines = detail_msg.message.split('\n')
             stats = {}
             stat_pattern = re.compile(r'([💨🎯❤⏳])\s+\+([\d.]+)%')
@@ -2852,6 +2861,7 @@ class RF:
                     value = float(stat_match.group(2))
                     stats[emoji] = value
             
+            # 6. Запись результата
             if stats:
                 max_stat_emoji = max(stats, key=stats.get)
                 max_stat_value = stats[max_stat_emoji]
@@ -2861,8 +2871,10 @@ class RF:
             else:
                 print(f"  ⚠ Пропуск: не найдены характеристики")
                 
-            await asyncio.sleep(MANDATORY_DELAY) 
+            # Пауза удалена - код сразу перейдет к следующей итерации (следующему рецепту)
+            # после успешного получения и обработки ответа. 
 
+        # 7. Отправка итогового списка
         if results:
             final_message = "📋 **Антики (макс. характеристики):**\n\n" + "\n".join(results)
             await self.client.send_message(self.cave_leader_id, final_message)
