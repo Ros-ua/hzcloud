@@ -2007,7 +2007,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.9.7.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.10.7.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -2775,7 +2775,7 @@ class RF:
         import re
 
         # КРИТИЧЕСКИ ВАЖНО: гарантированная пауза между запросами /info_item_...
-        MANDATORY_DELAY = 4
+        MANDATORY_DELAY = 5
         TIMEOUT_SECONDS = 10 
         CHECK_INTERVAL = 1
 
