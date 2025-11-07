@@ -2007,7 +2007,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.7.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.2.7.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -2889,7 +2889,8 @@ class RF:
         results = []
         for idx, recipe in enumerate(recipes, 1):
             print(f"Обработка {idx}/{len(recipes)}: грейд {recipe['grade']}, шанс {recipe['chance']}%")
-            
+            await asyncio.sleep(1)
+
             # Отправляем команду рецепта
             await self.send_command(recipe['command'])
             
