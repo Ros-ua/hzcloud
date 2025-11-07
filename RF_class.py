@@ -2007,7 +2007,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.12.7.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.13.7.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -2773,8 +2773,7 @@ class RF:
  
     async def handle_antiki_command(self, event):
         """Обработчик команды _антики - анализ рецептов антигравов через ожидание ответов без фиксированных задержек"""
-        import asyncio
-        import re
+
 
         TIMEOUT_SECONDS = 10
         TIMEOUT_SECONDS_RECIPES = 20
