@@ -2007,7 +2007,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.7.7.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.8.7.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -2774,9 +2774,10 @@ class RF:
         import asyncio
         import re
 
-        # Оставим только тайм-аут и интервал проверки
+        # КРИТИЧЕСКИ ВАЖНО: гарантированная пауза между запросами /info_item_...
+        MANDATORY_DELAY = 4
         TIMEOUT_SECONDS = 10 
-        CHECK_INTERVAL = 0.5 
+        CHECK_INTERVAL = 1
 
         print("Получена команда _антики")
         
@@ -2822,7 +2823,6 @@ class RF:
         for idx, recipe in enumerate(recipes, 1):
             print(f"Обработка {idx}/{len(recipes)}: грейд {recipe['grade']}, шанс {recipe['chance']}%")
             
-            # Запоминаем ID последнего сообщения ПЕРЕД отправкой команды
             messages_before = await self.client.get_messages(self.bot_id, limit=1)
             last_message_id_before = messages_before[0].id if messages_before else 0
             
@@ -2833,21 +2833,20 @@ class RF:
             detail_msg = None
             attempts = int(TIMEOUT_SECONDS / CHECK_INTERVAL)
             
-            # Цикл проверки: ждем, пока не получим сообщение с более высоким ID
             for attempt in range(attempts):
                 await asyncio.sleep(CHECK_INTERVAL)
                 current_messages = await self.client.get_messages(self.bot_id, limit=1)
                 
-                # Проверка получения ответа
                 if current_messages and current_messages[0].id > last_message_id_before:
                     detail_msg = current_messages[0]
                     print(f"  ✓ Получен ответ на попытке {attempt + 1}")
                     break
             
-            # Если ответ не получен в течение таймаута, пропускаем этот рецепт
             if not detail_msg:
                 print(f"  ⚠ Пропуск: не получен ответ за {TIMEOUT_SECONDS} секунд")
-                continue # Переход к следующему рецепту
+                # Пауза, даже если ответ не пришел, чтобы избежать спама
+                await asyncio.sleep(MANDATORY_DELAY) 
+                continue
             
             # 5. Парсинг характеристик (ТОЛЬКО после получения detail_msg)
             detail_lines = detail_msg.message.split('\n')
@@ -2871,8 +2870,9 @@ class RF:
             else:
                 print(f"  ⚠ Пропуск: не найдены характеристики")
                 
-            # Пауза удалена - код сразу перейдет к следующей итерации (следующему рецепту)
-            # после успешного получения и обработки ответа. 
+            # --- КРИТИЧЕСКИ ВАЖНАЯ Обязательная пауза перед следующим запросом ---
+            # Эта пауза гарантирует, что мы не спамим боту.
+            await asyncio.sleep(MANDATORY_DELAY) 
 
         # 7. Отправка итогового списка
         if results:
