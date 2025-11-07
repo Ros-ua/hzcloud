@@ -2007,7 +2007,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.4.6.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.7.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -2769,19 +2769,98 @@ class RF:
             self.client.remove_event_handler(handle_rf_info)
             self.is_nacheve_active = False
             print("Завершаем работу в терминале")
+    # async def handle_antiki_command(self, event):
+    #     """Обработчик команды _антики - анализ рецептов антигравов"""
+    #     print("Получена команда _антики")
+    #     await self.send_command("/recipes")
+    #     # Ждём ответа с рецептами
+    #     await asyncio.sleep(1)
+    #     last_message = await self.client.get_messages(self.bot_id, limit=1)
+    #     if not last_message:
+    #         print("Не получен ответ на /recipes")
+    #         await self.client.send_message(event.sender_id, "❌ Не удалось получить список рецептов")
+    #         await event.message.delete()
+    #         return
+    #     lstr = last_message[0].message.split('\n')
+    #     # Парсим только антигравы 2-4 грейда
+    #     recipes = []
+    #     pattern = re.compile(r'📜 Рецепт антиграва ([234]) грейда\.\s+([\d.]+)%\s+(/info_item_\w+)')
+    #     for line in lstr:
+    #         match = pattern.search(line)
+    #         if match:
+    #             grade = match.group(1)
+    #             chance = match.group(2)
+    #             command = match.group(3)
+    #             recipes.append({
+    #                 'grade': grade,
+    #                 'chance': chance,
+    #                 'command': command
+    #             })
+    #     if not recipes:
+    #         print("Не найдено рецептов 2-4 грейда")
+    #         await self.client.send_message(event.sender_id, "❌ Не найдено рецептов антиграва 2-4 грейда")
+    #         await event.message.delete()
+    #         return
+    #     print(f"Найдено рецептов: {len(recipes)}")
+    #     # Отправляем прогресс отправителю команды
+    #     await self.client.send_message(event.sender_id, f"⏳ Обработка {len(recipes)} рецептов...")
+    #     # Обрабатываем каждый рецепт
+    #     results = []
+    #     for idx, recipe in enumerate(recipes, 1):
+    #         print(f"Обработка {idx}/{len(recipes)}: грейд {recipe['grade']}, шанс {recipe['chance']}%")
+    #         # Отправляем команду рецепта
+    #         await self.send_command(recipe['command'])
+    #         await asyncio.sleep(3)
+    #         # Получаем детали
+    #         detail_msg = await self.client.get_messages(self.bot_id, limit=1)
+    #         if not detail_msg:
+    #             print(f"  Пропуск: не получен ответ")
+    #             continue
+    #         detail_lines = detail_msg[0].message.split('\n')
+    #         # Извлекаем характеристики
+    #         stats = {}
+    #         stat_pattern = re.compile(r'([💨🎯❤⏳])\s+\+([\d.]+)%')
+    #         for line in detail_lines:
+    #             stat_match = stat_pattern.search(line)
+    #             if stat_match:
+    #                 emoji = stat_match.group(1)
+    #                 value = float(stat_match.group(2))
+    #                 stats[emoji] = value
+    #        # Находим максимальную характеристику
+    #         if stats:
+    #             max_stat_emoji = max(stats, key=stats.get)
+    #             max_stat_value = stats[max_stat_emoji]
+    #             result_line = f"{recipe['grade']} грейд {max_stat_emoji} +{max_stat_value}% {recipe['command']}"
+    #             results.append(result_line)
+    #             print(f"  → Макс: {max_stat_emoji} +{max_stat_value}%")
+    #         else:
+    #             print(f"  Пропуск: не найдены характеристики")
+    #    # Отправляем итоговый список на cave_leader_id
+    #     if results:
+    #         final_message = "📋 **Антики (макс. характеристики):**\n\n" + "\n".join(results)
+    #         await self.client.send_message(self.cave_leader_id, final_message)
+    #         print(f"\n✅ Отправлен итоговый список из {len(results)} позиций на cave_leader_id")
+    #     else:
+    #         await self.client.send_message(self.cave_leader_id, "❌ Не удалось обработать ни одного рецепта")
+    #     await event.message.delete()
+
     async def handle_antiki_command(self, event):
-        """Обработчик команды _антики - анализ рецептов антигравов"""
+        """Обработчик команды _антики - анализ рецептов антигравов с проверкой подтверждений"""
         print("Получена команда _антики")
         await self.send_command("/recipes")
-        # Ждём ответа с рецептами
-        await asyncio.sleep(1)
-        last_message = await self.client.get_messages(self.bot_id, limit=1)
-        if not last_message:
+        
+        # Ждём ответа с рецептами через проверку подтверждения
+        recipes_received = await self.wait_for_recipes_response()
+        if not recipes_received:
             print("Не получен ответ на /recipes")
             await self.client.send_message(event.sender_id, "❌ Не удалось получить список рецептов")
             await event.message.delete()
             return
+        
+        # Получаем последнее сообщение с рецептами
+        last_message = await self.client.get_messages(self.bot_id, limit=1)
         lstr = last_message[0].message.split('\n')
+        
         # Парсим только антигравы 2-4 грейда
         recipes = []
         pattern = re.compile(r'📜 Рецепт антиграва ([234]) грейда\.\s+([\d.]+)%\s+(/info_item_\w+)')
@@ -2796,27 +2875,34 @@ class RF:
                     'chance': chance,
                     'command': command
                 })
+        
         if not recipes:
             print("Не найдено рецептов 2-4 грейда")
             await self.client.send_message(event.sender_id, "❌ Не найдено рецептов антиграва 2-4 грейда")
             await event.message.delete()
             return
+        
         print(f"Найдено рецептов: {len(recipes)}")
-        # Отправляем прогресс отправителю команды
         await self.client.send_message(event.sender_id, f"⏳ Обработка {len(recipes)} рецептов...")
-        # Обрабатываем каждый рецепт
+        
+        # Обрабатываем каждый рецепт с проверкой подтверждений
         results = []
         for idx, recipe in enumerate(recipes, 1):
             print(f"Обработка {idx}/{len(recipes)}: грейд {recipe['grade']}, шанс {recipe['chance']}%")
+            
             # Отправляем команду рецепта
             await self.send_command(recipe['command'])
-            await asyncio.sleep(3)
-            # Получаем детали
-            detail_msg = await self.client.get_messages(self.bot_id, limit=1)
-            if not detail_msg:
-                print(f"  Пропуск: не получен ответ")
+            
+            # Ждём ответа с деталями через проверку подтверждения
+            details_received = await self.wait_for_recipe_details()
+            if not details_received:
+                print(f"  Пропуск: не получен ответ на команду {recipe['command']}")
                 continue
+            
+            # Получаем сообщение с деталями
+            detail_msg = await self.client.get_messages(self.bot_id, limit=1)
             detail_lines = detail_msg[0].message.split('\n')
+            
             # Извлекаем характеристики
             stats = {}
             stat_pattern = re.compile(r'([💨🎯❤⏳])\s+\+([\d.]+)%')
@@ -2826,7 +2912,8 @@ class RF:
                     emoji = stat_match.group(1)
                     value = float(stat_match.group(2))
                     stats[emoji] = value
-           # Находим максимальную характеристику
+            
+            # Находим максимальную характеристику
             if stats:
                 max_stat_emoji = max(stats, key=stats.get)
                 max_stat_value = stats[max_stat_emoji]
@@ -2835,11 +2922,53 @@ class RF:
                 print(f"  → Макс: {max_stat_emoji} +{max_stat_value}%")
             else:
                 print(f"  Пропуск: не найдены характеристики")
-       # Отправляем итоговый список на cave_leader_id
+        
+        # Отправляем итоговый список
         if results:
             final_message = "📋 **Антики (макс. характеристики):**\n\n" + "\n".join(results)
             await self.client.send_message(self.cave_leader_id, final_message)
-            print(f"\n✅ Отправлен итоговый список из {len(results)} позиций на cave_leader_id")
+            print(f"\n✅ Отправлен итоговый список из {len(results)} позиций")
         else:
             await self.client.send_message(self.cave_leader_id, "❌ Не удалось обработать ни одного рецепта")
+        
         await event.message.delete()
+
+    async def wait_for_recipes_response(self):
+        """Ожидание ответа с рецептами после команды /recipes"""
+        try:
+            confirmation_future = asyncio.Future()
+            
+            @self.client.on(events.NewMessage(from_users=[self.bot_id]))
+            async def recipes_handler(event):
+                if "Рецепт антиграва" in event.message.text or "📜" in event.message.text:
+                    confirmation_future.set_result(True)
+                else:
+                    confirmation_future.set_result(False)
+            
+            result = await asyncio.wait_for(confirmation_future, timeout=30)
+            self.client.remove_event_handler(recipes_handler)
+            return result
+        except asyncio.TimeoutError:
+            print("Тайм-аут: не получен список рецептов в течение 30 секунд.")
+            return False
+
+    async def wait_for_recipe_details(self):
+        """Ожидание ответа с деталями рецепта"""
+        try:
+            confirmation_future = asyncio.Future()
+            
+            @self.client.on(events.NewMessage(from_users=[self.bot_id]))
+            async def details_handler(event):
+                # Проверяем, что это сообщение с деталями предмета
+                if any(emoji in event.message.text for emoji in ['💨', '🎯', '❤', '⏳']) or \
+                "грейд" in event.message.text.lower():
+                    confirmation_future.set_result(True)
+                else:
+                    confirmation_future.set_result(False)
+            
+            result = await asyncio.wait_for(confirmation_future, timeout=30)
+            self.client.remove_event_handler(details_handler)
+            return result
+        except asyncio.TimeoutError:
+            print("Тайм-аут: не получены детали рецепта в течение 30 секунд.")
+            return False
