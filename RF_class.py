@@ -2007,7 +2007,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.4.7.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.5.7.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -2771,11 +2771,19 @@ class RF:
             print("Завершаем работу в терминале")
     async def handle_antiki_command(self, event):
         """Обработчик команды _антики - анализ рецептов антигравов"""
+        import asyncio
+        import re
+
+        MANDATORY_DELAY = 1.5
+        TIMEOUT_SECONDS = 10 
+        CHECK_INTERVAL = 0.5 
+
         print("Получена команда _антики")
+        
         await self.send_command("/recipes")
         
-        # Ждём ответа с рецептами
-        await asyncio.sleep(1)
+        await asyncio.sleep(1) 
+        
         last_message = await self.client.get_messages(self.bot_id, limit=1)
         if not last_message:
             print("Не получен ответ на /recipes")
@@ -2785,21 +2793,18 @@ class RF:
         
         lstr = last_message[0].message.split('\n')
         
-        # Парсим только антигравы 2-4 грейда
         recipes = []
-        pattern = re.compile(r'📜 Рецепт антиграва ([234]) грейда\.\s+([\d.]+)%\s+(/info_item_\w+)')
+        pattern = re.compile(r'📜 Рецепт антиграва ([234]) грейда\.\s+([\d.]+)\s*% (/info_item_\w+)')
+        
         for line in lstr:
             match = pattern.search(line)
             if match:
-                grade = match.group(1)
-                chance = match.group(2)
-                command = match.group(3)
                 recipes.append({
-                    'grade': grade,
-                    'chance': chance,
-                    'command': command
+                    'grade': match.group(1),
+                    'chance': match.group(2),
+                    'command': match.group(3)
                 })
-        
+                
         if not recipes:
             print("Не найдено рецептов 2-4 грейда")
             await self.client.send_message(event.sender_id, "❌ Не найдено рецептов антиграва 2-4 грейда")
@@ -2809,37 +2814,37 @@ class RF:
         print(f"Найдено рецептов: {len(recipes)}")
         await self.client.send_message(event.sender_id, f"⏳ Обработка {len(recipes)} рецептов...")
         
-        # Обрабатываем каждый рецепт
         results = []
+        
         for idx, recipe in enumerate(recipes, 1):
             print(f"Обработка {idx}/{len(recipes)}: грейд {recipe['grade']}, шанс {recipe['chance']}%")
             
-            # Запоминаем ID последнего сообщения перед отправкой команды
             messages_before = await self.client.get_messages(self.bot_id, limit=1)
             last_message_id_before = messages_before[0].id if messages_before else 0
             
-            # Отправляем команду рецепта
             await self.send_command(recipe['command'])
             
-            # Ждём НОВОЕ сообщение от бота (максимум 10 секунд)
             detail_msg = None
-            for attempt in range(20):  # 20 попыток по 0.5 секунды = 10 секунд
-                await asyncio.sleep(0.5)
+            attempts = int(TIMEOUT_SECONDS / CHECK_INTERVAL)
+            
+            for attempt in range(attempts):
+                await asyncio.sleep(CHECK_INTERVAL)
                 current_messages = await self.client.get_messages(self.bot_id, limit=1)
+                
                 if current_messages and current_messages[0].id > last_message_id_before:
                     detail_msg = current_messages[0]
                     print(f"  ✓ Получен ответ на попытке {attempt + 1}")
                     break
             
             if not detail_msg:
-                print(f"  ⚠ Пропуск: не получен ответ за 10 секунд")
+                print(f"  ⚠ Пропуск: не получен ответ за {TIMEOUT_SECONDS} секунд")
+                await asyncio.sleep(MANDATORY_DELAY) 
                 continue
             
             detail_lines = detail_msg.message.split('\n')
-            
-            # Извлекаем характеристики
             stats = {}
             stat_pattern = re.compile(r'([💨🎯❤⏳])\s+\+([\d.]+)%')
+            
             for line in detail_lines:
                 stat_match = stat_pattern.search(line)
                 if stat_match:
@@ -2847,7 +2852,6 @@ class RF:
                     value = float(stat_match.group(2))
                     stats[emoji] = value
             
-            # Находим максимальную характеристику
             if stats:
                 max_stat_emoji = max(stats, key=stats.get)
                 max_stat_value = stats[max_stat_emoji]
@@ -2856,8 +2860,9 @@ class RF:
                 print(f"  → Макс: {max_stat_emoji} +{max_stat_value}%")
             else:
                 print(f"  ⚠ Пропуск: не найдены характеристики")
-        
-        # Отправляем итоговый список на cave_leader_id
+                
+            await asyncio.sleep(MANDATORY_DELAY) 
+
         if results:
             final_message = "📋 **Антики (макс. характеристики):**\n\n" + "\n".join(results)
             await self.client.send_message(self.cave_leader_id, final_message)
