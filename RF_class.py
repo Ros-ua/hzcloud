@@ -501,8 +501,17 @@ class RF:
                 await self.cave_buttons_message.click(2)
         elif lstr[0].endswith("✅"): 
             # await asyncio.sleep(1)
-            await self.client.send_message(self.group59, "Капча пройдена")  # Отправляем сообщение
-            await asyncio.sleep(3)
+            if self.your_name == "👨‍🦳Пенсионер☠️":
+                await self.client.send_message(self.group59, "Капча пройдена")
+            elif self.your_name == "๖ۣۜᗯαsͥpwͣoͫℝt🐝":
+                await self.client.send_message(self.group59, "Капча пройдена")
+            elif self.your_name == "Ros_Hangzhou":
+                await self.client.send_message(self.group59, "Капча пройдена")
+            elif self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
+                # Для этого игрока отправляем в обе группы
+                await self.client.send_message(self.group59, "Капча пройдена")
+                await asyncio.sleep(1)
+                await self.client.send_message(self.bezvgroup, "Капча пройдена")            await asyncio.sleep(3)
             self.waiting_for_captcha = False
             # Повторяем последнюю команду после CAPTCHA
             if self.last_command:
@@ -884,9 +893,20 @@ class RF:
             "Введите, пожалуйста, текст с картинки."
         ]):
             print("Капча получена")
-            await self.client.send_message(self.group59, "Капча получена")  # Отправляем сообщение
-            self.waiting_for_captcha = True # Флаг ожидания капчи
-            # sys.exit()
+            # Определяем куда отправлять сообщение в зависимости от имени игрока
+            if self.your_name == "👨‍🦳Пенсионер☠️":
+                await self.client.send_message(self.group59, "Капча получена")
+            elif self.your_name == "๖ۣۜᗯαsͥpwͣoͫℝt🐝":
+                await self.client.send_message(self.group59, "Капча получена")
+            elif self.your_name == "Ros_Hangzhou":
+                await self.client.send_message(self.group59, "Капча получена")
+            elif self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
+                # Для этого игрока отправляем в обе группы
+                await self.client.send_message(self.group59, "Капча получена")
+                await asyncio.sleep(1)
+                await self.client.send_message(self.bezvgroup, "Капча получена")
+            
+            self.waiting_for_captcha = True
         elif (match := self.arrival_re.search(lstr[0])):  # Проверяем совпадение для строки прибытия
             minutes = int(match.group(1))
             seconds = float(match.group(2))
@@ -2007,7 +2027,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.8.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.2.8.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
