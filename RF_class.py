@@ -9,7 +9,7 @@ import datetime
 import threading
 import RF_config  # Добавить в начало файла с остальными импортами
 import time
-#       ^\s*$\n    
+#           
 #       в поиске
 class RF:
     # Берем настройки из конфига
@@ -345,7 +345,7 @@ class RF:
             await asyncio.sleep(3)
             random_index = random.randint(0, 4) 
             await message.click(random_index)
-        elif any("Вы полны энергии" in line for line in lstr):
+        elif any("Вы полны энергии" in line for line in lstr) and not self.is_in_caves:
             if self.kopka and self.location != "🦇 51-60 Земли Изгнанников":
                 await asyncio.sleep(2)
                 await self.send_command("🏛 В ген. штаб")
@@ -719,10 +719,10 @@ class RF:
             print("Получена Адена")
             if self.your_name in [
                 # "👨‍🦳Пенсионер☠️",
-                # "Ros_Hangzhou",
+                "Ros_Hangzhou",
                 # "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗",
                 # "๖ۣۜᗯαsͥpwͣoͫℝt🐝",
-                "фрилансер"
+                "пример"
             ]:
                 self.location = "🏔 Этер"
                 print(f"Локация изменена на: {self.location}")
@@ -2007,7 +2007,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.2.7.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.8.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -2843,12 +2843,10 @@ class RF:
     #     else:
     #         await self.client.send_message(self.cave_leader_id, "❌ Не удалось обработать ни одного рецепта")
     #     await event.message.delete()
-
     async def handle_antiki_command(self, event):
         """Обработчик команды _антики - анализ рецептов антигравов с проверкой подтверждений"""
         print("Получена команда _антики")
         await self.send_command("/recipes")
-        
         # Ждём ответа с рецептами через проверку подтверждения
         recipes_received = await self.wait_for_recipes_response()
         if not recipes_received:
@@ -2856,11 +2854,9 @@ class RF:
             await self.client.send_message(event.sender_id, "❌ Не удалось получить список рецептов")
             await event.message.delete()
             return
-        
         # Получаем последнее сообщение с рецептами
         last_message = await self.client.get_messages(self.bot_id, limit=1)
         lstr = last_message[0].message.split('\n')
-        
         # Парсим только антигравы 2-4 грейда
         recipes = []
         pattern = re.compile(r'📜 Рецепт антиграва ([234]) грейда\.\s+([\d.]+)%\s+(/info_item_\w+)')
@@ -2875,35 +2871,28 @@ class RF:
                     'chance': chance,
                     'command': command
                 })
-        
         if not recipes:
             print("Не найдено рецептов 2-4 грейда")
             await self.client.send_message(event.sender_id, "❌ Не найдено рецептов антиграва 2-4 грейда")
             await event.message.delete()
             return
-        
         print(f"Найдено рецептов: {len(recipes)}")
         await self.client.send_message(event.sender_id, f"⏳ Обработка {len(recipes)} рецептов...")
-        
         # Обрабатываем каждый рецепт с проверкой подтверждений
         results = []
         for idx, recipe in enumerate(recipes, 1):
             print(f"Обработка {idx}/{len(recipes)}: грейд {recipe['grade']}, шанс {recipe['chance']}%")
             await asyncio.sleep(1)
-
             # Отправляем команду рецепта
             await self.send_command(recipe['command'])
-            
             # Ждём ответа с деталями через проверку подтверждения
             details_received = await self.wait_for_recipe_details()
             if not details_received:
                 print(f"  Пропуск: не получен ответ на команду {recipe['command']}")
                 continue
-            
             # Получаем сообщение с деталями
             detail_msg = await self.client.get_messages(self.bot_id, limit=1)
             detail_lines = detail_msg[0].message.split('\n')
-            
             # Извлекаем характеристики
             stats = {}
             stat_pattern = re.compile(r'([💨🎯❤⏳])\s+\+([\d.]+)%')
@@ -2913,7 +2902,6 @@ class RF:
                     emoji = stat_match.group(1)
                     value = float(stat_match.group(2))
                     stats[emoji] = value
-            
             # Находим максимальную характеристику
             if stats:
                 max_stat_emoji = max(stats, key=stats.get)
@@ -2923,7 +2911,6 @@ class RF:
                 print(f"  → Макс: {max_stat_emoji} +{max_stat_value}%")
             else:
                 print(f"  Пропуск: не найдены характеристики")
-        
         # Отправляем итоговый список
         if results:
             final_message = "📋 **Антики (макс. характеристики):**\n\n" + "\n".join(results)
@@ -2931,33 +2918,27 @@ class RF:
             print(f"\n✅ Отправлен итоговый список из {len(results)} позиций")
         else:
             await self.client.send_message(self.cave_leader_id, "❌ Не удалось обработать ни одного рецепта")
-        
         await event.message.delete()
-
     async def wait_for_recipes_response(self):
         """Ожидание ответа с рецептами после команды /recipes"""
         try:
             confirmation_future = asyncio.Future()
-            
             @self.client.on(events.NewMessage(from_users=[self.bot_id]))
             async def recipes_handler(event):
                 if "Рецепт антиграва" in event.message.text or "📜" in event.message.text:
                     confirmation_future.set_result(True)
                 else:
                     confirmation_future.set_result(False)
-            
             result = await asyncio.wait_for(confirmation_future, timeout=30)
             self.client.remove_event_handler(recipes_handler)
             return result
         except asyncio.TimeoutError:
             print("Тайм-аут: не получен список рецептов в течение 30 секунд.")
             return False
-
     async def wait_for_recipe_details(self):
         """Ожидание ответа с деталями рецепта"""
         try:
             confirmation_future = asyncio.Future()
-            
             @self.client.on(events.NewMessage(from_users=[self.bot_id]))
             async def details_handler(event):
                 # Проверяем, что это сообщение с деталями предмета
@@ -2966,7 +2947,6 @@ class RF:
                     confirmation_future.set_result(True)
                 else:
                     confirmation_future.set_result(False)
-            
             result = await asyncio.wait_for(confirmation_future, timeout=30)
             self.client.remove_event_handler(details_handler)
             return result
