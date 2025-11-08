@@ -77,7 +77,7 @@ class RF:
         self.arrival_re = re.compile(r'.*прибудешь через\s*(\d+)\s*мин\.\s*(\d+(?:\.\d+)?)\s*сек\.')
         # === УСЛОВНАЯ НАСТРОЙКА ===
         if self.your_name == "👨‍🦳Пенсионер☠️":
-            self.mob_heal = 2500
+            self.mob_heal = 3000
             self.pvpgoheal = 3500
         elif self.your_name == "๖ۣۜᗯαsͥpwͣoͫℝt🐝":
             self.mob_heal = 4000
@@ -2028,7 +2028,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.3.8.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.4.8.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -2934,6 +2934,17 @@ class RF:
                 print(f"  Пропуск: не найдены характеристики")
         # Отправляем итоговый список
         if results:
+            # Сортируем: сначала по грейду (2→3→4), затем по проценту (от большего к меньшему)
+            def sort_key(line):
+                # Извлекаем грейд (первый символ) и процент
+                parts = line.split()
+                grade = int(parts[0])
+                percent_str = parts[3].replace('%', '').replace('+', '')
+                percent = float(percent_str)
+                return (grade, -percent)  # -percent для сортировки по убыванию
+            
+            results.sort(key=sort_key)
+            
             final_message = "📋 **Антики (макс. характеристики):**\n\n" + "\n".join(results)
             await self.client.send_message(self.cave_leader_id, final_message)
             print(f"\n✅ Отправлен итоговый список из {len(results)} позиций")
