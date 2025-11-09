@@ -731,8 +731,8 @@ class RF:
                 # "👨‍🦳Пенсионер☠️",
                 "Ros_Hangzhou",
                 # "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗",
-                # "๖ۣۜᗯαsͥpwͣoͫℝt🐝",
-                "пример"
+                "๖ۣۜᗯαsͥpwͣoͫℝt🐝",
+                "пример",
             ]:
                 self.location = "🏔 Этер"
                 print(f"Локация изменена на: {self.location}")
@@ -944,6 +944,8 @@ class RF:
             "Доп. к характеристикам персонажа",
         ]):
             await message.forward_to(1033007754)
+        elif any("Добыча" in lstr[0] and "Горный эликсир" in lstr[0]):
+            await message.forward_to(self.group59)        
         if not getattr(message, "buttons", None):
             if val == 3190963077:  # ✨Добыча:
                 await message.forward_to(self.group59)  # группа 59
@@ -2027,7 +2029,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.9.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.e.9.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
