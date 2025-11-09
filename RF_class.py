@@ -9,8 +9,8 @@ import datetime
 import threading
 import RF_config  # Добавить в начало файла с остальными импортами
 import time
-#           
-#       в поиске
+#       ^\s*$\n
+#        в поиске
 class RF:
     # Берем настройки из конфига
     cave_leader_id = RF_config.cave_leader_id
@@ -906,7 +906,6 @@ class RF:
                 await self.client.send_message(self.group59, "Капча получена")
                 await asyncio.sleep(1)
                 await self.client.send_message(self.bezvgroup, "Капча получена")
-            
             self.waiting_for_captcha = True
         elif (match := self.arrival_re.search(lstr[0])):  # Проверяем совпадение для строки прибытия
             minutes = int(match.group(1))
@@ -2028,7 +2027,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.4.8.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.9.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -2942,9 +2941,7 @@ class RF:
                 percent_str = parts[3].replace('%', '').replace('+', '')
                 percent = float(percent_str)
                 return (grade, -percent)  # -percent для сортировки по убыванию
-            
             results.sort(key=sort_key)
-            
             final_message = "📋 **Антики (макс. характеристики):**\n\n" + "\n".join(results)
             await self.client.send_message(self.cave_leader_id, final_message)
             print(f"\n✅ Отправлен итоговый список из {len(results)} позиций")
