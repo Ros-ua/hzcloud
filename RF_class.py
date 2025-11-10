@@ -41,7 +41,7 @@ class RF:
         self.ros_id = 715480502
         self.zatochka = 5
         self.extra_hill_hp = 300
-        self.ned_hill_hp = 1500
+        self.ned_hill_hp = 5500
         self.bezvgroup = -1002220238697
         self.group59 = -1001323974021
         self.location = "🔥 61-65 Лес пламени"  # Локация по умолчанию
@@ -2045,7 +2045,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.2.10.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.5.10.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
