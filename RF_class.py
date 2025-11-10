@@ -2045,7 +2045,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.test.10.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.2.10.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -2166,7 +2166,7 @@ class RF:
                     # await self.client.send_message(self.cave_leader_id, "булочка")
                     self.is_in_caves = self.is_has_hil = self.is_has_res = self.extra_hil = True
                     await event.message.delete()  # Удаляем сообщение
-                    await asyncio.sleep(10)
+                    await asyncio.sleep(1)
                     # self.last_bind = self.after_bind
                     # Сначала проверяем текущее здоровье через /hero
                     await self.send_command( "/hero")
@@ -2187,14 +2187,14 @@ class RF:
                         print("Не получен ответ от бота на /hero")
                     # Теперь отправляем "Проверить состав" и получаем rf_message
                     await self.send_command( "⚖️Проверить состав")
-                    await asyncio.sleep(20)
+                    await asyncio.sleep(3)
                     self.last_bind = self.after_bind
                     # Получаем сообщение с кнопками после отправки "Проверить состав"
                     self.rf_message = await self.get_latest_message_with_buttons()
                     if not self.rf_message:
                         print("# self.rf_message is None, не можем выполнить клик")
                     # Специальная логика: если здоровье ниже extra_hill_hp, ведем себя как между extra и ned
-                    if self.my_health < self.extra_hill_hp:  # Например, 100 HP < 300
+                    if self.my_health < self.ned_hill_hp:  # Например, 100 HP < 300
                         print(f"Здоровье ({self.my_health}) ниже {self.extra_hill_hp}, применяем логику как для {self.extra_hill_hp}-{self.ned_hill_hp}")
                         await asyncio.sleep(8)  # Ждем 8 секунд, как в случае между extra и ned
                         if not self.is_player_dead and self.last_bind != self.hp_binds[0][1] and self.is_has_hil and self.extra_hil:
@@ -2242,9 +2242,9 @@ class RF:
                     await event.message.delete()  # Удаляем сообщение
                 elif message_text == "_хил":
                     # Проверяем, что отправитель не является cave leader
-                    # if event.sender_id == self.cave_leader_id or not self.is_in_caves:
-                    #     print(f"Команда _хил от cave leader {event.sender_id} или не в пещере игнорируется")
-                    #     return
+                    if event.sender_id == self.cave_leader_id or not self.is_in_caves:
+                        print(f"Команда _хил от cave leader {event.sender_id} или не в пещере игнорируется")
+                        return
                     if self.last_bind != self.hp_binds[0][1]:
                         self.is_has_hil = False
                         await asyncio.sleep(5)  # Ждем 3 секунды
