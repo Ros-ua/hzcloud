@@ -2045,7 +2045,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.5.10.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.6.10.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -2239,7 +2239,7 @@ class RF:
                     if event.sender_id == self.cave_leader_id or not self.is_in_caves:
                         print(f"Команда _хил от cave leader {event.sender_id} или не в пещере игнорируется")
                         return
-                    if self.last_bind != self.hp_binds[0][1] and self.is_has_hil:
+                    if self.last_bind != self.hp_binds[0][1]:
                         self.is_has_hil = False
                         await asyncio.sleep(5)  # Ждем 3 секунды
                         await self.send_command( self.hp_binds[0][1])  # Надеваем {self.hp_binds[0][0]}) HP
