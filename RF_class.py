@@ -9,7 +9,7 @@ import datetime
 import threading
 import RF_config  # Добавить в начало файла с остальными импортами
 import time
-#       ^\s*$\n
+#        ^\s*$\n
 #        в поиске
 class RF:
     # Берем настройки из конфига
@@ -1850,6 +1850,14 @@ class RF:
                     print("Отправляем команду /drink_103")
                     await self.send_command( "/drink_103")
                     await event.message.delete()  # Удаляем сообщение
+                elif "_реска" in message_text or "_реску" in message_text:
+                    # Проверяем, что отправитель не является cave leader
+                    if event.sender_id == self.cave_leader_id or not self.kopka:
+                        print(f"Команда _реска от cave leader {event.sender_id} или нет копки игнорируется")
+                        return
+                    print("Отправляем команду /drink_104")
+                    await self.send_command( "/drink_104")
+                    await event.message.delete()  # Удаляем сообщение
                 elif "_антики" in message_text:
                     await self.handle_antiki_command(event)
                 elif any(key in message_text for key in [
@@ -2037,7 +2045,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.3.10.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.4.10.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
