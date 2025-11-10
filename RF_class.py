@@ -41,7 +41,7 @@ class RF:
         self.ros_id = 715480502
         self.zatochka = 5
         self.extra_hill_hp = 300
-        self.ned_hill_hp = 1500
+        self.ned_hill_hp = 15009
         self.bezvgroup = -1002220238697
         self.group59 = -1001323974021
         self.location = "🔥 61-65 Лес пламени"  # Локация по умолчанию
@@ -2045,7 +2045,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.tes123123123t.10.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.10.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -2193,8 +2193,6 @@ class RF:
                     self.rf_message = await self.get_latest_message_with_buttons()
                     if not self.rf_message:
                         print("# self.rf_message is None, не можем выполнить клик")
-                    else:
-                        print("# self.rf_message получено, можем выполнить клик")
                     # Специальная логика: если здоровье ниже extra_hill_hp, ведем себя как между extra и ned
                     if self.my_health < self.ned_hill_hp:  # Например, 100 HP < 300
                         print(f"Здоровье ({self.my_health}) ниже {self.extra_hill_hp}, применяем логику как для {self.extra_hill_hp}-{self.ned_hill_hp}")
