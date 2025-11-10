@@ -2045,7 +2045,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.test.10.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.tes123123123t.10.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -2187,7 +2187,7 @@ class RF:
                         print("Не получен ответ от бота на /hero")
                     # Теперь отправляем "Проверить состав" и получаем rf_message
                     await self.send_command( "⚖️Проверить состав")
-                    # await asyncio.sleep(3)
+                    await asyncio.sleep(3)
                     self.last_bind = self.after_bind
                     # Получаем сообщение с кнопками после отправки "Проверить состав"
                     self.rf_message = await self.get_latest_message_with_buttons()
