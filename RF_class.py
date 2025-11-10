@@ -1550,7 +1550,7 @@ class RF:
     async def get_latest_message_with_buttons(self):
         print("# Получаем последнее сообщение с кнопками")
         messages = await self.client.get_messages(self.bot_id, limit=1)
-        await asyncio.sleep(2)
+        # await asyncio.sleep(2)
         for msg in messages:
             if msg.buttons:
                 return msg
@@ -2045,7 +2045,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.t.10.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.t2222222222.10.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -2190,14 +2190,25 @@ class RF:
                     await asyncio.sleep(5)
                     self.last_bind = self.after_bind
                     await self.send_command( "⚖️Проверить состав")
-                    await asyncio.sleep(5)
-                    self.last_bind = self.after_bind
                     # Получаем сообщение с кнопками после отправки "Проверить состав"
-                    self.rf_message = await self.get_latest_message_with_buttons()
+                    self.rf_message = None
+                    max_attempts = 10  # Максимальное количество попыток
+                    attempt = 0
+                    while attempt < max_attempts:
+                        messages = await self.client.get_messages(self.bot_id, limit=1)
+                        if messages:
+                            self.rf_message = messages[0]
+                            if self.rf_message.buttons:
+                                print("# Сообщение получено и оно с кнопками")
+                                break
+                            else:
+                                print("# Сообщение получено и оно без кнопок")
+                                break
+                        attempt += 1
+                        if attempt < max_attempts:
+                            await asyncio.sleep(1)  # Ждем 1 секунду перед следующей попыткой
                     if not self.rf_message:
-                        print("# self.rf_message is None, не можем выполнить клик")
-                    else:
-                        print("# self.rf_message получен, есть кнопки для клика")
+                        print("# Сообщение не получено после всех попыток")
                     # Специальная логика: если здоровье ниже extra_hill_hp, ведем себя как между extra и ned
                     if self.my_health < self.ned_hill_hp:  # Например, 100 HP < 300
                         print(f"Здоровье ({self.my_health}) ниже {self.extra_hill_hp}, применяем логику как для {self.extra_hill_hp}-{self.ned_hill_hp}")
