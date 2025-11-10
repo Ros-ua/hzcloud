@@ -944,7 +944,7 @@ class RF:
             "Доп. к характеристикам персонажа",
         ]):
             await message.forward_to(1033007754)
-        elif any ("Горный эликсир):" in lstr[0]):
+        elif "Горный эликсир:" in lstr[0]:
             await message.forward_to(self.group59)        
         if not getattr(message, "buttons", None):
             if val == 3190963077:  # ✨Добыча:
@@ -2029,7 +2029,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.10.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.2.10.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
