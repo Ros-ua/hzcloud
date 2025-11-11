@@ -1668,7 +1668,7 @@ class RF:
                 elif self.your_name == "Ros_Hangzhou":
                     self.go_term_Basilaris = True
                     self.go_term_Castitas = True
-                    self.go_term_Aquilla = False
+                    self.go_term_Aquilla = True
                 elif self.your_name == "👨‍🦳Пенсионер☠️":
                     self.go_term_Basilaris = False
                     self.go_term_Castitas = True
@@ -2094,7 +2094,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.6.11.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.7.11.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -2728,7 +2728,7 @@ class RF:
             elif self.your_name == "๖ۣۜᗯαsͥpwͣoͫℝt🐝":
                 return random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])
             elif self.your_name == "Ros_Hangzhou":
-                return random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])
+                return random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо", "🤖Алтарь Эйви", "🤖Алтарь Тир"])
             elif self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
                 return random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])
     async def handle_no_energy(self):
