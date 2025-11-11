@@ -479,10 +479,10 @@ class RF:
             self.my_health = self.my_max_health = self.hp_binds[0][0]
             self.after_bind = self.last_bind = self.hp_binds[0][1]  # Обновляем текущий бинд
             self.is_player_dead = True
-            await asyncio.sleep(5)
+            await asyncio.sleep(6)
             if self.is_has_res and self.is_in_caves:  # Проверяем, что is_has_res равно True и мы в пещерах
                 self.is_has_res = False
-                await asyncio.sleep(5)
+                await asyncio.sleep(6)
                 await self.send_command( self.hp_binds[0][1])  # Надеваем бинд на самое большое HP
                 await self.wait_for_set_change() #жалоба
                 await asyncio.sleep(1)  # Ждем 3 секунды перед кликом
@@ -1599,7 +1599,6 @@ class RF:
     #                 if helth < self.ned_hill_hp:
     #                     await self.client.send_message(h_id, "Хил")
     #             continue
-
     async def check_group_list(self, lstr):
             # Игроки, которым НЕ отсылаем хил и рес
             excluded_players = {
@@ -1608,12 +1607,10 @@ class RF:
                 "👨‍🦳Пенсионер☠️",
                 "๖ۣۜᗯαsͥpwͣoͫℝt🐝"
             }
-            
             # По умолчанию считаем, что мы лидеры пещеры
             self.is_cave_leader = True
             print(" а вот что по составу")
             print(f" Моё текущее здоровье: {self.my_health}")
-            
             # Проверка первой строки на содержание идентификатора лидера
             if not lstr or not lstr[0].endswith(f"/group_guild_join_{self.cave_leader_id}"):
                 print("ты не пативод")
@@ -1621,7 +1618,6 @@ class RF:
             else:
                 self.is_cave_leader = True  # Лидер пещеры
                 print("ты пативод")
-            
             lstr.reverse()
             h_id = 0
             for line in lstr:
@@ -1637,11 +1633,9 @@ class RF:
                 nick = in_str_find.group(1)
                 if nick == self.your_name:
                     continue
-                
                 # Пропускаем игроков из списка исключений
                 if nick in excluded_players:
                     continue
-                
                 sost = in_str_find.group(2)
                 if "Мертв" in sost:
                     if "🥤" in sost and self.is_cave_leader and self.is_in_caves:
@@ -2100,7 +2094,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.3.11.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.5.11.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
