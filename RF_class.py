@@ -1560,45 +1560,100 @@ class RF:
         last_messages = await self.client.get_messages(self.bot_id, limit=2)
         await asyncio.sleep(2)
         return [message.message for message in last_messages]
+    # async def check_group_list(self, lstr):
+    #     # По умолчанию считаем, что мы лидеры пещеры
+    #     self.is_cave_leader = True
+    #     print(" а вот что по составу")
+    #     print(f" Моё текущее здоровье: {self.my_health}")
+    #     # Проверка первой строки на содержание идентификатора лидера
+    #     if not lstr or not lstr[0].endswith(f"/group_guild_join_{self.cave_leader_id}"):
+    #         print("ты не пативод")
+    #         self.is_cave_leader = False
+    #     else:
+    #         self.is_cave_leader = True  # Лидер пещеры
+    #         print("ты пативод")
+    #     lstr.reverse()
+    #     h_id = 0
+    #     for line in lstr:
+    #         if not line:
+    #             break
+    #         in_str_find = re.search("/p_guild_exc_(\d+)", line)
+    #         if in_str_find:
+    #             h_id = int(in_str_find.group(1))
+    #             continue
+    #         in_str_find = re.search("\d\) .*\[.*\](.*)🏅\d+ур\. (.*)", line)
+    #         if not in_str_find:
+    #             break
+    #         nick = in_str_find.group(1)
+    #         if nick == self.your_name:
+    #             continue
+    #         sost = in_str_find.group(2)
+    #         if "Мертв" in sost:
+    #             if "🥤" in sost and self.is_cave_leader and self.is_in_caves:
+    #                 await self.client.send_message(h_id, "Рес")
+    #             continue
+    #         if "💖" in sost:
+    #             str_hp = re.search("❤️(\d+)/\d+", sost)
+    #             helth = int(str_hp.group(1))
+    #             if self.is_cave_leader and self.is_in_caves:
+    #                 if helth < self.ned_hill_hp:
+    #                     await self.client.send_message(h_id, "Хил")
+    #             continue
+
     async def check_group_list(self, lstr):
-        # По умолчанию считаем, что мы лидеры пещеры
-        self.is_cave_leader = True
-        print(" а вот что по составу")
-        print(f" Моё текущее здоровье: {self.my_health}")
-        # Проверка первой строки на содержание идентификатора лидера
-        if not lstr or not lstr[0].endswith(f"/group_guild_join_{self.cave_leader_id}"):
-            print("ты не пативод")
-            self.is_cave_leader = False
-        else:
-            self.is_cave_leader = True  # Лидер пещеры
-            print("ты пативод")
-        lstr.reverse()
-        h_id = 0
-        for line in lstr:
-            if not line:
-                break
-            in_str_find = re.search("/p_guild_exc_(\d+)", line)
-            if in_str_find:
-                h_id = int(in_str_find.group(1))
-                continue
-            in_str_find = re.search("\d\) .*\[.*\](.*)🏅\d+ур\. (.*)", line)
-            if not in_str_find:
-                break
-            nick = in_str_find.group(1)
-            if nick == self.your_name:
-                continue
-            sost = in_str_find.group(2)
-            if "Мертв" in sost:
-                if "🥤" in sost and self.is_cave_leader and self.is_in_caves:
-                    await self.client.send_message(h_id, "Рес")
-                continue
-            if "💖" in sost:
-                str_hp = re.search("❤️(\d+)/\d+", sost)
-                helth = int(str_hp.group(1))
-                if self.is_cave_leader and self.is_in_caves:
-                    if helth < 1500:
-                        await self.client.send_message(h_id, "Хил")
-                continue
+            # Игроки, которым НЕ отсылаем хил и рес
+            excluded_players = {
+                "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗",
+                "Ros_Hangzhou",
+                "👨‍🦳Пенсионер☠️",
+                "๖ۣۜᗯαsͥpwͣoͫℝt🐝"
+            }
+            
+            # По умолчанию считаем, что мы лидеры пещеры
+            self.is_cave_leader = True
+            print(" а вот что по составу")
+            print(f" Моё текущее здоровье: {self.my_health}")
+            
+            # Проверка первой строки на содержание идентификатора лидера
+            if not lstr or not lstr[0].endswith(f"/group_guild_join_{self.cave_leader_id}"):
+                print("ты не пативод")
+                self.is_cave_leader = False
+            else:
+                self.is_cave_leader = True  # Лидер пещеры
+                print("ты пативод")
+            
+            lstr.reverse()
+            h_id = 0
+            for line in lstr:
+                if not line:
+                    break
+                in_str_find = re.search("/p_guild_exc_(\d+)", line)
+                if in_str_find:
+                    h_id = int(in_str_find.group(1))
+                    continue
+                in_str_find = re.search("\d\) .*\[.*\](.*)🏅\d+ур\. (.*)", line)
+                if not in_str_find:
+                    break
+                nick = in_str_find.group(1)
+                if nick == self.your_name:
+                    continue
+                
+                # Пропускаем игроков из списка исключений
+                if nick in excluded_players:
+                    continue
+                
+                sost = in_str_find.group(2)
+                if "Мертв" in sost:
+                    if "🥤" in sost and self.is_cave_leader and self.is_in_caves:
+                        await self.client.send_message(h_id, "Рес")
+                    continue
+                if "💖" in sost:
+                    str_hp = re.search("❤️(\d+)/\d+", sost)
+                    helth = int(str_hp.group(1))
+                    if self.is_cave_leader and self.is_in_caves:
+                        if helth < self.ned_hill_hp:
+                            await self.client.send_message(h_id, "Хил")
+                    continue
     def setup_war_listener(self):
         print("Устанавливаем обработчик сообщений для setup_war_listener")
         @self.client.on(events.NewMessage(chats=-1001284047611))
@@ -2045,7 +2100,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.2.11.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.3.11.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
