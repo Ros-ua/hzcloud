@@ -2045,7 +2045,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.1.11.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.2.11.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -2192,6 +2192,7 @@ class RF:
                     print("ПЕРВЫЙ СОСТАВ")
                     await asyncio.sleep(5)
                     await self.send_command( "⚖️Проверить состав")
+                    await asyncio.sleep(5)
                     print("ВТОРОЙ СОСТАВ")
                     # Получаем сообщение с кнопками после отправки "Проверить состав"
                     self.rf_message = None
