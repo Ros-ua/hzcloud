@@ -27,7 +27,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО TRUE ===
         self.is_cave_leader = self.extra_hil = self.mobs = self.active = self.go_to_heal = True
         # === ВСЕ ЧТО РАВНО FALSE ===
-        self.is_run = self.na_straj = self.is_player_dead = self.fast_cave = self.cave_task_running = self.waiting_for_captcha = self.is_moving = self.in_castle = self.v_terminale = self.kopka = self.is_training = self.cave_message_pinned = self.prem = self.go_term_Aquilla = self.go_term_Basilaris = self.go_term_Castitas = self.is_in_caves = self.is_in_gh = self.is_has_hil = self.is_has_res = self.is_nacheve_active = self.in_battle = False
+        self.is_run = self.after_caves = self.na_straj = self.is_player_dead = self.fast_cave = self.cave_task_running = self.waiting_for_captcha = self.is_moving = self.in_castle = self.v_terminale = self.kopka = self.is_training = self.cave_message_pinned = self.prem = self.go_term_Aquilla = self.go_term_Basilaris = self.go_term_Castitas = self.is_in_caves = self.is_in_gh = self.is_has_hil = self.is_has_res = self.is_nacheve_active = self.in_battle = False
         # === ВСЕ ЧТО РАВНО NONE ===
         self.cave_buttons_message = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = None
         # === ЧИСЛА ===
@@ -468,7 +468,7 @@ class RF:
             self.kopka = False
             print(self.my_health, self.my_max_health)
             # на новый год идти в краги после реса
-            if not self.is_in_caves and not self.na_straj and not self.in_castle and not self.waiting_for_captcha and not self.is_nacheve_active:  # Используем существующее условие
+            if not self.is_in_caves and not self.na_straj and not self.in_castle and not self.waiting_for_captcha and not self.is_nacheve_active and not self.after_caves:  # Используем существующее условие
                 await asyncio.sleep(3)
                 await self.send_command( "🌋 Краговые шахты")
         elif any(
@@ -527,6 +527,7 @@ class RF:
             await asyncio.sleep(5)
             self.fast_cave = False
             self.is_in_caves = False
+            self.after_caves = True
             # Извлечение значения duration из сообщения
             match = re.search(r"через\s*(\d+)\s*мин", lstr[0])
             if match:
@@ -552,9 +553,9 @@ class RF:
             await asyncio.sleep(1)
             await self.check_group_list(lstr)
             # await asyncio.sleep(2)
-            await self.vihod_s_caves(lstr)
-            # await asyncio.sleep(2)
             await self.hp_in_caves(lstr)
+            # await asyncio.sleep(2)
+            await self.vihod_s_caves(lstr)
             # await asyncio.sleep(2)
             # await self.hp_in_caves_kingRagnar(lstr)
             # await asyncio.sleep(2)
@@ -755,7 +756,7 @@ class RF:
         elif "Ты прибыл в ⛏рудник." in lstr[0]:
             prev_state = self.kopka
             self.kopka = True
-            await asyncio.sleep(1)
+            self.after_caves = False
             await self.send_command("🖲 Установить АБУ")
             # если _моб N был задан и остались повторы
             if hasattr(self, "mob_drink_counter") and self.mob_drink_counter > 0 and not prev_state:
@@ -2094,7 +2095,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.12.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.test.12.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
