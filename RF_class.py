@@ -2094,7 +2094,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.7.11.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.12.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -2602,9 +2602,10 @@ class RF:
             if self.is_cave_leader:
                 for member_id in group_members:
                     if member_id != self.cave_leader_id:
+                        await asyncio.sleep(15) 
                         await self.client.send_message(member_id, "Выходим из пещеры _фольт")
                         print(f"Отправлено сообщение участнику {member_id}: Выходим из пещеры _фольт")
-                await asyncio.sleep(25) 
+                await asyncio.sleep(10) 
                 await self.rf_message.click(3)
         else:
             print(f"Ещё рано на выход. Общее здоровье: {total_health}, Живых: {alive_count}")
