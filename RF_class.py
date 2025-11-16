@@ -2099,7 +2099,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.test.16.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.status.16.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -3088,10 +3088,11 @@ class RF:
         active_flags = []
         
         flags_to_check = {
-            'is_cave_leader': 'In_cave',
-            'is_leader': 'is_leaber',
+            'is_cave_leader': 'is_cave_leader',
+            'extra_hil': 'extra_hil',
             'mobs': 'mobs',
-            'in_castle': 'in_castle',
+            'active': 'active',
+            'go_to_heal': 'go_to_heal',
             'is_run': 'is_run',
             'after_caves': 'after_caves',
             'na_straj': 'na_straj',
@@ -3100,6 +3101,7 @@ class RF:
             'cave_task_running': 'cave_task_running',
             'waiting_for_captcha': 'waiting_for_captcha',
             'is_moving': 'is_moving',
+            'in_castle': 'in_castle',
             'v_terminale': 'v_terminale',
             'kopka': 'kopka',
             'is_training': 'is_training',
@@ -3113,10 +3115,7 @@ class RF:
             'is_has_hil': 'is_has_hil',
             'is_has_res': 'is_has_res',
             'is_nacheve_active': 'is_nacheve_active',
-            'in_battle': 'in_battle',
-            'extra_hil': 'extra_hil',
-            'active': 'active',
-            'go_to_heal': 'go_to_heal'
+            'in_battle': 'in_battle'
         }
         
         for flag_attr, flag_name in flags_to_check.items():
