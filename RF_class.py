@@ -368,6 +368,8 @@ class RF:
             await self.send_command(altar)
         elif (lstr[-1].endswith("и воскреснешь через 10 минут.") or lstr[-1].startswith("Ты одержал победу над")) and self.in_castle:
             await message.forward_to(self.group59) 
+        elif any("Ты успешно использовал" in line and "опыта" not in line for line in lstr):
+            await message.forward_to(self.group59) 
         elif any("Посейдона был активирован автоматическим пожертвованием!" in line for line in lstr) and not self.is_in_caves:
             print("Обнаружено автоматическое пожертвование Посейдона")
             asyncio.create_task(self._delayed_restart())
@@ -2099,7 +2101,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.status.16.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.G.16.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -3081,12 +3083,9 @@ class RF:
         except asyncio.TimeoutError:
             print("Тайм-аут: не получены детали рецепта в течение 30 секунд.")
             return False
-
-
     def get_active_flags(self):
         """Метод для получения списка активных флагов"""
         active_flags = []
-        
         flags_to_check = {
             'is_cave_leader': 'is_cave_leader',
             'extra_hil': 'extra_hil',
@@ -3117,13 +3116,10 @@ class RF:
             'is_nacheve_active': 'is_nacheve_active',
             'in_battle': 'in_battle'
         }
-        
         for flag_attr, flag_name in flags_to_check.items():
             if hasattr(self, flag_attr) and getattr(self, flag_attr):
                 active_flags.append(flag_name)
-        
         return active_flags
-
     async def send_status_message(self):
         """Метод для отправки сообщения со статусом активных флагов"""
         active_flags = self.get_active_flags()
@@ -3131,5 +3127,4 @@ class RF:
             status_message = "Активные флаги: " + ", ".join(active_flags)
         else:
             status_message = "Нет активных флагов"
-        
         await self.client.send_message(self.cave_leader_id, status_message)
