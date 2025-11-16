@@ -829,7 +829,8 @@ class RF:
                     # Проверяем, меньше ли здоровье self.mob_heal
                     if current_health < self.mob_heal:
                         # Переодеваем в сет для мобов перед energy_found
-                        await asyncio.sleep(4)
+                        # await asyncio.sleep(4) #на ивент
+                        await asyncio.sleep(1)
                         await self.send_command( RF.hp)
                         await self.wait_for_set_change()
                         await asyncio.sleep(1)
@@ -847,10 +848,11 @@ class RF:
                                 selected_cmd = cmd
                                 selected_threshold = threshold
                         if selected_cmd:
-                            await asyncio.sleep(4)
+                            # await asyncio.sleep(4) #на ивент
+                            await asyncio.sleep(1)
                             await self.send_command( selected_cmd)
                             await self.wait_for_set_change()
-                            await asyncio.sleep(1)
+                            # await asyncio.sleep(1) 
                         await asyncio.sleep(1)
                         await self.send_command( "🐺По уровню")
                 else:
@@ -2101,7 +2103,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.S.16.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.F.16.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -2741,12 +2743,14 @@ class RF:
                 return random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])
     async def handle_no_energy(self):
         print("нет энергии")
-        await asyncio.sleep(5)
+        # await asyncio.sleep(5) #на ивент
+        await asyncio.sleep(1)
         await self.send_command( "🏛 В ген. штаб")
         await self.gokragi()
     async def handle_energy_found(self):
         print("есть энергия")
-        await asyncio.sleep(5)
+        # await asyncio.sleep(5) #на ивент
+        await asyncio.sleep(1)
         await self.send_command( "🏛 В ген. штаб")
         if self.mobs:  # Проверяем, включен ли флаг для мобов
             await self.check_arrival()  # для мобов
