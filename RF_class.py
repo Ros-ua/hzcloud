@@ -1892,6 +1892,10 @@ class RF:
                     print("Отправляем команду /drink_102")
                     await self.send_command( "/drink_102")
                     await event.message.delete()  # Удаляем сообщение
+                elif "_status" in message_text:
+                    # Отправка статуса активных флагов
+                    await self.send_status_message()
+                    await event.message.delete()  # Удаляем сообщение
                 elif message_text == "_хилка" or message_text == "_хилку":
                     # Проверяем, что отправитель не является cave leader
                     if event.sender_id == self.cave_leader_id or not self.kopka:
@@ -2095,7 +2099,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.d.15.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.test.16.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -3077,3 +3081,56 @@ class RF:
         except asyncio.TimeoutError:
             print("Тайм-аут: не получены детали рецепта в течение 30 секунд.")
             return False
+
+
+    def get_active_flags(self):
+        """Метод для получения списка активных флагов"""
+        active_flags = []
+        
+        flags_to_check = {
+            'is_cave_leader': 'In_cave',
+            'is_leader': 'is_leaber',
+            'mobs': 'mobs',
+            'in_castle': 'in_castle',
+            'is_run': 'is_run',
+            'after_caves': 'after_caves',
+            'na_straj': 'na_straj',
+            'is_player_dead': 'is_player_dead',
+            'fast_cave': 'fast_cave',
+            'cave_task_running': 'cave_task_running',
+            'waiting_for_captcha': 'waiting_for_captcha',
+            'is_moving': 'is_moving',
+            'v_terminale': 'v_terminale',
+            'kopka': 'kopka',
+            'is_training': 'is_training',
+            'cave_message_pinned': 'cave_message_pinned',
+            'prem': 'prem',
+            'go_term_Aquilla': 'go_term_Aquilla',
+            'go_term_Basilaris': 'go_term_Basilaris',
+            'go_term_Castitas': 'go_term_Castitas',
+            'is_in_caves': 'is_in_caves',
+            'is_in_gh': 'is_in_gh',
+            'is_has_hil': 'is_has_hil',
+            'is_has_res': 'is_has_res',
+            'is_nacheve_active': 'is_nacheve_active',
+            'in_battle': 'in_battle',
+            'extra_hil': 'extra_hil',
+            'active': 'active',
+            'go_to_heal': 'go_to_heal'
+        }
+        
+        for flag_attr, flag_name in flags_to_check.items():
+            if hasattr(self, flag_attr) and getattr(self, flag_attr):
+                active_flags.append(flag_name)
+        
+        return active_flags
+
+    async def send_status_message(self):
+        """Метод для отправки сообщения со статусом активных флагов"""
+        active_flags = self.get_active_flags()
+        if active_flags:
+            status_message = "Активные флаги: " + ", ".join(active_flags)
+        else:
+            status_message = "Нет активных флагов"
+        
+        await self.client.send_message(self.cave_leader_id, status_message)
