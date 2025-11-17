@@ -321,7 +321,7 @@ class RF:
         ]):    
             print("булочка")
             await self.client.send_message(self.cave_leader_id, "булочка")
-        if any(phrase in line for line in lstr for phrase in [
+        elif any(phrase in line for line in lstr for phrase in [
             "нет предмета",
         ]):
             await asyncio.sleep(4)
@@ -330,14 +330,19 @@ class RF:
             await asyncio.sleep(1)
             self.location = "🔥 61-65 Лес пламени"  # Добавьте эту строку
             await self.handle_energy_found()
-        if any(phrase in line for line in lstr for phrase in [
+        elif any(phrase in line for line in lstr for phrase in [
+            "Ты уверен что хочешь зарегистрироваться в голосование",
+        ]):
+            await asyncio.sleep(5)
+            await self.send_command("да")
+        elif any(phrase in line for line in lstr for phrase in [
             "Ты пробрался к кладбищу",
             "Ты открыл",
         ]):    
             print("булочка")
             await asyncio.sleep(3)
             await self.send_command("💀Закопать скелет")
-        if any(phrase in line for line in lstr for phrase in [
+        elif any(phrase in line for line in lstr for phrase in [
             "Закопать скелет",
             "Выбери один",
         ]):    
@@ -1693,6 +1698,10 @@ class RF:
                     print("Отправлено сообщение: 💖 Пополнить здоровье")
                     await self.wait_for_health_refill()
                     await self.send_command( "🌋 Краговые шахты")
+            if any("Подача заявок в лидеры расы" in ln for ln in lines):
+                if self.your_name != "Ros_Hangzhou":
+                    await asyncio.sleep(15)
+                    await self.send_command( "/vote_register")
             if any("Война окончена!" in ln for ln in lines):
                 await asyncio.sleep(70)
                 if not self.is_moving and not self.killed_on_chv:
@@ -2104,7 +2113,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.Active.16.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.gol.16.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
