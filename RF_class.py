@@ -1906,6 +1906,38 @@ class RF:
                     print("Отправляем команду /drink_102")
                     await self.send_command( "/drink_102")
                     await event.message.delete()  # Удаляем сообщение
+
+                elif "_hero" in message_text:
+                    # Отправляем команду /hero в игру
+                    await self.send_command("/hero")
+                    
+                    # Ожидаем ответное сообщение от бота
+                    max_attempts = 10
+                    attempt = 0
+                    hero_message = None
+                    
+                    while attempt < max_attempts:
+                        await asyncio.sleep(1)
+                        messages = await self.client.get_messages(self.bot_id, limit=1)
+                        if messages and messages[0].text:
+                            hero_message = messages[0]
+                            print(f"Получено сообщение от бота: {hero_message.text[:50]}...")
+                            break
+                        attempt += 1
+                    
+                    # Пересылаем сообщение
+                    if hero_message:
+                        await hero_message.forward_to(1033007754)
+                        print("Сообщение /hero переслано в 1033007754")
+                    else:
+                        print("Не удалось получить ответ от бота на /hero")
+                    
+                    await event.message.delete()
+
+
+
+
+
                 elif "_status" in message_text:
                     # Отправка статуса активных флагов
                     await self.send_status_message()
@@ -2113,7 +2145,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.gol.16.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.hero.18.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
