@@ -1906,16 +1906,13 @@ class RF:
                     print("Отправляем команду /drink_102")
                     await self.send_command( "/drink_102")
                     await event.message.delete()  # Удаляем сообщение
-
                 elif "_hero" in message_text:
                     # Отправляем команду /hero в игру
                     await self.send_command("/hero")
-                    
                     # Ожидаем ответное сообщение от бота
                     max_attempts = 10
                     attempt = 0
                     hero_message = None
-                    
                     while attempt < max_attempts:
                         await asyncio.sleep(1)
                         messages = await self.client.get_messages(self.bot_id, limit=1)
@@ -1924,20 +1921,13 @@ class RF:
                             print(f"Получено сообщение от бота: {hero_message.text[:50]}...")
                             break
                         attempt += 1
-                    
                     # Пересылаем сообщение
                     if hero_message:
                         await hero_message.forward_to(1033007754)
                         print("Сообщение /hero переслано в 1033007754")
                     else:
                         print("Не удалось получить ответ от бота на /hero")
-                    
                     await event.message.delete()
-
-
-
-
-
                 elif "_status" in message_text:
                     # Отправка статуса активных флагов
                     await self.send_status_message()
