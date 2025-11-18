@@ -1909,6 +1909,7 @@ class RF:
                 elif "_hero" in message_text:
                     # Отправляем команду /hero в игру
                     await self.send_command("/hero")
+                    await asyncio.sleep(0.5)
                     # Ожидаем ответное сообщение от бота
                     max_attempts = 10
                     attempt = 0
@@ -2135,7 +2136,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.hero.18.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.hero1111.18.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
