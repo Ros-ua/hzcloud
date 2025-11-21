@@ -363,11 +363,13 @@ class RF:
         ]):
             await asyncio.sleep(1)
             if self.your_name == "👨‍🦳Пенсионер☠️":
-                altar = random.choice(["🤖Алтарь Эйви", "🤖Алтарь Тир"])
+                # altar = random.choice(["🤖Алтарь Эйви", "🤖Алтарь Тир"])
+                altar = random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])
             elif self.your_name == "๖ۣۜᗯαsͥpwͣoͫℝt🐝":
                 altar = random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])
             elif self.your_name == "Ros_Hangzhou":
-                altar = random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо", "🤖Алтарь Эйви", "🤖Алтарь Тир"])
+                # altar = random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо", "🤖Алтарь Эйви", "🤖Алтарь Тир"])
+                altar = random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])
             elif self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
                 altar = random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])
             await self.send_command(altar)
@@ -698,7 +700,7 @@ class RF:
                     if self.terminal_type == "🧝‍♀ Терминал Castitas":
                         await self.nacheve()
                     else:
-                        await self.nacheve()
+                        await self.vterminale()
             if self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
                     await asyncio.sleep(1)
                     if self.terminal_type == "🧝‍♀ Терминал Castitas":
@@ -1677,13 +1679,13 @@ class RF:
                     self.go_term_Aquilla = False
                 elif self.your_name == "Ros_Hangzhou":
                     self.go_term_Basilaris = True
-                    self.go_term_Castitas = True
-                    self.go_term_Aquilla = True
+                    self.go_term_Castitas = False
+                    self.go_term_Aquilla = False
                     await self.send_command("/hero")
                 elif self.your_name == "👨‍🦳Пенсионер☠️":
-                    self.go_term_Basilaris = False
+                    self.go_term_Basilaris = True
                     self.go_term_Castitas = True
-                    self.go_term_Aquilla = True     
+                    self.go_term_Aquilla = False     
                 elif self.your_name == "๖ۣۜᗯαsͥpwͣoͫℝt🐝":
                     self.go_term_Basilaris = True
                     self.go_term_Castitas = True
@@ -2137,7 +2139,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.hero.19.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.21.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -2768,11 +2770,13 @@ class RF:
         else:
             # Возвращаем алтарь в зависимости от имени
             if self.your_name == "👨‍🦳Пенсионер☠️":
-                return random.choice(["🤖Алтарь Эйви", "🤖Алтарь Тир"])
+                # return random.choice(["🤖Алтарь Эйви", "🤖Алтарь Тир"])
+                return random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])
             elif self.your_name == "๖ۣۜᗯαsͥpwͣoͫℝt🐝":
                 return random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])
             elif self.your_name == "Ros_Hangzhou":
-                return random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо", "🤖Алтарь Эйви", "🤖Алтарь Тир"])
+                # return random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо", "🤖Алтарь Эйви", "🤖Алтарь Тир"])
+                return random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])
             elif self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
                 return random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])
     async def handle_no_energy(self):
