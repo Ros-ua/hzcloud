@@ -72,8 +72,6 @@ class RF:
             4: "🤖Алтарь Тир",
             5: "🤖Алтарь Эйви"
         }
-        # Список алтарей для случайного выбора (используется в нескольких местах)
-        self.default_altars = ["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"]
         # === РЕГУЛЯРНЫЕ ВЫРАЖЕНИЯ ===
         self.health_re = re.compile(r"Здоровье пополнено \D+(\d+)/(\d+)")
         self.battle_re = re.compile(r"^Сражение с .*$")
@@ -2154,7 +2152,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.3.23.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.4.23.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
