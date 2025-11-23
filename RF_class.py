@@ -42,6 +42,8 @@ class RF:
         self.zatochka = 5
         self.extra_hill_hp = 300
         self.ned_hill_hp = 1500
+        self.min_health_single_exit = 2400  # Минимальное HP для выхода, если остался 1 живой
+        self.min_health_group_exit = 4000  # Минимальное HP для выхода, если несколько живых
         self.bezvgroup = -1002220238697
         self.group59 = -1001323974021
         self.location = "🔥 61-65 Лес пламени"  # Локация по умолчанию
@@ -70,6 +72,8 @@ class RF:
             4: "🤖Алтарь Тир",
             5: "🤖Алтарь Эйви"
         }
+        # Список алтарей для случайного выбора (используется в нескольких местах)
+        self.default_altars = ["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"]
         # === РЕГУЛЯРНЫЕ ВЫРАЖЕНИЯ ===
         self.health_re = re.compile(r"Здоровье пополнено \D+(\d+)/(\d+)")
         self.battle_re = re.compile(r"^Сражение с .*$")
@@ -1860,12 +1864,13 @@ class RF:
     async def pvp_heal_timer(self):
         """Таймер для изменения pvpgoheal через 43 минуты после начала войны"""
         print("Запущен таймер pvpgoheal на 43 минуты")
-        await asyncio.sleep(41 * 60)  # 41 минута в секундах 
-        self.go_to_heal = False
+        await asyncio.sleep(39 * 60)  # 41 минута в секундах 
         self.go_term_Aquilla = False
         self.go_term_Basilaris = False   
         self.go_term_Castitas = False
         self.active = True
+        await asyncio.sleep(2 * 60)  # 2 минуты в секундах (итого 43 минуты)
+        self.go_to_heal = False
         await asyncio.sleep(2 * 60)  # 2 минуты в секундах (итого 43 минуты)
         self.go_to_heal = True
         print("Через 43 минуты после начала войны установлено go_to_heal = True")
@@ -2149,7 +2154,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.2.23.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.3.23.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -2644,12 +2649,12 @@ class RF:
         print(f"\nОбщее здоровье группы: {total_health}")
         print(f"Живых: {alive_count}, Живые с хилками: {'да' if alive_has_heal else 'нет'}, Группа с ресами: {'да' if group_has_res else 'нет'}")
         should_exit = False
-        if alive_count == 1 and total_health < 2400:
+        if alive_count == 1 and total_health < self.min_health_single_exit:
             should_exit = True
-            reason = "остался 1 живой с менее чем 2400 HP"
-        elif alive_count > 1 and total_health < 4000:
+            reason = f"остался 1 живой с менее чем {self.min_health_single_exit} HP"
+        elif alive_count > 1 and total_health < self.min_health_group_exit:
             should_exit = True
-            reason = f"осталось {alive_count} живых с суммарным здоровьем менее 4000 HP"
+            reason = f"осталось {alive_count} живых с суммарным здоровьем менее {self.min_health_group_exit} HP"
         if should_exit and not alive_has_heal and not group_has_res:
             message = f"{'Ты лидер' if self.is_cave_leader else 'Ты не лидер'}, пора на выход. Общее здоровье: {total_health}, нет хилок у живых и ресов в группе"
             # await self.client.send_message(self.cave_leader_id, message)
