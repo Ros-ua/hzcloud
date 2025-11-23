@@ -1113,8 +1113,7 @@ class RF:
                     self.go_term_Basilaris = False
                     self.go_term_Aquilla = False
                     self.go_term_Castitas = False
-                    print("HP Basilaris меньше 8000, прекращаем ходить.")
-
+                    print("HP Basilaris меньше 10000, прекращаем ходить.")
             if "Castitas терминал:" in line:
                 hp_info = line.split('❤')[1].split('/')[0].strip()
                 castitas_hp = int(hp_info)
@@ -1124,8 +1123,7 @@ class RF:
                     self.go_term_Aquilla = False
                     self.go_term_Basilaris = False
                     self.go_term_Castitas = False
-                    print("HP Aquilla меньше 8000, прекращаем ходить.")
-
+                    print("HP Castitas меньше 10000, прекращаем ходить.")
             if "Aquilla терминал:" in line:
                 hp_info = line.split('❤')[1].split('/')[0].strip()
                 aquilla_hp = int(hp_info)
@@ -1135,9 +1133,7 @@ class RF:
                     self.go_term_Aquilla = False
                     self.go_term_Basilaris = False
                     self.go_term_Castitas = False
-                    print("HP Aquilla меньше 8000, прекращаем ходить.")
-
-
+                    print("HP Aquilla меньше 10000, прекращаем ходить.")
             if len(lstr) > 24:
                 if self.go_term_Castitas and not lstr[10].endswith(" 0") and not lstr[10].endswith(" 1"):
                     self.cmd_altar = "🧝‍♀Алтарь Хагал"
@@ -2153,7 +2149,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.23.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.2.23.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
