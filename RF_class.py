@@ -27,7 +27,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО TRUE ===
         self.is_cave_leader = self.extra_hil = self.mobs = self.active = self.go_to_heal = True
         # === ВСЕ ЧТО РАВНО FALSE ===
-        self.is_run = self.after_caves = self.na_straj = self.is_player_dead = self.fast_cave = self.cave_task_running = self.waiting_for_captcha = self.is_moving = self.in_castle = self.v_terminale = self.kopka = self.is_training = self.cave_message_pinned = self.prem = self.go_term_Aquilla = self.go_term_Basilaris = self.go_term_Castitas = self.is_in_caves = self.is_in_gh = self.is_has_hil = self.is_has_res = self.is_nacheve_active = self.in_battle = False
+        self.is_run = self.na_nashem_altare = self.def_rudnik = self.after_caves = self.na_straj = self.is_player_dead = self.fast_cave = self.cave_task_running = self.waiting_for_captcha = self.is_moving = self.in_castle = self.v_terminale = self.kopka = self.is_training = self.cave_message_pinned = self.prem = self.go_term_Aquilla = self.go_term_Basilaris = self.go_term_Castitas = self.is_in_caves = self.is_in_gh = self.is_has_hil = self.is_has_res = self.is_nacheve_active = self.in_battle = False
         # === ВСЕ ЧТО РАВНО NONE ===
         self.cave_buttons_message = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = None
         # === ЧИСЛА ===
@@ -648,6 +648,7 @@ class RF:
             "Алтарь Эйви",
             "Алтарь Тир",
         ]):
+            self.na_nashem_altare = False
             self.got_reward = False  # Сбрасываем флаг получения награды
             if self.go_term_Aquilla:  # проверка флага
                 await asyncio.sleep(5)
@@ -660,6 +661,7 @@ class RF:
             "Алтарь Иса",
             "Алтарь Гебо",
         ]):
+            self.na_nashem_altare = False
             self.got_reward = False  # Сбрасываем флаг получения награды
             if self.go_term_Basilaris:  # проверка флага
                 await asyncio.sleep(5)
@@ -668,10 +670,24 @@ class RF:
                 # Если флаг не сработал, вызываем nacheve()
                 await self.nacheve()
             self.terminal_type = "👩‍🚀 Терминал Basilaris"  # Определяем тип терминала
+
+
+
+        elif any(phrase in line for line in lstr for phrase in [
+            "Алтарь Исс",
+            "Алтарь Дагаз",
+        ]):
+            self.na_nashem_altare = True
+            self.got_reward = False  # Сбрасываем флаг получения награды
+            await self.nacheve()
+
+
+
         elif any(phrase in line for line in lstr for phrase in [
             "Ты направляешься к терминалу",
         ]):
             await asyncio.sleep(1)
+            self.na_nashem_altare = False
             # Используем переменную terminal_type для отправки сообщения Валере
             message = f"буду в {self.terminal_type} через тик"
             # await self.client.send_message(self.tamplier_id, message)
@@ -702,7 +718,7 @@ class RF:
                     if self.terminal_type == "🧝‍♀ Терминал Castitas":
                         await self.nacheve()
                     else:
-                        await self.vterminale()
+                        await self.nacheve()
             if self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
                     await asyncio.sleep(1)
                     if self.terminal_type == "🧝‍♀ Терминал Castitas":
@@ -871,7 +887,7 @@ class RF:
         elif any(f"+1 к энергии 🔋{i}/5" in lstr[0] for i in range(1, 6)):
             self.last_energy_message = message  # Сохраняем сообщение о получении энергии
             # Проверяем, увеличилась ли энергия на 4 или 5
-            if any(f"+1 к энергии 🔋{i}/5" in lstr[0] for i in (4, 5)):
+            if any(f"+1 к энергии 🔋{i}/5" in lstr[0] for i in (4, 5)) and not self.def_rudnik :
                 await self.handle_energy()  # Вызываем обработчик энергии только для 4 и 5
         # # данжи
         elif "Ты уверен, что хочешь попробовать пройти данж" in lstr[0]:
@@ -1138,8 +1154,12 @@ class RF:
                     print("HP Aquilla меньше 10000, прекращаем ходить.")
             if len(lstr) > 24:
                 if self.go_term_Castitas and not lstr[10].endswith(" 0") and not lstr[10].endswith(" 1"):
-                    self.cmd_altar = "🧝‍♀Алтарь Хагал"
-                    print(f"Значение в 10-й строке не заканчивается на '0' или '1', выбран алтарь: {self.cmd_altar}")
+
+                    if self.na_nashem_altare :
+                        self.cmd_altar = "🧝‍♀ Терминал Castitas"
+                    else :
+                        self.cmd_altar = "🧝‍♀Алтарь Хагал"
+                        print(f"Значение в 10-й строке не заканчивается на '0' или '1', выбран алтарь: {self.cmd_altar}")
                 else:
                     # Обычная логика выбора алтаря с учётом флага self.active
                     l_altars = []
@@ -1691,7 +1711,7 @@ class RF:
                     self.go_term_Aquilla = False
                 elif self.your_name == "Ros_Hangzhou":
                     self.go_term_Basilaris = True
-                    self.go_term_Castitas = False
+                    self.go_term_Castitas = True
                     self.go_term_Aquilla = False
                     await self.send_command("/hero")
                 elif self.your_name == "👨‍🦳Пенсионер☠️":
@@ -1719,9 +1739,11 @@ class RF:
                     await self.send_command( "/vote_register")
             if any("Война окончена!" in ln for ln in lines):
                 await asyncio.sleep(70)
+                self.def_rudnik = True
                 if not self.is_moving and not self.killed_on_chv:
                     await self.send_command( "⛏Рудник")
                 await asyncio.sleep(900)  # 15 минут = 900 секунд
+                self.def_rudnik = False
                 if not self.is_in_caves and not self.waiting_for_captcha:
                     await self.send_command( RF.hp)  # Переодеться для мобов
                 # # await self.wait_for_set_change() #работает
@@ -2152,7 +2174,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.4.23.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.test.23.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
