@@ -381,7 +381,7 @@ class RF:
             await message.forward_to(self.group59)
         elif any("Посейдона был активирован автоматическим пожертвованием!" in line for line in lstr) and not self.is_in_caves:
             print("Обнаружено автоматическое пожертвование Посейдона")
-            asyncio.create_task(self._delayed_restart())
+            # asyncio.create_task(self._delayed_restart())
         elif any(phrase in line for line in lstr for phrase in [
             "ты мертв, дождись пока воскреснешь"
         ]):
@@ -586,7 +586,9 @@ class RF:
                         print(f"{player} не в ген. штабе")
                         await self.client.send_message(self.players[player], "Давайте в ген. штаб")
             if self.mobs:  # Проверяем, включен ли флаг для мобов
-                await self.send_command( self.location)  # для мобов
+                # await self.send_command( self.location)  # для мобов
+                await asyncio.sleep(120)
+                await self.client.send_message(self.cave_leader_id, "🚠 Отправиться в пещеры")
             else:
                 print("bag bag bag")  # для данжей
         elif "Если ты хочешь вернуть группу" in lstr[0]:
@@ -2048,7 +2050,10 @@ class RF:
                     else:
                         print("Фольт бинды не настроены, просто удаляем сообщение")
                     await event.message.delete()  # Удаляем сообщение
-                elif "_гш" in message_text and not self.waiting_for_captcha:
+                elif ("_гш" in message_text or "Давайте в ген. штаб" in message_text) and not self.waiting_for_captcha:
+                    if event.sender_id == self.cave_leader_id:
+                        print(f"Команда _гш от cave leader {event.sender_id} игнорируется")
+                        return
                     if self.kopka:
                         print("Отправляем комплект hp_{self.hp_binds[0][0]})")
                         await self.send_command( self.hp_binds[0][1])  # Используем переменную hp_{self.hp_binds[0][0]}) для надевания
@@ -2167,7 +2172,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.24.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.2.24.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
