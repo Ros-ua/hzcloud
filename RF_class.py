@@ -579,7 +579,7 @@ class RF:
             else:
                 await message.forward_to(self.group59)  # стандартная группа для остальных 59
             # Ищем всех игроков, упомянутых в сообщении
-            players_not_in_gh = re.findall(r'(Нежный 🍅|🐾ᏦᎮᎧχᏗ|𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗|John Doe|๖ۣۜᗯαsͥpwͣoͫℝt🐝|👨‍🦳Пенсионер☠️)', lstr[0])
+            players_not_in_gh = re.findall(r'(Нежный 🍅|🐾ᏦᎮᎧχᏗ|Ros_Hangzhou|𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗|John Doe|๖ۣۜᗯαsͥpwͣoͫℝt🐝|👨‍🦳Пенсионер☠️)', lstr[0])
             if players_not_in_gh:
                 for player in players_not_in_gh:
                     if player in self.players:
@@ -2172,7 +2172,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.2.24.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.s.24.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
