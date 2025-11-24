@@ -670,9 +670,6 @@ class RF:
                 # Если флаг не сработал, вызываем nacheve()
                 await self.nacheve()
             self.terminal_type = "👩‍🚀 Терминал Basilaris"  # Определяем тип терминала
-
-
-
         elif any(phrase in line for line in lstr for phrase in [
             "Алтарь Исс",
             "Алтарь Дагаз",
@@ -680,9 +677,6 @@ class RF:
             self.na_nashem_altare = True
             self.got_reward = False  # Сбрасываем флаг получения награды
             await self.nacheve()
-
-
-
         elif any(phrase in line for line in lstr for phrase in [
             "Ты направляешься к терминалу",
         ]):
@@ -1154,7 +1148,6 @@ class RF:
                     print("HP Aquilla меньше 10000, прекращаем ходить.")
             if len(lstr) > 24:
                 if self.go_term_Castitas and not lstr[10].endswith(" 0") and not lstr[10].endswith(" 1"):
-
                     if self.na_nashem_altare :
                         self.cmd_altar = "🧝‍♀ Терминал Castitas"
                     else :
@@ -2174,7 +2167,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.test.23.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.24.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
