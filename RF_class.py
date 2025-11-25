@@ -291,7 +291,8 @@ class RF:
         self.na_straj = False
         self.in_castle = False
         self.is_nacheve_active = False
-        self.kopka = False  # Сбрасываем флаг замка при начале движения
+        self.kopka = False 
+        self.na_nashem_altare = False 
         if self.move_timer:
             self.move_timer.cancel()
         self.move_timer = asyncio.create_task(self.reset_moving_flag(duration))
@@ -2169,7 +2170,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.Test.24.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.25.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
