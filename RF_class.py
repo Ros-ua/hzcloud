@@ -93,6 +93,7 @@ class RF:
         # === ИНИЦИАЛИЗАЦИЯ КОМПОНЕНТОВ ===
         self.common_cave()
         self.setup_war_listener()
+        self.setup_captcha_listener()
     def isIdCompare(self, id):
         return id == self.bot_id
     async def send_command(self, command):
@@ -1688,6 +1689,23 @@ class RF:
                         if helth < self.ned_hill_hp:
                             await self.client.send_message(h_id, "Хил")
                     continue
+    def setup_captcha_listener(self):
+        """Устанавливает обработчик сообщений из группы для обработки 'Капча получена'"""
+        print("Устанавливаем обработчик сообщений для setup_captcha_listener")
+        @self.client.on(events.NewMessage(chats=[self.group59]))
+        async def handle_group_captcha_message(event):
+            if event.message.text and "Капча получена" in event.message.text:
+                # Получаем ID отправителя сообщения
+                sender_id = event.message.from_id.user_id if event.message.from_id else None
+                # Отправляем сообщение только если оно от Ros_Hangzhou
+                if sender_id == self.ros_id:
+                    # Отправляем сообщение в личные сообщения отправителю
+                    try:
+                        await self.client.send_message(sender_id, "У тебя капча")
+                        print(f"Отправлено сообщение в личные сообщения пользователю {sender_id}")
+                    except Exception as e:
+                        print(f"Ошибка при отправке сообщения пользователю {sender_id}: {e}")
+    
     def setup_war_listener(self):
         print("Устанавливаем обработчик сообщений для setup_war_listener")
         @self.client.on(events.NewMessage(chats=-1001284047611))
@@ -2170,7 +2188,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.R.25.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.26.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
