@@ -1,5 +1,7 @@
 import re
 import sys
+import os
+import importlib
 import asyncio
 import random
 from random import randint
@@ -2190,7 +2192,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.GTV.26.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.power.26.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -2421,6 +2423,10 @@ class RF:
                         self.my_health = self.my_max_health = self.hp_binds[0][0]
                         self.last_bind = self.hp_binds[0][1]
                         await event.message.delete()  # Удаляем сообщение
+                elif message_text.startswith("_power"):
+                    usage_text = self.build_power_report()
+                    await self.client.send_message(event.sender_id, usage_text)
+                    await event.message.delete()
                 elif "_энка" in message_text:
                     if self.last_energy_message:  # Проверяем, что last_energy_message не None
                         if self.your_name in ["𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗", ]:
@@ -3214,6 +3220,30 @@ class RF:
             if hasattr(self, flag_attr) and getattr(self, flag_attr):
                 active_flags.append(flag_name)
         return active_flags
+    def build_power_report(self):
+        """Возвращает текстовый отчёт об использовании ресурсов."""
+        try:
+            psutil = importlib.import_module("psutil")
+        except ModuleNotFoundError:
+            return "⚡️ Статистика недоступна: модуль psutil не установлен."
+        try:
+            process = psutil.Process(os.getpid())
+            proc_cpu = process.cpu_percent(interval=0.1)
+            proc_memory_mb = process.memory_info().rss / (1024 ** 2)
+        except Exception as exc:
+            print(f"Не удалось получить статистику процесса: {exc}")
+            proc_cpu = proc_memory_mb = 0.0
+        system_cpu = psutil.cpu_percent(interval=0.1)
+        virtual_memory = psutil.virtual_memory()
+        used_mb = virtual_memory.used / (1024 ** 2)
+        total_mb = virtual_memory.total / (1024 ** 2)
+        return (
+            "⚡️ Статистика запуска:\n"
+            f"• CPU процесса: {proc_cpu:.1f}%\n"
+            f"• RAM процесса: {proc_memory_mb:.1f} МБ\n"
+            f"• CPU системы: {system_cpu:.1f}%\n"
+            f"• RAM системы: {used_mb:.1f}/{total_mb:.1f} МБ"
+        )
     async def send_status_message(self):
         """Метод для отправки сообщения со статусом активных флагов"""
         active_flags = self.get_active_flags()
