@@ -171,7 +171,7 @@ class RF:
         if not self.is_in_caves:
             print("Ты не в пещерах, выход из функции.")
             return
-        if self.is_player_dead:
+        if self.is_player_dead or self.my_health <= self.ned_hill_hp:
             print("Персонаж мертв. Автолечение невозможно.")
             return
         for line in lstr:
@@ -590,7 +590,7 @@ class RF:
             if self.mobs:  # Проверяем, включен ли флаг для мобов
                 # await self.send_command( self.location)  # для мобов
                 await asyncio.sleep(120)
-                await self.client.send_message(self.cave_leader_id, "🚠 Отправиться в пещеры")
+                await self.send_command("🚠 Отправиться в пещеры")
             else:
                 print("bag bag bag")  # для данжей
         elif "Если ты хочешь вернуть группу" in lstr[0]:
@@ -2190,7 +2190,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.teseeeeeeeet.26.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.GT.26.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
