@@ -2087,7 +2087,7 @@ class RF:
                         await self.wait_for_set_change() #работает
                         await asyncio.sleep(1)
                         self.my_health = self.my_max_health = self.hp_binds[0][0]
-                        await self.send_command( "💖 Пополнить здоровье")а
+                        await self.send_command( "💖 Пополнить здоровье")
                     await event.message.delete()  # Удаляем сообщение
                 elif "_аргол" in message_text:
                     # Проверяем, что отправитель не является cave leader
@@ -2190,7 +2190,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.test.26.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.teseeeeeeeet.26.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
