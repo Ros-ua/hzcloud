@@ -1706,7 +1706,6 @@ class RF:
                         print(f"Отправлено сообщение в личные сообщения пользователю {sender_id}")
                     except Exception as e:
                         print(f"Ошибка при отправке сообщения пользователю {sender_id}: {e}")
-    
     def setup_war_listener(self):
         print("Устанавливаем обработчик сообщений для setup_war_listener")
         @self.client.on(events.NewMessage(chats=-1001284047611))
@@ -2191,7 +2190,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.GT0.26.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.GTV.26.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
