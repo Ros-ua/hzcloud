@@ -963,6 +963,7 @@ class RF:
             await self.send_command( self.location)
         elif "Ты начал тренировку" in lstr[0]:
             self.is_training = True
+            await message.forward_to(self.group59)
         # elif "Как долго ты хочешь тренировать питомца" in lstr[0]:
         #     await asyncio.sleep(1)
         #     await self.send_command( "1")
@@ -2190,7 +2191,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.GT.26.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.GT0.26.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
