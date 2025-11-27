@@ -586,7 +586,7 @@ class RF:
                 for player in players_not_in_gh:
                     if player in self.players:
                         print(f"{player} не в ген. штабе")
-                        await self.client.send_message(self.players[player], "Давайте в ген. штаб")
+                        await self.client.send_message(self.players[player], "_гш")
             if self.mobs:  # Проверяем, включен ли флаг для мобов
                 # await self.send_command( self.location)  # для мобов
                 await asyncio.sleep(120)
@@ -2070,6 +2070,8 @@ class RF:
                         print("Фольт бинды не настроены, просто удаляем сообщение")
                     await event.message.delete()  # Удаляем сообщение
                 elif ("_гш" in message_text or "Давайте в ген. штаб" in message_text) and not self.is_cave_leader and not self.waiting_for_captcha:
+                    if event.sender_id == self.cave_leader_id:
+                        return
                     if self.kopka:
                         print("Отправляем комплект hp_{self.hp_binds[0][0]})")
                         await self.send_command( self.hp_binds[0][1])  # Используем переменную hp_{self.hp_binds[0][0]}) для надевания
@@ -2085,7 +2087,7 @@ class RF:
                         await self.wait_for_set_change() #работает
                         await asyncio.sleep(1)
                         self.my_health = self.my_max_health = self.hp_binds[0][0]
-                        await self.send_command( "💖 Пополнить здоровье")
+                        await self.send_command( "💖 Пополнить здоровье")а
                     await event.message.delete()  # Удаляем сообщение
                 elif "_аргол" in message_text:
                     # Проверяем, что отправитель не является cave leader
@@ -2188,7 +2190,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.26.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.test.26.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
