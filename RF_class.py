@@ -977,8 +977,9 @@ class RF:
             await message.forward_to(1033007754)
         elif "Горный эликсир):" in lstr[0]:
             await message.forward_to(self.group59)
-        elif lstr[0].startswith("Рецепты на складе"):
-            await self.process_storage_recipes(lstr)
+        elif lstr[0].startswith("📦Рецепты на складе:"):
+            if self.your_name == "Ros_Hangzhou":
+                await self.process_storage_recipes(lstr)
         if not getattr(message, "buttons", None):
             if val == 3190963077:  # ✨Добыча:
                 await message.forward_to(self.group59)  # группа 59
@@ -2194,7 +2195,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.rex.26.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.reeewex.26.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
