@@ -977,6 +977,8 @@ class RF:
             await message.forward_to(1033007754)
         elif "Горный эликсир):" in lstr[0]:
             await message.forward_to(self.group59)
+        elif lstr[0].startswith("Рецепты на складе"):
+            await self.process_storage_recipes(lstr)
         if not getattr(message, "buttons", None):
             if val == 3190963077:  # ✨Добыча:
                 await message.forward_to(self.group59)  # группа 59
@@ -3183,6 +3185,26 @@ class RF:
         except asyncio.TimeoutError:
             print("Тайм-аут: не получены детали рецепта в течение 30 секунд.")
             return False
+    async def process_storage_recipes(self, lstr):
+        """Обработка рецептов со склада (📦Рецепты на складе)"""
+        print("Обнаружено сообщение со списком рецептов на складе.")
+        command_pattern = re.compile(r"/info_item_[A-Za-z0-9]+")
+        commands = []
+        for line in lstr[1:]:
+            match = command_pattern.search(line)
+            if match:
+                commands.append(match.group(0))
+        if not commands:
+            print("Не найдено команд /info_item_ в сообщении склада.")
+            return
+        for idx, cmd in enumerate(commands, 1):
+            print(f"Отправляем {idx}/{len(commands)}: {cmd}")
+            await self.send_command(cmd)
+            details_received = await self.wait_for_recipe_details()
+            if not details_received:
+                print(f"Не удалось получить детали для {cmd}, прекращаем обработку.")
+                break
+            await asyncio.sleep(1)
     def get_active_flags(self):
         """Метод для получения списка активных флагов"""
         active_flags = []
