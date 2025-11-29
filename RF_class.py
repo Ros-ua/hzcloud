@@ -379,7 +379,11 @@ class RF:
             elif self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
                 altar = random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])
             await self.send_command(altar)
-        elif (lstr[-1].endswith("и воскреснешь через 10 минут.") or lstr[-1].startswith("Ты одержал победу над")) and self.in_castle:
+        # elif (lstr[-1].endswith("и воскреснешь через 10 минут.") or lstr[-1].startswith("Ты одержал победу над")) and self.in_castle:
+        #     await message.forward_to(self.group59)
+        elif (lstr[-1].endswith("и воскреснешь через 10 минут.") or 
+            lstr[-1].startswith("Ты одержал победу над") or 
+            lstr[-1] == "Ты воскрес!") and self.in_castle:
             await message.forward_to(self.group59)
         elif any("Ты успешно использовал" in line and "опыта" not in line for line in lstr):
             await message.forward_to(self.group59)
@@ -1992,7 +1996,7 @@ class RF:
                     await event.message.delete()  # Удаляем сообщение
                 elif message_text == "_хилка" or message_text == "_хилку":
                     # Проверяем, что отправитель не является cave leader
-                    if event.sender_id == self.cave_leader_id or not self.kopka:
+                    if event.sender_id == self.cave_leader_id or not (self.kopka or self.in_castle):
                         print(f"Команда _хилка от cave leader {event.sender_id} или нет копки игнорируется")
                         return
                     print("Отправляем команду /drink_103")
@@ -2000,7 +2004,7 @@ class RF:
                     await event.message.delete()  # Удаляем сообщение
                 elif message_text == "_реска" or message_text == "_реску":
                     # Проверяем, что отправитель не является cave leader
-                    if event.sender_id == self.cave_leader_id or not self.kopka:
+                    if event.sender_id == self.cave_leader_id or not (self.kopka or self.in_castle):
                         print(f"Команда _реска от cave leader {event.sender_id} или нет копки игнорируется")
                         return
                     print("Отправляем команду /drink_104")
@@ -2195,7 +2199,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.id.29.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.hilreszamki.29.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
