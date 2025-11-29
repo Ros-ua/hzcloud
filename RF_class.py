@@ -1704,7 +1704,7 @@ class RF:
                 # Получаем ID отправителя сообщения
                 sender_id = event.message.from_id.user_id if event.message.from_id else None
                 # Отправляем сообщение только если оно от Ros_Hangzhou
-                if sender_id == self.ros_id:
+                if sender_id in (self.ros_id, self.pchelka_id):
                     # Отправляем сообщение в личные сообщения отправителю
                     try:
                         await self.client.send_message(sender_id, "У тебя капча")
@@ -2195,7 +2195,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.reeewex.26.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.id.29.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
