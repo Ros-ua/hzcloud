@@ -383,7 +383,8 @@ class RF:
         #     await message.forward_to(self.group59)
         elif (lstr[-1].endswith("и воскреснешь через 10 минут.") or 
             lstr[-1].startswith("Ты одержал победу над") or 
-            lstr[-1] == "Ты воскрес!") and self.in_castle:
+            lstr[-1] == "Ты воскрес!" or
+            lstr[-1].endswith("Я тебя воскресил")) and self.in_castle:
             await message.forward_to(self.group59)
         elif any("Ты успешно использовал" in line and "опыта" not in line for line in lstr):
             await message.forward_to(self.group59)
@@ -477,6 +478,8 @@ class RF:
             self.after_bind = self.hp_binds[0][1]
             print(f"Статус has_hil обновлен: {self.is_has_hil}")  # Добавлен вывод статуса has_hil
             self.waiting_for_captcha = False  # Флаг ожидания капчи
+            if self.in_castle:
+                await message.forward_to(self.group59)
         elif any(phrase in line for line in lstr for phrase in [
             "Ты снова жив",
             "Вы больше не можете воскрешаться",
@@ -2199,7 +2202,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.hilreszamki.29.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.forward.29.11")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
