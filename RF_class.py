@@ -2204,7 +2204,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.2.4.12")
+                    msg = await self.client.send_message(event.chat_id, "Ver.3.4.12")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -3201,23 +3201,18 @@ class RF:
         try:
             hero_future = asyncio.Future()
             target_group_id = -1002382373241
-            
             @self.client.on(events.NewMessage(from_users=[self.bot_id]))
             async def hero_handler(event):
                 message_text = event.message.text or ""
                 # Проверяем, что это ответ на /hero (содержит информацию о герое)
                 if "Баффы:" in message_text and "❤Здоровье:" in message_text:
                     hero_future.set_result(event.message)
-            
             try:
                 hero_message = await asyncio.wait_for(hero_future, timeout=10)
-                
                 # Проверяем условия баффов - ищем строку "Алтари:" с нулевыми показателями
                 message_text = hero_message.text or ""
                 lines = message_text.splitlines()
-                
                 altari_found = False
-                
                 # Ищем строку "Алтари:" с нулевыми показателями
                 for line in lines:
                     if "Алтари:" in line:
@@ -3225,7 +3220,6 @@ class RF:
                         if "⚔️0" in line and "🛡0" in line and "🔮0" in line:
                             altari_found = True
                             break
-                
                 # Если все показатели алтарей равны нулю, пересылаем сообщение
                 if altari_found:
                     await hero_message.forward_to(target_group_id)
@@ -3243,7 +3237,6 @@ class RF:
                     self.client.remove_event_handler(hero_handler)
                 except Exception:
                     pass
-    
     async def process_storage_recipes(self, lstr):
         """Обработка рецептов со склада (📦Рецепты на складе)"""
         print("Обнаружено сообщение со списком рецептов на складе.")
