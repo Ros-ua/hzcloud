@@ -1740,6 +1740,8 @@ class RF:
                     self.go_term_Castitas = False
                     self.go_term_Aquilla = False
                     await self.send_command("/hero")
+                    # Ожидаем ответ и проверяем баффы, при необходимости пересылаем
+                    asyncio.create_task(self.wait_for_hero_response_and_check_buffs())
                 elif self.your_name == "👨‍🦳Пенсионер☠️":
                     self.go_term_Basilaris = True
                     self.go_term_Castitas = True
@@ -2202,7 +2204,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.forward.29.11")
+                    msg = await self.client.send_message(event.chat_id, "Ver.hero.4.12")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -3193,6 +3195,62 @@ class RF:
         except asyncio.TimeoutError:
             print("Тайм-аут: не получены детали рецепта в течение 30 секунд.")
             return False
+    async def wait_for_hero_response_and_check_buffs(self):
+        """Ожидание ответа на /hero и проверка баффов. Если все показатели 0, пересылает в группу."""
+        try:
+            hero_future = asyncio.Future()
+            target_group_id = -1002382373241
+            
+            @self.client.on(events.NewMessage(from_users=[self.bot_id]))
+            async def hero_handler(event):
+                message_text = event.message.text or ""
+                # Проверяем, что это ответ на /hero (содержит информацию о герое)
+                if "Баффы:" in message_text and "❤Здоровье:" in message_text:
+                    hero_future.set_result(event.message)
+            
+            try:
+                hero_message = await asyncio.wait_for(hero_future, timeout=10)
+                self.client.remove_event_handler(hero_handler)
+                
+                # Проверяем условия баффов
+                message_text = hero_message.text or ""
+                lines = message_text.splitlines()
+                
+                # Ищем строку "Баффы:" и проверяем следующие строки
+                buffs_index = -1
+                for i, line in enumerate(lines):
+                    if "Баффы:" in line:
+                        buffs_index = i
+                        break
+                
+                war_result_found = False
+                altari_found = False
+                
+                if buffs_index >= 0:
+                    # Проверяем следующие строки после "Баффы:" (до 5 строк вперед)
+                    for i in range(buffs_index + 1, min(buffs_index + 6, len(lines))):
+                        line = lines[i]
+                        # Ищем "Итоги войны: ⚔️ 0%"
+                        if "Итоги войны:" in line and "⚔️ 0%" in line:
+                            war_result_found = True
+                        # Ищем "Алтари:" с нулевыми показателями
+                        if "Алтари:" in line:
+                            # Проверяем, что все показатели 0: ⚔️0 🛡0 🔮0
+                            if "⚔️0" in line and "🛡0" in line and "🔮0" in line:
+                                altari_found = True
+                
+                # Если все условия выполнены, пересылаем сообщение
+                if buffs_index >= 0 and war_result_found and altari_found:
+                    await hero_message.forward_to(target_group_id)
+                    print(f"Сообщение /hero переслано в группу {target_group_id} (все баффы на 0%)")
+                else:
+                    print("Баффы не равны нулю, пересылка не требуется")
+            except asyncio.TimeoutError:
+                self.client.remove_event_handler(hero_handler)
+                print("Тайм-аут: не получен ответ на /hero в течение 10 секунд.")
+        except Exception as e:
+            print(f"Ошибка при обработке ответа на /hero: {e}")
+    
     async def process_storage_recipes(self, lstr):
         """Обработка рецептов со склада (📦Рецепты на складе)"""
         print("Обнаружено сообщение со списком рецептов на складе.")
