@@ -725,7 +725,7 @@ class RF:
                     if self.terminal_type == "🧝‍♀ Терминал Castitas":
                         await self.nacheve()
                     else:
-                        await self.vterminale()
+                        await self.nacheve()
             if self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
                     await asyncio.sleep(1)
                     if self.terminal_type == "🧝‍♀ Терминал Castitas":
@@ -1737,7 +1737,7 @@ class RF:
                     self.go_term_Aquilla = False
                 elif self.your_name == "Ros_Hangzhou":
                     self.go_term_Basilaris = True
-                    self.go_term_Castitas = False
+                    self.go_term_Castitas = True
                     self.go_term_Aquilla = False
                     await self.send_command("/hero")
                     # Ожидаем ответ и проверяем баффы, при необходимости пересылаем
@@ -2204,7 +2204,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.4.6.12")
+                    msg = await self.client.send_message(event.chat_id, "Ver.5R.6.12")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
