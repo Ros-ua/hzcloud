@@ -966,7 +966,7 @@ class RF:
         elif "У тебя нет АБУ" in lstr[0]:
             self.prem = False
             print("нет абу")
-        elif "Ты закончил тренировку" in lstr[0]:
+        elif "Ты закончил тренировку" in lstr[0] or "Ты закончил выработку" in lstr[0]:
             self.is_training = False
             await asyncio.sleep(1)
             await self.send_command( self.location)
@@ -2204,7 +2204,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.3F.6.12")
+                    msg = await self.client.send_message(event.chat_id, "Ver.4.6.12")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
