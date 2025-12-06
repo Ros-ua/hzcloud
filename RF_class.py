@@ -2073,9 +2073,9 @@ class RF:
                         await event.message.delete()
                 elif "_фольт" in message_text:
                     # Проверяем, что отправитель не является cave leader
-                    # if event.sender_id == self.cave_leader_id:
-                    #     print(f"Команда _фольт от cave leader {event.sender_id} игнорируется")
-                    #     return
+                    if event.sender_id == self.cave_leader_id:
+                        print(f"Команда _фольт от cave leader {event.sender_id} игнорируется")
+                        return
                     # Проверяем наличие фольт биндов
                     if hasattr(self, 'folt_binds') and self.folt_binds:
                         print("Отправляем команду folt_binds")
@@ -2204,7 +2204,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.2.6.12")
+                    msg = await self.client.send_message(event.chat_id, "Ver.3F.6.12")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
