@@ -388,6 +388,8 @@ class RF:
             await message.forward_to(self.group59)
         elif any("Ты успешно использовал" in line and "опыта" not in line for line in lstr):
             await message.forward_to(self.group59)
+        elif any("Ты начал работу, закончишь" in line for line in lstr):
+            await message.forward_to(self.group59)
         elif any("Посейдона был активирован автоматическим пожертвованием!" in line for line in lstr) and not self.is_in_caves:
             print("Обнаружено автоматическое пожертвование Посейдона")
             asyncio.create_task(self._delayed_restart())
@@ -2204,7 +2206,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.3.4.12")
+                    msg = await self.client.send_message(event.chat_id, "Ver.6.12")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
