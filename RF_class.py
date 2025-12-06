@@ -388,8 +388,6 @@ class RF:
             await message.forward_to(self.group59)
         elif any("Ты успешно использовал" in line and "опыта" not in line for line in lstr):
             await message.forward_to(self.group59)
-        elif any("Ты начал работу, закончишь" in line for line in lstr):
-            await message.forward_to(self.group59)
         elif any("Посейдона был активирован автоматическим пожертвованием!" in line for line in lstr) and not self.is_in_caves:
             print("Обнаружено автоматическое пожертвование Посейдона")
             asyncio.create_task(self._delayed_restart())
@@ -972,7 +970,7 @@ class RF:
             self.is_training = False
             await asyncio.sleep(1)
             await self.send_command( self.location)
-        elif "Ты начал тренировку" in lstr[0]:
+        elif "Ты начал тренировку" in lstr[0] or "Ты начал работу" in lstr[0]:
             self.is_training = True
             await message.forward_to(self.group59)
         # elif "Как долго ты хочешь тренировать питомца" in lstr[0]:
@@ -2206,7 +2204,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.6.12")
+                    msg = await self.client.send_message(event.chat_id, "Ver.2.6.12")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
