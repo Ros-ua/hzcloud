@@ -2204,7 +2204,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.8.12")
+                    msg = await self.client.send_message(event.chat_id, "Ver.11.12")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -3223,6 +3223,8 @@ class RF:
                 # Если все показатели алтарей равны нулю, пересылаем сообщение
                 if altari_found:
                     await hero_message.forward_to(target_group_id)
+                    await asyncio.sleep(2)
+                    await self.send_command("/resources")
                     print(f"Сообщение /hero переслано в группу {target_group_id} (все баффы на 0%)")
                 else:
                     print("Баффы не равны нулю, пересылка не требуется")
