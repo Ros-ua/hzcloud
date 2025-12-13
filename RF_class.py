@@ -90,7 +90,7 @@ class RF:
             self.mob_heal = 4500
             self.pvpgoheal = 4500
         elif self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
-            self.mob_heal = 5000
+            self.mob_heal = 5500
             self.pvpgoheal = 4500
         # === ИНИЦИАЛИЗАЦИЯ КОМПОНЕНТОВ ===
         self.common_cave()
@@ -2204,7 +2204,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.12.12")
+                    msg = await self.client.send_message(event.chat_id, "Ver.v.12.12")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
