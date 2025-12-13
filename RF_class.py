@@ -2204,7 +2204,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.v.12.12")
+                    msg = await self.client.send_message(event.chat_id, "Ver.S.12.12")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -2305,7 +2305,7 @@ class RF:
                     await self.send_command( "⚖️ Проверить состав")
                     await event.message.delete()  # Удаляем сообщение
                 elif "_моб" in message_text:
-                    if event.sender_id == self.cave_leader_id or self.is_in_caves:
+                    if self.is_in_caves:
                         return
                     match = re.search(r"_моб\s+(\d+)", message_text)
                     self.mob_drink_counter = int(match.group(1)) if match else 0  # 0 = не пить
