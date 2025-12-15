@@ -33,6 +33,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО NONE ===
         self.cave_buttons_message = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = None
         # === ЧИСЛА ===
+        self.vex_bot_id = 1033007754
         self.bot_id = 577009581
         self.tomat_id = 278339710
         self.kroha_id = 353501977
@@ -901,15 +902,15 @@ class RF:
             await asyncio.sleep(1)
             await message.click(0)
             await self.dangego()
-        elif any(phrase in line for line in lstr for phrase in  [
-            "Общая добыча:",
-            ]):
-            # Пересылаем сообщение
-            forwarded_message = await message.forward_to(5596818972)  # результат данж пересылка
-            # Ждём 5 секунд
-            await asyncio.sleep(5)
-            # Удаляем оба сообщения
-            await forwarded_message.delete()
+        # elif any(phrase in line for line in lstr for phrase in  [
+        #     "Общая добыча:",
+        #     ]):
+        #     # Пересылаем сообщение
+        #     forwarded_message = await message.forward_to(5596818972)  # результат данж пересылка
+        #     # Ждём 5 секунд
+        #     await asyncio.sleep(5)
+        #     # Удаляем оба сообщения
+        #     await forwarded_message.delete()
         # misc
         elif val == 1550650437:  # ⚒ Кузня - 5 ур.
             await self.craft_rec(lstr)
@@ -981,7 +982,7 @@ class RF:
         elif any(phrase in line for line in lstr for phrase in [
             "Доп. к характеристикам персонажа",
         ]):
-            await message.forward_to(1033007754)
+            await message.forward_to(self.vex_bot_id)
         elif "Горный эликсир):" in lstr[0]:
             await message.forward_to(self.group59)
         elif lstr[0].startswith("📦Рецепты на складе:"):
@@ -1990,8 +1991,8 @@ class RF:
                         attempt += 1
                     # Пересылаем сообщение
                     if hero_message:
-                        await hero_message.forward_to(1033007754)
-                        print("Сообщение /hero переслано в 1033007754")
+                        await hero_message.forward_to(self.vex_bot_id)
+                        print("Сообщение /hero переслано в self.vex_bot_id")
                     else:
                         print("Не удалось получить ответ от бота на /hero")
                     await event.message.delete()
@@ -2204,7 +2205,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.r.14.12")
+                    msg = await self.client.send_message(event.chat_id, "Ver.vexx.14.12")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -2449,7 +2450,7 @@ class RF:
                             if self.is_in_caves:
                                 forwarded_msg = await self.last_energy_message.forward_to(self.group59)
                             else:
-                                forwarded_msg = await self.last_energy_message.forward_to(1033007754)
+                                forwarded_msg = await self.last_energy_message.forward_to(self.vex_bot_id)
                         # Удаляем переслаанное сообщение через 3 секунды
                         await asyncio.sleep(3)
                         await forwarded_msg.delete()
@@ -2462,7 +2463,7 @@ class RF:
                             if self.is_in_caves:
                                 sent_msg = await self.client.send_message(self.group59, "ещё не капнуло")
                             else:
-                                sent_msg = await self.client.send_message(1033007754, "ещё не капнуло")
+                                sent_msg = await self.client.send_message(self.vex_bot_id, "ещё не капнуло")
                         # Удаляем отправленное сообщение через 3 секунды
                         await asyncio.sleep(3)
                         await sent_msg.delete()
@@ -3200,7 +3201,7 @@ class RF:
         hero_handler = None
         try:
             hero_future = asyncio.Future()
-            target_group_id = -1002382373241
+            # target_group_id = -1002382373241
             @self.client.on(events.NewMessage(from_users=[self.bot_id]))
             async def hero_handler(event):
                 message_text = event.message.text or ""
@@ -3222,9 +3223,9 @@ class RF:
                             break
                 # Если все показатели алтарей равны нулю, пересылаем сообщение
                 if altari_found:
-                    await hero_message.forward_to(target_group_id)
-                    await asyncio.sleep(2)
-                    await self.send_command("/resources")
+                    await hero_message.forward_to(self.vex_bot_id)
+                    # await asyncio.sleep(2)
+                    # await self.send_command("/resources")
                     print(f"Сообщение /hero переслано в группу {target_group_id} (все баффы на 0%)")
                 else:
                     print("Баффы не равны нулю, пересылка не требуется")
