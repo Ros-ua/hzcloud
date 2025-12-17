@@ -44,7 +44,7 @@ class RF:
         self.ros_id = 715480502
         self.zatochka = 5
         self.extra_hill_hp = 300
-        self.ned_hill_hp = 1500
+        self.ned_hill_hp = 1600
         self.min_health_single_exit = 2400  # Минимальное HP для выхода, если остался 1 живой
         self.min_health_group_exit = 4000  # Минимальное HP для выхода, если несколько живых
         self.bezvgroup = -1002220238697
@@ -2205,7 +2205,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.vexx.14.12")
+                    msg = await self.client.send_message(event.chat_id, "Ver.17.12")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
