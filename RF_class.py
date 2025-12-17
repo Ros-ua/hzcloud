@@ -1769,7 +1769,7 @@ class RF:
             if any("Война окончена!" in ln for ln in lines):
                 await asyncio.sleep(70)
                 self.def_rudnik = True
-                if not self.is_moving and not self.killed_on_chv:
+                if not self.is_moving and not self.killed_on_chv and not self.is_in_caves:
                     await self.send_command( "⛏Рудник")
                 await asyncio.sleep(900)  # 15 минут = 900 секунд
                 self.def_rudnik = False
@@ -2205,7 +2205,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.17.12")
+                    msg = await self.client.send_message(event.chat_id, "Ver.C.17.12")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
