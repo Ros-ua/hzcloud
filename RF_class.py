@@ -31,7 +31,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО FALSE ===
         self.is_cave_leader = self.is_run = self.na_nashem_altare = self.def_rudnik = self.after_caves = self.na_straj = self.is_player_dead = self.fast_cave = self.cave_task_running = self.waiting_for_captcha = self.is_moving = self.in_castle = self.v_terminale = self.is_training = self.cave_message_pinned = self.prem = self.go_term_Aquilla = self.go_term_Basilaris = self.go_term_Castitas = self.is_in_caves = self.is_in_gh = self.is_has_hil = self.is_has_res = self.is_nacheve_active = self.in_battle = False
         # === ВСЕ ЧТО РАВНО NONE ===
-        self.cave_buttons_message = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = None
+        self.cave_buttons_message = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = None
         # === ЧИСЛА ===
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
@@ -654,6 +654,11 @@ class RF:
         elif any(phrase in line for line in lstr for phrase in [
             "Алтарь Хагал",
         ]):
+            # Находим точное название алтаря из сообщения
+            for line in lstr:
+                if "Алтарь Хагал" in line:
+                    self.current_location = "Алтарь Хагал"
+                    break
             self.got_reward = False  # Сбрасываем флаг получения награды
             await asyncio.sleep(5)
             await self.send_command( "🧝‍♀ Терминал Castitas")  # Отправляем сообщение в терминал
@@ -662,6 +667,14 @@ class RF:
             "Алтарь Эйви",
             "Алтарь Тир",
         ]):
+            # Находим точное название алтаря из сообщения
+            for line in lstr:
+                if "Алтарь Эйви" in line:
+                    self.current_location = "Алтарь Эйви"
+                    break
+                elif "Алтарь Тир" in line:
+                    self.current_location = "Алтарь Тир"
+                    break
             self.na_nashem_altare = False
             self.got_reward = False  # Сбрасываем флаг получения награды
             if self.go_term_Aquilla:  # проверка флага
@@ -675,6 +688,14 @@ class RF:
             "Алтарь Иса",
             "Алтарь Гебо",
         ]):
+            # Находим точное название алтаря из сообщения
+            for line in lstr:
+                if "Алтарь Иса" in line:
+                    self.current_location = "Алтарь Иса"
+                    break
+                elif "Алтарь Гебо" in line:
+                    self.current_location = "Алтарь Гебо"
+                    break
             self.na_nashem_altare = False
             self.got_reward = False  # Сбрасываем флаг получения награды
             if self.go_term_Basilaris:  # проверка флага
@@ -688,6 +709,14 @@ class RF:
             "Алтарь Исс",
             "Алтарь Дагаз",
         ]):
+            # Находим точное название алтаря из сообщения
+            for line in lstr:
+                if "Алтарь Исс" in line:
+                    self.current_location = "Алтарь Исс"
+                    break
+                elif "Алтарь Дагаз" in line:
+                    self.current_location = "Алтарь Дагаз"
+                    break
             self.na_nashem_altare = True
             self.got_reward = False  # Сбрасываем флаг получения награды
             await self.nacheve()
@@ -714,6 +743,13 @@ class RF:
         ]):
             self.v_terminale = True
             self.got_reward = False  # Сбрасываем флаг получения награды
+            # Устанавливаем current_location в зависимости от типа терминала
+            if self.terminal_type == "🧝‍♀ Терминал Castitas":
+                self.current_location = "Castitas терминал"
+            elif self.terminal_type == "🤖 Терминал Aquilla":
+                self.current_location = "Aquilla терминал"
+            elif self.terminal_type == "👩‍🚀 Терминал Basilaris":
+                self.current_location = "Basilaris терминал"
             await asyncio.sleep(1)
             if self.your_name == "👨‍🦳Пенсионер☠️":
                     await asyncio.sleep(1)
@@ -1727,6 +1763,37 @@ class RF:
             if self.waiting_for_captcha:
                 return  # Выходим из функции, ничего не обрабатываем
             lines = event.message.text.splitlines()
+            # Проверка на ядерный удар по локации
+            for line in lines:
+                if "Ядерный удар по локации" in line:
+                    # Извлекаем название локации из сообщения
+                    # Формат: "Ядерный удар по локации 🧝‍♀Алтарь Исс через 10 сек."
+                    # или: "Ядерный удар по локации 🤖Терминал Aquilla через 10 сек."
+                    location_in_message = None
+                    if "Алтарь" in line:
+                        # Для алтарей извлекаем название, убирая эмодзи
+                        # Проверяем все возможные названия алтарей
+                        altar_names = ["Алтарь Иса", "Алтарь Гебо", "Алтарь Исс", "Алтарь Дагаз", 
+                                      "Алтарь Тир", "Алтарь Эйви", "Алтарь Хагал"]
+                        for altar_name in altar_names:
+                            if altar_name in line:
+                                location_in_message = altar_name
+                                break
+                    elif "Терминал" in line:
+                        # Для терминалов преобразуем формат
+                        if "Терминал Castitas" in line:
+                            location_in_message = "Castitas терминал"
+                        elif "Терминал Aquilla" in line:
+                            location_in_message = "Aquilla терминал"
+                        elif "Терминал Basilaris" in line:
+                            location_in_message = "Basilaris терминал"
+                    
+                    # Если текущая локация совпадает с местом удара, уходим на случайный алтарь (только для Ros_Hangzhou)
+                    if location_in_message and self.current_location == location_in_message and self.your_name == "Ros_Hangzhou":
+                        print(f"Ядерный удар по текущей локации {self.current_location}! Уходим на случайный алтарь.")
+                        random_altar = random.choice(list(self.altar_dict.values()))
+                        await self.send_command(random_altar)
+                    break  # Обработали одно сообщение о ядерном ударе
             if any("Война в краговых шахтах началась!" in ln for ln in lines):
                 print("Обнаружено начало войны в крагах!")
                 # self.pvpgoheal = 4500
@@ -1775,7 +1842,7 @@ class RF:
                 await asyncio.sleep(900)  # 15 минут = 900 секунд
                 self.def_rudnik = False
                 if not self.is_in_caves and not self.waiting_for_captcha:
-                    await self.send_command( RF.hp)  # Переодеться для мобов
+                    await self.send_command(RF.hp)  # Переодеться для мобов
                 # # await self.wait_for_set_change() #работает
                 # await asyncio.sleep(1)
                 # if self.is_nacheve_active and not self.is_moving:
@@ -1787,7 +1854,7 @@ class RF:
             if any(("Castitas одолела" in ln or "Castitas не смогла одолеть" in ln or "Босс" in ln and "пал!" in ln) for ln in lines):
                 if not self.is_in_caves:
                     await asyncio.sleep(15)
-                    await self.send_command( RF.hp)
+                    await self.send_command(RF.hp)
                     await self.wait_for_set_change() #работает
                     await asyncio.sleep(1)
                     if not self.is_moving and not self.in_castle:
@@ -1797,7 +1864,7 @@ class RF:
                 self.in_castle = False
                 if not self.is_in_caves and not self.waiting_for_captcha and not self.kopka and not self.is_moving:
                     await asyncio.sleep(5)
-                    await self.send_command( RF.hp)
+                    await self.send_command(RF.hp)
                     await self.wait_for_set_change()
                     await asyncio.sleep(1)
                     await self.send_command(self.location)
@@ -2206,7 +2273,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.18.12")
+                    msg = await self.client.send_message(event.chat_id, "Ver.R.19.12")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -2249,14 +2316,14 @@ class RF:
                 elif "_мобы" in message_text:
                     self.mobs = True
                     self.location = "🔥 61-65 Лес пламени"  # Добавьте эту строку
-                    await self.send_command( RF.hp)
+                    await self.send_command(RF.hp)
                     await self.wait_for_set_change()
                     await asyncio.sleep(1)
                     await event.message.delete()
                 elif "_этер" in message_text:
                     self.mobs = True  # или False, в зависимости от вашей логики
                     self.location = "🏔 Этер"
-                    await self.send_command( RF.hp)
+                    await self.send_command(RF.hp)
                     await self.wait_for_set_change()
                     await asyncio.sleep(1)
                     await event.message.delete()
