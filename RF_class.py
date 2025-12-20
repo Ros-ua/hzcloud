@@ -756,7 +756,7 @@ class RF:
                     if self.terminal_type == "🧝‍♀ Терминал Castitas":
                         await self.nacheve()
                     else:
-                        await self.nacheve()
+                        await self.vterminale()
             if self.your_name == "Ros_Hangzhou":
                     await asyncio.sleep(1)
                     if self.terminal_type == "🧝‍♀ Терминал Castitas":
@@ -1813,7 +1813,7 @@ class RF:
                     asyncio.create_task(self.wait_for_hero_response_and_check_buffs())
                 elif self.your_name == "👨‍🦳Пенсионер☠️":
                     self.go_term_Basilaris = True
-                    self.go_term_Castitas = True
+                    self.go_term_Castitas = False
                     self.go_term_Aquilla = False
                 elif self.your_name == "๖ۣۜᗯαsͥpwͣoͫℝt🐝":
                     self.go_term_Basilaris = True
@@ -2273,7 +2273,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.R.19.12")
+                    msg = await self.client.send_message(event.chat_id, "Ver.D.19.12")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
