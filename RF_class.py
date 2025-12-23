@@ -2273,7 +2273,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.1.23.12")
+                    msg = await self.client.send_message(event.chat_id, "Ver.2.23.12")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
@@ -2379,9 +2379,13 @@ class RF:
                     match = re.search(r"_моб\s+(\d+)", message_text)
                     self.mob_drink_counter = int(match.group(1)) if match else 0  # 0 = не пить
                     await asyncio.sleep(1)
-                    await self.send_command( "🏛 В ген. штаб")
-                    await event.message.delete()
-                    await self.check_arrival()
+                    if self.kopka:
+                        await self.send_command("🏛 В ген. штаб")
+                        await event.message.delete()
+                        await self.check_arrival()
+                    else:
+                        await self.send_command(self.location)
+                        await event.message.delete()
                 elif "_ивент" in message_text:
                     self.mobs = True
                     self.location = "🦇 51-60 Земли Изгнанников"  # Добавьте эту строку
