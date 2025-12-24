@@ -1420,13 +1420,14 @@ class RF:
                 print(f"    lstr[-1]: {lstr[-1]}")
                 # Проверка на получение урона
                 damage_dict = {
-                    "Страж": ["Страж нанес", "Страж Отравил тебя"],
-                    "аргол": ["аргол нанес", "аргол Отравил тебя"],
-                    "Варасса": ["Варасса нанес", "Варасса Отравил тебя"],
-                    "Трашер": ["Трашер нанес", "Трашер Отравил тебя"],
+                    "Страж": ["Страж нанес", "Отравил тебя"],
+                    "аргол": ["аргол нанес", "Отравил тебя"],
+                    "Варасса": ["Варасса нанес", "Отравил тебя"],
+                    "Трашер": ["Трашер нанес", "Отравил тебя"],
                 }
                 for boss, phrases in damage_dict.items():
-                    if any(phrase in lstr[0] for phrase in phrases):
+                    # Проверяем наличие имени босса и одной из фраз в сообщении
+                    if boss in lstr[0] and any(phrase in lstr[0] for phrase in phrases):
                         # Определение damage_type в зависимости от босса
                         if boss == "Страж":
                             damage_type = random.choice(RF.directions)
@@ -2273,7 +2274,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.2.23.12")
+                    msg = await self.client.send_message(event.chat_id, "Ver.SSSSSSSss.23.12")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
