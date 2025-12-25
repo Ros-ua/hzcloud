@@ -816,11 +816,18 @@ class RF:
             await asyncio.sleep(1)
             await self.send_command( "⛏ Заснеженный Рудник")
         elif "[на время боевых действий проход закрыт]" in lstr[0]:
-            print("Проход закрыт. Подготовка к выбору алтаря.")
-            await self.prepare_for_caves()
             await asyncio.sleep(1)
-            altar_to_send = self.cmd_altar if self.cmd_altar else self.choose_random_altar()
-            await self.send_command( altar_to_send)
+            await self.send_command( "🎄 Праздничная Ёлка")
+
+            # убрать после праздника
+            # print("Проход закрыт. Подготовка к выбору алтаря.")
+            # await self.prepare_for_caves()
+            # await asyncio.sleep(1)
+            # altar_to_send = self.cmd_altar if self.cmd_altar else self.choose_random_altar()
+            # await self.send_command( altar_to_send)
+
+
+
             # await self.client.send_message(self.group59, altar_to_send) # пересылка алтаря в группу 59
             # await self.client.send_message(self.tamplier_id, altar_to_send) # пересылка алтаря Валере
             # await self.client.send_message(self.bezvgroup, altar_to_send) # пересылка алтаря без в
@@ -2273,7 +2280,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.2.25.12")
+                    msg = await self.client.send_message(event.chat_id, "Ver.3.25.12")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
