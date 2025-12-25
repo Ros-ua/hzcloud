@@ -817,7 +817,7 @@ class RF:
             await self.send_command( "⛏ Заснеженный Рудник")
         elif "[на время боевых действий проход закрыт]" in lstr[0]:
             await asyncio.sleep(1)
-            await self.send_command( "🎄 Праздничная Ёлка")
+            await self.send_command( "🎄Праздничная Ёлка")
 
             # убрать после праздника
             # print("Проход закрыт. Подготовка к выбору алтаря.")
@@ -2280,7 +2280,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.3.25.12")
+                    msg = await self.client.send_message(event.chat_id, "Ver.4.25.12")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
