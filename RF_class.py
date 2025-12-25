@@ -824,7 +824,7 @@ class RF:
             # await self.client.send_message(self.group59, altar_to_send) # пересылка алтаря в группу 59
             # await self.client.send_message(self.tamplier_id, altar_to_send) # пересылка алтаря Валере
             # await self.client.send_message(self.bezvgroup, altar_to_send) # пересылка алтаря без в
-        elif "Ты прибыл в ⛏ Заснеженный Рудник." in lstr[0]:
+        elif "Ты прибыл в ⛏рудник." in lstr[0]:
             prev_state = self.kopka
             self.kopka = True
             self.after_caves = False
@@ -2273,7 +2273,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.EVE.25.12")
+                    msg = await self.client.send_message(event.chat_id, "Ver.2.25.12")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
