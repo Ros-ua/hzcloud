@@ -1420,14 +1420,14 @@ class RF:
                 print(f"    lstr[-1]: {lstr[-1]}")
                 # Проверка на получение урона
                 damage_dict = {
-                    "Страж": ["Страж нанес", "Отравил тебя"],
-                    "аргол": ["аргол нанес", "Отравил тебя"],
-                    "Варасса": ["Варасса нанес", "Отравил тебя"],
-                    "Трашер": ["Трашер нанес", "Отравил тебя"],
+                    "Страж": "осталось",
+                    "аргол": "осталось",
+                    "Варасса": "осталось",
+                    "Трашер": "осталось",
                 }
                 for boss, phrases in damage_dict.items():
                     # Проверяем наличие имени босса и одной из фраз в сообщении
-                    if boss in lstr[0] and any(phrase in lstr[0] for phrase in phrases):
+                    if boss in lstr[0] and phrases in lstr[0]:
                         # Определение damage_type в зависимости от босса
                         if boss == "Страж":
                             damage_type = random.choice(RF.directions)
@@ -1788,7 +1788,6 @@ class RF:
                             location_in_message = "Aquilla терминал"
                         elif "Терминал Basilaris" in line:
                             location_in_message = "Basilaris терминал"
-                    
                     # Если текущая локация совпадает с местом удара, уходим на случайный алтарь (только для Ros_Hangzhou)
                     if location_in_message and self.current_location == location_in_message and self.your_name == "Ros_Hangzhou":
                         print(f"Ядерный удар по текущей локации {self.current_location}! Уходим на случайный алтарь.")
@@ -2274,7 +2273,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.SSSSSSSss.23.12")
+                    msg = await self.client.send_message(event.chat_id, "Ver.25.12")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
