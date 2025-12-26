@@ -50,7 +50,7 @@ class RF:
         self.bezvgroup = -1002220238697
         self.group59 = -1001323974021
         self.location = "🔥 61-65 Лес пламени"  # Локация по умолчанию
-        self.version = "🛷.26.12"
+        self.version = "🛷go.26.12"
         # === КОНФИГ И ВЫЧИСЛЕНИЯ ===
         self.pvp_binds = RF_config.pvp_binds
         self.hp_binds = RF_config.hp_binds
@@ -602,7 +602,7 @@ class RF:
             if self.mobs:  # Проверяем, включен ли флаг для мобов
                 # await self.send_command(self.location)  # для мобов
                 await asyncio.sleep(120)
-                await self.send_command("🛷 Пещеры")
+                await self.send_command("🛷 Отправиться в пещеры")
             else:
                 print("bag bag bag")  # для данжей
         elif "Если ты хочешь вернуть группу" in lstr[0]:
@@ -2313,7 +2313,7 @@ class RF:
                         await self.send_command( "🏛 В ген. штаб")
                         await self.arrival_hil()  # Вызываем arrival_hil после отправки в ген. штаб
                         await asyncio.sleep(2)
-                        await self.send_command( "🛷 Пещеры")
+                        await self.send_command( "🛷 Отправиться в пещеры")
                     else:
                         await self.send_command( self.hp_binds[0][1])
                         await self.wait_for_set_change() #работает
@@ -2321,7 +2321,7 @@ class RF:
                         self.my_health = self.my_max_health = self.hp_binds[0][0]
                         await self.send_command( "💖 Пополнить здоровье")
                         await asyncio.sleep(3)
-                        await self.send_command( "🛷 Пещеры")
+                        await self.send_command( "🛷 Отправиться в пещеры")
                     await event.message.delete()  # Удаляем сообщение
                 elif "_шаг" in message_text:
                     if not self.is_in_caves:
