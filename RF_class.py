@@ -50,7 +50,7 @@ class RF:
         self.bezvgroup = -1002220238697
         self.group59 = -1001323974021
         self.location = "🔥 61-65 Лес пламени"  # Локация по умолчанию
-        self.version = "🛷go.26.12"
+        self.version = "socks.26.12"
         # === КОНФИГ И ВЫЧИСЛЕНИЯ ===
         self.pvp_binds = RF_config.pvp_binds
         self.hp_binds = RF_config.hp_binds
@@ -330,6 +330,11 @@ class RF:
         ]):
             print("булочка")
             await self.client.send_message(self.cave_leader_id, "булочка")
+
+        if "В последней пещере перед выходом стоял" in message.text:
+            await self.handle_cave_socks(message)
+            return
+
         elif any(phrase in line for line in lstr for phrase in [
             "нет предмета",
         ]):
@@ -3418,3 +3423,35 @@ class RF:
         else:
             status_message = "Нет активных флагов"
         await self.client.send_message(self.cave_leader_id, status_message)
+
+    async def handle_cave_socks(self, message):
+        """Обработка пещеры с носками - нужно найти 5 из 35"""
+        import random
+        
+        # Извлекаем inline кнопки из сообщения
+        if not message.reply_markup or not message.reply_markup.rows:
+            return
+        
+        # Собираем все кнопки
+        all_buttons = []
+        for row in message.reply_markup.rows:
+            for button in row.buttons:
+                if hasattr(button, 'data'):
+                    all_buttons.append(button)
+        
+        if len(all_buttons) != 35:
+            print(f"Ожидалось 35 кнопок, найдено: {len(all_buttons)}")
+            return
+        
+        # Выбираем 5 случайных кнопок
+        selected_buttons = random.sample(all_buttons, 5)
+        
+        print(f"🎯 Нажимаю 5 случайных носков из 35...")
+        
+        # Нажимаем выбранные кнопки с небольшой задержкой
+        for i, button in enumerate(selected_buttons, 1):
+            await asyncio.sleep(random.uniform(0.5, 1.5))  # Случайная задержка
+            await message.click(data=button.data)
+            print(f"✅ Носок {i}/5 нажат")
+        
+        print("🎉 Все 5 носков найдены!")
