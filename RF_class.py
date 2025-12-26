@@ -50,6 +50,7 @@ class RF:
         self.bezvgroup = -1002220238697
         self.group59 = -1001323974021
         self.location = "🔥 61-65 Лес пламени"  # Локация по умолчанию
+        self.version = "Ver.peremennaya.26.12"
         # === КОНФИГ И ВЫЧИСЛЕНИЯ ===
         self.pvp_binds = RF_config.pvp_binds
         self.hp_binds = RF_config.hp_binds
@@ -2281,13 +2282,19 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.ELKAAAAAAA.26.12")
+                    msg = await self.client.send_message(event.chat_id, self.version)
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
                     await self.client.disconnect()
                     import os, sys
                     os.execv(sys.executable, [sys.executable] + sys.argv) #перезапуск скрипта
+                elif "_ver" in message_text:
+                    print("Получена команда показа версии")
+                    await event.message.delete()  # Удаляем сообщение _ver
+                    msg = await self.client.send_message(event.chat_id, self.version)
+                    await asyncio.sleep(5)
+                    await msg.delete()  # Удаляем сообщение о версии
                 elif "_пещера" in message_text:
                     # Проверяем, что отправитель не является cave leader
                     if event.sender_id == self.cave_leader_id:
