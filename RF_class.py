@@ -50,7 +50,7 @@ class RF:
         self.bezvgroup = -1002220238697
         self.group59 = -1001323974021
         self.location = "🔥 61-65 Лес пламени"  # Локация по умолчанию
-        self.version = "socks.26.12"
+        self.version = "sockssss.26.12"
         # === КОНФИГ И ВЫЧИСЛЕНИЯ ===
         self.pvp_binds = RF_config.pvp_binds
         self.hp_binds = RF_config.hp_binds
@@ -3425,33 +3425,59 @@ class RF:
         await self.client.send_message(self.cave_leader_id, status_message)
 
     async def handle_cave_socks(self, message):
+        await asyncio.sleep(5)
         """Обработка пещеры с носками - нужно найти 5 из 35"""
         import random
         
-        # Извлекаем inline кнопки из сообщения
-        if not message.reply_markup or not message.reply_markup.rows:
-            return
+        print(f"🎯 Начинаю выбирать носки...")
         
-        # Собираем все кнопки
-        all_buttons = []
-        for row in message.reply_markup.rows:
-            for button in row.buttons:
-                if hasattr(button, 'data'):
-                    all_buttons.append(button)
+        clicked_count = 0
+        max_attempts = 10  # Защита от бесконечного цикла
         
-        if len(all_buttons) != 35:
-            print(f"Ожидалось 35 кнопок, найдено: {len(all_buttons)}")
-            return
+        while clicked_count < 5 and max_attempts > 0:
+            # Получаем свежее сообщение из чата
+            messages = await self.client.get_messages(message.chat_id, limit=1)
+            current_message = messages[0]
+            
+            # Проверяем, что это всё ещё то же сообщение
+            if "В последней пещере перед выходом стоял" not in current_message.text:
+                print("⚠️ Сообщение изменилось, выходим")
+                break
+            
+            # Получаем кнопки из актуального сообщения
+            if not current_message.reply_markup or not current_message.reply_markup.rows:
+                print("⚠️ Нет кнопок в сообщении")
+                break
+            
+            # Собираем все кнопки
+            all_buttons = []
+            for row in current_message.reply_markup.rows:
+                for button in row.buttons:
+                    if hasattr(button, 'data'):
+                        all_buttons.append(button)
+            
+            if not all_buttons:
+                print("⚠️ Не найдены кнопки с callback_data")
+                break
+            
+            # Выбираем случайную кнопку
+            selected_button = random.choice(all_buttons)
+            
+            try:
+                # Нажимаем кнопку на актуальном сообщении
+                await current_message.click(data=selected_button.data)
+                clicked_count += 1
+                print(f"✅ Носок {clicked_count}/5 нажат")
+                
+                # Задержка перед следующим нажатием
+                await asyncio.sleep(random.uniform(1.0, 2.0))
+                
+            except Exception as e:
+                print(f"❌ Ошибка при нажатии: {e}")
+                max_attempts -= 1
+                await asyncio.sleep(0.5)
         
-        # Выбираем 5 случайных кнопок
-        selected_buttons = random.sample(all_buttons, 5)
-        
-        print(f"🎯 Нажимаю 5 случайных носков из 35...")
-        
-        # Нажимаем выбранные кнопки с небольшой задержкой
-        for i, button in enumerate(selected_buttons, 1):
-            await asyncio.sleep(random.uniform(0.5, 1.5))  # Случайная задержка
-            await message.click(data=button.data)
-            print(f"✅ Носок {i}/5 нажат")
-        
-        print("🎉 Все 5 носков найдены!")
+        if clicked_count == 5:
+            print("🎉 Все 5 носков найдены!")
+        else:
+            print(f"⚠️ Нажато {clicked_count}/5 носков")
