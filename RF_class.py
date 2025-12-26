@@ -50,7 +50,7 @@ class RF:
         self.bezvgroup = -1002220238697
         self.group59 = -1001323974021
         self.location = "🔥 61-65 Лес пламени"  # Локация по умолчанию
-        self.version = "sockssss.26.12"
+        self.version = "🧦носок.26.12"
         # === КОНФИГ И ВЫЧИСЛЕНИЯ ===
         self.pvp_binds = RF_config.pvp_binds
         self.hp_binds = RF_config.hp_binds
@@ -1033,7 +1033,7 @@ class RF:
             "Доп. к характеристикам персонажа",
         ]):
             await message.forward_to(self.vex_bot_id)
-        elif "Горный эликсир):" in lstr[0]:
+        elif "Горный эликсир):" in lstr[0] or "Ты обыскал" in lstr[0]:
             await message.forward_to(self.group59)
         elif lstr[0].startswith("📦Рецепты на складе:"):
             if self.your_name == "Ros_Hangzhou":
