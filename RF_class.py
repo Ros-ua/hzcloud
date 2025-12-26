@@ -482,7 +482,7 @@ class RF:
             if self.in_castle:
                 await message.forward_to(self.group59)
         elif any(phrase in line for line in lstr for phrase in [
-            "Ты снова жив",
+            "Ты снова жив👼",
             "Вы больше не можете воскрешаться",
         ]):
             self.after_bind = self.last_bind = self.hp_binds[0][1]
@@ -491,7 +491,9 @@ class RF:
             self.kopka = False
             print(self.my_health, self.my_max_health)
             # на новый год идти в краги после реса
+            print("на новый год идти в краги после реса")
             if not self.is_in_caves and not self.na_straj and not self.in_castle and not self.waiting_for_captcha and not self.is_nacheve_active and not self.after_caves:  # Используем существующее условие
+                print("идем в краги после реса")
                 await asyncio.sleep(3)
                 await self.send_command( "❄️️ Северный полюс")
         elif any(
