@@ -31,7 +31,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО FALSE ===
         self.is_cave_leader = self.is_run = self.na_nashem_altare = self.def_rudnik = self.after_caves = self.na_straj = self.is_player_dead = self.fast_cave = self.cave_task_running = self.waiting_for_captcha = self.is_moving = self.in_castle = self.v_terminale = self.is_training = self.cave_message_pinned = self.prem = self.go_term_Aquilla = self.go_term_Basilaris = self.go_term_Castitas = self.is_in_caves = self.is_in_gh = self.is_has_hil = self.is_has_res = self.is_nacheve_active = self.in_battle = False
         # === ВСЕ ЧТО РАВНО NONE ===
-        self.cave_buttons_message = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = None
+        self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = None
         # === ЧИСЛА ===
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
@@ -294,6 +294,7 @@ class RF:
         self.killed_on_chv = False
         self.na_straj = False
         self.in_castle = False
+        self.elka_active = False
         self.is_nacheve_active = False
         self.kopka = False 
         self.na_nashem_altare = False 
@@ -845,7 +846,7 @@ class RF:
         elif any(phrase in line for line in lstr for phrase in [
             "Удачи!"
         ]):
-            self.is_nacheve_active = False
+            self.elka_active = True
               # на мобах
         elif any(phrase in line for line in lstr for phrase in  [
             "пойти в 61-65 Лес пламени",
@@ -938,7 +939,7 @@ class RF:
         elif any(f"+1 к энергии 🔋{i}/5" in lstr[0] for i in range(1, 6)):
             self.last_energy_message = message  # Сохраняем сообщение о получении энергии
             # Проверяем, увеличилась ли энергия на 4 или 5
-            if any(f"+1 к энергии 🔋{i}/5" in lstr[0] for i in (4, 5)) and not self.def_rudnik :
+            if any(f"+1 к энергии 🔋{i}/5" in lstr[0] for i in (4, 5)) and not self.def_rudnik and not self.elka_active:
                 await self.handle_energy()  # Вызываем обработчик энергии только для 4 и 5
         # # данжи
         elif "Ты уверен, что хочешь попробовать пройти данж" in lstr[0]:
@@ -2280,7 +2281,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    msg = await self.client.send_message(event.chat_id, "Ver.ac.26.12")
+                    msg = await self.client.send_message(event.chat_id, "Ver.ELKAAAAAAA.26.12")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                     await asyncio.sleep(1)
