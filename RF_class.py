@@ -50,7 +50,7 @@ class RF:
         self.bezvgroup = -1002220238697
         self.group59 = -1001323974021
         self.location = "🔥 61-65 Лес пламени"  # Локация по умолчанию
-        self.version = "🧦носок.26.12"
+        self.version = "28.12"
         # === КОНФИГ И ВЫЧИСЛЕНИЯ ===
         self.pvp_binds = RF_config.pvp_binds
         self.hp_binds = RF_config.hp_binds
@@ -330,11 +330,6 @@ class RF:
         ]):
             print("булочка")
             await self.client.send_message(self.cave_leader_id, "булочка")
-
-        if "В последней пещере перед выходом стоял" in message.text:
-            await self.handle_cave_socks(message)
-            return
-
         elif any(phrase in line for line in lstr for phrase in [
             "нет предмета",
         ]):
@@ -825,16 +820,12 @@ class RF:
         elif "[на время боевых действий проход закрыт]" in lstr[0]:
             await asyncio.sleep(1)
             await self.send_command( "🎄Праздничная Ёлка")
-
             # убрать после праздника
             # print("Проход закрыт. Подготовка к выбору алтаря.")
             # await self.prepare_for_caves()
             # await asyncio.sleep(1)
             # altar_to_send = self.cmd_altar if self.cmd_altar else self.choose_random_altar()
             # await self.send_command( altar_to_send)
-
-
-
             # await self.client.send_message(self.group59, altar_to_send) # пересылка алтаря в группу 59
             # await self.client.send_message(self.tamplier_id, altar_to_send) # пересылка алтаря Валере
             # await self.client.send_message(self.bezvgroup, altar_to_send) # пересылка алтаря без в
@@ -3423,61 +3414,3 @@ class RF:
         else:
             status_message = "Нет активных флагов"
         await self.client.send_message(self.cave_leader_id, status_message)
-
-    async def handle_cave_socks(self, message):
-        await asyncio.sleep(5)
-        """Обработка пещеры с носками - нужно найти 5 из 35"""
-        import random
-        
-        print(f"🎯 Начинаю выбирать носки...")
-        
-        clicked_count = 0
-        max_attempts = 10  # Защита от бесконечного цикла
-        
-        while clicked_count < 5 and max_attempts > 0:
-            # Получаем свежее сообщение из чата
-            messages = await self.client.get_messages(message.chat_id, limit=1)
-            current_message = messages[0]
-            
-            # Проверяем, что это всё ещё то же сообщение
-            if "В последней пещере перед выходом стоял" not in current_message.text:
-                print("⚠️ Сообщение изменилось, выходим")
-                break
-            
-            # Получаем кнопки из актуального сообщения
-            if not current_message.reply_markup or not current_message.reply_markup.rows:
-                print("⚠️ Нет кнопок в сообщении")
-                break
-            
-            # Собираем все кнопки
-            all_buttons = []
-            for row in current_message.reply_markup.rows:
-                for button in row.buttons:
-                    if hasattr(button, 'data'):
-                        all_buttons.append(button)
-            
-            if not all_buttons:
-                print("⚠️ Не найдены кнопки с callback_data")
-                break
-            
-            # Выбираем случайную кнопку
-            selected_button = random.choice(all_buttons)
-            
-            try:
-                # Нажимаем кнопку на актуальном сообщении
-                await current_message.click(data=selected_button.data)
-                clicked_count += 1
-                print(f"✅ Носок {clicked_count}/5 нажат")
-                
-                # Задержка перед следующим нажатием
-                await asyncio.sleep(random.uniform(1.0, 2.0))
-                
-            except Exception as e:
-                print(f"❌ Ошибка при нажатии: {e}")
-                max_attempts -= 1
-                await asyncio.sleep(0.5)
-        
-        if clicked_count == 5:
-            print("🎉 Все 5 носков найдены!")
-        else:
-            print(f"⚠️ Нажато {clicked_count}/5 носков")
