@@ -50,7 +50,7 @@ class RF:
         self.bezvgroup = -1002220238697
         self.group59 = -1001323974021
         self.location = "🔥 61-65 Лес пламени"  # Локация по умолчанию
-        self.version = "8.29.12"
+        self.version = "9.29.12"
         # === КОНФИГ И ВЫЧИСЛЕНИЯ ===
         self.pvp_binds = RF_config.pvp_binds
         self.hp_binds = RF_config.hp_binds
@@ -1187,7 +1187,8 @@ class RF:
                             if self.drink_status_message_id is not None:
                                 await self.client.edit_message(self.cave_leader_id, self.drink_status_message_id, f"вы выпили {self.mob_drink_total} банок, вы красавчик")
                                 self.drink_status_message_id = None  # Сбрасываем ID сообщения
-                        await asyncio.sleep(3)
+                        await self.wait_for_energy_full()
+                        await asyncio.sleep(1)
                         await self.send_command(self.location)
                     else:
                         await self.send_command( "❄️️ Северный полюс")
@@ -1552,6 +1553,16 @@ class RF:
             if last_message:
                 lstr = last_message[0].message.split('\n')
                 if any("Ты успешно надел комлект!" in line for line in lstr):
+                    return
+            await asyncio.sleep(1)
+    async def wait_for_energy_full(self):
+        # Ожидание сообщения о полной энергии
+        while True:
+            last_message = await self.client.get_messages(self.bot_id, limit=2)
+            if last_message:
+                lstr = last_message[0].message.split('\n')
+                if any("Вы полны энергии" in line for line in lstr):
+                    await asyncio.sleep(0.1)
                     return
             await asyncio.sleep(1)
     async def wait_for_confirmation(self):
