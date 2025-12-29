@@ -50,7 +50,7 @@ class RF:
         self.bezvgroup = -1002220238697
         self.group59 = -1001323974021
         self.location = "🔥 61-65 Лес пламени"  # Локация по умолчанию
-        self.version = "2.29.12"
+        self.version = "3.29.12"
         # === КОНФИГ И ВЫЧИСЛЕНИЯ ===
         self.pvp_binds = RF_config.pvp_binds
         self.hp_binds = RF_config.hp_binds
@@ -361,9 +361,9 @@ class RF:
             await message.click(random_index)
         elif any("Вы полны энергии" in line for line in lstr) and not self.is_in_caves:
             if self.kopka and self.location != "🦇 51-60 Земли Изгнанников":
-                await asyncio.sleep(2)
-                await self.send_command("🏛 В ген. штаб")
-                await self.check_arrival()
+                await asyncio.sleep(1)
+                # await self.send_command("🏛 В ген. штаб")
+                # await self.check_arrival()
             else:
                 await asyncio.sleep(2)
                 await self.send_command("🐺По уровню")
@@ -834,12 +834,6 @@ class RF:
             self.kopka = True
             self.after_caves = False
             await self.send_command("🖲 Установить АБУ")
-            # если _моб N был задан и остались повторы
-            if hasattr(self, "mob_drink_counter") and self.mob_drink_counter > 0 and not prev_state:
-                await asyncio.sleep(5)
-                await self.send_command("/drink_102")
-                self.mob_drink_counter -= 1
-                print(f"Выпито /drink_102, осталось: {self.mob_drink_counter}")
         elif any(phrase in line for line in lstr for phrase in [
             "Удачи!"
         ]):
@@ -1167,7 +1161,16 @@ class RF:
                     await asyncio.sleep(2)
                     await self.send_command( "💖 Пополнить здоровье")
                     await self.wait_for_health_refill()
-                    await self.send_command( "❄️️ Северный полюс")
+                    # если _моб N был задан и остались повторы
+                    if hasattr(self, "mob_drink_counter") and self.mob_drink_counter > 0:
+                        await asyncio.sleep(1)
+                        await self.send_command("/drink_102")
+                        self.mob_drink_counter -= 1
+                        print(f"Выпито /drink_102, осталось: {self.mob_drink_counter}")
+                        await asyncio.sleep(1)
+                        await self.send_command(self.location)
+                    else:
+                        await self.send_command( "❄️️ Северный полюс")
                     return
             await asyncio.sleep(1)
     async def parce_4v_logs(self, msg_text):
