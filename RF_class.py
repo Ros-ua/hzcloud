@@ -31,7 +31,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО FALSE ===
         self.is_cave_leader = self.is_run = self.na_nashem_altare = self.def_rudnik = self.after_caves = self.na_straj = self.is_player_dead = self.fast_cave = self.cave_task_running = self.waiting_for_captcha = self.is_moving = self.in_castle = self.v_terminale = self.is_training = self.cave_message_pinned = self.prem = self.go_term_Aquilla = self.go_term_Basilaris = self.go_term_Castitas = self.is_in_caves = self.is_in_gh = self.is_has_hil = self.is_has_res = self.is_nacheve_active = self.in_battle = False
         # === ВСЕ ЧТО РАВНО NONE ===
-        self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = None
+        self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = None
         # === ЧИСЛА ===
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
@@ -50,7 +50,7 @@ class RF:
         self.bezvgroup = -1002220238697
         self.group59 = -1001323974021
         self.location = "🔥 61-65 Лес пламени"  # Локация по умолчанию
-        self.version = "6.29.12"
+        self.version = "7.29.12"
         # === КОНФИГ И ВЫЧИСЛЕНИЯ ===
         self.pvp_binds = RF_config.pvp_binds
         self.hp_binds = RF_config.hp_binds
@@ -1167,7 +1167,21 @@ class RF:
                         await self.send_command("/drink_102")
                         self.mob_drink_counter -= 1
                         print(f"Выпито /drink_102, осталось: {self.mob_drink_counter}")
-                        await self.client.send_message(self.cave_leader_id, f"осталось выпить {self.mob_drink_counter} банок")
+                        # Проверяем, остались ли еще банки
+                        if self.mob_drink_counter > 0:
+                            # Отправляем или редактируем сообщение о прогрессе
+                            if self.drink_status_message_id is None:
+                                # Первое сообщение - отправляем новое
+                                message = await self.client.send_message(self.cave_leader_id, f"осталось выпить {self.mob_drink_counter} банок")
+                                self.drink_status_message_id = message.id
+                            else:
+                                # Редактируем существующее сообщение
+                                await self.client.edit_message(self.cave_leader_id, self.drink_status_message_id, f"осталось выпить {self.mob_drink_counter} банок")
+                        else:
+                            # Все банки выпиты - отправляем финальное сообщение
+                            if self.drink_status_message_id is not None:
+                                await self.client.edit_message(self.cave_leader_id, self.drink_status_message_id, f"вы выпили {self.mob_drink_total} банок, вы красавчик")
+                                self.drink_status_message_id = None  # Сбрасываем ID сообщения
                         await asyncio.sleep(3)
                         await self.send_command(self.location)
                     else:
@@ -2394,6 +2408,8 @@ class RF:
                         return
                     match = re.search(r"_моб\s+(\d+)", message_text)
                     self.mob_drink_counter = int(match.group(1)) if match else 0  # 0 = не пить
+                    self.mob_drink_total = self.mob_drink_counter  # Сохраняем общее количество для финального сообщения
+                    self.drink_status_message_id = None  # Сбрасываем ID сообщения для новой серии
                     await asyncio.sleep(1)
                     if self.kopka:
                         await self.send_command("🏛 В ген. штаб")
