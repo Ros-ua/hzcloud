@@ -50,7 +50,7 @@ class RF:
         self.bezvgroup = -1002220238697
         self.group59 = -1001323974021
         self.location = "🔥 61-65 Лес пламени"  # Локация по умолчанию
-        self.version = "4.29.12"
+        self.version = "5.29.12"
         # === КОНФИГ И ВЫЧИСЛЕНИЯ ===
         self.pvp_binds = RF_config.pvp_binds
         self.hp_binds = RF_config.hp_binds
@@ -360,7 +360,7 @@ class RF:
             random_index = random.randint(0, 4)
             await message.click(random_index)
         elif any("Вы полны энергии" in line for line in lstr) and not self.is_in_caves:
-            if self.kopka and self.location != "🦇 51-60 Земли Изгнанников":
+            if self.kopka or self.location != "🦇 51-60 Земли Изгнанников":
                 await asyncio.sleep(1)
                 # await self.send_command("🏛 В ген. штаб")
                 # await self.check_arrival()
