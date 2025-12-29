@@ -50,7 +50,7 @@ class RF:
         self.bezvgroup = -1002220238697
         self.group59 = -1001323974021
         self.location = "🔥 61-65 Лес пламени"  # Локация по умолчанию
-        self.version = "28.12"
+        self.version = "29.12"
         # === КОНФИГ И ВЫЧИСЛЕНИЯ ===
         self.pvp_binds = RF_config.pvp_binds
         self.hp_binds = RF_config.hp_binds
@@ -494,7 +494,7 @@ class RF:
             print(self.my_health, self.my_max_health)
             # на новый год идти в краги после реса
             if not self.is_in_caves and not self.na_straj and not self.in_castle and not self.waiting_for_captcha and not self.is_nacheve_active and not self.after_caves:  # Используем существующее условие
-                await asyncio.sleep(3)
+                await asyncio.sleep(1)
                 await self.send_command( "❄️️ Северный полюс")
         elif any(
             phrase in line for line in lstr for phrase in [
@@ -836,7 +836,7 @@ class RF:
             await self.send_command("🖲 Установить АБУ")
             # если _моб N был задан и остались повторы
             if hasattr(self, "mob_drink_counter") and self.mob_drink_counter > 0 and not prev_state:
-                await asyncio.sleep(4)
+                await asyncio.sleep(5)
                 await self.send_command("/drink_102")
                 self.mob_drink_counter -= 1
                 print(f"Выпито /drink_102, осталось: {self.mob_drink_counter}")
@@ -3311,12 +3311,12 @@ class RF:
                     await hero_message.forward_to(self.vex_bot_id)
                     # await asyncio.sleep(2)
                     # await self.send_command("/resources")
-                    print(f"Сообщение /hero переслано в группу {target_group_id} (все баффы на 0%)")
+                    print(f"Сообщение /hero переслано в группу {self.vex_bot_id} (все баффы на 0%)")
                 else:
                     print("Баффы не равны нулю, пересылка не требуется")
             except asyncio.TimeoutError:
                 print("Тайм-аут: не получен ответ на /hero в течение 10 секунд.")
-        except Exception as e:
+        except Exception as e:а
             print(f"Ошибка при обработке ответа на /hero: {e}")
         finally:
             # Гарантированно удаляем обработчик в любом случае
