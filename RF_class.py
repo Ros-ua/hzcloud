@@ -50,7 +50,7 @@ class RF:
         self.bezvgroup = -1002220238697
         self.group59 = -1001323974021
         self.location = "🔥 61-65 Лес пламени"  # Локация по умолчанию
-        self.version = "7.29.12"
+        self.version = "8.29.12"
         # === КОНФИГ И ВЫЧИСЛЕНИЯ ===
         self.pvp_binds = RF_config.pvp_binds
         self.hp_binds = RF_config.hp_binds
@@ -344,6 +344,11 @@ class RF:
         ]):
             await asyncio.sleep(5)
             await self.send_command("да")
+        elif any(phrase in line for line in lstr for phrase in [
+            "Из мешочка выпало",
+        ]):
+            await asyncio.sleep(1)
+            await self.send_command("/use_120")            
         elif any(phrase in line for line in lstr for phrase in [
             "Ты пробрался к кладбищу",
             "Ты открыл",
