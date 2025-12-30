@@ -50,7 +50,7 @@ class RF:
         self.bezvgroup = -1002220238697
         self.group59 = -1001323974021
         self.location = "🔥 61-65 Лес пламени"  # Локация по умолчанию
-        self.version = "9.29.12"
+        self.version = "30.12.25"
         # === КОНФИГ И ВЫЧИСЛЕНИЯ ===
         self.pvp_binds = RF_config.pvp_binds
         self.hp_binds = RF_config.hp_binds
@@ -1838,6 +1838,8 @@ class RF:
                 # self.pvpgoheal = 4500
                 self.active = False
                 self.go_to_heal = True
+                # Список имен пользователей, для которых нужно отправлять /hero
+                users_need_hero = ["Ros_Hangzhou"]
                 # Логика для различных типов пользователей
                 if self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
                     self.go_term_Basilaris = True
@@ -1847,9 +1849,6 @@ class RF:
                     self.go_term_Basilaris = True
                     self.go_term_Castitas = False
                     self.go_term_Aquilla = False
-                    await self.send_command("/hero")
-                    # Ожидаем ответ и проверяем баффы, при необходимости пересылаем
-                    asyncio.create_task(self.wait_for_hero_response_and_check_buffs())
                 elif self.your_name == "👨‍🦳Пенсионер☠️":
                     self.go_term_Basilaris = True
                     self.go_term_Castitas = False
@@ -1858,10 +1857,18 @@ class RF:
                     self.go_term_Basilaris = True
                     self.go_term_Castitas = True
                     self.go_term_Aquilla = False
+                # Отправка /hero для пользователей из списка
+                if self.your_name in users_need_hero:
+                    await self.send_command("/hero")
+                    # Ожидаем ответ и проверяем баффы, при необходимости пересылаем
+                    await self.wait_for_hero_response_and_check_buffs()
+                    await asyncio.sleep(1)
                 #  Запускаем таймер для изменения pvpgoheal через 38 минут
                 asyncio.create_task(self.pvp_heal_timer())
                 if not any([self.is_in_caves, self.kopka, self.is_moving]):
-                    await asyncio.sleep(12)
+                    # Для пользователей с /hero задержка не нужна, они уже дождались ответа
+                    if self.your_name not in users_need_hero:
+                        await asyncio.sleep(10)
                     await self.send_command( RF.chv)
                     await self.wait_for_set_change() #работает
                     await asyncio.sleep(1)
