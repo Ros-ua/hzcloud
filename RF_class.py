@@ -50,7 +50,7 @@ class RF:
         self.bezvgroup = -1002220238697
         self.group59 = -1001323974021
         self.location = "🔥 61-65 Лес пламени"  # Локация по умолчанию
-        self.version = "31.12.25"
+        self.version = "2.31.12.25"
         # === КОНФИГ И ВЫЧИСЛЕНИЯ ===
         self.pvp_binds = RF_config.pvp_binds
         self.hp_binds = RF_config.hp_binds
@@ -824,13 +824,13 @@ class RF:
             await self.send_command( "⛏Рудник")
         elif "[на время боевых действий проход закрыт]" in lstr[0]:
             await asyncio.sleep(1)
-            await self.send_command( "🎄Праздничная Ёлка")
+            # await self.send_command( "🎄Праздничная Ёлка")
             # убрать после праздника
             # print("Проход закрыт. Подготовка к выбору алтаря.")
-            # await self.prepare_for_caves()
-            # await asyncio.sleep(1)
-            # altar_to_send = self.cmd_altar if self.cmd_altar else self.choose_random_altar()
-            # await self.send_command( altar_to_send)
+            await self.prepare_for_caves()
+            await asyncio.sleep(1)
+            altar_to_send = self.cmd_altar if self.cmd_altar else self.choose_random_altar()
+            await self.send_command( altar_to_send)
             # await self.client.send_message(self.group59, altar_to_send) # пересылка алтаря в группу 59
             # await self.client.send_message(self.tamplier_id, altar_to_send) # пересылка алтаря Валере
             # await self.client.send_message(self.bezvgroup, altar_to_send) # пересылка алтаря без в
