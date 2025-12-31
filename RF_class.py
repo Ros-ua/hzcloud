@@ -50,7 +50,7 @@ class RF:
         self.bezvgroup = -1002220238697
         self.group59 = -1001323974021
         self.location = "🔥 61-65 Лес пламени"  # Локация по умолчанию
-        self.version = "30.12.25"
+        self.version = "31.12.25"
         # === КОНФИГ И ВЫЧИСЛЕНИЯ ===
         self.pvp_binds = RF_config.pvp_binds
         self.hp_binds = RF_config.hp_binds
@@ -500,7 +500,7 @@ class RF:
             # на новый год идти в краги после реса
             if not self.is_in_caves and not self.na_straj and not self.in_castle and not self.waiting_for_captcha and not self.is_nacheve_active and not self.after_caves:  # Используем существующее условие
                 await asyncio.sleep(1)
-                await self.send_command( "❄️️ Северный полюс")
+                await self.send_command( "🌋 Краговые шахты")
         elif any(
             phrase in line for line in lstr for phrase in [
                 "Ожидай завершения",
@@ -607,7 +607,7 @@ class RF:
             if self.mobs:  # Проверяем, включен ли флаг для мобов
                 # await self.send_command(self.location)  # для мобов
                 await asyncio.sleep(120)
-                await self.send_command("🛷 Отправиться в пещеры")
+                await self.send_command("🚠 Отправиться в пещеры")
             else:
                 print("bag bag bag")  # для данжей
         elif "Если ты хочешь вернуть группу" in lstr[0]:
@@ -821,7 +821,7 @@ class RF:
             "Ты прибыл на"
         ]):
             await asyncio.sleep(1)
-            await self.send_command( "⛏ Заснеженный Рудник")
+            await self.send_command( "⛏Рудник")
         elif "[на время боевых действий проход закрыт]" in lstr[0]:
             await asyncio.sleep(1)
             await self.send_command( "🎄Праздничная Ёлка")
@@ -1101,8 +1101,8 @@ class RF:
                 await self.send_command( "💖 Пополнить здоровье")
                 print("Отправлено сообщение: 💖 Пополнить здоровье")
                 await self.wait_for_health_refill()
-                await self.send_command( "❄️️ Северный полюс")
-                print("Отправлено сообщение: ❄️️ Северный полюс")
+                await self.send_command( "🌋 Краговые шахты")
+                print("Отправлено сообщение: 🌋 Краговые шахты")
                 return
             print("Ни одно из условий не выполнено, повторная проверка через 5 секунд")
             await asyncio.sleep(1)
@@ -1191,7 +1191,7 @@ class RF:
                         await asyncio.sleep(1)
                         await self.send_command(self.location)
                     else:
-                        await self.send_command( "❄️️ Северный полюс")
+                        await self.send_command( "🌋 Краговые шахты")
                     return
             await asyncio.sleep(1)
     async def parce_4v_logs(self, msg_text):
@@ -1875,7 +1875,7 @@ class RF:
                     await self.send_command( "💖 Пополнить здоровье")
                     print("Отправлено сообщение: 💖 Пополнить здоровье")
                     await self.wait_for_health_refill()
-                    await self.send_command( "❄️️ Северный полюс")
+                    await self.send_command( "🌋 Краговые шахты")
             if any("Подача заявок в лидеры расы" in ln for ln in lines):
                 if self.your_name != "Ros_Hangzhou":
                     await asyncio.sleep(15)
@@ -1884,7 +1884,7 @@ class RF:
                 await asyncio.sleep(70)
                 self.def_rudnik = True
                 if not self.is_moving and not self.killed_on_chv and not self.is_in_caves:
-                    await self.send_command( "⛏ Заснеженный Рудник")
+                    await self.send_command( "⛏Рудник")
                 await asyncio.sleep(900)  # 15 минут = 900 секунд
                 self.def_rudnik = False
                 self.after_caves = False
@@ -1894,10 +1894,10 @@ class RF:
                 # await asyncio.sleep(1)
                 # if self.is_nacheve_active and not self.is_moving:
                 #     await asyncio.sleep(3)  # Задержка перед следующим действием
-                #     await self.send_command( "⛏ Заснеженный Рудник")
+                #     await self.send_command( "⛏Рудник")
                 # else:
                 #     await asyncio.sleep(3)
-                #     await self.send_command( "⛏ Заснеженный Рудник")
+                #     await self.send_command( "⛏Рудник")
             if any(("Castitas одолела" in ln or "Castitas не смогла одолеть" in ln or "Босс" in ln and "пал!" in ln) for ln in lines):
                 if not self.is_in_caves:
                     await asyncio.sleep(15)
@@ -2315,7 +2315,7 @@ class RF:
                     if event.sender_id == self.cave_leader_id:
                         print(f"Команда _краги от cave leader {event.sender_id} игнорируется")
                         return
-                    await self.send_command( "❄️️ Северный полюс")
+                    await self.send_command( "🌋 Краговые шахты")
                     await event.message.delete()  # Удаляем сообщение
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
@@ -2350,7 +2350,7 @@ class RF:
                         await self.send_command( "🏛 В ген. штаб")
                         await self.arrival_hil()  # Вызываем arrival_hil после отправки в ген. штаб
                         await asyncio.sleep(2)
-                        await self.send_command( "🛷 Отправиться в пещеры")
+                        await self.send_command( "🚠 Отправиться в пещеры")
                     else:
                         await self.send_command( self.hp_binds[0][1])
                         await self.wait_for_set_change() #работает
@@ -2358,7 +2358,7 @@ class RF:
                         self.my_health = self.my_max_health = self.hp_binds[0][0]
                         await self.send_command( "💖 Пополнить здоровье")
                         await asyncio.sleep(3)
-                        await self.send_command( "🛷 Отправиться в пещеры")
+                        await self.send_command( "🚠 Отправиться в пещеры")
                     await event.message.delete()  # Удаляем сообщение
                 elif "_шаг" in message_text:
                     if not self.is_in_caves:
