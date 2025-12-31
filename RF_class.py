@@ -50,7 +50,7 @@ class RF:
         self.bezvgroup = -1002220238697
         self.group59 = -1001323974021
         self.location = "🔥 61-65 Лес пламени"  # Локация по умолчанию
-        self.version = "2.31.12.25"
+        self.version = "TE.31.12.25"
         # === КОНФИГ И ВЫЧИСЛЕНИЯ ===
         self.pvp_binds = RF_config.pvp_binds
         self.hp_binds = RF_config.hp_binds
@@ -81,6 +81,17 @@ class RF:
         self.battle_re = re.compile(r"^Сражение с .*$")
         self.damage_re = re.compile(r"(\d+)$")
         self.arrival_re = re.compile(r'.*прибудешь через\s*(\d+)\s*мин\.\s*(\d+(?:\.\d+)?)\s*сек\.')
+        # Дополнительные регулярные выражения для оптимизации
+        self.health_heart_re = re.compile(r"❤️(\d+)/\d+")
+        self.health_hero_re = re.compile(r'❤Здоровье:\s*(\d+)')
+        self.guild_exc_re = re.compile(r"/p_guild_exc_(\d+)")
+        self.player_line_re = re.compile(r"\d\) .*\[.*\](.*)🏅\d+ур\. (.*)")
+        self.level_re = re.compile(r"\d+\((\d+)\)ур")
+        self.players_not_in_gh_re = re.compile(r'(Нежный 🍅|🐾ᏦᎮᎧχᏗ|Ros_Hangzhou|𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗|John Doe|๖ۣۜᗯαsͥpwͣoͫℝt🐝|👨‍🦳Пенсионер☠️)')
+        self.victory_name_re = re.compile(rf"одержал победу над .*{re.escape(self.your_name)}")
+        self.arrival_min_re = re.compile(r"через\s*(\d+)\s*мин")
+        self.health_status_re = re.compile(r"Здоровье: ❤(\d+)/\d+")
+        self.health_status_check_re = re.compile(r"Здоровье: ❤\d+/\d+")
         # === УСЛОВНАЯ НАСТРОЙКА ===
         if self.your_name == "👨‍🦳Пенсионер☠️":
             self.mob_heal = 3500
@@ -98,6 +109,21 @@ class RF:
         self.common_cave()
         self.setup_war_listener()
         self.setup_captcha_listener()
+    
+    def _contains_any_phrase(self, lines, phrases):
+        """Оптимизированная проверка наличия фраз в строках. O(n) вместо O(n*m))"""
+        if isinstance(phrases, str):
+            phrases = [phrases]
+        phrases_set = set(phrases) if len(phrases) > 3 else phrases  # Для малых списков set не нужен
+        for line in lines:
+            if isinstance(phrases_set, set):
+                if any(phrase in line for phrase in phrases_set):
+                    return True
+            else:
+                if any(phrase in line for phrase in phrases):
+                    return True
+        return False
+    
     def isIdCompare(self, id):
         return id == self.bot_id
     async def send_command(self, command):
@@ -325,46 +351,32 @@ class RF:
             return
         print(val, lstr[0])
         # в пещерах
-        if any(phrase in line for line in lstr for phrase in [
-            "_булочка"
-        ]):
+        if "_булочка" in message.message:
             print("булочка")
             await self.client.send_message(self.cave_leader_id, "булочка")
-        elif any(phrase in line for line in lstr for phrase in [
-            "нет предмета",
-        ]):
+        elif "нет предмета" in message.message:
             await asyncio.sleep(4)
             await self.send_command(RF.hp)
             await self.wait_for_set_change()
             await asyncio.sleep(1)
             self.location = "🔥 61-65 Лес пламени"  # Добавьте эту строку
             await self.handle_energy_found()
-        elif any(phrase in line for line in lstr for phrase in [
-            "Ты уверен что хочешь зарегистрироваться в голосование",
-        ]):
+        elif "Ты уверен что хочешь зарегистрироваться в голосование" in message.message:
             await asyncio.sleep(5)
             await self.send_command("да")
-        elif any(phrase in line for line in lstr for phrase in [
-            "Из мешочка выпало",
-        ]):
+        elif "Из мешочка выпало" in message.message:
             await asyncio.sleep(1)
             await self.send_command("/use_120")            
-        elif any(phrase in line for line in lstr for phrase in [
-            "Ты пробрался к кладбищу",
-            "Ты открыл",
-        ]):
+        elif self._contains_any_phrase(lstr, ["Ты пробрался к кладбищу", "Ты открыл"]):
             print("булочка")
             await asyncio.sleep(3)
             await self.send_command("💀Закопать скелет")
-        elif any(phrase in line for line in lstr for phrase in [
-            "Закопать скелет",
-            "Выбери один",
-        ]):
+        elif self._contains_any_phrase(lstr, ["Закопать скелет", "Выбери один"]):
             print("булочка")
             await asyncio.sleep(3)
             random_index = random.randint(0, 4)
             await message.click(random_index)
-        elif any("Вы полны энергии" in line for line in lstr) and not self.is_in_caves:
+        elif "Вы полны энергии" in message.message and not self.is_in_caves:
             if self.kopka or self.location != "🦇 51-60 Земли Изгнанников":
                 await asyncio.sleep(1)
                 # await self.send_command("🏛 В ген. штаб")
@@ -372,9 +384,7 @@ class RF:
             else:
                 await asyncio.sleep(2)
                 await self.send_command("🐺По уровню")
-        elif any(phrase in line for line in lstr for phrase in [
-            "Ты уже находишься в данной локации!"
-        ]):
+        elif "Ты уже находишься в данной локации!" in message.message:
             await asyncio.sleep(1)
             if self.your_name == "👨‍🦳Пенсионер☠️":
                 # altar = random.choice(["🤖Алтарь Эйви", "🤖Алтарь Тир"])
@@ -394,24 +404,18 @@ class RF:
             lstr[-1] == "Ты воскрес!" or
             lstr[-1].endswith("Я тебя воскресил")) and self.in_castle:
             await message.forward_to(self.group59)
-        elif any("Ты успешно использовал" in line and "опыта" not in line for line in lstr):
+        elif "Ты успешно использовал" in message.message and "опыта" not in message.message:
             await message.forward_to(self.group59)
-        elif any("Посейдона был активирован автоматическим пожертвованием!" in line for line in lstr) and not self.is_in_caves:
+        elif "Посейдона был активирован автоматическим пожертвованием!" in message.message and not self.is_in_caves:
             print("Обнаружено автоматическое пожертвование Посейдона")
             asyncio.create_task(self._delayed_restart())
-        elif any(phrase in line for line in lstr for phrase in [
-            "ты мертв, дождись пока воскреснешь"
-        ]):
+        elif "ты мертв, дождись пока воскреснешь" in message.message:
             self.is_has_hil = self.extra_hil = True
             self.after_bind = self.hp_binds[0][1]
-        elif any(phrase in line for line in lstr for phrase in [
-            "Вы больше не можете лечиться"
-        ]):
+        elif "Вы больше не можете лечиться" in message.message:
             self.is_has_hil = self.extra_hil = False
             self.after_bind = self.hp_binds[0][1]
-        elif any(phrase in line for line in lstr for phrase in [
-                    "Ваша группа наткнулась"
-                ]):
+        elif "Ваша группа наткнулась" in message.message:
                     await asyncio.sleep(10)
                     if self.is_in_caves:  # Изменено на self.is_in_caves
                         await self.send_command( "⚖️Проверить состав")
@@ -424,7 +428,7 @@ class RF:
                         if response:
                             health_line = next((line for line in response[0].text.split('\n') if '❤Здоровье:' in line), None)
                             if health_line:
-                                match = re.search(r'❤Здоровье:\s*(\d+)', health_line)
+                                match = self.health_hero_re.search(health_line)
                                 if match:
                                     self.my_health = int(match.group(1))
                                     print(f"Текущее здоровье перед autoHeal: {self.my_health}")
@@ -505,7 +509,7 @@ class RF:
             phrase in line for line in lstr for phrase in [
                 "Ожидай завершения",
             ]
-        ) or any(re.search(rf"одержал победу над .*{self.your_name}", line) for line in lstr):
+        ) or any(self.victory_name_re.search(line) for line in lstr):
             self.my_health = self.my_max_health = self.hp_binds[0][0]
             self.after_bind = self.last_bind = self.hp_binds[0][1]  # Обновляем текущий бинд
             self.is_player_dead = True
@@ -559,7 +563,7 @@ class RF:
             self.is_in_caves = False
             self.after_caves = True
             # Извлечение значения duration из сообщения
-            match = re.search(r"через\s*(\d+)\s*мин", lstr[0])
+            match = self.arrival_min_re.search(lstr[0])
             if match:
                 duration = int(match.group(1)) * 60  # Преобразуем минуты в секунды
                 await self.set_moving_flag(duration)  # Устанавливаем флаг движения
@@ -598,7 +602,7 @@ class RF:
             else:
                 await message.forward_to(self.group59)  # стандартная группа для остальных 59
             # Ищем всех игроков, упомянутых в сообщении
-            players_not_in_gh = re.findall(r'(Нежный 🍅|🐾ᏦᎮᎧχᏗ|Ros_Hangzhou|𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗|John Doe|๖ۣۜᗯαsͥpwͣoͫℝt🐝|👨‍🦳Пенсионер☠️)', lstr[0])
+            players_not_in_gh = self.players_not_in_gh_re.findall(lstr[0])
             if players_not_in_gh:
                 for player in players_not_in_gh:
                     if player in self.players:
@@ -620,15 +624,15 @@ class RF:
             ros_score = None
             for line in lstr:
                 if "GERAIN" in line:
-                    match = re.search(r"\d+\((\d+)\)ур", line)
+                    match = self.level_re.search(line)
                     if match:
                         gerain_score = int(match.group(1))
                 elif "AvadaKedavra" in line:
-                    match = re.search(r"\d+\((\d+)\)ур", line)
+                    match = self.level_re.search(line)
                     if match:
                         avada_score = int(match.group(1))
                 elif self.your_name in line:
-                    match = re.search(r"\d+\((\d+)\)ур", line)
+                    match = self.level_re.search(line)
                     if match:
                         ros_score = int(match.group(1))
             if gerain_score is not None and avada_score is not None and ros_score is not None:
@@ -866,9 +870,9 @@ class RF:
                 await self.handle_no_energy()
             else:
                 # Проверяем здоровье перед /drink_102
-                health_line = next((line for line in lstr if re.search(r"Здоровье: ❤\d+/\d+", line)), None)
+                health_line = next((line for line in lstr if self.health_status_check_re.search(line)), None)
                 if health_line:
-                    health_match = re.search(r"Здоровье: ❤(\d+)/\d+", health_line)
+                    health_match = self.health_status_re.search(health_line)
                     if health_match:
                         current_health = int(health_match.group(1))
                         print(f"Текущее здоровье: {current_health}")
@@ -1362,7 +1366,7 @@ class RF:
                     # Ищем строку с информацией о здоровье
                     health_line = next((line for line in message_text.split('\n') if '❤Здоровье:' in line), None)
                     # Извлекаем текущее здоровье
-                    match = re.search(r'❤Здоровье:\s*(\d+)', health_line)
+                    match = self.health_hero_re.search(health_line)
                     self.my_health = int(match.group(1))
                     print(f"Текущее здоровье обновлено: {self.my_health} (ожидали {waited_time}s)")
                     return
@@ -1755,11 +1759,11 @@ class RF:
             for line in lstr:
                 if not line:
                     break
-                in_str_find = re.search("/p_guild_exc_(\d+)", line)
+                in_str_find = self.guild_exc_re.search(line)
                 if in_str_find:
                     h_id = int(in_str_find.group(1))
                     continue
-                in_str_find = re.search("\d\) .*\[.*\](.*)🏅\d+ур\. (.*)", line)
+                in_str_find = self.player_line_re.search(line)
                 if not in_str_find:
                     break
                 nick = in_str_find.group(1)
@@ -1774,7 +1778,7 @@ class RF:
                         await self.client.send_message(h_id, "Рес")
                     continue
                 if "💖" in sost:
-                    str_hp = re.search("❤️(\d+)/\d+", sost)
+                    str_hp = self.health_heart_re.search(sost)
                     helth = int(str_hp.group(1))
                     if self.is_cave_leader and self.is_in_caves:
                         if helth < self.ned_hill_hp:
@@ -2463,7 +2467,7 @@ class RF:
                     if response:
                         health_line = next((line for line in response[0].text.split('\n') if '❤Здоровье:' in line), None)
                         if health_line:
-                            match = re.search(r'❤Здоровье:\s*(\d+)', health_line)
+                            match = self.health_hero_re.search(health_line)
                             if match:
                                 self.my_health = int(match.group(1))
                                 print(f"Текущее здоровье перед autoHeal: {self.my_health}")
