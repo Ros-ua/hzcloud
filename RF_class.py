@@ -50,7 +50,7 @@ class RF:
         self.bezvgroup = -1002220238697
         self.group59 = -1001323974021
         self.location = "🔥 61-65 Лес пламени"  # Локация по умолчанию
-        self.version = "TE.31.12.25"
+        self.version = "2.01.26"
         # === КОНФИГ И ВЫЧИСЛЕНИЯ ===
         self.pvp_binds = RF_config.pvp_binds
         self.hp_binds = RF_config.hp_binds
@@ -103,7 +103,7 @@ class RF:
             self.mob_heal = 4500
             self.pvpgoheal = 4500
         elif self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
-            self.mob_heal = 6000
+            self.mob_heal = 5500
             self.pvpgoheal = 4500
         # === ИНИЦИАЛИЗАЦИЯ КОМПОНЕНТОВ ===
         self.common_cave()
