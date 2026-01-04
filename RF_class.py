@@ -50,7 +50,7 @@ class RF:
         self.bezvgroup = -1002220238697
         self.group59 = -1001323974021
         self.location = "🔥 61-65 Лес пламени"  # Локация по умолчанию
-        self.version = "2.31.12.25"
+        self.version = "1.4.01"
         # === КОНФИГ И ВЫЧИСЛЕНИЯ ===
         self.pvp_binds = RF_config.pvp_binds
         self.hp_binds = RF_config.hp_binds
@@ -103,7 +103,7 @@ class RF:
             self.mob_heal = 4500
             self.pvpgoheal = 4500
         elif self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
-            self.mob_heal = 6000
+            self.mob_heal = 5500
             self.pvpgoheal = 4500
         # === ИНИЦИАЛИЗАЦИЯ КОМПОНЕНТОВ ===
         self.common_cave()
@@ -779,7 +779,7 @@ class RF:
                     if self.terminal_type == "🧝‍♀ Терминал Castitas":
                         await self.nacheve()
                     else:
-                        await self.vterminale()
+                        await self.nacheve()
             if self.your_name == "๖ۣۜᗯαsͥpwͣoͫℝt🐝":
                     await asyncio.sleep(1)
                     if self.terminal_type == "🧝‍♀ Терминал Castitas":
@@ -1532,7 +1532,7 @@ class RF:
                     await asyncio.sleep(1)
             print("Ни одно из условий не выполнено, повторная проверка через 10 секунд")
     async def wait_for_health_refill(self):
-        await asyncio.sleep(2)
+        await asyncio.sleep(1)
         # Если появилась капча - ждём её решения
         if self.waiting_for_captcha:
             print("Обнаружена капча при пополнении здоровья...")
@@ -1545,20 +1545,26 @@ class RF:
         while True:
             last_message = await self.client.get_messages(self.bot_id, limit=2)
             if last_message:
-                lstr = last_message[0].message.split('\n')
-                if any("Здоровье пополнено" in line for line in lstr):
-                    await asyncio.sleep(0.1)
-                    return
+                # Проверяем все сообщения, а не только первое
+                for msg in last_message:
+                    if msg.message:
+                        lstr = msg.message.split('\n')
+                        if any("Здоровье пополнено" in line for line in lstr):
+                            await asyncio.sleep(0.1)
+                            return
             await asyncio.sleep(1)
     async def wait_for_set_change(self):
         # Ожидание смены сета
         while True:
             last_message = await self.client.get_messages(self.bot_id, limit=2)
             if last_message:
-                lstr = last_message[0].message.split('\n')
-                if any("Ты успешно надел комлект!" in line for line in lstr):
-                    return
-            await asyncio.sleep(1)
+                # Проверяем все сообщения, а не только первое
+                for msg in last_message:
+                    if msg.message:
+                        lstr = msg.message.split('\n')
+                        if any("Ты успешно надел комлект!" in line for line in lstr):
+                            return
+            await asyncio.sleep(0.5)
     async def wait_for_energy_full(self):
         # Ожидание сообщения о полной энергии
         while True:
