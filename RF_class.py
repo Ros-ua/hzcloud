@@ -43,14 +43,14 @@ class RF:
         self.ded_id = 1757434874
         self.ros_id = 715480502
         self.zatochka = 5
-        self.extra_hill_hp = 300
+        self.extra_hill_hp = 50
         self.ned_hill_hp = 1600
         self.min_health_single_exit = 2400  # Минимальное HP для выхода, если остался 1 живой
         self.min_health_group_exit = 4000  # Минимальное HP для выхода, если несколько живых
         self.bezvgroup = -1002220238697
         self.group59 = -1001323974021
         self.location = "🔥 61-65 Лес пламени"  # Локация по умолчанию
-        self.version = "1.4.01"
+        self.version = "1.5.01"
         # === КОНФИГ И ВЫЧИСЛЕНИЯ ===
         self.pvp_binds = RF_config.pvp_binds
         self.hp_binds = RF_config.hp_binds
@@ -987,7 +987,7 @@ class RF:
                 # Для этого игрока отправляем в обе группы
                 await self.client.send_message(self.group59, "Капча получена")
                 await asyncio.sleep(1)
-                await self.client.send_message(self.bezvgroup, "Капча получена")
+                # await self.client.send_message(self.bezvgroup, "Капча получена")
             self.waiting_for_captcha = True
         elif (match := self.arrival_re.search(lstr[0])):  # Проверяем совпадение для строки прибытия
             minutes = int(match.group(1))
