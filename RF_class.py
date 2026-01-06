@@ -50,7 +50,7 @@ class RF:
         self.bezvgroup = -1002220238697
         self.group59 = -1001323974021
         self.location = "🔥 61-65 Лес пламени"  # Локация по умолчанию
-        self.version = "1.5.01"
+        self.version = "1.6.01"
         # === КОНФИГ И ВЫЧИСЛЕНИЯ ===
         self.pvp_binds = RF_config.pvp_binds
         self.hp_binds = RF_config.hp_binds
@@ -2859,6 +2859,12 @@ class RF:
                         await self.client.send_message(member_id, "Выходим из пещеры _фольт")
                         print(f"Отправлено сообщение участнику {member_id}: Выходим из пещеры _фольт")
                 await asyncio.sleep(10)
+                # Надеваем фольт на себя после ожидания перед кликом выхода
+                if hasattr(self, "folt_binds") and self.folt_binds:
+                    print("Отправляем команду folt_binds для себя")
+                    await self.send_command(self.folt_binds[0][1])
+                    await self.wait_for_set_change()
+                    await asyncio.sleep(1)
                 await self.rf_message.click(3)
         else:
             print(f"Ещё рано на выход. Общее здоровье: {total_health}, Живых: {alive_count}")
