@@ -50,7 +50,7 @@ class RF:
         self.bezvgroup = -1002220238697
         self.group59 = -1001323974021
         self.location = "🔥 61-65 Лес пламени"  # Локация по умолчанию
-        self.version = "1.6.01"
+        self.version = "1.8.01"
         # === КОНФИГ И ВЫЧИСЛЕНИЯ ===
         self.pvp_binds = RF_config.pvp_binds
         self.hp_binds = RF_config.hp_binds
@@ -545,7 +545,7 @@ class RF:
                 # Для этого игрока отправляем в обе группы
                 await self.client.send_message(self.group59, "Капча пройдена")
                 await asyncio.sleep(1)
-                await self.client.send_message(self.bezvgroup, "Капча пройдена")
+                # await self.client.send_message(self.bezvgroup, "Капча пройдена")
             self.waiting_for_captcha = False
             await asyncio.sleep(3)
             # Повторяем последнюю команду после CAPTCHA
