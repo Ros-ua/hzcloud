@@ -50,7 +50,7 @@ class RF:
         self.bezvgroup = -1002220238697
         self.group59 = -1001323974021
         self.location = "🔥 61-65 Лес пламени"  # Локация по умолчанию
-        self.version = "1.8.01"
+        self.version = "1.10.01"
         # === КОНФИГ И ВЫЧИСЛЕНИЯ ===
         self.pvp_binds = RF_config.pvp_binds
         self.hp_binds = RF_config.hp_binds
@@ -1837,8 +1837,8 @@ class RF:
                             location_in_message = "Aquilla терминал"
                         elif "Терминал Basilaris" in line:
                             location_in_message = "Basilaris терминал"
-                    # Если текущая локация совпадает с местом удара, уходим на случайный алтарь (только для Ros_Hangzhou)
-                    if location_in_message and self.current_location == location_in_message and self.your_name == "Ros_Hangzhou":
+                    # Если текущая локация совпадает с местом удара, уходим на случайный алтарь (только для Ros_Hangzhou и 𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗)
+                    if location_in_message and self.current_location == location_in_message and self.your_name in ["Ros_Hangzhou", "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗"]:
                         print(f"Ядерный удар по текущей локации {self.current_location}! Уходим на случайный алтарь.")
                         random_altar = random.choice(list(self.altar_dict.values()))
                         await self.send_command(random_altar)
