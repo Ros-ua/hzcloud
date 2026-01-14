@@ -50,7 +50,7 @@ class RF:
         self.bezvgroup = -1002220238697
         self.group59 = -1001323974021
         self.location = "🔥 61-65 Лес пламени"  # Локация по умолчанию
-        self.version = "1.10.01"
+        self.version = "J.15.01"
         # === КОНФИГ И ВЫЧИСЛЕНИЯ ===
         self.pvp_binds = RF_config.pvp_binds
         self.hp_binds = RF_config.hp_binds
@@ -105,6 +105,9 @@ class RF:
         elif self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
             self.mob_heal = 5500
             self.pvpgoheal = 4500
+        elif self.your_name == "John Doe":
+            self.mob_heal = 5000
+            self.pvpgoheal = 4000
         # === ИНИЦИАЛИЗАЦИЯ КОМПОНЕНТОВ ===
         self.common_cave()
         self.setup_war_listener()
@@ -393,9 +396,11 @@ class RF:
                 altar = random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])
             elif self.your_name == "Ros_Hangzhou":
                 # altar = random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо", "🤖Алтарь Эйви", "🤖Алтарь Тир"])
-                altar = random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])
+                altar = random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])    
             elif self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
                 altar = random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])
+            elif self.your_name == "John Doe":
+                altar = random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])        
             await self.send_command(altar)
         # elif (lstr[-1].endswith("и воскреснешь через 10 минут.") or lstr[-1].startswith("Ты одержал победу над")) and self.in_castle:
         #     await message.forward_to(self.group59)
@@ -540,6 +545,8 @@ class RF:
             elif self.your_name == "๖ۣۜᗯαsͥpwͣoͫℝt🐝":
                 await self.client.send_message(self.group59, "Капча пройдена")
             elif self.your_name == "Ros_Hangzhou":
+                await self.client.send_message(self.group59, "Капча пройдена")
+            elif self.your_name == "John Doe":
                 await self.client.send_message(self.group59, "Капча пройдена")
             elif self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
                 # Для этого игрока отправляем в обе группы
@@ -774,6 +781,12 @@ class RF:
                         await self.nacheve()
                     else:
                         await self.vterminale()
+            if self.your_name == "John Doe":
+                    await asyncio.sleep(1)
+                    if self.terminal_type == "🧝‍♀ Терминал Castitas":
+                        await self.nacheve()
+                    else:
+                        await self.vterminale()
             if self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
                     await asyncio.sleep(1)
                     if self.terminal_type == "🧝‍♀ Терминал Castitas":
@@ -982,6 +995,8 @@ class RF:
             elif self.your_name == "๖ۣۜᗯαsͥpwͣoͫℝt🐝":
                 await self.client.send_message(self.group59, "Капча получена")
             elif self.your_name == "Ros_Hangzhou":
+                await self.client.send_message(self.group59, "Капча получена")
+            elif self.your_name == "John Doe":
                 await self.client.send_message(self.group59, "Капча получена")
             elif self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
                 # Для этого игрока отправляем в обе группы
@@ -1746,6 +1761,7 @@ class RF:
             excluded_players = {
                 "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗",
                 "Ros_Hangzhou",
+                "John Doe",
                 "👨‍🦳Пенсионер☠️",
                 "๖ۣۜᗯαsͥpwͣoͫℝt🐝"
             }
@@ -1838,7 +1854,7 @@ class RF:
                         elif "Терминал Basilaris" in line:
                             location_in_message = "Basilaris терминал"
                     # Если текущая локация совпадает с местом удара, уходим на случайный алтарь (только для Ros_Hangzhou и 𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗)
-                    if location_in_message and self.current_location == location_in_message and self.your_name in ["Ros_Hangzhou", "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗"]:
+                    if location_in_message and self.current_location == location_in_message and self.your_name in ["Ros_Hangzhou", "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗", "John Doe"]:
                         print(f"Ядерный удар по текущей локации {self.current_location}! Уходим на случайный алтарь.")
                         random_altar = random.choice(list(self.altar_dict.values()))
                         await self.send_command(random_altar)
@@ -1856,6 +1872,10 @@ class RF:
                     self.go_term_Castitas = False
                     self.go_term_Aquilla = False
                 elif self.your_name == "Ros_Hangzhou":
+                    self.go_term_Basilaris = True
+                    self.go_term_Castitas = False
+                    self.go_term_Aquilla = False
+                elif self.your_name == "John Doe":
                     self.go_term_Basilaris = True
                     self.go_term_Castitas = False
                     self.go_term_Aquilla = False
@@ -2993,6 +3013,8 @@ class RF:
                 # return random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо", "🤖Алтарь Эйви", "🤖Алтарь Тир"])
                 return random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])
             elif self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
+                return random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])
+            elif self.your_name == "John Doe":
                 return random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])
     async def handle_no_energy(self):
         print("нет энергии")
