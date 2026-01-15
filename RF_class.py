@@ -50,7 +50,7 @@ class RF:
         self.bezvgroup = -1002220238697
         self.group59 = -1001323974021
         self.location = "🔥 61-65 Лес пламени"  # Локация по умолчанию
-        self.version = "J.15.01"
+        self.version = "J.16.01"
         # === КОНФИГ И ВЫЧИСЛЕНИЯ ===
         self.pvp_binds = RF_config.pvp_binds
         self.hp_binds = RF_config.hp_binds
@@ -107,7 +107,7 @@ class RF:
             self.pvpgoheal = 4500
         elif self.your_name == "John Doe":
             self.mob_heal = 5000
-            self.pvpgoheal = 4000
+            self.pvpgoheal = 4500
         # === ИНИЦИАЛИЗАЦИЯ КОМПОНЕНТОВ ===
         self.common_cave()
         self.setup_war_listener()
