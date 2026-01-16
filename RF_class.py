@@ -50,7 +50,7 @@ class RF:
         self.bezvgroup = -1002220238697
         self.group59 = -1001323974021
         self.location = "🔥 61-65 Лес пламени"  # Локация по умолчанию
-        self.version = "J.17.01"
+        self.version = "T.17.01"
         # === КОНФИГ И ВЫЧИСЛЕНИЯ ===
         self.pvp_binds = RF_config.pvp_binds
         self.hp_binds = RF_config.hp_binds
@@ -1815,7 +1815,11 @@ class RF:
                 # Получаем ID отправителя сообщения
                 sender_id = event.message.from_id.user_id if event.message.from_id else None
                 # Отправляем сообщение только если оно от Ros_Hangzhou
-                if sender_id in (self.ros_id, self.pchelka_id):
+                if sender_id in (
+                    # self.ros_id,
+                    # self.pchelka_id,
+                    self.tomat_id,
+                ):
                     # Отправляем сообщение в личные сообщения отправителю
                     try:
                         await self.client.send_message(sender_id, "У тебя капча")
