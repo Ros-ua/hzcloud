@@ -42,6 +42,7 @@ class RF:
         self.pchelka_id = 255360779
         self.ded_id = 1757434874
         self.ros_id = 715480502
+        self.enot_id = 1443267413
         self.zatochka = 5
         self.extra_hill_hp = 50
         self.ned_hill_hp = 1600
@@ -50,7 +51,7 @@ class RF:
         self.bezvgroup = -1002220238697
         self.group59 = -1001323974021
         self.location = "🔥 61-65 Лес пламени"  # Локация по умолчанию
-        self.version = "F.21.01"
+        self.version = "FE.21.01"
         # === КОНФИГ И ВЫЧИСЛЕНИЯ ===
         self.pvp_binds = RF_config.pvp_binds
         self.hp_binds = RF_config.hp_binds
@@ -66,7 +67,8 @@ class RF:
             "John Doe": self.john_id,
             "๖ۣۜᗯαsͥpwͣoͫℝt🐝": self.pchelka_id,
             "👨‍🦳Пенсионер☠️": self.ded_id,
-            "Ros_Hangzhou": self.ros_id
+            "Ros_Hangzhou": self.ros_id,
+            "Лучшее_что_было_в_моей_жизни-RF": self.enot_id,
         }
         self.altar_dict = {
             0: "👩‍🚀Алтарь Иса",
@@ -87,7 +89,25 @@ class RF:
         self.guild_exc_re = re.compile(r"/p_guild_exc_(\d+)")
         self.player_line_re = re.compile(r"\d\) .*\[.*\](.*)🏅\d+ур\. (.*)")
         self.level_re = re.compile(r"\d+\((\d+)\)ур")
-        self.players_not_in_gh_re = re.compile(r'(Нежный 🍅|🐾ᏦᎮᎧχᏗ|Ros_Hangzhou|𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗|John Doe|๖ۣۜᗯαsͥpwͣoͫℝt🐝|👨‍🦳Пенсионер☠️)')
+        # self.players_not_in_gh_re = re.compile(r'(Нежный 🍅|🐾ᏦᎮᎧχᏗ|Ros_Hangzhou|𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗|John Doe|๖ۣۜᗯαsͥpwͣoͫℝt🐝|Лучшее_что_было_в_моей_жизни-RF|👨‍🦳Пенсионер☠️)')
+        
+        
+        self.players_not_in_gh_re = re.compile(
+            r'(Нежный 🍅|'
+            r'🐾ᏦᎮᎧχᏗ|'
+            r'Ros_Hangzhou|'
+            r'𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗|'
+            r'John Doe|'
+            r'๖ۣۜᗯαsͥpwͣoͫℝt🐝|'
+            r'Лучшее_что_было_в_моей_жизни-RF|'
+            r'👨‍🦳Пенсионер☠️)'
+        )
+                
+        
+        
+        
+        
+        
         self.victory_name_re = re.compile(rf"одержал победу над .*{re.escape(self.your_name)}")
         self.arrival_min_re = re.compile(r"через\s*(\d+)\s*мин")
         self.health_status_re = re.compile(r"Здоровье: ❤(\d+)/\d+")
@@ -107,6 +127,9 @@ class RF:
             self.pvpgoheal = 4500
         elif self.your_name == "John Doe":
             self.mob_heal = 7000
+            self.pvpgoheal = 4500
+        elif self.your_name == "Лучшее_что_было_в_моей_жизни-RF":
+            self.mob_heal = 8000
             self.pvpgoheal = 4500
         # === ИНИЦИАЛИЗАЦИЯ КОМПОНЕНТОВ ===
         self.common_cave()
@@ -401,6 +424,8 @@ class RF:
                 altar = random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])
             elif self.your_name == "John Doe":
                 altar = random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])        
+            elif self.your_name == "Лучшее_что_было_в_моей_жизни-RF":
+                altar = random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])
             await self.send_command(altar)
         # elif (lstr[-1].endswith("и воскреснешь через 10 минут.") or lstr[-1].startswith("Ты одержал победу над")) and self.in_castle:
         #     await message.forward_to(self.group59)
@@ -782,6 +807,12 @@ class RF:
                     else:
                         await self.vterminale()
             if self.your_name == "John Doe":
+                    await asyncio.sleep(1)
+                    if self.terminal_type == "🧝‍♀ Терминал Castitas":
+                        await self.nacheve()
+                    else:
+                        await self.vterminale()
+            if self.your_name == "Лучшее_что_было_в_моей_жизни-RF":
                     await asyncio.sleep(1)
                     if self.terminal_type == "🧝‍♀ Терминал Castitas":
                         await self.nacheve()
@@ -1762,6 +1793,7 @@ class RF:
                 "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗",
                 "Ros_Hangzhou",
                 "John Doe",
+                "Лучшее_что_было_в_моей_жизни-RF",
                 "👨‍🦳Пенсионер☠️",
                 "๖ۣۜᗯαsͥpwͣoͫℝt🐝"
             }
@@ -1858,7 +1890,7 @@ class RF:
                         elif "Терминал Basilaris" in line:
                             location_in_message = "Basilaris терминал"
                     # Если текущая локация совпадает с местом удара, уходим на случайный алтарь (только для Ros_Hangzhou и 𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗)
-                    if location_in_message and self.current_location == location_in_message and self.your_name in ["Ros_Hangzhou", "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗", "John Doe"]:
+                    if location_in_message and self.current_location == location_in_message and self.your_name in ["Ros_Hangzhou", "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗", "John Doe", "Лучшее_что_было_в_моей_жизни-RF"]:
                         print(f"Ядерный удар по текущей локации {self.current_location}! Уходим на случайный алтарь.")
                         random_altar = random.choice(list(self.altar_dict.values()))
                         await self.send_command(random_altar)
@@ -1880,6 +1912,10 @@ class RF:
                     self.go_term_Castitas = False
                     self.go_term_Aquilla = False
                 elif self.your_name == "John Doe":
+                    self.go_term_Basilaris = True
+                    self.go_term_Castitas = False
+                    self.go_term_Aquilla = False
+                elif self.your_name == "Лучшее_что_было_в_моей_жизни-RF":
                     self.go_term_Basilaris = True
                     self.go_term_Castitas = False
                     self.go_term_Aquilla = False
@@ -2107,7 +2143,7 @@ class RF:
             print("Через 58 минут kopka=False, остаёмся на месте") # Изменено время в print
     def common_cave(self):
         print("Устанавливаем обработчик сообщений для common_cave")
-        @self.client.on(events.NewMessage(from_users=[self.tomat_id, self.ros_id, self.kroha_id, self.tamplier_id, self.john_id, self.pchelka_id, 5596818972, self.ded_id]))
+        @self.client.on(events.NewMessage(from_users=[self.tomat_id, self.ros_id, self.kroha_id, self.tamplier_id, self.enot_id, self.john_id, self.pchelka_id, 5596818972, self.ded_id]))
         async def handle_specific_user_messages(event):
             if event.is_private:  # Проверяем, что сообщение пришло из личного чата
                 print(f"Получено новое личное сообщение от пользователя {event.sender_id}: {event.message.text}")
@@ -3019,6 +3055,8 @@ class RF:
             elif self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
                 return random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])
             elif self.your_name == "John Doe":
+                return random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])
+            elif self.your_name == "Лучшее_что_было_в_моей_жизни-RF":
                 return random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])
     async def handle_no_energy(self):
         print("нет энергии")
