@@ -51,7 +51,7 @@ class RF:
         self.bezvgroup = -1002220238697
         self.group59 = -1001323974021
         self.location = "🔥 61-65 Лес пламени"  # Локация по умолчанию
-        self.version = "FE.21.01"
+        self.version = "R.22.01"
         # === КОНФИГ И ВЫЧИСЛЕНИЯ ===
         self.pvp_binds = RF_config.pvp_binds
         self.hp_binds = RF_config.hp_binds
@@ -90,8 +90,6 @@ class RF:
         self.player_line_re = re.compile(r"\d\) .*\[.*\](.*)🏅\d+ур\. (.*)")
         self.level_re = re.compile(r"\d+\((\d+)\)ур")
         # self.players_not_in_gh_re = re.compile(r'(Нежный 🍅|🐾ᏦᎮᎧχᏗ|Ros_Hangzhou|𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗|John Doe|๖ۣۜᗯαsͥpwͣoͫℝt🐝|Лучшее_что_было_в_моей_жизни-RF|👨‍🦳Пенсионер☠️)')
-        
-        
         self.players_not_in_gh_re = re.compile(
             r'(Нежный 🍅|'
             r'🐾ᏦᎮᎧχᏗ|'
@@ -102,12 +100,6 @@ class RF:
             r'Лучшее_что_было_в_моей_жизни-RF|'
             r'👨‍🦳Пенсионер☠️)'
         )
-                
-        
-        
-        
-        
-        
         self.victory_name_re = re.compile(rf"одержал победу над .*{re.escape(self.your_name)}")
         self.arrival_min_re = re.compile(r"через\s*(\d+)\s*мин")
         self.health_status_re = re.compile(r"Здоровье: ❤(\d+)/\d+")
@@ -135,7 +127,6 @@ class RF:
         self.common_cave()
         self.setup_war_listener()
         self.setup_captcha_listener()
-    
     def _contains_any_phrase(self, lines, phrases):
         """Оптимизированная проверка наличия фраз в строках. O(n) вместо O(n*m))"""
         if isinstance(phrases, str):
@@ -149,7 +140,6 @@ class RF:
                 if any(phrase in line for phrase in phrases):
                     return True
         return False
-    
     def isIdCompare(self, id):
         return id == self.bot_id
     async def send_command(self, command):
@@ -543,7 +533,7 @@ class RF:
             self.my_health = self.my_max_health = self.hp_binds[0][0]
             self.after_bind = self.last_bind = self.hp_binds[0][1]  # Обновляем текущий бинд
             self.is_player_dead = True
-            await asyncio.sleep(6)
+            await asyncio.sleep(10)
             if self.is_has_res and self.is_in_caves:  # Проверяем, что is_has_res равно True и мы в пещерах
                 self.is_has_res = False
                 await asyncio.sleep(6)
