@@ -51,7 +51,7 @@ class RF:
         self.bezvgroup = -1002220238697
         self.group59 = -1001323974021
         self.location = "🔥 61-65 Лес пламени"  # Локация по умолчанию
-        self.version = "R.22.01"
+        self.version = "PRE.22.01"
         # === КОНФИГ И ВЫЧИСЛЕНИЯ ===
         self.pvp_binds = RF_config.pvp_binds
         self.hp_binds = RF_config.hp_binds
@@ -2116,14 +2116,14 @@ class RF:
                 print("Через 25 минут prem=True (есть АБУ)")
         # Ждём ещё 25 минут (итого 50 минут от начала)
         await asyncio.sleep(25 * 60)
-        if self.kopka and self.prem and not self.waiting_for_captcha:
+        if self.kopka and not self.waiting_for_captcha: # and self.prem
             print("Через 50 минут kopka=True и prem=True, отправляем в Лес пламени")
             await self.send_command(self.location)
-        else:
-            if not self.kopka:
-                print("Через 50 минут kopka=False")
-            if not self.prem:
-                print("Через 50 минут prem=False (нет АБУ)")
+        # else:
+        #     if not self.kopka:
+        #         print("Через 50 минут kopka=False")
+        #     if not self.prem:
+        #         print("Через 50 минут prem=False (нет АБУ)")
         # Ждём ещё 8 минут (итого 58 минут от начала)
         await asyncio.sleep(8 * 60)  # Изменено с 9 на 8
         if self.kopka and not self.waiting_for_captcha:
