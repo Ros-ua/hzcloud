@@ -53,7 +53,7 @@ class RF:
         self.location = "🔥 61-65 Лес пламени"  # Локация по умолчанию
         if self.your_name == "Лучшее_что_было_в_моей_жизни-RF":
             self.location = "🦇 51-60 Земли Изгнанников"
-        self.version = "E.25.01"
+        self.version = "LES.25.01"
         # === КОНФИГ И ВЫЧИСЛЕНИЯ ===
         self.pvp_binds = RF_config.pvp_binds
         self.hp_binds = RF_config.hp_binds
@@ -961,7 +961,12 @@ class RF:
                         await self.send_command( RF.hp)
                         await self.wait_for_set_change()
                         await asyncio.sleep(1)
-                        self.location = "🔥 61-65 Лес пламени"  # Добавьте эту строку
+                        # self.location = "🔥 61-65 Лес пламени"  # Добавьте эту строку
+
+                        # Меняем локацию для всех, кроме одного конкретного ника
+                        if self.your_name != "Лучшее_что_было_в_моей_жизни-RF":
+                            self.location = "🔥 61-65 Лес пламени"
+
                         if self.your_name == "👨‍🦳Пенсионер☠️":
                             self.mob_heal = 3500
                         await self.handle_energy_found()
