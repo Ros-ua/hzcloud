@@ -53,7 +53,7 @@ class RF:
         self.location = "🔥 61-65 Лес пламени"  # Локация по умолчанию
         if self.your_name == "Лучшее_что_было_в_моей_жизни-RF":
             self.location = "🦇 51-60 Земли Изгнанников"
-        self.version = "Lpen123.24.01"
+        self.version = "E.25.01"
         # === КОНФИГ И ВЫЧИСЛЕНИЯ ===
         self.pvp_binds = RF_config.pvp_binds
         self.hp_binds = RF_config.hp_binds
@@ -123,8 +123,8 @@ class RF:
             self.mob_heal = 7000
             self.pvpgoheal = 4500
         elif self.your_name == "Лучшее_что_было_в_моей_жизни-RF":
-            self.mob_heal = 8000
-            self.pvpgoheal = 4500
+            self.mob_heal = 4000
+            self.pvpgoheal = 4000
         # === ИНИЦИАЛИЗАЦИЯ КОМПОНЕНТОВ ===
         self.common_cave()
         self.setup_war_listener()
