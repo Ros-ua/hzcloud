@@ -53,7 +53,7 @@ class RF:
         self.location = "🔥 61-65 Лес пламени"  # Локация по умолчанию
         if self.your_name == "Лучшее_что_было_в_моей_жизни-RF":
             self.location = "🦇 51-60 Земли Изгнанников"
-        self.version = "LOC.24.01"
+        self.version = "Lpen.24.01"
         # === КОНФИГ И ВЫЧИСЛЕНИЯ ===
         self.pvp_binds = RF_config.pvp_binds
         self.hp_binds = RF_config.hp_binds
@@ -395,13 +395,24 @@ class RF:
             random_index = random.randint(0, 4)
             await message.click(random_index)
         elif "Вы полны энергии" in message.message and not self.is_in_caves:
-            if self.kopka or (self.location != "🦇 51-60 Земли Изгнанников" and self.your_name == "👨‍🦳Пенсионер☠️"):
-                await asyncio.sleep(1)
-                # await self.send_command("🏛 В ген. штаб")
-                # await self.check_arrival()
-            else:
-                await asyncio.sleep(2)
-                await self.send_command("🐺По уровню")
+            if self.kopka:
+                    # если идёт копка — ничего не делаем, ждём окончания
+                    await asyncio.sleep(1)
+                    # можно здесь потом добавить проверку завершения копки, если нужно
+                else:
+                    # отправляем "По уровню" ТОЛЬКО если это Пенсионер И на нужной локации
+                    if (
+                        self.your_name == "👨‍🦳Пенсионер☠️"
+                        and self.location == "🦇 51-60 Земли Изгнанников"
+                    ):
+                        await asyncio.sleep(2)
+                        await self.send_command("🐺По уровню")
+                    else:
+                        # для всех остальных случаев — ничего не отправляем
+                        # или можно добавить другое действие, например:
+                        # await asyncio.sleep(1)
+                        # await self.send_command("что-то другое")
+                        pass
         elif "Ты уже находишься в данной локации!" in message.message:
             await asyncio.sleep(1)
             if self.your_name == "👨‍🦳Пенсионер☠️":
@@ -899,11 +910,14 @@ class RF:
         elif any(phrase in line for line in lstr for phrase in ["Энергия: 🔋0/5", "[недостаточно энергии]"]):
             print("нет энергии")
             await asyncio.sleep(4)
-            if self.location != "🦇 51-60 Земли Изгнанников" and self.your_name == "👨‍🦳Пенсионер☠️":
-                await self.send_command(RF.hp)
-                await self.wait_for_set_change()
-                await asyncio.sleep(1)
-                await self.handle_no_energy()
+            if not (
+                    self.location == "🦇 51-60 Земли Изгнанников" 
+                    and self.your_name == "👨‍🦳Пенсионер☠️"
+                ):
+                    await self.send_command(RF.hp)
+                    await self.wait_for_set_change()
+                    await asyncio.sleep(1)
+                    await self.handle_no_energy()
             else:
                 # Проверяем здоровье перед /drink_102
                 health_line = next((line for line in lstr if self.health_status_check_re.search(line)), None)
