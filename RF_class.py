@@ -2103,7 +2103,7 @@ class RF:
         print("Запущен таймер подготовки к войне")
         # Если в ожидании капчи, то сразу выходим
         # if self.waiting_for_captcha:
-        #     return
+        #     return
         # Ждём 25 минут и проверяем kopka и prem (Итого 25 минут)
         await asyncio.sleep(25 * 60)  # 25 минут в секундах
         if self.kopka and not self.prem and not self.waiting_for_captcha:
@@ -3383,8 +3383,7 @@ class RF:
             @self.client.on(events.NewMessage(from_users=[self.bot_id]))
             async def details_handler(event):
                 # Проверяем, что это сообщение с деталями предмета
-                if any(emoji in event.message.text for emoji in ['💨', '🎯', '❤', '⏳']) or \
-                "грейд" in event.message.text.lower():
+                if any(emoji in event.message.text for emoji in ['💨', '🎯', '❤', '⏳']) or "грейд" in event.message.text.lower():
                     confirmation_future.set_result(True)
                 else:
                     confirmation_future.set_result(False)
