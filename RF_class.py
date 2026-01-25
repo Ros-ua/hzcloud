@@ -53,7 +53,7 @@ class RF:
         self.location = "🔥 61-65 Лес пламени"  # Локация по умолчанию
         if self.your_name == "Лучшее_что_было_в_моей_жизни-RF":
             self.location = "🦇 51-60 Земли Изгнанников"
-        self.version = "ex.25.01"
+        self.version = "smena.25.01"
         # === КОНФИГ И ВЫЧИСЛЕНИЯ ===
         self.pvp_binds = RF_config.pvp_binds
         self.hp_binds = RF_config.hp_binds
@@ -802,7 +802,7 @@ class RF:
                     if self.terminal_type == "🧝‍♀ Терминал Castitas":
                         await self.nacheve()
                     else:
-                        await self.vterminale()
+                        await self.nacheve()
             if self.your_name == "Ros_Hangzhou":
                     await asyncio.sleep(1)
                     if self.terminal_type == "🧝‍♀ Терминал Castitas":
@@ -832,7 +832,7 @@ class RF:
                     if self.terminal_type == "🧝‍♀ Терминал Castitas":
                         await self.nacheve()
                     else:
-                        await self.nacheve()
+                        await self.vterminale()
            # if self.terminal_type == "🧝‍♀ Терминал Castitas":
             #     await self.nacheve()
             # elif self.terminal_type in ["🤖 Терминал Aquilla", "👩‍🚀 Терминал Basilaris"]:
@@ -1932,11 +1932,11 @@ class RF:
                     self.go_term_Aquilla = False
                 elif self.your_name == "👨‍🦳Пенсионер☠️":
                     self.go_term_Basilaris = True
-                    self.go_term_Castitas = False
+                    self.go_term_Castitas = True
                     self.go_term_Aquilla = False
                 elif self.your_name == "๖ۣۜᗯαsͥpwͣoͫℝt🐝":
                     self.go_term_Basilaris = True
-                    self.go_term_Castitas = True
+                    self.go_term_Castitas = False
                     self.go_term_Aquilla = False
                 # Отправка /hero для пользователей из списка
                 if self.your_name in users_need_hero:
