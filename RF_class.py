@@ -53,7 +53,7 @@ class RF:
         self.location = "🔥 61-65 Лес пламени"  # Локация по умолчанию
         if self.your_name == "Лучшее_что_было_в_моей_жизни-RF":
             self.location = "🦇 51-60 Земли Изгнанников"
-        self.version = "LES.25.01"
+        self.version = "ex.25.01"
         # === КОНФИГ И ВЫЧИСЛЕНИЯ ===
         self.pvp_binds = RF_config.pvp_binds
         self.hp_binds = RF_config.hp_binds
@@ -2936,7 +2936,7 @@ class RF:
                     await self.send_command(self.folt_binds[0][1])
                     await self.wait_for_set_change()
                     await asyncio.sleep(2)
-                await self.rf_message.click(3)
+                await self.cave_buttons_message.click(3)
         else:
             print(f"Ещё рано на выход. Общее здоровье: {total_health}, Живых: {alive_count}")
     async def hp_in_caves_kingRagnar(self, lstr):
@@ -2990,7 +2990,7 @@ class RF:
         # await self.client.send_message(self.cave_leader_id, "Метод time_cave запущен.")  # Отправка сообщения
         # Константы для времени
         CHECK_HOUR = 20
-        CHECK_MINUTE = 55
+        CHECK_MINUTE = 54
         while True:
             now = datetime.datetime.now()
             print(f"Текущее время: {now}")
@@ -3015,8 +3015,8 @@ class RF:
             # Если `self.is_moving` активен, ждем, пока он не станет `False`
             while self.is_moving:
                 await asyncio.sleep(2)  # Проверяем каждую секунду
-            await asyncio.sleep(randint(10, 50))
-            await self.rf_message.click(3)
+            await asyncio.sleep(randint(10, 20))
+            await self.cave_buttons_message.click(3)
             await asyncio.sleep(5)
             await self.send_command( "/daily")
             # await self.client.send_message(self.cave_leader_id, "Вы были в пещере и нажали кнопку.")  # Сообщение о нажатии
