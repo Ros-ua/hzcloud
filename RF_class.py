@@ -33,7 +33,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО NONE ===
         self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = None
         # === ЧИСЛА ===
-        self.version = "smena.25.01"
+        self.version = "izg.26.01"
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
         self.tomat_id = 278339710
@@ -1019,7 +1019,7 @@ class RF:
             "данное действие можно выполнять только из ген. штаба",
             "В данную локацию можно перейти из ген. штаба!",
             "У тебя нет 💀скелетов" # использовать на хелоуин
-            ]):
+            ]) and not self.is_in_caves and not self.in_castle:
             await asyncio.sleep(1)
             await self.send_command( "🏛 В ген. штаб")
             if self.mobs:  # Проверяем, включен ли флаг для мобов
