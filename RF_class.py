@@ -33,7 +33,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО NONE ===
         self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = None
         # === ЧИСЛА ===
-        self.version = "1.27.01"
+        self.version = "1.28.01"
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
         self.tomat_id = 278339710
@@ -2145,11 +2145,16 @@ class RF:
         #         print("Через 50 минут prem=False (нет АБУ)")
         # Ждём ещё 8 минут (итого 58 минут от начала)
         await asyncio.sleep(8 * 60)  # Изменено с 9 на 8
-        if self.kopka and not self.waiting_for_captcha:
-            print("Через 58 минут kopka=True, отправляем в ген. штаб") # Изменено время в print
-            await self.send_command( "🏛 В ген. штаб")
+        # Если через 58 минут мы в пещере и мы cave leader — жмём кнопку (3)
+        if self.is_in_caves and self.is_cave_leader:
+            print("Через 58 минут в пещере как cave leader, нажимаем кнопку (3)")
+            await self.rf_message.click(3)
+        # Если копка активна и нет капчи — оставляем старое поведение
+        elif self.kopka and not self.waiting_for_captcha:
+            print("Через 58 минут kopka=True, отправляем в ген. штаб")  # Изменено время в print
+            await self.send_command("🏛 В ген. штаб")
         else:
-            print("Через 58 минут kopka=False, остаёмся на месте") # Изменено время в print
+            print("Через 58 минут kopka=False, остаёмся на месте")  # Изменено время в print
     def common_cave(self):
         print("Устанавливаем обработчик сообщений для common_cave")
         @self.client.on(events.NewMessage(from_users=[self.tomat_id, self.ros_id, self.kroha_id, self.tamplier_id, self.enot_id, self.john_id, self.pchelka_id, 5596818972, self.ded_id]))
