@@ -33,7 +33,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО NONE ===
         self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = None
         # === ЧИСЛА ===
-        self.version = "sost.30.01"
+        self.version = "folt.30.01"
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
         self.tomat_id = 278339710
@@ -2145,9 +2145,21 @@ class RF:
         #         print("Через 50 минут prem=False (нет АБУ)")
         # Ждём ещё 8 минут (итого 58 минут от начала)
         await asyncio.sleep(8 * 60)  # Изменено с 9 на 8
-        # Если через 58 минут мы в пещере и мы cave leader — жмём кнопку (3)
+        # Если через 58 минут мы в пещере и мы cave leader — сначала фольт всем, себе, потом кнопка (3)
         if self.is_in_caves and self.is_cave_leader:
-            print("Через 58 минут в пещере как cave leader, нажимаем кнопку (3)")
+            print("Через 58 минут в пещере как cave leader: шлём фольт всем, себе, затем кнопка (3)")
+            group_members = getattr(self, "group_members", [])
+            for member_id in group_members:
+                if member_id != self.cave_leader_id:
+                    await asyncio.sleep(5)
+                    await self.client.send_message(member_id, "Выходим из пещеры _фольт")
+                    print(f"Отправлено сообщение участнику {member_id}: Выходим из пещеры _фольт")
+            await asyncio.sleep(5)
+            if hasattr(self, "folt_binds") and self.folt_binds:
+                print("Отправляем команду folt_binds для себя")
+                await self.send_command(self.folt_binds[0][1])
+                await self.wait_for_set_change()
+                await asyncio.sleep(2)
             await self.rf_message.click(3)
         # Если копка активна и нет капчи — оставляем старое поведение
         elif self.kopka and not self.waiting_for_captcha:
@@ -2916,6 +2928,7 @@ class RF:
                 print(player_status)
         print(f"\nОбщее здоровье группы: {total_health}")
         print(f"Живых: {alive_count}, Живые с хилками: {'да' if alive_has_heal else 'нет'}, Группа с ресами: {'да' if group_has_res else 'нет'}")
+        self.group_members = group_members  # сохраняем для war_preparation_timer (58 мин)
         should_exit = False
         if alive_count == 1 and total_health < self.min_health_single_exit:
             should_exit = True
