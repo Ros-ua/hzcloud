@@ -33,7 +33,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО NONE ===
         self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = None
         # === ЧИСЛА ===
-        self.version = "leader.30.01"
+        self.version = "lccc.30.01"
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
         self.tomat_id = 278339710
@@ -2418,10 +2418,9 @@ class RF:
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
                 elif "_пещера" in message_text:
-                    # Проверяем, что отправитель не является cave leader
                     # На аккаунте лидера команду выполняем всегда.
                     # На остальных аккаунтах игнорируем, если команду написал лидер.
-                    if (not getattr(self, "is_cave_leader", False)) and event.sender_id == self.cave_leader_id:
+                    if not self.is_cave_leader and event.sender_id == self.cave_leader_id:
                         print(f"Команда _пещера от cave leader {event.sender_id} игнорируется")
                         return
                     if self.kopka:
