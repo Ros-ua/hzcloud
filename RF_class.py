@@ -33,7 +33,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО NONE ===
         self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = None
         # === ЧИСЛА ===
-        self.version = "sosta.2.01"
+        self.version = "gsh.3.01"
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
         self.tomat_id = 278339710
@@ -2447,14 +2447,25 @@ class RF:
                         print(f"Команда _пещера от cave leader {event.sender_id} игнорируется")
                         return
                     if self.kopka:
-                        print("Отправляем комплект hp_{self.hp_binds[0][0]})")
+                        print(f"Отправляем комплект hp_{self.hp_binds[0][0]})")
                         await self.send_command( self.hp_binds[0][1])  # Используем переменную hp_{self.hp_binds[0][0]}) для надевания
                         await self.wait_for_set_change() #работает
                         await asyncio.sleep(1)
                         self.my_health = self.my_max_health = self.hp_binds[0][0]
                         print(f"Здоровье обновлено: {self.my_health}/{self.my_max_health}")
-                        await asyncio.sleep(5)
+                        await asyncio.sleep(1)
+                        # Проверяем состав группы перед уходом в ген. штаб
+                        await self.send_command("⚖️Проверить состав")
+                        await asyncio.sleep(8)
+                        # Отправляем _гш всем участникам группы перед уходом в ген. штаб
+                        group_members = getattr(self, "group_members", [])
+                        for member_id in group_members:
+                            if member_id != self.cave_leader_id:
+                                await asyncio.sleep(1)
+                                await self.client.send_message(member_id, "_гш")
+                                print(f"Отправлено сообщение участнику {member_id}: _гш")
                         print("Отправляем команду /go_to_gsh")
+                        await asyncio.sleep(35)
                         await self.send_command( "🏛 В ген. штаб")
                         await self.arrival_hil()  # Вызываем arrival_hil после отправки в ген. штаб
                         await asyncio.sleep(2)
