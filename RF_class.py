@@ -31,9 +31,9 @@ class RF:
         # === ВСЕ ЧТО РАВНО FALSE ===
         self.is_cave_leader = self.is_run = self.na_nashem_altare = self.def_rudnik = self.after_caves = self.na_straj = self.is_player_dead = self.fast_cave = self.cave_task_running = self.waiting_for_captcha = self.is_moving = self.in_castle = self.v_terminale = self.is_training = self.cave_message_pinned = self.prem = self.go_term_Aquilla = self.go_term_Basilaris = self.go_term_Castitas = self.is_in_caves = self.is_in_gh = self.is_has_hil = self.is_has_res = self.is_nacheve_active = self.in_battle = False
         # === ВСЕ ЧТО РАВНО NONE ===
-        self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = None
+        self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = self.group_members = None
         # === ЧИСЛА ===
-        self.version = "gsh.5.01"
+        self.version = "hil.6.01"
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
         self.tomat_id = 278339710
@@ -2159,9 +2159,8 @@ class RF:
         # Если через 58 минут мы в пещере и мы cave leader — сначала фольт всем, себе, потом кнопка (3)
         if self.is_in_caves and self.is_cave_leader:
             print("Через 58 минут в пещере как cave leader: шлём фольт всем, себе, затем кнопка (3)")
-            group_members = getattr(self, "group_members", [])
-            for member_id in group_members:
-                if member_id != self.cave_leader_id:
+            for member_id in (self.group_members or []):    # перебираем всех участников группы
+                if member_id != self.cave_leader_id: # если участник не является cave leader, то отправляем сообщение о фольте
                     await asyncio.sleep(1)
                     await self.client.send_message(member_id, "Выходим из пещеры _фольт")
                     print(f"Отправлено сообщение участнику {member_id}: Выходим из пещеры _фольт")
@@ -2218,6 +2217,15 @@ class RF:
                     else:
                         print("Не удалось получить ответ от бота на /hero")
                     await event.message.delete()
+                elif "_группа" in message_text:
+                    # Отправка состава группы
+                    await self.send_group_message()
+                    await event.message.delete()  # Удаляем сообщение
+
+
+
+
+
                 elif "_status" in message_text:
                     # Отправка статуса активных флагов
                     await self.send_status_message()
@@ -2458,9 +2466,8 @@ class RF:
                         await self.send_command("⚖️Проверить состав")
                         await asyncio.sleep(8)
                         # Отправляем _гш всем участникам группы перед уходом в ген. штаб
-                        group_members = getattr(self, "group_members", [])
-                        for member_id in group_members:
-                            if member_id != self.cave_leader_id:
+                        for member_id in (self.group_members or []):    # перебираем всех участников группы
+                            if member_id != self.cave_leader_id: # если участник не является cave leader, то отправляем сообщение _гш
                                 await asyncio.sleep(1)
                                 await self.client.send_message(member_id, "_гш")
                                 print(f"Отправлено сообщение участнику {member_id}: _гш")
@@ -2480,9 +2487,8 @@ class RF:
                         await self.send_command("⚖️Проверить состав")
                         await asyncio.sleep(8)
                         # Отправляем _гш всем участникам группы
-                        group_members = getattr(self, "group_members", [])
-                        for member_id in group_members:
-                            if member_id != self.cave_leader_id:
+                        for member_id in (self.group_members or []):    # перебираем всех участников группы
+                            if member_id != self.cave_leader_id: # если участник не является cave leader, то отправляем сообщение _гш
                                 await asyncio.sleep(1)
                                 await self.client.send_message(member_id, "_гш")
                                 print(f"Отправлено сообщение участнику {member_id}: _гш")
@@ -2490,7 +2496,7 @@ class RF:
                         await asyncio.sleep(120)
 
                         await self.send_command( "💖 Пополнить здоровье")
-                        await asyncio.sleep(3)
+                        await self.wait_for_health_refill() #работает
                         await self.send_command( "🚠 Отправиться в пещеры")
                     await event.message.delete()  # Удаляем сообщение
                 elif "_шаг" in message_text:
@@ -3600,3 +3606,29 @@ class RF:
         else:
             status_message = "Нет активных флагов"
         await self.client.send_message(self.cave_leader_id, status_message)
+
+    async def send_group_message(self):
+        """Метод для отправки состава группы (кто будет получать _гш)"""
+        if not self.group_members:
+            group_message = "📋 Группа пуста или состав неизвестен\n(сначала проверь состав через ⚖️Проверить состав)"
+        else:
+            # Получаем ники по ID из словаря players
+            member_names = []
+            for member_id in self.group_members:
+                # Ищем ник по ID
+                nick = None
+                for name, uid in self.players.items():
+                    if uid == member_id:
+                        nick = name
+                        break
+                if nick:
+                    member_names.append(f"{nick} (ID: {member_id})")
+                else:
+                    member_names.append(f"ID: {member_id}")
+            
+            group_message = "📋 Участники группы:\n"
+            group_message += "\n".join([f"  • {name}" for name in member_names])
+            group_message += f"\n\nВсего: {len(self.group_members)} чел."
+            group_message += "\n\n✅ Этим участникам будет отправлена команда _гш"
+        
+        await self.client.send_message(self.cave_leader_id, group_message)
