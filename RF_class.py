@@ -33,7 +33,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО NONE ===
         self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = self.group_members = None
         # === ЧИСЛА ===
-        self.version = "hil.6.01"
+        self.version = "par.6.01"
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
         self.tomat_id = 278339710
@@ -2221,11 +2221,6 @@ class RF:
                     # Отправка состава группы
                     await self.send_group_message()
                     await event.message.delete()  # Удаляем сообщение
-
-
-
-
-
                 elif "_status" in message_text:
                     # Отправка статуса активных флагов
                     await self.send_status_message()
@@ -2482,7 +2477,6 @@ class RF:
                         await self.wait_for_set_change() #работает
                         await asyncio.sleep(1)
                         self.my_health = self.my_max_health = self.hp_binds[0][0]
-
                         # Проверяем состав группы
                         await self.send_command("⚖️Проверить состав")
                         await asyncio.sleep(8)
@@ -2492,9 +2486,7 @@ class RF:
                                 await asyncio.sleep(1)
                                 await self.client.send_message(member_id, "_гш")
                                 print(f"Отправлено сообщение участнику {member_id}: _гш")
-                    
                         await asyncio.sleep(120)
-
                         await self.send_command( "💖 Пополнить здоровье")
                         await self.wait_for_health_refill() #работает
                         await self.send_command( "🚠 Отправиться в пещеры")
@@ -3035,10 +3027,15 @@ class RF:
                     print(f"Текущий сет: {self.last_set_kingRagnar}")
                     break
     async def time_cave(self, lstr):  # Добавлен параметр lstr
-        # Проверка, является ли текущий пользователь лидером
         self.is_cave_leader = any(f"/group_guild_join_{self.cave_leader_id}" in line for line in lstr)
+        
+        # ДОБАВИТЬ ЭТУ СТРОКУ:
+        self.group_members = self._parse_group_members(lstr)
+        print(f"Найдено участников группы: {len(self.group_members)}")
+        
+        # Дальше идёт ваш существующий код
         if not self.is_cave_leader:
-            print("Ты не пативод, time_cave не работает.")  # Добавлен вывод, если не пативод
+            print("Ты не пативод, time_cave не работает.")
         print(f"{'Ты пативод' if self.is_cave_leader else 'Ты не пативод'}")
         if self.cave_task_running:
             print("Задача time_cave уже запущена.")  # Отладочное сообщение
@@ -3606,7 +3603,6 @@ class RF:
         else:
             status_message = "Нет активных флагов"
         await self.client.send_message(self.cave_leader_id, status_message)
-
     async def send_group_message(self):
         """Метод для отправки состава группы (кто будет получать _гш)"""
         if not self.group_members:
@@ -3625,10 +3621,18 @@ class RF:
                     member_names.append(f"{nick} (ID: {member_id})")
                 else:
                     member_names.append(f"ID: {member_id}")
-            
             group_message = "📋 Участники группы:\n"
             group_message += "\n".join([f"  • {name}" for name in member_names])
             group_message += f"\n\nВсего: {len(self.group_members)} чел."
             group_message += "\n\n✅ Этим участникам будет отправлена команда _гш"
-        
         await self.client.send_message(self.cave_leader_id, group_message)
+
+    def _parse_group_members(self, lstr):
+        """Извлекает ID участников группы из списка строк"""
+        group_members = []
+        for line in lstr:
+            if not line.strip():
+                continue
+            if member_id := re.search(r"/p_guild_exc_(\d+)", line):
+                group_members.append(int(member_id.group(1)))
+        return group_members
