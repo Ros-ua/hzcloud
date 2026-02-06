@@ -33,7 +33,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО NONE ===
         self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = self.group_members = None
         # === ЧИСЛА ===
-        self.version = "par.6.01"
+        self.version = "kap.6.01"
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
         self.tomat_id = 278339710
@@ -1055,6 +1055,21 @@ class RF:
                 await asyncio.sleep(1)
                 # await self.client.send_message(self.bezvgroup, "Капча получена")
             self.waiting_for_captcha = True
+            
+            # нажимаем капчу
+            if message.reply_markup:
+                for row in message.reply_markup.rows:
+                    for btn in row.buttons:
+                        if isinstance(btn, KeyboardButtonSimpleWebView):                            
+                            async with async_playwright() as p:
+                                browser = await p.chromium.launch(headless=True)
+                                page = await browser.new_page()
+                                await page.goto(btn.url, wait_until="load")
+                                await page.wait_for_selector("#btn", timeout=10000)
+                                await page.click("#btn")
+                                await page.wait_for_timeout(2000)
+                                await browser.close()
+
         elif (match := self.arrival_re.search(lstr[0])):  # Проверяем совпадение для строки прибытия
             minutes = int(match.group(1))
             seconds = float(match.group(2))
@@ -3028,11 +3043,9 @@ class RF:
                     break
     async def time_cave(self, lstr):  # Добавлен параметр lstr
         self.is_cave_leader = any(f"/group_guild_join_{self.cave_leader_id}" in line for line in lstr)
-        
         # ДОБАВИТЬ ЭТУ СТРОКУ:
         self.group_members = self._parse_group_members(lstr)
         print(f"Найдено участников группы: {len(self.group_members)}")
-        
         # Дальше идёт ваш существующий код
         if not self.is_cave_leader:
             print("Ты не пативод, time_cave не работает.")
@@ -3626,7 +3639,6 @@ class RF:
             group_message += f"\n\nВсего: {len(self.group_members)} чел."
             group_message += "\n\n✅ Этим участникам будет отправлена команда _гш"
         await self.client.send_message(self.cave_leader_id, group_message)
-
     def _parse_group_members(self, lstr):
         """Извлекает ID участников группы из списка строк"""
         group_members = []
