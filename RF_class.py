@@ -35,7 +35,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО NONE ===
         self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = self.group_members = None
         # === ЧИСЛА ===
-        self.version = "57.6.01"
+        self.version = "50m.7.01"
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
         self.tomat_id = 278339710
@@ -2163,19 +2163,10 @@ class RF:
                 print("Через 25 минут prem=True (есть АБУ)")
         # Ждём ещё 25 минут (итого 50 минут от начала)
         await asyncio.sleep(25 * 60)
-        if self.kopka and not self.waiting_for_captcha: # and self.prem
-            print("Через 50 минут kopka=True и prem=True, отправляем в Лес пламени")
-            await self.send_command(self.location)
-        # else:
-        #     if not self.kopka:
-        #         print("Через 50 минут kopka=False")
-        #     if not self.prem:
-        #         print("Через 50 минут prem=False (нет АБУ)")
-        # Ждём ещё 8 минут (итого 57 минут от начала)
-        await asyncio.sleep(7 * 60)
-        # Если через 57 минут мы в пещере и мы cave leader — сначала фольт всем, себе, потом кнопка (3)
+        
+        # Если через 50 минут мы в пещере и мы cave leader — сначала фольт всем, себе, потом кнопка (3)
         if self.is_in_caves and self.is_cave_leader:
-            print("Через 7 минут в пещере как cave leader: шлём фольт всем, себе, затем кнопка (3)")
+            print("Через 50 минут в пещере как cave leader: шлём фольт всем, себе, затем кнопка (3)")
             for member_id in (self.group_members or []):    # перебираем всех участников группы
                 if member_id != self.cave_leader_id: # если участник не является cave leader, то отправляем сообщение о фольте
                     await asyncio.sleep(1)
@@ -2188,12 +2179,20 @@ class RF:
                 await self.wait_for_set_change()
                 await asyncio.sleep(2)
             await self.rf_message.click(3)
-        # Если копка активна и нет капчи — оставляем старое поведение
+        # Если не в пещере как лидер, но kopka активна — отправляем в Лес пламени
         elif self.kopka and not self.waiting_for_captcha:
-            print("Через 58 минут kopka=True, отправляем в ген. штаб")  # Изменено время в print
+            print("Через 50 минут kopka=True, отправляем в Лес пламени")
+            await self.send_command(self.location)
+        
+        # Ждём ещё 8 минут (итого 58 минут от начала)
+        await asyncio.sleep(8 * 60)
+        
+        # Через 58 минут — просто отправляем в ген. штаб если kopka активна
+        if self.kopka and not self.waiting_for_captcha:
+            print("Через 58 минут kopka=True, отправляем в ген. штаб")
             await self.send_command("🏛 В ген. штаб")
         else:
-            print("Через 58 минут kopka=False, остаёмся на месте")  # Изменено время в print
+            print("Через 58 минут kopka=False, остаёмся на месте")
     def common_cave(self):
         print("Устанавливаем обработчик сообщений для common_cave")
         @self.client.on(events.NewMessage(from_users=[self.tomat_id, self.ros_id, self.kroha_id, self.tamplier_id, self.enot_id, self.john_id, self.pchelka_id, 5596818972, self.ded_id]))
