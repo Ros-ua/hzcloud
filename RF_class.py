@@ -35,7 +35,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО NONE ===
         self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = self.group_members = None
         # === ЧИСЛА ===
-        self.version = "sfff.6.01"
+        self.version = "57.6.01"
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
         self.tomat_id = 278339710
@@ -1885,8 +1885,8 @@ class RF:
                 sender_id = event.message.from_id.user_id if event.message.from_id else None
                 # Отправляем сообщение только если оно от Ros_Hangzhou
                 if sender_id in (
-                    self.ros_id,
-                    self.pchelka_id,
+                    # self.ros_id,
+                    # self.pchelka_id,
                     self.tomat_id,
                 ):
                     # Отправляем сообщение в личные сообщения отправителю
@@ -2171,11 +2171,11 @@ class RF:
         #         print("Через 50 минут kopka=False")
         #     if not self.prem:
         #         print("Через 50 минут prem=False (нет АБУ)")
-        # Ждём ещё 8 минут (итого 58 минут от начала)
-        await asyncio.sleep(8 * 60)
-        # Если через 58 минут мы в пещере и мы cave leader — сначала фольт всем, себе, потом кнопка (3)
+        # Ждём ещё 8 минут (итого 57 минут от начала)
+        await asyncio.sleep(7 * 60)
+        # Если через 57 минут мы в пещере и мы cave leader — сначала фольт всем, себе, потом кнопка (3)
         if self.is_in_caves and self.is_cave_leader:
-            print("Через 58 минут в пещере как cave leader: шлём фольт всем, себе, затем кнопка (3)")
+            print("Через 7 минут в пещере как cave leader: шлём фольт всем, себе, затем кнопка (3)")
             for member_id in (self.group_members or []):    # перебираем всех участников группы
                 if member_id != self.cave_leader_id: # если участник не является cave leader, то отправляем сообщение о фольте
                     await asyncio.sleep(1)
