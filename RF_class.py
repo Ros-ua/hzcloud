@@ -35,7 +35,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО NONE ===
         self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = self.group_members = None
         # === ЧИСЛА ===
-        self.version = "5.7.01"
+        self.version = "plus20.7.01"
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
         self.tomat_id = 278339710
@@ -2483,7 +2483,7 @@ class RF:
                                 await self.client.send_message(member_id, "_гш")
                                 print(f"Отправлено сообщение участнику {member_id}: _гш")
                         print("Отправляем команду /go_to_gsh")
-                        await asyncio.sleep(5)
+                        await asyncio.sleep(25)
                         await self.send_command( "🏛 В ген. штаб")
                         await self.arrival_hil()  # Вызываем arrival_hil после отправки в ген. штаб
                         await asyncio.sleep(2)
