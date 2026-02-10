@@ -35,7 +35,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО NONE ===
         self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = self.group_members = None
         # === ЧИСЛА ===
-        self.version = "rud.10.01"
+        self.version = "gun.10.01"
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
         self.tomat_id = 278339710
@@ -82,6 +82,21 @@ class RF:
             4: "🤖Алтарь Тир",
             5: "🤖Алтарь Эйви"
         }
+
+        # Простой список с фразами
+        self.captcha_words = [
+            "Фа",
+            "Ватафа",
+            "Шнейне",
+            "Пэпэ",
+            "Кхекхе"
+        ]
+
+
+
+
+
+
         # === РЕГУЛЯРНЫЕ ВЫРАЖЕНИЯ ===
         self.health_re = re.compile(r"Здоровье пополнено \D+(\d+)/(\d+)")
         self.battle_re = re.compile(r"^Сражение с .*$")
@@ -575,7 +590,14 @@ class RF:
             elif self.your_name == "๖ۣۜᗯαsͥpwͣoͫℝt🐝":
                 await self.client.send_message(self.group59, "Капча пройдена")
             elif self.your_name == "Ros_Hangzhou":
-                await self.client.send_message(self.group59, "Капча пройдена")
+                # await self.client.send_message(self.group59, "Капча пройдена")
+
+                # Выбор случайного слова из списка
+                random_word = random.choice(self.captcha_words)
+                await self.client.send_message(self.group59, random_word)
+
+
+
             elif self.your_name == "John Doe":
                 await self.client.send_message(self.group59, "Капча пройдена")
             elif self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
@@ -1048,7 +1070,14 @@ class RF:
             elif self.your_name == "๖ۣۜᗯαsͥpwͣoͫℝt🐝":
                 await self.client.send_message(self.group59, "Капча получена")
             elif self.your_name == "Ros_Hangzhou":
-                await self.client.send_message(self.group59, "Капча получена")
+                # await self.client.send_message(self.group59, "Капча получена")
+
+                # Выбор случайного слова из списка
+                random_word = random.choice(self.captcha_words)
+                await self.client.send_message(self.group59, random_word)
+
+
+
             elif self.your_name == "John Doe":
                 await self.client.send_message(self.group59, "Капча получена")
             elif self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
