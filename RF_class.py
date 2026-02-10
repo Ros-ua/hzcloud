@@ -35,7 +35,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО NONE ===
         self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = self.group_members = None
         # === ЧИСЛА ===
-        self.version = "plus20.7.01"
+        self.version = "rud.10.01"
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
         self.tomat_id = 278339710
@@ -1281,51 +1281,79 @@ class RF:
                         await self.send_command( "🌋 Краговые шахты")
                     return
             await asyncio.sleep(1)
+
+
     async def parce_4v_logs(self, msg_text):
         print("Начало работы parce_4v_logs.")
         lstr = msg_text.split('\n')
         print(f"Количество строк в сообщении: {len(lstr)}")
-        # Проверка HP терминалов Basilaris и Aquilla
+        
+        # Проверка HP терминалов Basilaris, Castitas и Aquilla
         for line in lstr:
             if "Basilaris терминал:" in line:
                 hp_info = line.split('❤')[1].split('/')[0].strip()
                 basilaris_hp = int(hp_info)
                 print(f"Basilaris HP: {basilaris_hp}")
+                
+                # НОВАЯ ЛОГИКА: если HP = 0, сразу в рудник
+                if basilaris_hp == 0:
+                    self.cmd_altar = "⛏Рудник"
+                    print("HP Basilaris = 0, отправляемся в рудник!")
+                    return
+                
                 if basilaris_hp < 10000 and basilaris_hp > 1:
                     self.go_to_heal = False
                     self.go_term_Basilaris = False
                     self.go_term_Aquilla = False
                     self.go_term_Castitas = False
                     print("HP Basilaris меньше 10000, прекращаем ходить.")
+            
             if "Castitas терминал:" in line:
                 hp_info = line.split('❤')[1].split('/')[0].strip()
                 castitas_hp = int(hp_info)
                 print(f"Castitas HP: {castitas_hp}")
+                
+                # НОВАЯ ЛОГИКА: если HP = 0, сразу в рудник
+                if castitas_hp == 0:
+                    self.cmd_altar = "⛏Рудник"
+                    print("HP Castitas = 0, отправляемся в рудник!")
+                    return
+                
                 if castitas_hp < 10000 and castitas_hp > 1:
                     self.go_to_heal = False
                     self.go_term_Aquilla = False
                     self.go_term_Basilaris = False
                     self.go_term_Castitas = False
                     print("HP Castitas меньше 10000, прекращаем ходить.")
+            
             if "Aquilla терминал:" in line:
                 hp_info = line.split('❤')[1].split('/')[0].strip()
                 aquilla_hp = int(hp_info)
                 print(f"Aquilla HP: {aquilla_hp}")
+                
+                # НОВАЯ ЛОГИКА: если HP = 0, сразу в рудник
+                if aquilla_hp == 0:
+                    self.cmd_altar = "⛏Рудник"
+                    print("HP Aquilla = 0, отправляемся в рудник!")
+                    return
+                
                 if aquilla_hp < 10000 and aquilla_hp > 1:
                     self.go_to_heal = False
                     self.go_term_Aquilla = False
                     self.go_term_Basilaris = False
                     self.go_term_Castitas = False
                     print("HP Aquilla меньше 10000, прекращаем ходить.")
+            
+            # Остальная логика выбора алтаря (только если ни один терминал не умер)
             if len(lstr) > 24:
                 if self.go_term_Castitas and not lstr[10].endswith(" 0") and not lstr[10].endswith(" 1"):
-                    if self.na_nashem_altare :
+                    if self.na_nashem_altare:
                         self.cmd_altar = "🧝‍♀ Терминал Castitas"
-                    else :
+                    else:
                         self.cmd_altar = "🧝‍♀Алтарь Хагал"
                         print(f"Значение в 10-й строке не заканчивается на '0' или '1', выбран алтарь: {self.cmd_altar}")
                 else:
-                    # Обычная логика выбора алтаря с учётом флага self.active
+                    # Обычная логика выбора алтаря
                     l_altars = []
                     if self.active:
                         if not lstr[5].endswith("Castitas"): l_altars.append(0)
@@ -1351,7 +1379,11 @@ class RF:
                         else:
                             self.cmd_altar = None
                             print("Находимся в терминале, алтарь не выбран.")
+        
         print("Конец работы parce_4v_logs.")
+
+
+
     async def nacheve(self):
         print("работаем на чв")
         self.is_nacheve_active = True  # Устанавливаем флаг активности
