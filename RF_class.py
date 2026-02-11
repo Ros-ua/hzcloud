@@ -35,7 +35,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО NONE ===
         self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = self.group_members = None
         # === ЧИСЛА ===
-        self.version = "gun.10.01"
+        self.version = "пройден.10.01"
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
         self.tomat_id = 278339710
@@ -586,11 +586,11 @@ class RF:
         elif lstr[0].endswith("✅"):
             # await asyncio.sleep(1)
             if self.your_name == "👨‍🦳Пенсионер☠️":
-                await self.client.send_message(self.group59, "Капча пройдена")
+                await self.client.send_message(self.group59, "Пройдена")
             elif self.your_name == "๖ۣۜᗯαsͥpwͣoͫℝt🐝":
-                await self.client.send_message(self.group59, "Капча пройдена")
+                await self.client.send_message(self.group59, "Пройдена")
             elif self.your_name == "Ros_Hangzhou":
-                # await self.client.send_message(self.group59, "Капча пройдена")
+                # await self.client.send_message(self.group59, "Пройдена")
 
                 # Выбор случайного слова из списка
                 random_word = random.choice(self.captcha_words)
@@ -599,12 +599,12 @@ class RF:
 
 
             elif self.your_name == "John Doe":
-                await self.client.send_message(self.group59, "Капча пройдена")
+                await self.client.send_message(self.group59, "Пройдена")
             elif self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
                 # Для этого игрока отправляем в обе группы
-                await self.client.send_message(self.group59, "Капча пройдена")
+                await self.client.send_message(self.group59, "Пройдена")
                 await asyncio.sleep(1)
-                # await self.client.send_message(self.bezvgroup, "Капча пройдена")
+                # await self.client.send_message(self.bezvgroup, "Пройдена")
             self.waiting_for_captcha = False
             await asyncio.sleep(3)
             # Повторяем последнюю команду после CAPTCHA
@@ -1063,14 +1063,14 @@ class RF:
             "⚠️Прежде чем выполнять какие-то действия в игре",
             "Введите, пожалуйста, текст с картинки."
         ]):
-            print("Капча получена")
+            print("Капча")
             # Определяем куда отправлять сообщение в зависимости от имени игрока
             if self.your_name == "👨‍🦳Пенсионер☠️":
-                await self.client.send_message(self.group59, "Капча получена")
+                await self.client.send_message(self.group59, "Капча")
             elif self.your_name == "๖ۣۜᗯαsͥpwͣoͫℝt🐝":
-                await self.client.send_message(self.group59, "Капча получена")
+                await self.client.send_message(self.group59, "Капча")
             elif self.your_name == "Ros_Hangzhou":
-                # await self.client.send_message(self.group59, "Капча получена")
+                # await self.client.send_message(self.group59, "Капча")
 
                 # Выбор случайного слова из списка
                 random_word = random.choice(self.captcha_words)
@@ -1079,12 +1079,12 @@ class RF:
 
 
             elif self.your_name == "John Doe":
-                await self.client.send_message(self.group59, "Капча получена")
+                await self.client.send_message(self.group59, "Капча")
             elif self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
                 # Для этого игрока отправляем в обе группы
-                await self.client.send_message(self.group59, "Капча получена")
+                await self.client.send_message(self.group59, "Капча")
                 await asyncio.sleep(1)
-                # await self.client.send_message(self.bezvgroup, "Капча получена")
+                # await self.client.send_message(self.bezvgroup, "Капча")
             self.waiting_for_captcha = True
             
             # нажимаем капчу
@@ -1684,7 +1684,7 @@ class RF:
                 print("Проверка статуса капчи...")
                 await asyncio.sleep(20)  # Проверяем каждые 20 секунд
             print("Капча решена, продолжаем...")
-            # await self.client.send_message(self.group59, "Капча пройдена")  # Отправляем сообщение
+            # await self.client.send_message(self.group59, "Пройдена")  # Отправляем сообщение
         # Ожидание пополнения здоровья после решения капчи
         while True:
             last_message = await self.client.get_messages(self.bot_id, limit=2)
@@ -1937,11 +1937,11 @@ class RF:
                             await self.client.send_message(h_id, "Хил")
                     continue
     def setup_captcha_listener(self):
-        """Устанавливает обработчик сообщений из группы для обработки 'Капча получена'"""
+        """Устанавливает обработчик сообщений из группы для обработки 'Капча'"""
         print("Устанавливаем обработчик сообщений для setup_captcha_listener")
         @self.client.on(events.NewMessage(chats=[self.group59]))
         async def handle_group_captcha_message(event):
-            if event.message.text and "Капча получена" in event.message.text:
+            if event.message.text and "Капча" in event.message.text:
                 # Получаем ID отправителя сообщения
                 sender_id = event.message.from_id.user_id if event.message.from_id else None
                 # Отправляем сообщение только если оно от Ros_Hangzhou
@@ -3243,7 +3243,7 @@ class RF:
                     print("Проверка статуса капчи...")
                     await asyncio.sleep(20)  # Проверяем каждые 20 секунд
                 print("Капча решена, продолжаем...")
-                # await self.client.send_message(self.group59, "Капча пройдена")  # Отправляем сообщение
+                # await self.client.send_message(self.group59, "Пройдена")  # Отправляем сообщение
             # После решения капчи или если её не было - проверяем прибытие
             if self.mobs:  # Проверяем, включен ли флаг для мобов
                 await self.check_arrival()         # для мобов
