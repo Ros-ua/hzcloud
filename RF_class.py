@@ -35,7 +35,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО NONE ===
         self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = self.group_members = None
         # === ЧИСЛА ===
-        self.version = "wml.11.01"
+        self.version = "wbt.11.01"
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
         self.tomat_id = 278339710
@@ -82,21 +82,6 @@ class RF:
             4: "🤖Алтарь Тир",
             5: "🤖Алтарь Эйви"
         }
-
-        # Простой список с фразами
-        self.captcha_words = [
-            "Фа",
-            "Ватафа",
-            "Шнейне",
-            "Пэпэ",
-            "Кхекхе"
-        ]
-
-
-
-
-
-
         # === РЕГУЛЯРНЫЕ ВЫРАЖЕНИЯ ===
         self.health_re = re.compile(r"Здоровье пополнено \D+(\d+)/(\d+)")
         self.battle_re = re.compile(r"^Сражение с .*$")
@@ -590,15 +575,7 @@ class RF:
             elif self.your_name == "๖ۣۜᗯαsͥpwͣoͫℝt🐝":
                 await self.client.send_message(self.group59, "Пройдена")
             elif self.your_name == "Ros_Hangzhou":
-                # await self.client.send_message(self.group59, "Пройдена")
-
-                # Выбор случайного слова из списка
-                random_word = random.choice(self.captcha_words)
-                message = f"Пройдена {random_word}"
-                await self.client.send_message(self.group59, message)
-
-
-
+                await self.client.send_message(self.group59, "Пройдена")
             elif self.your_name == "John Doe":
                 await self.client.send_message(self.group59, "Пройдена")
             elif self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
@@ -1071,16 +1048,7 @@ class RF:
             elif self.your_name == "๖ۣۜᗯαsͥpwͣoͫℝt🐝":
                 await self.client.send_message(self.group59, "Капча")
             elif self.your_name == "Ros_Hangzhou":
-                # await self.client.send_message(self.group59, "Капча")
-
-                # Выбор случайного слова из списка
-                random_word = random.choice(self.captcha_words)
-                message = f"Капча {random_word}"
-
-                await self.client.send_message(self.group59, message)
-
-
-
+                await self.client.send_message(self.group59, "Капча")
             elif self.your_name == "John Doe":
                 await self.client.send_message(self.group59, "Капча")
             elif self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
@@ -1089,22 +1057,20 @@ class RF:
                 await asyncio.sleep(1)
                 # await self.client.send_message(self.bezvgroup, "Капча")
             self.waiting_for_captcha = True
-            
             # нажимаем капчу
             if message.reply_markup:
                 for row in message.reply_markup.rows:
                     for btn in row.buttons:
                         if isinstance(btn, KeyboardButtonSimpleWebView):                            
                             async with async_playwright() as p:
-                                browser = await p.chromium.launch(headless=True)
-                                # browser = await p.webkit.launch(headless=True)
+                                # browser = await p.chromium.launch(headless=True)
+                                browser = await p.webkit.launch(headless=True)
                                 page = await browser.new_page()
                                 await page.goto(btn.url, wait_until="load")
                                 await page.wait_for_selector("#btn", timeout=10000)
                                 await page.click("#btn")
                                 await page.wait_for_timeout(2000)
                                 await browser.close()
-
         elif (match := self.arrival_re.search(lstr[0])):  # Проверяем совпадение для строки прибытия
             minutes = int(match.group(1))
             seconds = float(match.group(2))
@@ -1314,69 +1280,57 @@ class RF:
                         await self.send_command( "🌋 Краговые шахты")
                     return
             await asyncio.sleep(1)
-
-
     async def parce_4v_logs(self, msg_text):
         print("Начало работы parce_4v_logs.")
         lstr = msg_text.split('\n')
         print(f"Количество строк в сообщении: {len(lstr)}")
-        
         # Проверка HP терминалов Basilaris, Castitas и Aquilla
         for line in lstr:
             if "Basilaris терминал:" in line:
                 hp_info = line.split('❤')[1].split('/')[0].strip()
                 basilaris_hp = int(hp_info)
                 print(f"Basilaris HP: {basilaris_hp}")
-                
                 # НОВАЯ ЛОГИКА: если HP = 0, сразу в рудник
                 if basilaris_hp == 0:
                     self.cmd_altar = "⛏Рудник"
                     print("HP Basilaris = 0, отправляемся в рудник!")
                     return
-                
                 if basilaris_hp < 10000 and basilaris_hp > 1:
                     self.go_to_heal = False
                     self.go_term_Basilaris = False
                     self.go_term_Aquilla = False
                     self.go_term_Castitas = False
                     print("HP Basilaris меньше 10000, прекращаем ходить.")
-            
             if "Castitas терминал:" in line:
                 hp_info = line.split('❤')[1].split('/')[0].strip()
                 castitas_hp = int(hp_info)
                 print(f"Castitas HP: {castitas_hp}")
-                
                 # НОВАЯ ЛОГИКА: если HP = 0, сразу в рудник
                 if castitas_hp == 0:
                     self.cmd_altar = "⛏Рудник"
                     print("HP Castitas = 0, отправляемся в рудник!")
                     return
-                
                 if castitas_hp < 10000 and castitas_hp > 1:
                     self.go_to_heal = False
                     self.go_term_Aquilla = False
                     self.go_term_Basilaris = False
                     self.go_term_Castitas = False
                     print("HP Castitas меньше 10000, прекращаем ходить.")
-            
             if "Aquilla терминал:" in line:
                 hp_info = line.split('❤')[1].split('/')[0].strip()
                 aquilla_hp = int(hp_info)
                 print(f"Aquilla HP: {aquilla_hp}")
-                
                 # НОВАЯ ЛОГИКА: если HP = 0, сразу в рудник
                 if aquilla_hp == 0:
                     self.cmd_altar = "⛏Рудник"
                     print("HP Aquilla = 0, отправляемся в рудник!")
                     return
-                
                 if aquilla_hp < 10000 and aquilla_hp > 1:
                     self.go_to_heal = False
                     self.go_term_Aquilla = False
                     self.go_term_Basilaris = False
                     self.go_term_Castitas = False
                     print("HP Aquilla меньше 10000, прекращаем ходить.")
-            
             # Остальная логика выбора алтаря (только если ни один терминал не умер)
             if len(lstr) > 24:
                 if self.go_term_Castitas and not lstr[10].endswith(" 0") and not lstr[10].endswith(" 1"):
@@ -1412,11 +1366,7 @@ class RF:
                         else:
                             self.cmd_altar = None
                             print("Находимся в терминале, алтарь не выбран.")
-        
         print("Конец работы parce_4v_logs.")
-
-
-
     async def nacheve(self):
         print("работаем на чв")
         self.is_nacheve_active = True  # Устанавливаем флаг активности
@@ -2228,7 +2178,6 @@ class RF:
                 print("Через 25 минут prem=True (есть АБУ)")
         # Ждём ещё 25 минут (итого 50 минут от начала)
         await asyncio.sleep(25 * 60)
-        
         # Если через 50 минут мы в пещере и мы cave leader — сначала фольт всем, себе, потом кнопка (3)
         if self.is_in_caves and self.is_cave_leader:
             print("Через 50 минут в пещере как cave leader: шлём фольт всем, себе, затем кнопка (3)")
@@ -2248,10 +2197,8 @@ class RF:
         elif self.kopka and not self.waiting_for_captcha:
             print("Через 50 минут kopka=True, отправляем в Лес пламени")
             await self.send_command(self.location)
-        
         # Ждём ещё 8 минут (итого 58 минут от начала)
         await asyncio.sleep(8 * 60)
-        
         # Через 58 минут — просто отправляем в ген. штаб если kopka активна
         if self.kopka and not self.waiting_for_captcha:
             print("Через 58 минут kopka=True, отправляем в ген. штаб")
