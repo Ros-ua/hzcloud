@@ -35,7 +35,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО NONE ===
         self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = self.group_members = None
         # === ЧИСЛА ===
-        self.version = "waske.18.02"
+        self.version = "setchv.19.02"
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
         self.tomat_id = 278339710
@@ -1938,7 +1938,6 @@ class RF:
                     print(f"Ядерный удар по текущей локации {self.current_location}! Уходим на случайный алтарь.")
                     random_altar = random.choice(list(self.altar_dict.values()))
                     await self.send_command(random_altar)
-
             elif any("Война в краговых шахтах началась!" in ln for ln in lines):
                 print("Обнаружено начало войны в крагах!")
                 # self.pvpgoheal = 4500
@@ -1977,19 +1976,18 @@ class RF:
                     # Ожидаем ответ и проверяем баффы, при необходимости пересылаем
                     await self.wait_for_hero_response_and_check_buffs()
                     await asyncio.sleep(1)
-                #  Запускаем таймер для изменения pvpgoheal через 38 минут
+               #  Запускаем таймер для изменения pvpgoheal через 38 минут
                 asyncio.create_task(self.pvp_heal_timer())
+                if self.your_name not in users_need_hero:
+                    await asyncio.sleep(10)
+                await self.send_command(RF.chv)
+                await self.wait_for_set_change()  # работает
                 if not any([self.is_in_caves, self.kopka, self.is_moving]):
-                    # Для пользователей с /hero задержка не нужна, они уже дождались ответа
-                    if self.your_name not in users_need_hero:
-                        await asyncio.sleep(10)
-                    await self.send_command( RF.chv)
-                    await self.wait_for_set_change() #работает
                     await asyncio.sleep(1)
-                    await self.send_command( "💖 Пополнить здоровье")
+                    await self.send_command("💖 Пополнить здоровье")
                     print("Отправлено сообщение: 💖 Пополнить здоровье")
                     await self.wait_for_health_refill()
-                    await self.send_command( "🌋 Краговые шахты")
+                    await self.send_command("🌋 Краговые шахты")
             elif any("Подача заявок в лидеры расы" in ln for ln in lines):
                 if self.your_name not in ("Ros_Hangzhou", "Лучшее_что_было_в_моей_жизни-RF"):
                     await asyncio.sleep(15)
