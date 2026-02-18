@@ -35,7 +35,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО NONE ===
         self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = self.group_members = None
         # === ЧИСЛА ===
-        self.version = "help.16.02"
+        self.version = "hope.18.02"
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
         self.tomat_id = 278339710
@@ -1918,36 +1918,28 @@ class RF:
                 return  # Выходим из функции, ничего не обрабатываем
             lines = event.message.text.splitlines()
             # Проверка на ядерный удар по локации
-            for line in lines:
-                if "Ядерный удар по локации" in line:
-                    # Извлекаем название локации из сообщения
-                    # Формат: "Ядерный удар по локации 🧝‍♀Алтарь Исс через 10 сек."
-                    # или: "Ядерный удар по локации 🤖Терминал Aquilla через 10 сек."
-                    location_in_message = None
-                    if "Алтарь" in line:
-                        # Для алтарей извлекаем название, убирая эмодзи
-                        # Проверяем все возможные названия алтарей
-                        altar_names = ["Алтарь Иса", "Алтарь Гебо", "Алтарь Исс", "Алтарь Дагаз", 
-                                      "Алтарь Тир", "Алтарь Эйви", "Алтарь Хагал"]
-                        for altar_name in altar_names:
-                            if altar_name in line:
-                                location_in_message = altar_name
-                                break
-                    elif "Терминал" in line:
-                        # Для терминалов преобразуем формат
-                        if "Терминал Castitas" in line:
-                            location_in_message = "Castitas терминал"
-                        elif "Терминал Aquilla" in line:
-                            location_in_message = "Aquilla терминал"
-                        elif "Терминал Basilaris" in line:
-                            location_in_message = "Basilaris терминал"
-                    # Если текущая локация совпадает с местом удара, уходим на случайный алтарь (только для Ros_Hangzhou и 𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗)
-                    if location_in_message and self.current_location == location_in_message and self.your_name in ["Ros_Hangzhou", "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗", "John Doe", "Лучшее_что_было_в_моей_жизни-RF"]:
-                        print(f"Ядерный удар по текущей локации {self.current_location}! Уходим на случайный алтарь.")
-                        random_altar = random.choice(list(self.altar_dict.values()))
-                        await self.send_command(random_altar)
-                    break  # Обработали одно сообщение о ядерном ударе
-            if any("Война в краговых шахтах началась!" in ln for ln in lines):
+            if any("Ядерный удар по локации" in ln for ln in lines):
+                line = next(ln for ln in lines if "Ядерный удар по локации" in ln)
+                location_in_message = None
+                if "Алтарь" in line:
+                    altar_names = ["Алтарь Иса", "Алтарь Гебо", "Алтарь Исс", "Алтарь Дагаз",
+                                "Алтарь Тир", "Алтарь Эйви", "Алтарь Хагал"]
+                    for altar_name in altar_names:
+                        if altar_name in line:
+                            location_in_message = altar_name
+                            break
+                elif "Терминал Castitas" in line:
+                    location_in_message = "Castitas терминал"
+                elif "Терминал Aquilla" in line:
+                    location_in_message = "Aquilla терминал"
+                elif "Терминал Basilaris" in line:
+                    location_in_message = "Basilaris терминал"
+                if location_in_message and self.current_location == location_in_message and self.your_name in ["Ros_Hangzhou", "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗", "John Doe", "Лучшее_что_было_в_моей_жизни-RF"]:
+                    print(f"Ядерный удар по текущей локации {self.current_location}! Уходим на случайный алтарь.")
+                    random_altar = random.choice(list(self.altar_dict.values()))
+                    await self.send_command(random_altar)
+
+            elif any("Война в краговых шахтах началась!" in ln for ln in lines):
                 print("Обнаружено начало войны в крагах!")
                 # self.pvpgoheal = 4500
                 self.active = False
@@ -1998,11 +1990,11 @@ class RF:
                     print("Отправлено сообщение: 💖 Пополнить здоровье")
                     await self.wait_for_health_refill()
                     await self.send_command( "🌋 Краговые шахты")
-            if any("Подача заявок в лидеры расы" in ln for ln in lines):
+            elif any("Подача заявок в лидеры расы" in ln for ln in lines):
                 if self.your_name not in ("Ros_Hangzhou", "Лучшее_что_было_в_моей_жизни-RF"):
                     await asyncio.sleep(15)
                     await self.send_command( "/vote_register")
-            if any("Война окончена!" in ln for ln in lines):
+            elif any("Война окончена!" in ln for ln in lines):
                 await asyncio.sleep(70)
                 self.def_rudnik = True
                 if not self.is_moving and not self.killed_on_chv and not self.is_in_caves and not self.kopka:
@@ -2020,7 +2012,7 @@ class RF:
                 # else:
                 #     await asyncio.sleep(3)
                 #     await self.send_command( "⛏Рудник")
-            if any(("Castitas одолела" in ln or "Castitas не смогла одолеть" in ln or "Босс" in ln and "пал!" in ln) for ln in lines):
+            elif any(("Castitas одолела" in ln or "Castitas не смогла одолеть" in ln or "Босс" in ln and "пал!" in ln) for ln in lines):
                 if not self.is_in_caves:
                     await asyncio.sleep(15)
                     await self.send_command(RF.hp)
@@ -2029,7 +2021,7 @@ class RF:
                     if not self.is_moving and not self.in_castle:
                         await asyncio.sleep(5)
                         await self.send_command(self.location)
-            if any("Осада замков закончилась" in ln for ln in lines):
+            elif any("Осада замков закончилась" in ln for ln in lines):
                 self.in_castle = False
                 if not self.is_in_caves and not self.waiting_for_captcha and not self.kopka and not self.is_moving:
                     await asyncio.sleep(5)
@@ -2037,12 +2029,12 @@ class RF:
                     await self.wait_for_set_change()
                     await asyncio.sleep(1)
                     await self.send_command(self.location)
-            if any("Страж будет уязвим для атак расы" in ln and "Castitas" in ln for ln in lines):
+            elif any("Страж будет уязвим для атак расы" in ln and "Castitas" in ln for ln in lines):
                 print("Получено сообщение о появлении стража через 15 минут")
                 if not self.is_in_caves and not self.is_moving and not self.in_castle:
                     print("Отправляем сообщение '🔥 61-65 Лес пламени'")
                     await self.send_command(self.location)
-            if any("Он уязвим только для атак расы" in ln and "Castitas" in ln for ln in lines):
+            elif any("Он уязвим только для атак расы" in ln and "Castitas" in ln for ln in lines):
                 print("Страж появился")
                 if not self.is_in_caves and not self.in_castle:
                     # Выбираем случайное направление
@@ -2143,7 +2135,7 @@ class RF:
                         print(f"Копка не активна, сразу отправляем '{chosen_direction}'''")
                         await self.send_command( chosen_direction + "'''")
             # Обработка предупреждения о войне через час
-            if any("Война в краговых шахтах начнется через час!" in ln for ln in lines):
+            elif any("Война в краговых шахтах начнется через час!" in ln for ln in lines):
                 print("Обнаружено предупреждение о войне через час!")
                 # Запускаем таймер на 57 минут
                 asyncio.create_task(self.war_preparation_timer())
