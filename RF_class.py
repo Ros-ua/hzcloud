@@ -35,7 +35,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО NONE ===
         self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = self.group_members = None
         # === ЧИСЛА ===
-        self.version = "hope777.18.02"
+        self.version = "waske.18.02"
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
         self.tomat_id = 278339710
@@ -702,14 +702,14 @@ class RF:
             await asyncio.sleep(1)
             await self.send_command(self.location)
         # на чв
-        elif "Ты был убит!" in lstr[0]:  # Добавлено условие для проверки фразы
-            # Проверяем, если в ожидании капчи
-            if self.waiting_for_captcha:
-                print("Ожидание CAPTCHA, действия не выполняются.")
-                return  # Прерываем выполнение, если ожидаем CAPTCHA
-            print("Персонаж был убит!")
-            # await self.send_command( RF.chv)
-            await self.check_arrival()
+        # elif "Ты был убит!" in lstr[0]:  # Добавлено условие для проверки фразы
+        #     # Проверяем, если в ожидании капчи
+        #     if self.waiting_for_captcha:
+        #         print("Ожидание CAPTCHA, действия не выполняются.")
+        #         return  # Прерываем выполнение, если ожидаем CAPTCHA
+        #     print("Персонаж был убит!")
+        #     # await self.send_command( RF.chv)
+        #     await self.check_arrival()
         elif any(phrase in line for line in lstr for phrase in [
             "Алтарь Хагал",
         ]):
