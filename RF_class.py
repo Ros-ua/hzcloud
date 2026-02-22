@@ -35,7 +35,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО NONE ===
         self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = self.group_members = None
         # === ЧИСЛА ===
-        self.version = "setchv.19.02"
+        self.version = "day.22.02"
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
         self.tomat_id = 278339710
@@ -3089,8 +3089,8 @@ class RF:
                 await asyncio.sleep(2)  # Проверяем каждую секунду
             await asyncio.sleep(randint(10, 20))
             await self.rf_message.click(3)
-            await asyncio.sleep(5)
-            await self.send_command( "/daily")
+            # await asyncio.sleep(5)
+            # await self.send_command( "/daily")
             # await self.client.send_message(self.cave_leader_id, "Вы были в пещере и нажали кнопку.")  # Сообщение о нажатии
             break  # Выход из цикла сразу после нажатия кнопки
         self.cave_task_running = False  # Сбрасываем флаг, когда задача завершена
