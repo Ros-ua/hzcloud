@@ -35,7 +35,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО NONE ===
         self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = self.group_members = None
         # === ЧИСЛА ===
-        self.version = "day.22.02"
+        self.version = "eee.23.02"
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
         self.tomat_id = 278339710
@@ -1989,9 +1989,13 @@ class RF:
                     await self.wait_for_health_refill()
                     await self.send_command("🌋 Краговые шахты")
             elif any("Подача заявок в лидеры расы" in ln for ln in lines):
-                if self.your_name not in ("Ros_Hangzhou", "Лучшее_что_было_в_моей_жизни-RF"):
+                if self.your_name not in (
+                    "Ros_Hangzhou",
+                    # "Лучшее_что_было_в_моей_жизни-RF",
+                    # "ИмяТретье",
+                ):
                     await asyncio.sleep(15)
-                    await self.send_command( "/vote_register")
+                    await self.send_command("/vote_register")
             elif any("Война окончена!" in ln for ln in lines):
                 await asyncio.sleep(70)
                 self.def_rudnik = True
@@ -2151,7 +2155,7 @@ class RF:
         self.go_to_heal = True
         print("Через 43 минуты после начала войны установлено go_to_heal = True")
     async def war_preparation_timer(self):
-        """Таймер подготовки к войне - проверяем kopka через 25, 50 и 58 минут"""
+        """Таймер подготовки к войне - проверяем kopka через 25, 50 и 57 минут"""
         print("Запущен таймер подготовки к войне")
         # Если в ожидании капчи, то сразу выходим
         # if self.waiting_for_captcha:
@@ -2184,7 +2188,7 @@ class RF:
                 await asyncio.sleep(2)
             await self.rf_message.click(3)
         # Если не в пещере как лидер, но kopka активна — отправляем в Лес пламени
-        elif self.kopka and not self.waiting_for_captcha:
+        elif self.kopka and not self.waiting_for_captcha and self.prem:
             print("Через 50 минут kopka=True, отправляем в Лес пламени")
             await self.send_command(self.location)
         # Ждём ещё 7 минут (итого 57 минут от начала)
