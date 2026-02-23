@@ -35,7 +35,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО NONE ===
         self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = self.group_members = None
         # === ЧИСЛА ===
-        self.version = "sm.23.02"
+        self.version = "sma.23.02"
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
         self.tomat_id = 278339710
@@ -815,7 +815,7 @@ class RF:
                     if self.terminal_type == "🧝‍♀ Терминал Castitas":
                         await self.nacheve()
                     else:
-                        await self.vterminale()
+                        await self.nacheve()
             if self.your_name == "Ros_Hangzhou":
                     await asyncio.sleep(1)
                     if self.terminal_type == "🧝‍♀ Терминал Castitas":
@@ -839,7 +839,7 @@ class RF:
                     if self.terminal_type == "🧝‍♀ Терминал Castitas":
                         await self.nacheve()
                     else:
-                        await self.nacheve()
+                        await self.vterminale()
             if self.your_name == "๖ۣۜᗯαsͥpwͣoͫℝt🐝":
                     await asyncio.sleep(1)
                     if self.terminal_type == "🧝‍♀ Терминал Castitas":
@@ -1948,7 +1948,7 @@ class RF:
                 # Логика для различных типов пользователей
                 if self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
                     self.go_term_Basilaris = True
-                    self.go_term_Castitas = True
+                    self.go_term_Castitas = False
                     self.go_term_Aquilla = False
                 elif self.your_name == "Ros_Hangzhou":
                     self.go_term_Basilaris = True
@@ -1968,7 +1968,7 @@ class RF:
                     self.go_term_Aquilla = False
                 elif self.your_name == "๖ۣۜᗯαsͥpwͣoͫℝt🐝":
                     self.go_term_Basilaris = True
-                    self.go_term_Castitas = False
+                    self.go_term_Castitas = True
                     self.go_term_Aquilla = False
                 # Отправка /hero для пользователей из списка
                 if self.your_name in users_need_hero:
