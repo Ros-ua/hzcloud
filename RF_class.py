@@ -35,7 +35,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО NONE ===
         self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = self.group_members = None
         # === ЧИСЛА ===
-        self.version = "sma.23.02"
+        self.version = "tim.24.02"
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
         self.tomat_id = 278339710
@@ -2144,14 +2144,14 @@ class RF:
     async def pvp_heal_timer(self):
         """Таймер для изменения pvpgoheal через 43 минуты после начала войны"""
         print("Запущен таймер pvpgoheal на 43 минуты")
-        await asyncio.sleep(39 * 60)  # 41 минута в секундах
+        await asyncio.sleep(35 * 60)  # 35 минут
         self.go_term_Aquilla = False
         self.go_term_Basilaris = False
         self.go_term_Castitas = False
         self.active = True
-        await asyncio.sleep(2 * 60)  # 2 минуты в секундах (итого 43 минуты)
+        await asyncio.sleep(6 * 60)  # +6 минут (итого 41 минута)
         self.go_to_heal = False
-        await asyncio.sleep(2 * 60)  # 2 минуты в секундах (итого 43 минуты)
+        await asyncio.sleep(2 * 60)  # +2 минуты (итого 43 минуты)
         self.go_to_heal = True
         print("Через 43 минуты после начала войны установлено go_to_heal = True")
     async def war_preparation_timer(self):
