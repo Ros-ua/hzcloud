@@ -35,7 +35,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО NONE ===
         self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = self.group_members = None
         # === ЧИСЛА ===
-        self.version = "tim.24.02"
+        self.version = "5hp.27.02"
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
         self.tomat_id = 278339710
@@ -47,7 +47,7 @@ class RF:
         self.ros_id = 715480502
         self.enot_id = 1443267413
         self.zatochka = 5
-        self.extra_hill_hp = 50
+        self.extra_hill_hp = 5
         self.ned_hill_hp = 1600
         self.min_health_single_exit = 2400  # Минимальное HP для выхода, если остался 1 живой
         self.min_health_group_exit = 4000  # Минимальное HP для выхода, если несколько живых
