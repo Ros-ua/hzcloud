@@ -33,9 +33,9 @@ class RF:
         # === ВСЕ ЧТО РАВНО FALSE ===
         self.is_cave_leader = self.is_run = self.na_nashem_altare = self.def_rudnik = self.after_caves = self.na_straj = self.is_player_dead = self.fast_cave = self.cave_task_running = self.waiting_for_captcha = self.is_moving = self.in_castle = self.v_terminale = self.is_training = self.cave_message_pinned = self.prem = self.go_term_Aquilla = self.go_term_Basilaris = self.go_term_Castitas = self.is_in_caves = self.is_in_gh = self.is_has_hil = self.is_has_res = self.is_nacheve_active = self.in_battle = False
         # === ВСЕ ЧТО РАВНО NONE ===
-        self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = self.group_members = None
+        self.cave_buttons_message = self.elka_active = self._last_processed_war_id = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = self.group_members = None
         # === ЧИСЛА ===
-        self.version = "lines.1.3"
+        self.version = "line33332s.1.3"
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
         self.tomat_id = 278339710
@@ -1912,20 +1912,30 @@ class RF:
                         print(f"Ошибка при отправке сообщения пользователю {sender_id}: {e}")
     def setup_war_listener(self):
         print("Устанавливаем обработчик сообщений для setup_war_listener")
+        self._last_processed_war_id = None  # ← это добавь
         @self.client.on(events.NewMessage(chats=-1001284047611))
         async def on_war_start(event):
             if self.waiting_for_captcha:
                 return  # Выходим из функции, ничего не обрабатываем
             # lines = event.message.text.splitlines()
 
-            # Берём последние 2 сообщения из канала
             messages = await self.client.get_messages(-1001284047611, limit=2)
             now = datetime.datetime.now(datetime.timezone.utc)
+
+            fresh_messages = [
+                msg for msg in messages
+                if (now - msg.date).total_seconds() <= 5
+                and msg.id != self._last_processed_war_id
+            ]
+
+            if not fresh_messages:
+                return
+
+            self._last_processed_war_id = max(msg.id for msg in fresh_messages)
+
             lines = []
-            for msg in messages:
-                age = (now - msg.date).total_seconds()
-                if age <= 5:
-                    lines.extend((msg.text or "").splitlines())
+            for msg in fresh_messages:
+                lines.extend((msg.text or "").splitlines())
 
             # Проверка на ядерный удар по локации
             if any("Ядерный удар по локации" in ln for ln in lines):
