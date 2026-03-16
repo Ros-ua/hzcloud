@@ -35,7 +35,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО NONE ===
         self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = self.group_members = None
         # === ЧИСЛА ===
-        self.version = "heropvpbulo.16.3"
+        self.version = "heropvpbulores.16.3"
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
         self.tomat_id = 278339710
@@ -451,7 +451,7 @@ class RF:
             self.is_has_hil = self.extra_hil = False
             self.after_bind = self.hp_binds[0][1]
         elif "Ваша группа наткнулась" in message.message:
-                    await asyncio.sleep(10)
+                    await asyncio.sleep(20)
                     if self.is_in_caves:  # Изменено на self.is_in_caves
                         await self.send_command( "⚖️Проверить состав")
                         await asyncio.sleep(10)
