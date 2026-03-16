@@ -35,7 +35,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО NONE ===
         self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = self.group_members = None
         # === ЧИСЛА ===
-        self.version = "heropvp.16.3"
+        self.version = "heropvpbulo.16.3"
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
         self.tomat_id = 278339710
@@ -2611,7 +2611,7 @@ class RF:
                     # self.last_bind = self.after_bind
                     # Сначала проверяем текущее здоровье через /hero
                     await self.send_command( "/hero")
-                    await asyncio.sleep(3)  # Ждем ответа от бота
+                    await self.wait_for_hero_response()  # ждём "Раса:" вместо sleep(3)
                     response = await self.client.get_messages(self.bot_id, limit=1)
                     if response:
                         health_line = next((line for line in response[0].text.split('\n') if '❤Здоровье:' in line), None)
