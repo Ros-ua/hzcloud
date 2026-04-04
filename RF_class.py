@@ -31,11 +31,11 @@ class RF:
         # === ВСЕ ЧТО РАВНО TRUE ===
         self.extra_hil = self.kopka = self.mobs = self.active = self.go_to_heal = True
         # === ВСЕ ЧТО РАВНО FALSE ===
-        self.is_cave_leader = self.is_run = self.na_nashem_altare = self.def_rudnik = self.after_caves = self.na_straj = self.is_player_dead = self.fast_cave = self.cave_task_running = self.waiting_for_captcha = self.is_moving = self.in_castle = self.v_terminale = self.is_training = self.cave_message_pinned = self.prem = self.go_term_Aquilla = self.go_term_Basilaris = self.go_term_Castitas = self.is_in_caves = self.is_in_gh = self.is_has_hil = self.is_has_res = self.is_nacheve_active = self.in_battle = False
+        self.is_cave_leader = self.is_run = self.na_nashem_altare = self.def_rudnik = self.after_caves = self.na_straj = self.is_player_dead = self.fast_cave = self.cave_task_running = self.waiting_for_captcha = self.is_moving = self.in_castle = self.v_terminale = self.is_training = self.cave_message_pinned = self.prem = self.go_term_Aquilla = self.go_term_Basilaris = self.go_term_Castitas = self.is_in_caves = self.is_in_gh = self.is_has_hil = self.is_has_res = self.is_nacheve_active = self.in_battle = self.term_low_hp = False
         # === ВСЕ ЧТО РАВНО NONE ===
         self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = self.group_members = None
         # === ЧИСЛА ===
-        self.version = "m35dagaz.31.3"
+        self.version = "4.4.4"
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
         self.tomat_id = 278339710
@@ -1284,6 +1284,7 @@ class RF:
         print("Начало работы parce_4v_logs.")
         lstr = msg_text.split('\n')
         print(f"Количество строк в сообщении: {len(lstr)}")
+        self.term_low_hp = False
         # Проверка HP терминалов Basilaris, Castitas и Aquilla
         for line in lstr:
             if "Basilaris терминал:" in line:
@@ -1296,6 +1297,7 @@ class RF:
                     print("HP Basilaris = 0, отправляемся в рудник!")
                     return
                 if basilaris_hp < 10000 and basilaris_hp > 1:
+                    self.term_low_hp = True
                     self.go_to_heal = False
                     self.go_term_Basilaris = False
                     self.go_term_Aquilla = False
@@ -1311,6 +1313,7 @@ class RF:
                     print("HP Castitas = 0, отправляемся в рудник!")
                     return
                 if castitas_hp < 10000 and castitas_hp > 1:
+                    self.term_low_hp = True
                     self.go_to_heal = False
                     self.go_term_Aquilla = False
                     self.go_term_Basilaris = False
@@ -1326,6 +1329,7 @@ class RF:
                     print("HP Aquilla = 0, отправляемся в рудник!")
                     return
                 if aquilla_hp < 10000 and aquilla_hp > 1:
+                    self.term_low_hp = True
                     self.go_to_heal = False
                     self.go_term_Aquilla = False
                     self.go_term_Basilaris = False
@@ -1356,16 +1360,27 @@ class RF:
                         if not lstr[15].endswith("Castitas"): l_altars.append(3)
                         if not lstr[23].endswith("Castitas"): l_altars.append(4)
                         if not lstr[24].endswith("Castitas"): l_altars.append(5)
-                    if l_altars:
+                    if self.term_low_hp and self.v_terminale:
+                        # В терминале при low HP всегда нужна цель: сначала свободные по логу, иначе общий random
+                        if l_altars:
+                            self.cmd_altar = self.altar_dict.get(random.choice(l_altars))
+                            print(
+                                f"Low HP в терминале, алтари из лога: {l_altars}, выбран: {self.cmd_altar}"
+                            )
+                        else:
+                            self.cmd_altar = self.choose_random_altar()
+                            print(
+                                f"Low HP в терминале, в логе пусто — случайный алтарь: {self.cmd_altar}"
+                            )
+                    elif l_altars:
                         self.cmd_altar = self.altar_dict.get(random.choice(l_altars))
                         print(f"Найденные алтари: {l_altars}, выбран случайный алтарь: {self.cmd_altar}")
+                    elif not self.v_terminale:
+                        self.cmd_altar = self.choose_random_altar()
+                        print(f"Алтари не найдены, выбран случайный алтарь: {self.cmd_altar}")
                     else:
-                        if not self.v_terminale:
-                            self.cmd_altar = self.choose_random_altar()
-                            print(f"Алтари не найдены, выбран случайный алтарь: {self.cmd_altar}")
-                        else:
-                            self.cmd_altar = None
-                            print("Находимся в терминале, алтарь не выбран.")
+                        self.cmd_altar = None
+                        print("Находимся в терминале, алтарь не выбран.")
         print("Конец работы parce_4v_logs.")
     async def nacheve(self):
         print("работаем на чв")
