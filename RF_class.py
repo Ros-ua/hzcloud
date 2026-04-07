@@ -35,7 +35,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО NONE ===
         self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = self.group_members = None
         # === ЧИСЛА ===
-        self.version = "41.4.4"
+        self.version = "7.4.4"
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
         self.tomat_id = 278339710
@@ -51,6 +51,7 @@ class RF:
         self.ned_hill_hp = 1600
         self.min_health_single_exit = 2400  # Минимальное HP для выхода, если остался 1 живой
         self.min_health_group_exit = 4000  # Минимальное HP для выхода, если несколько живых
+        self.term_low_hp_threshold = 12000
         self.bezvgroup = -1002220238697
         self.group59 = -1001323974021
         self.location = "🔥 61-65 Лес пламени"  # Локация по умолчанию
@@ -1296,7 +1297,7 @@ class RF:
                     self.cmd_altar = "⛏Рудник"
                     print("HP Basilaris = 0, отправляемся в рудник!")
                     return
-                if basilaris_hp < 10000 and basilaris_hp > 1:
+                if basilaris_hp < self.term_low_hp_threshold and basilaris_hp > 1:
                     self.term_low_hp = True
                     self.go_to_heal = False
                     self.go_term_Basilaris = False
@@ -1312,7 +1313,7 @@ class RF:
                     self.cmd_altar = "⛏Рудник"
                     print("HP Castitas = 0, отправляемся в рудник!")
                     return
-                if castitas_hp < 10000 and castitas_hp > 1:
+                if castitas_hp < self.term_low_hp_threshold and castitas_hp > 1:
                     self.term_low_hp = True
                     self.go_to_heal = False
                     self.go_term_Aquilla = False
@@ -1328,7 +1329,7 @@ class RF:
                     self.cmd_altar = "⛏Рудник"
                     print("HP Aquilla = 0, отправляемся в рудник!")
                     return
-                if aquilla_hp < 10000 and aquilla_hp > 1:
+                if aquilla_hp < self.term_low_hp_threshold and aquilla_hp > 1:
                     self.term_low_hp = True
                     self.go_to_heal = False
                     self.go_term_Aquilla = False
