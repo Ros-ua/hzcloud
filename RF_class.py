@@ -35,7 +35,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО NONE ===
         self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = self.group_members = None
         # === ЧИСЛА ===
-        self.version = "113.4.4"
+        self.version = "114.4.4"
         self.last_restart_at = datetime.datetime.now()
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
@@ -1403,7 +1403,6 @@ class RF:
                     #     self.cmd_altar = self.choose_random_altar()
                     #     print(f"Алтари не найдены, выбран случайный алтарь: {self.cmd_altar}")
                     if self.term_low_hp and self.v_terminale:
-                        # Low HP в терминале — всегда уходим (любой метод)
                         if l_altars:
                             self.cmd_altar = self.altar_dict.get(random.choice(l_altars))
                             print(f"Low HP в терминале, алтари из лога: {l_altars}, выбран: {self.cmd_altar}")
@@ -1413,18 +1412,24 @@ class RF:
                     elif self.v_terminale and self.is_nacheve_active:
                         self.cmd_altar = None
                         print("vterminale: HP норм — остаёмся.")
-                    elif self.v_terminale:
-                        # vterminale в терминале, HP норм — не выбираем алтарь
-                        self.cmd_altar = None
-                        print("vterminale в терминале, HP норм — алтарь не выбран.")
-                    elif l_altars:
-                        self.cmd_altar = self.altar_dict.get(random.choice(l_altars))
                     elif self.is_nacheve_active:
-                        self.cmd_altar = None
-                        print("nacheve: нет свободных алтарей — остаёмся.")
-                    else:
-                        self.cmd_altar = self.choose_random_altar()
-                        print(f"Алтари не найдены, выбран случайный алтарь: {self.cmd_altar}")
+                        if self.current_location in ("Castitas терминал", "Aquilla терминал", "Basilaris терминал"):
+                            if l_altars:
+                                self.cmd_altar = self.altar_dict.get(random.choice(l_altars))
+                                print(f"nacheve в терминале: есть свободные алтари, выбран: {self.cmd_altar}")
+                            else:
+                                self.cmd_altar = None
+                                print("nacheve в терминале: нет свободных алтарей — остаёмся.")
+                        else:
+                            if l_altars:
+                                self.cmd_altar = self.altar_dict.get(random.choice(l_altars))
+                                print(f"nacheve на алтаре: алтари из лога, выбран: {self.cmd_altar}")
+                            else:
+                                self.cmd_altar = self.choose_random_altar()
+                                print(f"nacheve на алтаре: нет свободных — уходим на случайный: {self.cmd_altar}")
+
+
+
         print("Конец работы parce_4v_logs.")
     async def nacheve(self):
         print("работаем на чв")
