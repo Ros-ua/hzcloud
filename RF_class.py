@@ -35,7 +35,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО NONE ===
         self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = self.group_members = None
         # === ЧИСЛА ===
-        self.version = "11.4.4"
+        self.version = "111.4.4"
         self.last_restart_at = datetime.datetime.now()
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
@@ -353,6 +353,12 @@ class RF:
     async def reset_moving_flag(self, duration):
         await asyncio.sleep(duration)
         self.is_moving = False
+    def _format_restart_age(self):
+        total_minutes = max(0, int((datetime.datetime.now() - self.last_restart_at).total_seconds() // 60))
+        hours, minutes = divmod(total_minutes, 60)
+        if hours:
+            return f"{hours} ч {minutes} мин назад"
+        return f"{minutes} мин назад"
     # Добавить метод в класс:
     async def _delayed_restart(self):
         # Ожидаем пока self.kopka станет True
@@ -2517,7 +2523,7 @@ class RF:
                 elif "_restart" in message_text:
                     print("Получена команда перезапуска")
                     await event.message.delete()  # Удаляем сообщение
-                    restart_text = self.last_restart_at.strftime("%d.%m.%Y %H:%M:%S")
+                    restart_text = self._format_restart_age()
                     msg = await self.client.send_message(event.chat_id, f"{self.version}\nРестарт: {restart_text}")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
@@ -2528,7 +2534,7 @@ class RF:
                 elif "_ver" in message_text:
                     print("Получена команда показа версии")
                     await event.message.delete()  # Удаляем сообщение _ver
-                    restart_text = self.last_restart_at.strftime("%d.%m.%Y %H:%M:%S")
+                    restart_text = self._format_restart_age()
                     msg = await self.client.send_message(event.chat_id, f"{self.version}\nРестарт: {restart_text}")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
