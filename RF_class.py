@@ -31,11 +31,11 @@ class RF:
         # === ВСЕ ЧТО РАВНО TRUE ===
         self.extra_hil = self.kopka = self.mobs = self.active = self.go_to_heal = True
         # === ВСЕ ЧТО РАВНО FALSE ===
-        self.is_cave_leader = self.is_run = self.na_nashem_altare = self.def_rudnik = self.after_caves = self.na_straj = self.is_player_dead = self.fast_cave = self.cave_task_running = self.waiting_for_captcha = self.is_moving = self.in_castle = self.v_terminale = self.is_training = self.cave_message_pinned = self.prem = self.go_term_Aquilla = self.go_term_Basilaris = self.go_term_Castitas = self.is_in_caves = self.is_in_gh = self.is_has_hil = self.is_has_res = self.is_nacheve_active = self.in_battle = self.term_low_hp = False
+        self.is_cave_leader = self.chv_is_running = self.is_run = self.na_nashem_altare = self.def_rudnik = self.after_caves = self.na_straj = self.is_player_dead = self.fast_cave = self.cave_task_running = self.waiting_for_captcha = self.is_moving = self.in_castle = self.v_terminale = self.is_training = self.cave_message_pinned = self.prem = self.go_term_Aquilla = self.go_term_Basilaris = self.go_term_Castitas = self.is_in_caves = self.is_in_gh = self.is_has_hil = self.is_has_res = self.is_nacheve_active = self.in_battle = self.term_low_hp = False
         # === ВСЕ ЧТО РАВНО NONE ===
         self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = self.group_members = None
         # === ЧИСЛА ===
-        self.version = "1143.4.4"
+        self.version = "1.15.4"
         self.last_restart_at = datetime.datetime.now()
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
@@ -894,7 +894,15 @@ class RF:
             "Ты прибыл на"
         ]):
             await asyncio.sleep(1)
-            await self.send_command( "⛏Рудник")
+            await self.go_to_mine_or_altar()
+
+
+
+
+
+
+
+
         elif "[на время боевых действий проход закрыт]" in lstr[0]:
             await asyncio.sleep(1)
             # await self.send_command( "🎄Праздничная Ёлка")
@@ -2008,6 +2016,7 @@ class RF:
                 # self.pvpgoheal = 4500
                 self.active = False
                 self.go_to_heal = True
+                self.chv_is_running = True
                 # Список имен пользователей, для которых нужно отправлять /hero
                 users_need_hero = ["Ros_Hangzhou"]
                 # Логика для различных типов пользователей
@@ -2066,6 +2075,7 @@ class RF:
                         await asyncio.sleep(15)
                     await self.send_command("/vote_register")
             elif any("Война окончена!" in ln for ln in lines):
+                self.chv_is_running = False
                 await asyncio.sleep(70)
                 self.def_rudnik = True
                 if not self.is_moving and not self.killed_on_chv and not self.is_in_caves and not self.kopka:
@@ -3748,3 +3758,25 @@ class RF:
                         return
             await asyncio.sleep(1)
 
+    async def go_to_mine_or_altar(self):
+        if not self.chv_is_running:
+            await self.send_command("⛏Рудник")
+        else:
+            self.cmd_altar = None
+
+
+            try:
+                await asyncio.wait_for(self.prepare_for_caves(), timeout=3)
+            except asyncio.TimeoutError:
+                print("Таймаут получения алтаря")
+
+
+
+            # await self.prepare_for_caves()
+
+
+
+
+
+            altar_to_send = self.cmd_altar if self.cmd_altar else self.choose_random_altar()
+            await self.send_command(altar_to_send)
