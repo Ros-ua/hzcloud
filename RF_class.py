@@ -35,7 +35,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО NONE ===
         self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = self.group_members = None
         # === ЧИСЛА ===
-        self.version = "1.15.4"
+        self.version = "1.16.4"
         self.last_restart_at = datetime.datetime.now()
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
@@ -460,6 +460,7 @@ class RF:
             self.after_bind = self.hp_binds[0][1]
         elif "Ваша группа наткнулась" in message.message:
                     await asyncio.sleep(25)
+                    self.fast_cave = False
                     if self.is_in_caves:  # Изменено на self.is_in_caves
                         await self.send_command( "⚖️Проверить состав")
                         await asyncio.sleep(15)
@@ -808,7 +809,6 @@ class RF:
         elif any(phrase in line for line in lstr for phrase in [
             "бой за терминал будет происходить автоматически",
         ]):
-
             self.v_terminale = True
             self.got_reward = False  # Сбрасываем флаг получения награды
             # Устанавливаем current_location в зависимости от типа терминала
@@ -895,14 +895,6 @@ class RF:
         ]):
             await asyncio.sleep(1)
             await self.go_to_mine_or_altar()
-
-
-
-
-
-
-
-
         elif "[на время боевых действий проход закрыт]" in lstr[0]:
             await asyncio.sleep(1)
             # await self.send_command( "🎄Праздничная Ёлка")
@@ -1435,13 +1427,9 @@ class RF:
                             else:
                                 self.cmd_altar = self.choose_random_altar()
                                 print(f"nacheve на алтаре: нет свободных — уходим на случайный: {self.cmd_altar}")
-
-
     async def nacheve(self):
         print("работаем на чв")
-
         self.v_terminale = False  # ← сбрасываем, чтобы parce_4v_logs работал в обычном режиме
-
         self.is_nacheve_active = True  # Устанавливаем флаг активности
         self.cmd_altar = None  # Сбрасываем выбранный алтарь при начале работы
         # Обработчик для сообщений из RF чата
@@ -3357,11 +3345,7 @@ class RF:
         return "\n".join(graph_with_labels)
     async def vterminale(self):
         print("работаем в терминале")
-
-
         self.v_terminale = True  # ← явно, на случай если вызван из другого места
-
-
         self.is_nacheve_active = True
         self.cmd_altar = None  # не нужен, но для совместимости сбрасываем
         @self.client.on(events.NewMessage(chats=-1001284047611))
@@ -3757,26 +3741,15 @@ class RF:
                     if msg.message and msg.message.startswith("Раса:"):
                         return
             await asyncio.sleep(1)
-
     async def go_to_mine_or_altar(self):
         if not self.chv_is_running:
             await self.send_command("⛏Рудник")
         else:
             self.cmd_altar = None
-
-
             try:
                 await asyncio.wait_for(self.prepare_for_caves(), timeout=3)
             except asyncio.TimeoutError:
                 print("Таймаут получения алтаря")
-
-
-
             # await self.prepare_for_caves()
-
-
-
-
-
             altar_to_send = self.cmd_altar if self.cmd_altar else self.choose_random_altar()
             await self.send_command(altar_to_send)
