@@ -35,7 +35,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО NONE ===
         self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = self.group_members = None
         # === ЧИСЛА ===
-        self.version = "1.18.4"
+        self.version = "2.18.4"
         self.last_restart_at = datetime.datetime.now()
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
@@ -2206,7 +2206,7 @@ class RF:
             # Обработка предупреждения о войне через час
             elif any("Война в краговых шахтах начнется через час!" in ln for ln in lines):
                 print("Обнаружено предупреждение о войне через час!")
-                # Запускаем таймер на 57 минут
+                # Запускаем таймер на 58 минут
                 asyncio.create_task(self.war_preparation_timer())
     async def pvp_heal_timer(self):
         """Таймер для изменения pvpgoheal через 43 минуты после начала войны"""
@@ -2226,7 +2226,7 @@ class RF:
         self.go_to_heal = True
         print("Через 43 минуты после начала войны установлено go_to_heal = True")
     async def war_preparation_timer(self):
-        """Таймер подготовки к войне - проверяем kopka через 25, 50 и 57 минут"""
+        """Таймер подготовки к войне - проверяем kopka через 25, 50 и 58 минут"""
         print("Запущен таймер подготовки к войне")
         # Если в ожидании капчи, то сразу выходим
         # if self.waiting_for_captcha:
