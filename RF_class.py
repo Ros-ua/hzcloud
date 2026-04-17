@@ -35,7 +35,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО NONE ===
         self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = self.group_members = None
         # === ЧИСЛА ===
-        self.version = "1.16.4"
+        self.version = "1.18.4"
         self.last_restart_at = datetime.datetime.now()
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
@@ -2262,14 +2262,14 @@ class RF:
         elif self.kopka and not self.waiting_for_captcha and self.prem:
             print("Через 50 минут kopka=True, отправляем в Лес пламени")
             await self.send_command(self.location)
-        # Ждём ещё 7 минут (итого 57 минут от начала)
-        await asyncio.sleep(7 * 60)
-        # Через 57 минут — просто отправляем в ген. штаб если kopka активна
+        # Ждём ещё 8 минут (итого 58 минут от начала)
+        await asyncio.sleep(8 * 60)
+        # Через 58 минут — просто отправляем в ген. штаб если kopka активна
         if self.kopka and not self.waiting_for_captcha:
-            print("Через 57 минут kopka=True, отправляем в ген. штаб")
+            print("Через 58 минут kopka=True, отправляем в ген. штаб")
             await self.send_command("🏛 В ген. штаб")
         else:
-            print("Через 57 минут kopka=False, остаёмся на месте")
+            print("Через 58 минут kopka=False, остаёмся на месте")
     def common_cave(self):
         print("Устанавливаем обработчик сообщений для common_cave")
         @self.client.on(events.NewMessage(from_users=[self.tomat_id, self.ros_id, self.kroha_id, self.tamplier_id, self.enot_id, self.john_id, self.pchelka_id, 5596818972, self.ded_id]))
