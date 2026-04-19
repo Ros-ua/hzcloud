@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VPS Monitor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #080c10;
+  --surf:    #0e1520;
+  --surf2:   #131d2b;
+  --border:  #1a2840;
+  --accent:  #00e5b0;
+  --blue:    #2196f3;
+  --warn:    #ff5c35;
+  --text:    #b8cfe0;
+  --muted:   #3a5568;
+  --mono:    'Space Mono', monospace;
+  --ui:      'DM Sans', sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg); color: var(--text);
+  font-family: var(--ui); min-height: 100vh;
+}
+body::after {
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:9999;
+  background: repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.025) 2px,rgba(0,0,0,0.025) 4px);
+}
+
+/* HEADER */
+header {
+  position:sticky; top:0; z-index:100; height:56px;
+  background:rgba(8,12,16,0.92); backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  display:flex; align-items:center; padding:0 28px; gap:14px;
+}
+.logo {
+  font-family:var(--mono); font-size:12px; letter-spacing:.2em;
+  text-transform:uppercase; color:var(--accent);
+  display:flex; align-items:center; gap:8px;
+}
+.logo-sq {
+  width:26px; height:26px; border:1px solid var(--accent);
+  border-radius:5px; display:grid; place-items:center; font-size:13px;
+}
+.hspacer { flex:1; }
+.hclock  { font-family:var(--mono); font-size:11px; color:var(--muted); }
+.hbtn {
+  font-family:var(--mono); font-size:10px; letter-spacing:.1em;
+  text-transform:uppercase; padding:5px 12px; border-radius:5px;
+  border:1px solid var(--border); background:none; color:var(--text);
+  cursor:pointer; transition:all .15s;
+}
+.hbtn:hover { border-color:var(--accent); color:var(--accent); }
+.hbtn.spin  { animation:spin .8s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+.hadd {
+  font-family:var(--mono); font-size:10px; letter-spacing:.1em;
+  text-transform:uppercase; padding:5px 12px; border-radius:5px;
+  border:1px solid var(--accent); background:rgba(0,229,176,.08);
+  color:var(--accent); cursor:pointer; transition:all .15s;
+}
+.hadd:hover { background:rgba(0,229,176,.18); }
+
+/* MAIN */
+main { max-width:1100px; margin:0 auto; padding:28px 20px 60px; }
+
+/* SUMMARY */
+.summary {
+  display:grid; grid-template-columns:repeat(4,1fr);
+  gap:10px; margin-bottom:28px;
+}
+.scard {
+  background:var(--surf); border:1px solid var(--border);
+  border-radius:10px; padding:16px 18px;
+  animation:up .4s ease both;
+}
+.scard:nth-child(2){animation-delay:.06s}
+.scard:nth-child(3){animation-delay:.12s}
+.scard:nth-child(4){animation-delay:.18s}
+@keyframes up { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+.slabel { font-size:10px; color:var(--muted); letter-spacing:.12em; text-transform:uppercase; margin-bottom:8px; }
+.sval   { font-family:var(--mono); font-size:20px; font-weight:700; color:var(--accent); line-height:1; }
+.sval.warn { color:var(--warn); }
+.sval .u   { font-size:11px; color:var(--muted); margin-left:2px; }
+
+/* SECTION */
+.sec {
+  font-family:var(--mono); font-size:10px; letter-spacing:.2em;
+  text-transform:uppercase; color:var(--muted); margin-bottom:12px;
+  display:flex; align-items:center; gap:10px;
+}
+.sec::after { content:''; flex:1; height:1px; background:var(--border); }
+
+/* CARDS */
+.cards { display:grid; gap:12px; }
+.vcard {
+  background:var(--surf); border:1px solid var(--border);
+  border-radius:12px; overflow:hidden;
+  animation:up .4s ease both; transition:border-color .2s;
+}
+.vcard:hover { border-color:#243548; }
+.vcard.best  { border-color:var(--accent) !important; }
+.vcard.worst { border-color:#2a1507 !important; }
+
+/* Card header */
+.ch {
+  display:flex; align-items:center; gap:12px;
+  padding:14px 20px; border-bottom:1px solid var(--border);
+}
+.dot {
+  width:7px; height:7px; border-radius:50%;
+  background:var(--muted); flex-shrink:0; transition:all .3s;
+}
+.dot.on  { background:var(--accent); box-shadow:0 0 6px var(--accent); }
+.dot.off { background:var(--warn); }
+.dot.ld  { animation:blink 1s ease-in-out infinite; }
+@keyframes blink { 0%,100%{opacity:.25} 50%{opacity:1} }
+.cname { font-size:14px; font-weight:600; }
+.chost { font-family:var(--mono); font-size:10px; color:var(--muted); margin-left:auto; }
+.ctag  { font-family:var(--mono); font-size:9px; padding:2px 7px; border-radius:4px; letter-spacing:.07em; }
+.ctag.iface { background:var(--surf2); border:1px solid var(--border); color:var(--muted); }
+.ctag.best  { background:rgba(0,229,176,.1); border:1px solid rgba(0,229,176,.2); color:var(--accent); }
+.ctag.worst { background:rgba(255,92,53,.1); border:1px solid rgba(255,92,53,.2); color:var(--warn); }
+.ctag.age   { background:var(--surf2); border:1px solid var(--border); color:var(--muted); }
+
+/* Card body */
+.cb { padding:16px 20px; }
+.cb-loading {
+  display:flex; align-items:center; gap:8px;
+  color:var(--muted); font-size:12px; padding:4px 0;
+}
+.cb-loading::before {
+  content:''; width:10px; height:10px; border-radius:50%;
+  border:1.5px solid var(--border); border-top-color:var(--accent);
+  animation:spin .7s linear infinite; flex-shrink:0;
+}
+.cb-error { color:var(--warn); font-family:var(--mono); font-size:11px; }
+
+.stats-row {
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr 1fr auto;
+  gap:20px; align-items:center;
+}
+.sg { }
+.sg-label { font-size:9px; color:var(--muted); letter-spacing:.12em; text-transform:uppercase; margin-bottom:4px; }
+.sg-val   { font-family:var(--mono); font-size:17px; font-weight:700; line-height:1; }
+.sg-val .u { font-size:10px; color:var(--muted); margin-left:1px; }
+
+/* Sparkline */
+.spark { display:flex; gap:3px; align-items:flex-end; height:36px; min-width:100px; }
+.sbar {
+  flex:1; min-width:6px; border-radius:2px 2px 0 0;
+  background:var(--border); position:relative;
+  cursor:default; transition:background .2s;
+}
+.sbar.cur { background:rgba(33,150,243,.45); }
+.sbar:hover { background:var(--blue) !important; }
+.sbar::after {
+  content:attr(data-tip);
+  position:absolute; bottom:calc(100% + 5px); left:50%;
+  transform:translateX(-50%);
+  background:#1a2840; border:1px solid var(--border);
+  padding:3px 7px; border-radius:4px;
+  font-family:var(--mono); font-size:9px; color:var(--text);
+  white-space:nowrap; pointer-events:none;
+  opacity:0; transition:opacity .1s; z-index:10;
+}
+.sbar:hover::after { opacity:1; }
+
+/* Progress */
+.prog-wrap { width:100%; }
+.prog-label { font-size:9px; color:var(--muted); margin-bottom:5px; letter-spacing:.08em; }
+.prog-bg { height:3px; background:var(--border); border-radius:2px; overflow:hidden; }
+.prog-fill {
+  height:100%; border-radius:2px; width:0%;
+  background:linear-gradient(90deg,var(--blue),var(--accent));
+  transition:width 1s cubic-bezier(.4,0,.2,1);
+}
+
+/* ADD PANEL */
+.add-panel {
+  background:var(--surf); border:1px dashed var(--border);
+  border-radius:12px; padding:24px 28px; margin-top:12px; display:none;
+}
+.add-panel.open { display:block; }
+.add-title {
+  font-family:var(--mono); font-size:11px; letter-spacing:.15em;
+  color:var(--accent); text-transform:uppercase; margin-bottom:16px;
+}
+.add-row { display:flex; gap:8px; margin-bottom:10px; flex-wrap:wrap; }
+.add-input {
+  background:var(--surf2); border:1px solid var(--border);
+  color:var(--text); font-family:var(--mono); font-size:12px;
+  padding:8px 12px; border-radius:6px; outline:none;
+  transition:border-color .15s; flex:1; min-width:180px;
+}
+.add-input:focus { border-color:var(--accent); }
+.add-input::placeholder { color:var(--muted); }
+.add-submit {
+  background:rgba(0,229,176,.1); border:1px solid var(--accent);
+  color:var(--accent); font-family:var(--mono); font-size:11px;
+  padding:8px 16px; border-radius:6px; cursor:pointer;
+  letter-spacing:.08em; transition:all .15s;
+}
+.add-submit:hover { background:rgba(0,229,176,.2); }
+.add-hint { font-size:11px; color:var(--muted); line-height:1.8; margin-top:6px; }
+.add-hint code {
+  font-family:var(--mono); background:var(--surf2);
+  padding:1px 5px; border-radius:3px; font-size:10px; color:var(--text);
+}
+
+.del-btn {
+  background:none; border:none; color:var(--muted);
+  cursor:pointer; font-size:14px; padding:2px 5px;
+  border-radius:3px; transition:color .15s;
+}
+.del-btn:hover { color:var(--warn); }
+
+.footer {
+  font-family:var(--mono); font-size:9px;
+  color:var(--muted); text-align:right; margin-top:20px;
+}
+
+@media (max-width:720px) {
+  .summary { grid-template-columns:1fr 1fr; }
+  .stats-row { grid-template-columns:1fr 1fr; }
+  header { padding:0 14px; gap:10px; }
+  main { padding:18px 12px 60px; }
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo"><div class="logo-sq">▤</div>VPS Monitor</div>
+  <div class="hspacer"></div>
+  <span class="hclock" id="clock">--:--:--</span>
+  <button class="hbtn" id="refreshBtn" onclick="loadAll()">↻</button>
+  <button class="hadd" onclick="toggleAdd()">+ Добавить VPS</button>
+</header>
+
+<main>
+  <div class="summary">
+    <div class="scard"><div class="slabel">Онлайн</div><div class="sval" id="s-online">—</div></div>
+    <div class="scard"><div class="slabel">Трафик за месяц</div><div class="sval" id="s-total">—</div></div>
+    <div class="scard"><div class="slabel">Лидер</div><div class="sval" id="s-best">—</div></div>
+    <div class="scard"><div class="slabel">Аутсайдер</div><div class="sval warn" id="s-worst">—</div></div>
+  </div>
+
+  <div class="sec">Серверы</div>
+  <div class="cards" id="cards"></div>
+
+  <div class="add-panel" id="addPanel">
+    <div class="add-title">+ Новый VPS</div>
+    <div class="add-row">
+      <input class="add-input" id="in-name" placeholder="Имя  (напр. VPS-1 🇯🇵)" />
+      <input class="add-input" id="in-gist" placeholder="Gist ID" />
+      <button class="add-submit" onclick="addServer()">Добавить</button>
+    </div>
+    <div class="add-hint">
+      Gist ID — длинный хэш из URL:<br>
+      <code>gist.github.com/твой-юзер/<b>a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4</b></code>
+    </div>
+  </div>
+
+  <div class="footer" id="footer"></div>
+</main>
+
+<script>
+const MN = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const REFRESH_SEC = 120;
+
+let cache = {};
+let timer = null;
+
+function loadServers() {
+  try { const s = localStorage.getItem("vps_servers"); if (s) return JSON.parse(s); } catch(e) {}
+  return [];
+}
+function saveServers(list) { localStorage.setItem("vps_servers", JSON.stringify(list)); }
+
+function fmtB(b) {
+  if (b == null) return "—";
+  const u = ["B","KB","MB","GB","TB"]; let i = 0;
+  while (b >= 1024 && i < u.length-1) { b /= 1024; i++; }
+  return `${b.toFixed(2)}<span class="u">${u[i]}</span>`;
+}
+function fmtBp(b) {
+  const u = ["B","KB","MB","GB","TB"]; let i = 0;
+  while (b >= 1024 && i < u.length-1) { b /= 1024; i++; }
+  return `${b.toFixed(1)} ${u[i]}`;
+}
+function dataAge(ts) {
+  if (!ts) return "";
+  const d = Math.floor((Date.now() - new Date(ts)) / 1000);
+  if (d < 60) return `${d}s ago`;
+  if (d < 3600) return `${Math.floor(d/60)}m ago`;
+  return `${Math.floor(d/3600)}h ago`;
+}
+function esc(s) {
+  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+
+async function fetchGist(gistId) {
+  const r = await fetch(`https://api.github.com/gists/${gistId}`, {
+    headers: { "Accept": "application/vnd.github+json" },
+    signal: AbortSignal.timeout(10000),
+  });
+  if (!r.ok) throw new Error(`GitHub ${r.status}`);
+  const g = await r.json();
+  const f = Object.values(g.files)[0];
+  if (!f) throw new Error("Gist пустой");
+  return JSON.parse(f.content);
+}
+
+function getMonths(data) {
+  try {
+    return data.vnstat.interfaces[0].traffic.month
+      .sort((a,b) => (a.date.year*12+a.date.month)-(b.date.year*12+b.date.month))
+      .slice(-6);
+  } catch(e) { return []; }
+}
+
+function buildCards(servers) {
+  document.getElementById("cards").innerHTML = servers.map((srv, i) => `
+    <div class="vcard" id="vc-${i}" style="animation-delay:${i*0.06}s">
+      <div class="ch">
+        <div class="dot ld" id="dot-${i}"></div>
+        <span class="cname">${esc(srv.name)}</span>
+        <span class="chost" id="host-${i}"></span>
+        <span class="ctag iface" id="iface-${i}">—</span>
+        <span class="ctag age"   id="age-${i}"></span>
+        <span id="rank-${i}"></span>
+        <button class="del-btn" onclick="removeServer(${i})" title="Удалить">×</button>
+      </div>
+      <div class="cb" id="cb-${i}"><div class="cb-loading">Загружаю...</div></div>
+    </div>`).join("");
+}
+
+function renderCard(i, srv, state) {
+  const card   = document.getElementById(`vc-${i}`);
+  const dot    = document.getElementById(`dot-${i}`);
+  const cb     = document.getElementById(`cb-${i}`);
+  const ifEl   = document.getElementById(`iface-${i}`);
+  const ageEl  = document.getElementById(`age-${i}`);
+  const hostEl = document.getElementById(`host-${i}`);
+  const rankEl = document.getElementById(`rank-${i}`);
+  if (!card) return;
+
+  if (state.status === "loading") {
+    dot.className = "dot ld";
+    cb.innerHTML = `<div class="cb-loading">Загружаю...</div>`;
+    return;
+  }
+  if (state.status === "error") {
+    dot.className = "dot off";
+    cb.innerHTML = `<div class="cb-error">⚠ ${esc(state.error)}</div>`;
+    card.className = "vcard"; rankEl.innerHTML = "";
+    return;
+  }
+
+  const d = state.data;
+  dot.className = "dot on";
+  ifEl.textContent   = d.iface || "—";
+  hostEl.textContent = d.hostname || "";
+  ageEl.textContent  = dataAge(d.ts);
+
+  // Rank
+  const servers = loadServers();
+  const ranked = servers.map((_, j) => {
+    const ms = getMonths(cache[j]?.data || {});
+    const cur = ms[ms.length-1];
+    return { j, val: cur ? cur.rx + cur.tx : -1 };
+  }).filter(r => cache[r.j]?.status === "ok")
+    .sort((a,b) => b.val - a.val);
+
+  const myRank = ranked.findIndex(r => r.j === i);
+  if (ranked.length > 1 && myRank === 0 && ranked[0].val >= 0) {
+    card.className = "vcard best";
+    rankEl.innerHTML = `<span class="ctag best">🏆 лидер</span>`;
+  } else if (ranked.length > 1 && myRank === ranked.length-1 && ranked[myRank].val >= 0) {
+    card.className = "vcard worst";
+    rankEl.innerHTML = `<span class="ctag worst">⚠ аутсайдер</span>`;
+  } else {
+    card.className = "vcard"; rankEl.innerHTML = "";
+  }
+
+  const months = getMonths(d);
+  const cur    = months[months.length-1] || null;
+  const maxT   = Math.max(...months.map(m => m.rx+m.tx), 1);
+  const rx     = cur ? cur.rx : null;
+  const tx     = cur ? cur.tx : null;
+  const total  = cur ? cur.rx+cur.tx : null;
+  const pct    = total ? Math.round((total/maxT)*100) : 0;
+  const period = cur ? `${MN[cur.date.month-1]} ${cur.date.year}` : "—";
+
+  const spark = months.map((m, mi) => {
+    const t = m.rx+m.tx;
+    const h = Math.max(4, Math.round((t/maxT)*36));
+    const isCur = mi === months.length-1 ? "cur" : "";
+    return `<div class="sbar ${isCur}" style="height:${h}px" data-tip="${MN[m.date.month-1]} ${m.date.year}: ${fmtBp(t)}"></div>`;
+  }).join("");
+
+  cb.innerHTML = `
+    <div class="stats-row">
+      <div class="sg"><div class="sg-label">↓ Получено</div><div class="sg-val">${rx!=null?fmtB(rx):"—"}</div></div>
+      <div class="sg"><div class="sg-label">↑ Отправлено</div><div class="sg-val">${tx!=null?fmtB(tx):"—"}</div></div>
+      <div class="sg"><div class="sg-label">Итого · ${period}</div><div class="sg-val">${total!=null?fmtB(total):"—"}</div></div>
+      <div class="sg"><div class="sg-label">Uptime</div><div class="sg-val" style="font-size:13px">${esc(d.uptime||"—")}</div></div>
+      <div>
+        <div class="prog-wrap" style="margin-bottom:8px">
+          <div class="prog-label">Доля трафика</div>
+          <div class="prog-bg"><div class="prog-fill" data-pct="${pct}"></div></div>
+        </div>
+        <div class="spark">${spark}</div>
+      </div>
+    </div>`;
+
+  requestAnimationFrame(() => {
+    const f = cb.querySelector(".prog-fill");
+    if (f) f.style.width = pct + "%";
+  });
+}
+
+function updateSummary() {
+  const servers = loadServers();
+  const pairs = servers.map((srv, i) => {
+    if (cache[i]?.status !== "ok") return null;
+    const ms = getMonths(cache[i].data);
+    const cur = ms[ms.length-1];
+    return { name: srv.name, total: cur ? cur.rx+cur.tx : 0 };
+  }).filter(Boolean).sort((a,b) => b.total-a.total);
+
+  const online = servers.filter((_,i) => cache[i]?.status === "ok").length;
+  const grand  = pairs.reduce((a,b) => a+b.total, 0);
+  document.getElementById("s-online").textContent = `${online} / ${servers.length}`;
+  document.getElementById("s-total").innerHTML    = grand > 0 ? fmtB(grand) : "—";
+  document.getElementById("s-best").textContent   = pairs[0]?.name || "—";
+  document.getElementById("s-worst").textContent  = pairs.length>1 ? pairs[pairs.length-1].name : "—";
+}
+
+async function loadServer(i, srv) {
+  cache[i] = { status: "loading" };
+  renderCard(i, srv, cache[i]);
+  try {
+    const data = await fetchGist(srv.gistId);
+    cache[i] = { status: "ok", data };
+  } catch(e) {
+    cache[i] = { status: "error", error: e.message };
+  }
+  renderCard(i, srv, cache[i]);
+  updateSummary();
+}
+
+async function loadAll() {
+  const btn = document.getElementById("refreshBtn");
+  btn.classList.add("spin"); btn.disabled = true;
+  clearTimeout(timer);
+  const servers = loadServers();
+  await Promise.all(servers.map((s,i) => loadServer(i,s)));
+  btn.classList.remove("spin"); btn.disabled = false;
+  document.getElementById("footer").textContent =
+    `Обновлено: ${new Date().toLocaleTimeString("ru-RU")} · следующее через ${REFRESH_SEC}s`;
+  timer = setTimeout(loadAll, REFRESH_SEC*1000);
+}
+
+function toggleAdd() { document.getElementById("addPanel").classList.toggle("open"); }
+
+function addServer() {
+  const name   = document.getElementById("in-name").value.trim();
+  const gistId = document.getElementById("in-gist").value.trim();
+  if (!name || !gistId) { alert("Заполни оба поля"); return; }
+  const servers = loadServers();
+  servers.push({ name, gistId });
+  saveServers(servers);
+  document.getElementById("in-name").value = "";
+  document.getElementById("in-gist").value = "";
+  document.getElementById("addPanel").classList.remove("open");
+  buildCards(servers); loadAll();
+}
+
+function removeServer(i) {
+  if (!confirm("Удалить этот VPS с дашборда?")) return;
+  const servers = loadServers();
+  servers.splice(i, 1);
+  saveServers(servers);
+  delete cache[i];
+  buildCards(servers); loadAll();
+}
+
+setInterval(() => {
+  document.getElementById("clock").textContent = new Date().toLocaleTimeString("ru-RU");
+}, 1000);
+
+(function init() {
+  const servers = loadServers();
+  buildCards(servers);
+  if (servers.length) loadAll();
+  else document.getElementById("addPanel").classList.add("open");
+})();
+</script>
+</body>
+</html>
