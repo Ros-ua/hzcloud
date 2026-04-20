@@ -8,11 +8,11 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg:     #07090d;
-  --bg2:    #0d1119;
-  --panel:  #111822;
-  --border: #1c2a3a;
-  --border2:#243347;
+  --bg:     #100e1a;
+  --bg2:    #161323;
+  --panel:  #1b1828;
+  --border: #261f38;
+  --border2:#302848;
   --green:  #00f0a0;
   --blue:   #38bdf8;
   --orange: #fb923c;
@@ -30,15 +30,15 @@ body {
 body::before {
   content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
   background-image:
-    linear-gradient(rgba(0,240,160,.018) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(0,240,160,.018) 1px,transparent 1px);
+    linear-gradient(rgba(160,100,255,.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(160,100,255,.018) 1px,transparent 1px);
   background-size:40px 40px;
 }
 
 /* ── HEADER ── */
 header {
   position:sticky; top:0; z-index:200; height:58px;
-  background:rgba(7,9,13,.9); backdrop-filter:blur(20px);
+  background:rgba(16,14,26,.92); backdrop-filter:blur(20px);
   border-bottom:1px solid var(--border);
   display:flex; align-items:center; padding:0 32px; gap:18px;
 }
