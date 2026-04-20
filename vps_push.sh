@@ -7,8 +7,8 @@
 # ══════════════════════════════════════════════
 #  ЗАПОЛНИ ЭТИ ДВЕ ПЕРЕМЕННЫЕ
 # ══════════════════════════════════════════════
-GITHUB_TOKEN="ghp_XXXXXXXXXXXXXXXXXXXXX"   # PAT с правом gist
-GIST_ID="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"  # ID твоего Gist
+GITHUB_TOKEN=""   # PAT с правом gist
+GIST_ID=""  # ID твоего Gist
 # ══════════════════════════════════════════════
 
 set -euo pipefail
