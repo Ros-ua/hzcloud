@@ -8,306 +8,203 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg:       #07090d;
-  --bg2:      #0d1119;
-  --panel:    #111822;
-  --border:   #1c2a3a;
-  --border2:  #243347;
-  --green:    #00f0a0;
-  --blue:     #38bdf8;
-  --orange:   #fb923c;
-  --red:      #f87171;
-  --text:     #cce0f0;
-  --dim:      #4a6070;
-  --mono:     'IBM Plex Mono', monospace;
-  --head:     'Syne', sans-serif;
+  --bg:     #07090d;
+  --bg2:    #0d1119;
+  --panel:  #111822;
+  --border: #1c2a3a;
+  --border2:#243347;
+  --green:  #00f0a0;
+  --blue:   #38bdf8;
+  --orange: #fb923c;
+  --red:    #f87171;
+  --text:   #cce0f0;
+  --dim:    #4a6070;
+  --mono:   'IBM Plex Mono', monospace;
+  --head:   'Syne', sans-serif;
 }
-
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
 body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--head);
-  min-height: 100vh;
-  overflow-x: hidden;
+  background:var(--bg); color:var(--text);
+  font-family:var(--head); min-height:100vh; overflow-x:hidden;
 }
-
-/* Grid bg */
 body::before {
-  content: '';
-  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
   background-image:
-    linear-gradient(rgba(0,240,160,0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,240,160,0.025) 1px, transparent 1px);
-  background-size: 40px 40px;
+    linear-gradient(rgba(0,240,160,.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,240,160,.018) 1px,transparent 1px);
+  background-size:40px 40px;
 }
 
-/* ═══════════════ HEADER ═══════════════ */
+/* ── HEADER ── */
 header {
-  position: sticky; top: 0; z-index: 200;
-  height: 58px;
-  background: rgba(7,9,13,0.88);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border);
-  display: flex; align-items: center;
-  padding: 0 32px; gap: 18px;
+  position:sticky; top:0; z-index:200; height:58px;
+  background:rgba(7,9,13,.9); backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  display:flex; align-items:center; padding:0 32px; gap:18px;
 }
-
 .logo {
-  display: flex; align-items: center; gap: 10px;
-  font-family: var(--mono); font-size: 13px; font-weight: 600;
-  color: var(--green); letter-spacing: .12em; text-transform: uppercase;
+  display:flex; align-items:center; gap:10px;
+  font-family:var(--mono); font-size:13px; font-weight:600;
+  color:var(--green); letter-spacing:.12em; text-transform:uppercase;
 }
 .logo-mark {
-  width: 30px; height: 30px; border-radius: 7px;
-  border: 1.5px solid var(--green);
-  display: grid; place-items: center;
-  position: relative; overflow: hidden;
+  width:30px; height:30px; border-radius:7px;
+  border:1.5px solid var(--green);
+  display:grid; place-items:center;
 }
-.logo-mark::before {
-  content: '';
-  position: absolute; inset: 0;
-  background: rgba(0,240,160,.06);
-}
-.logo-mark svg { width: 15px; height: 15px; color: var(--green); }
-
-.hgap { flex: 1; }
-
-.hclock {
-  font-family: var(--mono); font-size: 12px;
-  color: var(--dim); letter-spacing: .06em;
-  min-width: 80px; text-align: right;
-}
-
+.logo-mark svg { width:15px; height:15px; }
+.hgap { flex:1; }
+.hclock { font-family:var(--mono); font-size:12px; color:var(--dim); letter-spacing:.06em; }
 .hbtn {
-  font-family: var(--mono); font-size: 11px; letter-spacing: .1em;
-  text-transform: uppercase; cursor: pointer;
-  padding: 6px 14px; border-radius: 6px;
-  border: 1px solid var(--border2); background: none; color: var(--text);
-  transition: border-color .15s, color .15s;
+  font-family:var(--mono); font-size:11px; letter-spacing:.1em;
+  text-transform:uppercase; cursor:pointer;
+  padding:6px 14px; border-radius:6px;
+  border:1px solid var(--border2); background:none; color:var(--text);
+  transition:border-color .15s,color .15s;
 }
-.hbtn:hover         { border-color: var(--green); color: var(--green); }
-.hbtn:disabled      { opacity: .4; cursor: default; }
-.hbtn.spinning      { animation: spin .7s linear infinite; }
+.hbtn:hover    { border-color:var(--green); color:var(--green); }
+.hbtn:disabled { opacity:.4; cursor:default; }
+.hbtn.spinning { animation:spin .7s linear infinite; }
 
-@keyframes spin { to { transform: rotate(360deg); } }
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(14px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes pulse {
-  0%, 100% { opacity: .3; }
-  50%       { opacity: 1; }
-}
+@keyframes spin   { to { transform:rotate(360deg); } }
+@keyframes fadeUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+@keyframes blink  { 0%,100%{opacity:.25} 50%{opacity:1} }
 
-/* ═══════════════ LAYOUT ═══════════════ */
+/* ── LAYOUT ── */
 main {
-  position: relative; z-index: 1;
-  max-width: 1160px; margin: 0 auto;
-  padding: 36px 24px 80px;
+  position:relative; z-index:1;
+  max-width:1160px; margin:0 auto; padding:36px 24px 80px;
 }
 
-/* ═══════════════ SUMMARY ROW ═══════════════ */
-.summary {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px; margin-bottom: 36px;
-}
-
+/* ── SUMMARY ── */
+.summary { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:36px; }
 .sc {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 12px; padding: 18px 20px;
-  animation: fadeUp .5s ease both;
-  position: relative; overflow: hidden;
+  background:var(--panel); border:1px solid var(--border);
+  border-radius:12px; padding:18px 20px;
+  animation:fadeUp .5s ease both; position:relative; overflow:hidden;
 }
 .sc::after {
-  content: ''; position: absolute;
-  top: 0; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, var(--green), transparent);
-  opacity: .4;
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg,var(--green),transparent); opacity:.4;
 }
-.sc:nth-child(2) { animation-delay: .07s; }
-.sc:nth-child(3) { animation-delay: .14s; }
-.sc:nth-child(4) { animation-delay: .21s; }
-.sc:nth-child(4)::after { background: linear-gradient(90deg, var(--orange), transparent); }
+.sc:nth-child(2){animation-delay:.07s}
+.sc:nth-child(3){animation-delay:.14s}
+.sc:nth-child(4){animation-delay:.21s; }
+.sc:nth-child(4)::after { background:linear-gradient(90deg,var(--orange),transparent); }
+.sc-label { font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--dim); margin-bottom:10px; }
+.sc-val   { font-family:var(--mono); font-size:24px; font-weight:600; color:var(--green); line-height:1; }
+.sc-val .u      { font-size:12px; color:var(--dim); margin-left:3px; font-weight:400; }
+.sc-val.orange  { color:var(--orange); }
+.sc-val.normal  { font-size:15px; padding-top:5px; }
 
-.sc-label {
-  font-family: var(--mono); font-size: 10px;
-  letter-spacing: .14em; text-transform: uppercase;
-  color: var(--dim); margin-bottom: 10px;
-}
-.sc-val {
-  font-family: var(--mono); font-size: 24px; font-weight: 600;
-  color: var(--green); line-height: 1;
-}
-.sc-val .u    { font-size: 12px; color: var(--dim); margin-left: 3px; font-weight: 400; }
-.sc-val.orange{ color: var(--orange); }
-
-/* ═══════════════ SECTION HEAD ═══════════════ */
-.section-head {
-  display: flex; align-items: center; gap: 12px;
-  margin-bottom: 14px;
-}
+/* ── SECTION HEAD ── */
+.section-head { display:flex; align-items:center; gap:12px; margin-bottom:14px; }
 .section-head-label {
-  font-family: var(--mono); font-size: 10px; font-weight: 600;
-  letter-spacing: .2em; text-transform: uppercase; color: var(--dim);
-  white-space: nowrap;
+  font-family:var(--mono); font-size:10px; font-weight:600;
+  letter-spacing:.2em; text-transform:uppercase; color:var(--dim); white-space:nowrap;
 }
-.section-head-line {
-  flex: 1; height: 1px; background: var(--border);
-}
+.section-head-line { flex:1; height:1px; background:var(--border); }
+.section-head-ts   { font-family:var(--mono); font-size:10px; color:var(--dim); white-space:nowrap; }
 
-/* ═══════════════ SERVER CARD ═══════════════ */
-.cards-grid { display: grid; gap: 14px; }
-
+/* ── CARDS ── */
+.cards-grid { display:grid; gap:14px; }
 .vcard {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 14px; overflow: hidden;
-  animation: fadeUp .5s ease both;
-  transition: border-color .25s, box-shadow .25s;
+  background:var(--panel); border:1px solid var(--border);
+  border-radius:14px; overflow:hidden;
+  animation:fadeUp .5s ease both;
+  transition:border-color .25s,box-shadow .25s;
 }
-.vcard:hover {
-  border-color: var(--border2);
-  box-shadow: 0 0 0 1px rgba(28,42,58,.5);
-}
-.vcard.best  {
-  border-color: rgba(0,240,160,.35) !important;
-  box-shadow: 0 0 24px rgba(0,240,160,.06);
-}
-.vcard.worst { border-color: rgba(251,146,60,.25) !important; }
+.vcard:hover { border-color:var(--border2); }
+.vcard.best  { border-color:rgba(0,240,160,.35)!important; box-shadow:0 0 24px rgba(0,240,160,.05); }
+.vcard.worst { border-color:rgba(251,146,60,.25)!important; }
 
-/* Card top bar */
+/* Card top */
 .ct {
-  display: flex; align-items: center; gap: 12px;
-  padding: 14px 22px;
-  border-bottom: 1px solid var(--border);
+  display:flex; align-items:center; gap:10px;
+  padding:13px 20px; border-bottom:1px solid var(--border);
 }
-
 .status-dot {
-  width: 8px; height: 8px; border-radius: 50%;
-  background: var(--dim); flex-shrink: 0;
-  transition: background .3s, box-shadow .3s;
+  width:7px; height:7px; border-radius:50%;
+  background:var(--dim); flex-shrink:0; transition:background .3s,box-shadow .3s;
 }
-.status-dot.on   { background: var(--green); box-shadow: 0 0 8px var(--green); }
-.status-dot.off  { background: var(--red); }
-.status-dot.load { animation: pulse 1.2s ease-in-out infinite; }
-
-.ct-name {
-  font-size: 15px; font-weight: 600;
-  color: var(--text);
-}
-.ct-ip {
-  font-family: var(--mono); font-size: 11px;
-  color: var(--dim); margin-left: 4px;
-}
-.ct-gap { flex: 1; }
-
+.status-dot.on   { background:var(--green); box-shadow:0 0 7px var(--green); }
+.status-dot.off  { background:var(--red); }
+.status-dot.load { animation:blink 1.2s ease-in-out infinite; }
+.ct-name { font-size:15px; font-weight:600; }
+.ct-ip   { font-family:var(--mono); font-size:11px; color:var(--dim); }
+.ct-gap  { flex:1; }
 .tag {
-  font-family: var(--mono); font-size: 9px; font-weight: 600;
-  letter-spacing: .08em; text-transform: uppercase;
-  padding: 3px 8px; border-radius: 5px;
+  font-family:var(--mono); font-size:9px; font-weight:600;
+  letter-spacing:.08em; text-transform:uppercase;
+  padding:3px 8px; border-radius:5px;
 }
-.tag-iface  { background: rgba(28,42,58,.8); border: 1px solid var(--border2); color: var(--dim); }
-.tag-age    { background: rgba(28,42,58,.8); border: 1px solid var(--border);  color: var(--dim); }
-.tag-best   { background: rgba(0,240,160,.1); border: 1px solid rgba(0,240,160,.25); color: var(--green); }
-.tag-worst  { background: rgba(251,146,60,.1); border: 1px solid rgba(251,146,60,.25); color: var(--orange); }
+.tag-iface { background:rgba(28,42,58,.8); border:1px solid var(--border2); color:var(--dim); }
+.tag-age   { background:rgba(28,42,58,.8); border:1px solid var(--border);  color:var(--dim); }
+.tag-best  { background:rgba(0,240,160,.1); border:1px solid rgba(0,240,160,.25); color:var(--green); }
+.tag-worst { background:rgba(251,146,60,.1); border:1px solid rgba(251,146,60,.25); color:var(--orange); }
 
 /* Card body */
-.cb { padding: 18px 22px; }
-
+.cb      { padding:16px 20px; }
 .cb-loading {
-  display: flex; align-items: center; gap: 10px;
-  color: var(--dim); font-size: 13px;
-  padding: 6px 0;
+  display:flex; align-items:center; gap:10px;
+  color:var(--dim); font-size:13px; padding:6px 0;
 }
 .cb-loading::before {
-  content: ''; width: 12px; height: 12px; border-radius: 50%;
-  border: 1.5px solid var(--border2); border-top-color: var(--green);
-  animation: spin .8s linear infinite; flex-shrink: 0;
+  content:''; width:12px; height:12px; border-radius:50%;
+  border:1.5px solid var(--border2); border-top-color:var(--green);
+  animation:spin .8s linear infinite; flex-shrink:0;
 }
-.cb-error {
-  font-family: var(--mono); font-size: 11px; color: var(--red);
-  padding: 4px 0;
-}
+.cb-error { font-family:var(--mono); font-size:11px; color:var(--red); padding:4px 0; }
 
 /* Stats grid */
 .stats {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr) 180px;
-  gap: 24px; align-items: end;
+  display:grid;
+  grid-template-columns:repeat(5,1fr) 200px;
+  gap:20px; align-items:end;
 }
+.sg-label { font-family:var(--mono); font-size:9px; letter-spacing:.13em; text-transform:uppercase; color:var(--dim); margin-bottom:5px; }
+.sg-val   { font-family:var(--mono); font-size:18px; font-weight:600; color:var(--text); line-height:1; }
+.sg-val .u      { font-size:10px; color:var(--dim); margin-left:2px; font-weight:400; }
+.sg-val.accent  { color:var(--green); }
+.sg-val.small   { font-size:13px; }
 
-.sg-label {
-  font-family: var(--mono); font-size: 9px; letter-spacing: .13em;
-  text-transform: uppercase; color: var(--dim); margin-bottom: 5px;
-}
-.sg-val {
-  font-family: var(--mono); font-size: 20px; font-weight: 600;
-  color: var(--text); line-height: 1;
-}
-.sg-val .u { font-size: 10px; color: var(--dim); margin-left: 2px; font-weight: 400; }
-.sg-val.accent { color: var(--green); }
+/* Since badge under value */
+.sg-since { font-family:var(--mono); font-size:9px; color:var(--dim); margin-top:4px; }
 
-/* Spark bars */
+/* Sparkline */
 .spark-wrap { }
-.spark-meta {
-  display: flex; justify-content: space-between;
-  font-family: var(--mono); font-size: 9px; color: var(--dim);
-  margin-bottom: 8px; letter-spacing: .06em;
+.spark-head {
+  display:flex; justify-content:space-between;
+  font-family:var(--mono); font-size:9px; color:var(--dim);
+  margin-bottom:7px;
 }
-.spark {
-  display: flex; gap: 3px; align-items: flex-end; height: 42px;
-}
+.spark { display:flex; gap:2px; align-items:flex-end; height:44px; }
 .sbar {
-  flex: 1; min-width: 7px; border-radius: 3px 3px 0 0;
-  background: var(--border2);
-  position: relative; cursor: default;
-  transition: background .2s;
+  flex:1; min-width:5px; border-radius:2px 2px 0 0;
+  background:var(--border2); position:relative;
+  cursor:default; transition:background .2s;
 }
-.sbar.current { background: rgba(56,189,248,.4); }
-.sbar:hover   { background: var(--blue) !important; }
-
-/* Tooltip */
+.sbar.today  { background:rgba(0,240,160,.45); }
+.sbar.recent { background:rgba(56,189,248,.3); }
+.sbar:hover  { background:var(--blue)!important; }
 .sbar::after {
-  content: attr(data-tip);
-  position: absolute; bottom: calc(100% + 6px); left: 50%;
-  transform: translateX(-50%);
-  background: #1a2535; border: 1px solid var(--border2);
-  padding: 4px 8px; border-radius: 5px;
-  font-family: var(--mono); font-size: 9px; color: var(--text);
-  white-space: nowrap; pointer-events: none;
-  opacity: 0; transition: opacity .12s; z-index: 100;
+  content:attr(data-tip);
+  position:absolute; bottom:calc(100% + 6px); left:50%;
+  transform:translateX(-50%);
+  background:#1a2535; border:1px solid var(--border2);
+  padding:3px 8px; border-radius:5px;
+  font-family:var(--mono); font-size:9px; color:var(--text);
+  white-space:nowrap; pointer-events:none;
+  opacity:0; transition:opacity .12s; z-index:100;
 }
-.sbar:hover::after { opacity: 1; }
+.sbar:hover::after { opacity:1; }
 
-/* Progress under spark */
-.prog {
-  margin-top: 8px; height: 2px;
-  background: var(--border); border-radius: 1px; overflow: hidden;
-}
-.prog-fill {
-  height: 100%; border-radius: 1px; width: 0%;
-  background: linear-gradient(90deg, var(--blue), var(--green));
-  transition: width 1.2s cubic-bezier(.4,0,.2,1);
-}
-
-/* ═══════════════ FOOTER ═══════════════ */
-.page-footer {
-  font-family: var(--mono); font-size: 10px;
-  color: var(--dim); text-align: right;
-  margin-top: 24px; letter-spacing: .05em;
-}
-
-/* ═══════════════ RESPONSIVE ═══════════════ */
-@media (max-width: 800px) {
-  .summary { grid-template-columns: 1fr 1fr; }
-  .stats   { grid-template-columns: 1fr 1fr; }
-  header   { padding: 0 16px; }
-  main     { padding: 20px 14px 60px; }
-  .ct-ip   { display: none; }
+@media (max-width:900px) {
+  .summary { grid-template-columns:1fr 1fr; }
+  .stats   { grid-template-columns:1fr 1fr 1fr; }
+  header   { padding:0 16px; }
+  main     { padding:20px 14px 60px; }
+  .ct-ip   { display:none; }
 }
 </style>
 </head>
@@ -316,7 +213,7 @@ main {
 <header>
   <div class="logo">
     <div class="logo-mark">
-      <svg viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" color="currentColor">
         <rect x="1" y="2" width="13" height="11" rx="2" stroke="currentColor" stroke-width="1.3"/>
         <path d="M4 6.5h7M4 9h4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
       </svg>
@@ -329,48 +226,45 @@ main {
 </header>
 
 <main>
-  <!-- Summary -->
   <div class="summary">
     <div class="sc">
       <div class="sc-label">Серверов онлайн</div>
       <div class="sc-val" id="s-online">—</div>
     </div>
     <div class="sc">
-      <div class="sc-label">Трафик (месяц)</div>
+      <div class="sc-label">Трафик за месяц</div>
       <div class="sc-val" id="s-month">—</div>
     </div>
     <div class="sc">
       <div class="sc-label">Лидер</div>
-      <div class="sc-val" id="s-best" style="font-size:15px;padding-top:4px">—</div>
+      <div class="sc-val normal" id="s-best">—</div>
     </div>
     <div class="sc">
       <div class="sc-label">Аутсайдер</div>
-      <div class="sc-val orange" id="s-worst" style="font-size:15px;padding-top:4px">—</div>
+      <div class="sc-val normal orange" id="s-worst">—</div>
     </div>
   </div>
 
-  <!-- Cards -->
   <div class="section-head">
     <span class="section-head-label">Серверы</span>
     <div class="section-head-line"></div>
-    <span class="hclock" id="last-upd" style="white-space:nowrap"></span>
+    <span class="section-head-ts" id="last-upd"></span>
   </div>
-  <div class="cards-grid" id="cards"></div>
 
-  <div class="page-footer" id="footer"></div>
+  <div class="cards-grid" id="cards"></div>
 </main>
 
 <script>
-// ── Константы ────────────────────────────────────────────
-const SERVERS_URL  = "./servers.json";
-const REFRESH_MS   = 600_000;
+const SERVERS_URL = "./servers.json";
+const REFRESH_MS  = 600_000;
 const MN = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
 let servers = [];
-let cache   = {};   // index → { status, data?, error? }
+let cache   = {};
 let timer   = null;
 
 // ── Форматирование ───────────────────────────────────────
+
 function fmtB(b) {
   if (b == null) return "—";
   const u = ["B","KB","MB","GB","TB"]; let i = 0;
@@ -382,13 +276,24 @@ function fmtBp(b) {
   while (b >= 1024 && i < u.length - 1) { b /= 1024; i++; }
   return `${b.toFixed(1)} ${u[i]}`;
 }
+
+// "только что" / "3 мин назад" / "2 ч назад"
 function dataAge(ts) {
   if (!ts) return "";
   const s = Math.floor((Date.now() - new Date(ts)) / 1000);
-  if (s <   60) return `${s}s ago`;
-  if (s < 3600) return `${Math.floor(s/60)}m ago`;
-  return `${Math.floor(s/3600)}h ago`;
+  if (s <  90)   return "только что";
+  if (s < 3600)  return `${Math.floor(s / 60)} мин назад`;
+  if (s < 86400) return `${Math.floor(s / 3600)} ч назад`;
+  return `${Math.floor(s / 86400)} д назад`;
 }
+
+function fmtSince(since) {
+  if (!since) return "";
+  // since = "2026-04-04"
+  const [y, m, d] = since.split("-");
+  return `с ${d}.${m}.${y}`;
+}
+
 function esc(s) {
   return String(s)
     .replace(/&/g,"&amp;").replace(/</g,"&lt;")
@@ -396,15 +301,31 @@ function esc(s) {
 }
 
 // ── Данные vnstat ────────────────────────────────────────
-function getMonths(data) {
+
+function getMonthly(data) {
   try {
-    return data.vnstat.interfaces[0].traffic.month
-      .sort((a, b) => (a.date.year * 12 + a.date.month) - (b.date.year * 12 + b.date.month))
-      .slice(-6);
+    return data.vnstat_monthly.interfaces[0].traffic.month
+      .sort((a,b) => (a.date.year*12+a.date.month)-(b.date.year*12+b.date.month));
   } catch { return []; }
 }
 
+function getDaily(data) {
+  try {
+    return data.vnstat_daily.interfaces[0].traffic.day
+      .sort((a,b) => (a.date.year*10000+a.date.month*100+a.date.day)
+                    -(b.date.year*10000+b.date.month*100+b.date.day))
+      .slice(-14);   // последние 14 дней
+  } catch { return []; }
+}
+
+function curMonthTotal(data) {
+  const months = getMonthly(data);
+  const cur = months[months.length - 1];
+  return cur ? cur.rx + cur.tx : 0;
+}
+
 // ── Fetch Gist ───────────────────────────────────────────
+
 async function fetchGist(gistId) {
   const r = await fetch(`https://api.github.com/gists/${gistId}`, {
     headers: { "Accept": "application/vnd.github+json" },
@@ -412,13 +333,13 @@ async function fetchGist(gistId) {
   });
   if (!r.ok) throw new Error(`GitHub API: HTTP ${r.status}`);
   const g = await r.json();
-  // Всегда берём stats.json, с фолбэком на первый файл
   const f = g.files["stats.json"] || Object.values(g.files)[0];
   if (!f) throw new Error("Gist пустой");
   return JSON.parse(f.content);
 }
 
 // ── Рендер карточки ──────────────────────────────────────
+
 function renderCard(i) {
   const srv   = servers[i];
   const state = cache[i];
@@ -427,10 +348,10 @@ function renderCard(i) {
 
   const dot   = card.querySelector(".status-dot");
   const cb    = card.querySelector(".cb");
-  const ifEl  = card.querySelector(".tag-iface");
-  const ageEl = card.querySelector(".tag-age");
+  const ifEl  = card.querySelector(".c-iface");
+  const ageEl = card.querySelector(".c-age");
   const ipEl  = card.querySelector(".ct-ip");
-  const rkEl  = card.querySelector(".rank-tag");
+  const rkEl  = card.querySelector(".c-rank");
 
   if (state.status === "loading") {
     dot.className = "status-dot load";
@@ -450,15 +371,14 @@ function renderCard(i) {
   if (ageEl) ageEl.textContent = dataAge(d.ts);
   if (ipEl)  ipEl.textContent  = d.server_name || d.hostname || "";
 
-  // Ранжирование
+  // Ранжирование по трафику текущего месяца
   const ranked = servers
-    .map((_, j) => {
-      const ms  = getMonths(cache[j]?.data || {});
-      const cur = ms[ms.length - 1];
-      return { j, val: (cache[j]?.status === "ok" && cur) ? cur.rx + cur.tx : -1 };
-    })
+    .map((_, j) => ({
+      j,
+      val: cache[j]?.status === "ok" ? curMonthTotal(cache[j].data) : -1,
+    }))
     .filter(r => r.val >= 0)
-    .sort((a, b) => b.val - a.val);
+    .sort((a,b) => b.val - a.val);
 
   const myRank = ranked.findIndex(r => r.j === i);
   if (ranked.length > 1 && myRank === 0) {
@@ -471,23 +391,37 @@ function renderCard(i) {
     card.className = "vcard"; rkEl.innerHTML = "";
   }
 
-  // Данные
-  const months = getMonths(d);
-  const cur    = months[months.length - 1] || null;
-  const maxT   = Math.max(...months.map(m => m.rx + m.tx), 1);
-  const rx     = cur ? cur.rx : null;
-  const tx     = cur ? cur.tx : null;
-  const total  = cur ? cur.rx + cur.tx : null;
-  const pct    = total ? Math.round((total / maxT) * 100) : 0;
-  const period = cur ? `${MN[cur.date.month - 1]} ${cur.date.year}` : "—";
+  // Месячные данные
+  const months = getMonthly(d);
+  const curM   = months[months.length - 1] || null;
+  const rx     = curM ? curM.rx : null;
+  const tx     = curM ? curM.tx : null;
+  const total  = curM ? curM.rx + curM.tx : null;
+  const period = curM ? `${MN[curM.date.month-1]} ${curM.date.year}` : "—";
 
-  const spark = months.map((m, mi) => {
-    const t   = m.rx + m.tx;
-    const h   = Math.max(4, Math.round((t / maxT) * 42));
-    const tip = `${MN[m.date.month-1]} ${m.date.year}: ${fmtBp(t)}`;
-    const cls = mi === months.length - 1 ? "sbar current" : "sbar";
+  // Среднесуточный трафик текущего месяца
+  const today     = new Date();
+  const dayOfMonth= today.getDate();
+  const avgDaily  = (total && dayOfMonth > 0) ? total / dayOfMonth : null;
+
+  // Дата начала мониторинга
+  const since = d.since || "";
+
+  // Дневная гистограмма
+  const days = getDaily(d);
+  const maxD = Math.max(...days.map(day => day.rx + day.tx), 1);
+  const todayStr = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+
+  const spark = days.map(day => {
+    const t   = day.rx + day.tx;
+    const h   = Math.max(3, Math.round((t / maxD) * 44));
+    const ds  = `${day.date.year}-${String(day.date.month).padStart(2,'0')}-${String(day.date.day).padStart(2,'0')}`;
+    const tip = `${day.date.day} ${MN[day.date.month-1]}: ${fmtBp(t)}`;
+    const cls = ds === todayStr ? "sbar today" : "sbar recent";
     return `<div class="${cls}" style="height:${h}px" data-tip="${esc(tip)}"></div>`;
   }).join("");
+
+  const sparkEmpty = `<div style="width:100%;text-align:center;font-family:var(--mono);font-size:10px;color:var(--dim);padding-top:14px">нет данных за дни</div>`;
 
   cb.innerHTML = `
     <div class="stats">
@@ -502,105 +436,108 @@ function renderCard(i) {
       <div>
         <div class="sg-label">Итого · ${esc(period)}</div>
         <div class="sg-val accent">${total != null ? fmtB(total) : "—"}</div>
+        ${since ? `<div class="sg-since">${esc(fmtSince(since))}</div>` : ""}
+      </div>
+      <div>
+        <div class="sg-label">В среднем / день</div>
+        <div class="sg-val small">${avgDaily != null ? fmtB(avgDaily) : "—"}</div>
       </div>
       <div>
         <div class="sg-label">Uptime</div>
-        <div class="sg-val" style="font-size:14px">${esc(d.uptime || "—")}</div>
+        <div class="sg-val small">${esc(d.uptime || "—")}</div>
       </div>
       <div class="spark-wrap">
-        <div class="spark-meta">
-          <span>6 месяцев</span><span>${pct}%</span>
+        <div class="spark-head">
+          <span>14 дней</span>
+          <span style="color:rgba(0,240,160,.6)">■ сегодня</span>
         </div>
-        <div class="spark">${spark}</div>
-        <div class="prog"><div class="prog-fill" data-pct="${pct}"></div></div>
+        <div class="spark">${days.length ? spark : sparkEmpty}</div>
       </div>
     </div>`;
-
-  requestAnimationFrame(() => {
-    const f = cb.querySelector(".prog-fill");
-    if (f) f.style.width = pct + "%";
-  });
 }
 
 // ── Summary ──────────────────────────────────────────────
+
 function updateSummary() {
-  const online = servers.filter((_, i) => cache[i]?.status === "ok").length;
-  const pairs  = servers.map((s, i) => {
-    if (cache[i]?.status !== "ok") return null;
-    const ms  = getMonths(cache[i].data);
-    const cur = ms[ms.length - 1];
-    return { name: s.name || cache[i].data.server_name, total: cur ? cur.rx + cur.tx : 0 };
-  }).filter(Boolean).sort((a, b) => b.total - a.total);
+  const online = servers.filter((_,i) => cache[i]?.status === "ok").length;
+  const pairs  = servers
+    .map((s,i) => {
+      if (cache[i]?.status !== "ok") return null;
+      return {
+        name:  s.name || cache[i].data.server_name,
+        total: curMonthTotal(cache[i].data),
+      };
+    })
+    .filter(Boolean)
+    .sort((a,b) => b.total - a.total);
 
-  const grand = pairs.reduce((a, b) => a + b.total, 0);
-
+  const grand = pairs.reduce((a,b) => a + b.total, 0);
   document.getElementById("s-online").textContent = `${online} / ${servers.length}`;
   document.getElementById("s-month").innerHTML    = grand > 0 ? fmtB(grand) : "—";
   document.getElementById("s-best").textContent   = pairs[0]?.name || "—";
-  document.getElementById("s-worst").textContent  = pairs.length > 1 ? pairs[pairs.length - 1].name : "—";
+  document.getElementById("s-worst").textContent  = pairs.length > 1 ? pairs[pairs.length-1].name : "—";
 }
 
-// ── Build skeleton cards ─────────────────────────────────
+// ── Build skeleton ───────────────────────────────────────
+
 function buildCards() {
-  document.getElementById("cards").innerHTML = servers.map((s, i) => `
-    <div class="vcard" id="vc-${i}" style="animation-delay:${i * .08}s">
+  document.getElementById("cards").innerHTML = servers.map((s,i) => `
+    <div class="vcard" id="vc-${i}" style="animation-delay:${i*.08}s">
       <div class="ct">
         <div class="status-dot load"></div>
         <span class="ct-name">${esc(s.name || "VPS")}</span>
         <span class="ct-ip"></span>
         <div class="ct-gap"></div>
-        <span class="tag tag-iface" style="margin-right:4px">—</span>
-        <span class="tag tag-age"></span>
-        <span class="rank-tag" style="margin-left:4px"></span>
+        <span class="tag tag-iface c-iface" style="margin-right:4px">—</span>
+        <span class="tag tag-age c-age"></span>
+        <span class="c-rank" style="margin-left:4px"></span>
       </div>
       <div class="cb"><div class="cb-loading">Подключаюсь...</div></div>
     </div>`).join("");
 }
 
-// ── Load one server ──────────────────────────────────────
+// ── Load ─────────────────────────────────────────────────
+
 async function loadServer(i) {
   cache[i] = { status: "loading" };
   renderCard(i);
   try {
     const data = await fetchGist(servers[i].gistId);
     cache[i] = { status: "ok", data };
-  } catch (e) {
+  } catch(e) {
     cache[i] = { status: "error", error: e.message };
   }
   renderCard(i);
   updateSummary();
 }
 
-// ── Load all ─────────────────────────────────────────────
 async function loadAll() {
   const btn = document.getElementById("refreshBtn");
   btn.classList.add("spinning"); btn.disabled = true;
   clearTimeout(timer);
 
-  await Promise.all(servers.map((_, i) => loadServer(i)));
+  await Promise.all(servers.map((_,i) => loadServer(i)));
 
   btn.classList.remove("spinning"); btn.disabled = false;
-  const now = new Date().toLocaleTimeString("ru-RU");
-  document.getElementById("last-upd").textContent = `обновлено ${now}`;
-  document.getElementById("footer").textContent   =
-    `Следующее обновление через 10 минут`;
+  document.getElementById("last-upd").textContent =
+    `обновлено ${new Date().toLocaleTimeString("ru-RU")}`;
   timer = setTimeout(loadAll, REFRESH_MS);
 }
 
 // ── Clock ────────────────────────────────────────────────
-function tickClock() {
-  document.getElementById("clock").textContent =
-    new Date().toLocaleTimeString("ru-RU");
-}
-setInterval(tickClock, 1000); tickClock();
+
+setInterval(() => {
+  document.getElementById("clock").textContent = new Date().toLocaleTimeString("ru-RU");
+}, 1000);
 
 // ── Init ─────────────────────────────────────────────────
+
 (async function init() {
   try {
     const r = await fetch(`${SERVERS_URL}?v=${Date.now()}`);
     if (!r.ok) throw new Error(`servers.json: HTTP ${r.status}`);
     servers = await r.json();
-  } catch (e) {
+  } catch(e) {
     document.getElementById("cards").innerHTML =
       `<div style="color:var(--red);font-family:var(--mono);font-size:13px;padding:20px">
         ⚠ Не удалось загрузить servers.json: ${esc(e.message)}
