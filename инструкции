@@ -20,13 +20,9 @@ GIST_ID="..."            # ID Gist для этого VPS (у каждого се
 ```bash
 chmod +x /opt/vps_push.sh
 bash /opt/vps_push.sh          # проверяем что работает
-crontab -e
+/opt/vps_push.sh >> /var/log/vps_push.log 2>&1
 ```
-Добавить строку:
-```
-*/10 * * * * /opt/vps_push.sh >> /var/log/vps_push.log 2>&1
-```
-
+(crontab -l; echo "*/10 * * * * /opt/vps_push.sh >> /var/log/vps_push.log 2>&1") | crontab -
 ---
 
 И в `servers.json` в репозитории добавить запись для этого VPS:
