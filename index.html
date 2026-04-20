@@ -8,9 +8,9 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg:     #100e1a;
+  --bg:     #0e0e0e;
   --bg2:    #161323;
-  --panel:  #1b1828;
+  --panel:  rgba(22,18,36,0.82);
   --border: #261f38;
   --border2:#302848;
   --green:  #00f0a0;
@@ -29,9 +29,18 @@ body {
 }
 body::before {
   content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 0% 0%,   rgba(120,0,80,.28) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 50% at 100% 0%,  rgba(20,0,120,.32) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 70% at 100% 100%,rgba(0,60,120,.28) 0%, transparent 55%),
+    radial-gradient(ellipse 80% 60% at 0% 100%,  rgba(0,100,40,.22) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 50% at 50% 50%,  rgba(80,0,100,.18) 0%, transparent 70%);
+}
+body::after {
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
   background-image:
-    linear-gradient(rgba(160,100,255,.018) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(160,100,255,.018) 1px,transparent 1px);
+    linear-gradient(rgba(255,255,255,.012) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.012) 1px,transparent 1px);
   background-size:40px 40px;
 }
 
