@@ -1,0 +1,38 @@
+На каждом VPS — три шага:
+
+**1. Установить vnstat** (если нет)
+```bash
+apt install vnstat -y
+```
+
+**2. Скачать скрипт и заполнить две переменные**
+```bash
+curl -o /opt/vps_push.sh https://raw.githubusercontent.com/Ros-ua/hzcloud/refs/heads/master/vps_push.sh
+nano /opt/vps_push.sh
+```
+Заполнить:
+```
+GITHUB_TOKEN="ghp_..."   # твой PAT
+GIST_ID="..."            # ID Gist для этого VPS (у каждого сервера свой!)
+```
+
+**3. Проверить и добавить в cron**
+```bash
+chmod +x /opt/vps_push.sh
+bash /opt/vps_push.sh          # проверяем что работает
+crontab -e
+```
+Добавить строку:
+```
+*/10 * * * * /opt/vps_push.sh >> /var/log/vps_push.log 2>&1
+```
+
+---
+
+И в `servers.json` в репозитории добавить запись для этого VPS:
+```json
+[
+  { "name": "VPS-1", "gistId": "2dcc83677f8f2810ad15c78f2cf118c2" },
+  { "name": "VPS-2", "gistId": "ID_нового_гиста" }
+]
+```
