@@ -363,7 +363,7 @@ main {
 <script>
 // ── Константы ────────────────────────────────────────────
 const SERVERS_URL  = "./servers.json";
-const REFRESH_MS   = 120_000;
+const REFRESH_MS   = 600_000;
 const MN = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
 let servers = [];
@@ -583,7 +583,7 @@ async function loadAll() {
   const now = new Date().toLocaleTimeString("ru-RU");
   document.getElementById("last-upd").textContent = `обновлено ${now}`;
   document.getElementById("footer").textContent   =
-    `Следующее обновление через ${REFRESH_MS / 1000}s`;
+    `Следующее обновление через 10 минут`;
   timer = setTimeout(loadAll, REFRESH_MS);
 }
 
