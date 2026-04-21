@@ -101,7 +101,7 @@ main {
 }
 .sc:nth-child(2){animation-delay:.07s}
 .sc:nth-child(3){animation-delay:.14s}
-.sc:nth-child(4){animation-delay:.21s; }
+.sc:nth-child(4){animation-delay:.21s;}
 .sc:nth-child(4)::after { background:linear-gradient(90deg,var(--orange),transparent); }
 .sc-label { font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--dim); margin-bottom:10px; }
 .sc-val   { font-family:var(--mono); font-size:24px; font-weight:600; color:var(--green); line-height:1; }
@@ -168,7 +168,7 @@ main {
 }
 .cb-error { font-family:var(--mono); font-size:11px; color:var(--red); padding:4px 0; }
 
-/* Stats grid */
+/* ── Stats row 1 (трафик) ── */
 .stats {
   display:grid;
   grid-template-columns:repeat(5,1fr) 200px;
@@ -179,9 +179,45 @@ main {
 .sg-val .u      { font-size:10px; color:var(--dim); margin-left:2px; font-weight:400; }
 .sg-val.accent  { color:var(--green); }
 .sg-val.small   { font-size:13px; }
-
-/* Since badge under value */
 .sg-since { font-family:var(--mono); font-size:9px; color:var(--dim); margin-top:4px; }
+
+/* ── Stats row 2 (ресурсы) ── */
+.stats2 {
+  display:grid;
+  grid-template-columns:1fr 1fr 80px 120px 80px;
+  gap:20px; align-items:start;
+  margin-top:14px;
+  padding-top:14px;
+  border-top:1px solid var(--border);
+}
+
+/* Mini progress bar */
+.pbar-wrap { }
+.pbar-head {
+  display:flex; justify-content:space-between; align-items:baseline;
+  margin-bottom:5px;
+}
+.pbar-label { font-family:var(--mono); font-size:9px; letter-spacing:.13em; text-transform:uppercase; color:var(--dim); }
+.pbar-val   { font-family:var(--mono); font-size:10px; color:var(--text); }
+.pbar-track {
+  height:4px; border-radius:2px;
+  background:var(--border2); overflow:hidden;
+}
+.pbar-fill {
+  height:100%; border-radius:2px;
+  background:var(--green);
+  transition:width .4s ease;
+}
+.pbar-fill.warn   { background:var(--orange); }
+.pbar-fill.danger { background:var(--red); }
+.pbar-sub { font-family:var(--mono); font-size:9px; color:var(--dim); margin-top:4px; }
+
+/* CPU / misc small stats */
+.s2-item { }
+.s2-label { font-family:var(--mono); font-size:9px; letter-spacing:.13em; text-transform:uppercase; color:var(--dim); margin-bottom:5px; }
+.s2-val   { font-family:var(--mono); font-size:14px; font-weight:600; color:var(--text); }
+.s2-val .u { font-size:9px; color:var(--dim); margin-left:2px; }
+.s2-sub   { font-family:var(--mono); font-size:9px; color:var(--dim); margin-top:3px; }
 
 /* Sparkline */
 .spark-wrap { }
@@ -214,6 +250,7 @@ main {
 @media (max-width:900px) {
   .summary { grid-template-columns:1fr 1fr; }
   .stats   { grid-template-columns:1fr 1fr 1fr; }
+  .stats2  { grid-template-columns:1fr 1fr; }
   header   { padding:0 16px; }
   main     { padding:20px 14px 60px; }
   .ct-ip   { display:none; }
@@ -288,8 +325,13 @@ function fmtBp(b) {
   while (b >= 1024 && i < u.length - 1) { b /= 1024; i++; }
   return `${b.toFixed(1)} ${u[i]}`;
 }
+function fmtBshort(b) {
+  if (b == null) return "—";
+  const u = ["B","KB","MB","GB","TB"]; let i = 0;
+  while (b >= 1024 && i < u.length - 1) { b /= 1024; i++; }
+  return `${b.toFixed(1)} ${u[i]}`;
+}
 
-// "только что" / "3 мин назад" / "2 ч назад"
 function dataAge(ts) {
   if (!ts) return "";
   const s = Math.floor((Date.now() - new Date(ts)) / 1000);
@@ -301,7 +343,6 @@ function dataAge(ts) {
 
 function fmtSince(since) {
   if (!since) return "";
-  // since = "2026-04-04"
   const [y, m, d] = since.split("-");
   return `с ${d}.${m}.${y}`;
 }
@@ -312,7 +353,27 @@ function esc(s) {
     .replace(/>/g,"&gt;").replace(/"/g,"&quot;");
 }
 
-// ── Данные vnstat ────────────────────────────────────────
+// ── Прогресс-бар ─────────────────────────────────────────
+
+function pbar(label, used, total, sub) {
+  if (!total) return "";
+  const pct  = Math.min(100, Math.round(used / total * 100));
+  const cls  = pct >= 90 ? "danger" : pct >= 75 ? "warn" : "";
+  const color= pct >= 90 ? "var(--red)" : pct >= 75 ? "var(--orange)" : "var(--green)";
+  return `
+    <div class="pbar-wrap">
+      <div class="pbar-head">
+        <span class="pbar-label">${label}</span>
+        <span class="pbar-val" style="color:${color}">${pct}%</span>
+      </div>
+      <div class="pbar-track">
+        <div class="pbar-fill ${cls}" style="width:${pct}%"></div>
+      </div>
+      <div class="pbar-sub">${sub || ""}</div>
+    </div>`;
+}
+
+// ── vnstat helpers ───────────────────────────────────────
 
 function getMonthly(data) {
   try {
@@ -326,7 +387,7 @@ function getDaily(data) {
     return data.vnstat_daily.interfaces[0].traffic.day
       .sort((a,b) => (a.date.year*10000+a.date.month*100+a.date.day)
                     -(b.date.year*10000+b.date.month*100+b.date.day))
-      .slice(-14);   // последние 14 дней
+      .slice(-14);
   } catch { return []; }
 }
 
@@ -353,7 +414,6 @@ async function fetchGist(gistId) {
 // ── Рендер карточки ──────────────────────────────────────
 
 function renderCard(i) {
-  const srv   = servers[i];
   const state = cache[i];
   const card  = document.getElementById(`vc-${i}`);
   if (!card) return;
@@ -383,15 +443,11 @@ function renderCard(i) {
   if (ageEl) ageEl.textContent = dataAge(d.ts);
   if (ipEl)  ipEl.textContent  = d.server_name || d.hostname || "";
 
-  // Ранжирование по трафику текущего месяца
+  // Ранжирование
   const ranked = servers
-    .map((_, j) => ({
-      j,
-      val: cache[j]?.status === "ok" ? curMonthTotal(cache[j].data) : -1,
-    }))
+    .map((_, j) => ({ j, val: cache[j]?.status === "ok" ? curMonthTotal(cache[j].data) : -1 }))
     .filter(r => r.val >= 0)
     .sort((a,b) => b.val - a.val);
-
   const myRank = ranked.findIndex(r => r.j === i);
   if (ranked.length > 1 && myRank === 0) {
     card.className = "vcard best";
@@ -403,28 +459,33 @@ function renderCard(i) {
     card.className = "vcard"; rkEl.innerHTML = "";
   }
 
-  // Месячные данные
+  // ── Трафик ──────────────────────────────────
   const months = getMonthly(d);
   const curM   = months[months.length - 1] || null;
   const rx     = curM ? curM.rx : null;
   const tx     = curM ? curM.tx : null;
   const total  = curM ? curM.rx + curM.tx : null;
   const period = curM ? `${MN[curM.date.month-1]} ${curM.date.year}` : "—";
+  const since  = d.since || "";
 
-  // Среднесуточный трафик текущего месяца
-  const today     = new Date();
-  const dayOfMonth= today.getDate();
-  const avgDaily  = (total && dayOfMonth > 0) ? total / dayOfMonth : null;
+  // avgDaily — делим на фактические дни с since, не на день месяца
+  let avgDaily = null;
+  if (total != null) {
+    let daysActive = new Date().getDate(); // fallback
+    if (since) {
+      const sinceDate = new Date(since);
+      const msPerDay  = 86_400_000;
+      daysActive = Math.max(1, Math.floor((Date.now() - sinceDate) / msPerDay));
+    }
+    avgDaily = total / daysActive;
+  }
 
-  // Дата начала мониторинга
-  const since = d.since || "";
-
-  // Дневная гистограмма
-  const days = getDaily(d);
-  const maxD = Math.max(...days.map(day => day.rx + day.tx), 1);
+  // ── Спарклайн ───────────────────────────────
+  const today    = new Date();
   const todayStr = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
-
-  const spark = days.map(day => {
+  const days     = getDaily(d);
+  const maxD     = Math.max(...days.map(day => day.rx + day.tx), 1);
+  const spark    = days.map(day => {
     const t   = day.rx + day.tx;
     const h   = Math.max(3, Math.round((t / maxD) * 44));
     const ds  = `${day.date.year}-${String(day.date.month).padStart(2,'0')}-${String(day.date.day).padStart(2,'0')}`;
@@ -432,8 +493,48 @@ function renderCard(i) {
     const cls = ds === todayStr ? "sbar today" : "sbar recent";
     return `<div class="${cls}" style="height:${h}px" data-tip="${esc(tip)}"></div>`;
   }).join("");
-
   const sparkEmpty = `<div style="width:100%;text-align:center;font-family:var(--mono);font-size:10px;color:var(--dim);padding-top:14px">нет данных за дни</div>`;
+
+  // ── RAM / Disk / CPU ────────────────────────
+  const ram  = d.ram  || null;
+  const disk = d.disk || null;
+  const cpu  = d.cpu  || null;
+  const load = d.load || null;
+
+  const ramBar  = ram
+    ? pbar("RAM", ram.used, ram.total,
+        `${fmtBshort(ram.used)} / ${fmtBshort(ram.total)}`)
+    : "";
+
+  const diskBar = disk
+    ? pbar("Disk /", disk.used, disk.total,
+        `${fmtBshort(disk.used)} / ${fmtBshort(disk.total)}`)
+    : "";
+
+  const cpuVal = cpu
+    ? `<div class="s2-item">
+        <div class="s2-label">CPU</div>
+        <div class="s2-val" style="color:${cpu.used_pct>=90?'var(--red)':cpu.used_pct>=70?'var(--orange)':'var(--text)'}">${cpu.used_pct}<span class="u">%</span></div>
+        ${cpu.temp_c != null ? `<div class="s2-sub">${cpu.temp_c}°C</div>` : ""}
+       </div>`
+    : "";
+
+  const loadVal = load
+    ? `<div class="s2-item">
+        <div class="s2-label">Load avg</div>
+        <div class="s2-val" style="font-size:11px">${load[0].toFixed(2)} ${load[1].toFixed(2)} ${load[2].toFixed(2)}</div>
+        ${d.procs != null ? `<div class="s2-sub">${d.procs} процессов</div>` : ""}
+       </div>`
+    : "";
+
+  const connsVal = d.conns != null
+    ? `<div class="s2-item">
+        <div class="s2-label">TCP conn</div>
+        <div class="s2-val">${d.conns}</div>
+       </div>`
+    : "";
+
+  const hasRow2 = ram || disk || cpu || load;
 
   cb.innerHTML = `
     <div class="stats">
@@ -453,6 +554,7 @@ function renderCard(i) {
       <div>
         <div class="sg-label">В среднем / день</div>
         <div class="sg-val small">${avgDaily != null ? fmtB(avgDaily) : "—"}</div>
+        ${since ? `<div class="sg-since">${esc(fmtSince(since))}</div>` : ""}
       </div>
       <div>
         <div class="sg-label">Uptime</div>
@@ -465,7 +567,15 @@ function renderCard(i) {
         </div>
         <div class="spark">${days.length ? spark : sparkEmpty}</div>
       </div>
-    </div>`;
+    </div>
+    ${hasRow2 ? `
+    <div class="stats2">
+      ${ramBar  ? `<div>${ramBar}</div>`  : "<div></div>"}
+      ${diskBar ? `<div>${diskBar}</div>` : "<div></div>"}
+      ${cpuVal}
+      ${loadVal}
+      ${connsVal}
+    </div>` : ""}`;
 }
 
 // ── Summary ──────────────────────────────────────────────
@@ -475,10 +585,7 @@ function updateSummary() {
   const pairs  = servers
     .map((s,i) => {
       if (cache[i]?.status !== "ok") return null;
-      return {
-        name:  s.name || cache[i].data.server_name,
-        total: curMonthTotal(cache[i].data),
-      };
+      return { name: s.name || cache[i].data.server_name, total: curMonthTotal(cache[i].data) };
     })
     .filter(Boolean)
     .sort((a,b) => b.total - a.total);
