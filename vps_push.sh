@@ -74,8 +74,8 @@ UPTIME_PRETTY="$(( UPTIME_SEC/86400 ))d $(( (UPTIME_SEC%86400)/3600 ))h $(( (UPT
 LOAD=$(awk '{print $1","$2","$3}' /proc/loadavg)
 
 # ── RAM (байты) ───────────────────────────────
-RAM_TOTAL=$(awk '/^MemTotal/{print $2*1024}'     /proc/meminfo)
-RAM_AVAIL=$(awk '/^MemAvailable/{print $2*1024}' /proc/meminfo)
+RAM_TOTAL=$(awk '/^MemTotal/{printf "%d\n", $2*1024}'     /proc/meminfo)
+RAM_AVAIL=$(awk '/^MemAvailable/{printf "%d\n", $2*1024}' /proc/meminfo)
 RAM_USED=$(( RAM_TOTAL - RAM_AVAIL ))
 
 # ── Диск / (байты) ────────────────────────────
