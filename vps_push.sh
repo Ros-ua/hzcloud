@@ -1,3 +1,4 @@
+#26.04.26
 #!/bin/bash
 # ─────────────────────────────────────────────
 # VPS Stats Push  |  github.com gist
@@ -74,9 +75,17 @@ UPTIME_PRETTY="$(( UPTIME_SEC/86400 ))d $(( (UPTIME_SEC%86400)/3600 ))h $(( (UPT
 LOAD=$(awk '{print $1","$2","$3}' /proc/loadavg)
 
 # ── RAM (байты) ───────────────────────────────
-RAM_TOTAL=$(awk '/^MemTotal/{printf "%d\n", $2*1024}'     /proc/meminfo)
+RAM_TOTAL=$(awk '/^MemTotal/{printf "%d\n", $2*1024}' /proc/meminfo)
 RAM_AVAIL=$(awk '/^MemAvailable/{printf "%d\n", $2*1024}' /proc/meminfo)
-RAM_USED=$(( RAM_TOTAL - RAM_AVAIL ))
+
+# Если /proc/meminfo сломан (возвращает INT_MAX) — читаем через free
+if [ "$RAM_TOTAL" -ge 2147483647 ] 2>/dev/null; then
+  RAM_TOTAL=$(free -b | awk '/^Mem:/{print $2}')
+  RAM_USED=$( free -b | awk '/^Mem:/{print $3}')
+  RAM_AVAIL=$(free -b | awk '/^Mem:/{print $7}')
+else
+  RAM_USED=$(( RAM_TOTAL - RAM_AVAIL ))
+fi
 
 # ── Диск / (байты) ────────────────────────────
 DISK_TOTAL=$(df -B1 / | awk 'NR==2{print $2}')
