@@ -520,12 +520,16 @@ function renderCard(i) {
     : "";
 
   const loadVal = load
-    ? `<div class="s2-item">
-        <div class="s2-label">Load avg</div>
-        <div class="s2-val" style="font-size:11px">${load[0].toFixed(2)} ${load[1].toFixed(2)} ${load[2].toFixed(2)}</div>
-        ${d.procs != null ? `<div class="s2-sub">${d.procs} процессов</div>` : ""}
-       </div>`
-    : "";
+      ? (() => {
+          const c = load[0] >= 2 ? 'var(--red)' : load[0] >= 1 ? 'var(--orange)' : 'var(--green)';
+          return `<div class="s2-item">
+            <div class="s2-label">Load avg</div>
+            <div class="s2-val" style="font-size:12px;color:${c}">${load[0].toFixed(2)}</div>
+            <div class="s2-sub">${load[1].toFixed(2)} · ${load[2].toFixed(2)}<br>1m · 5m · 15m</div>
+            ${d.procs != null ? `<div class="s2-sub" style="margin-top:3px">${d.procs} процессов</div>` : ""}
+          </div>`;
+        })()
+      : "";
 
   const connsVal = d.conns != null
     ? `<div class="s2-item">
