@@ -1,0 +1,26 @@
+apt install -y iperf3
+sysctl net.ipv4.tcp_available_congestion_control
+
+
+iperf3 -s -p 443
+
+for cc in bbr bbrplus; do
+  sysctl -w net.ipv4.tcp_congestion_control=$cc > /dev/null
+  echo -n "$cc upload: "
+  iperf3 -c 64.188.71.147 -p 443 -t 10 -f m 2>&1 | grep "sender" | awk '{print $7, $8}'
+  echo -n "$cc download: "
+  iperf3 -c 64.188.71.147 -p 443 -t 10 -f m -R 2>&1 | grep "sender" | awk '{print $7, $8}'
+done
+
+
+for cc in bbr bbrplus; do
+  sysctl -w net.ipv4.tcp_congestion_control=$cc > /dev/null
+  echo -n "$cc upload: "
+  iperf3 -c 64.188.71.147 -p 443 -t 3 -f m 2>&1 | grep "sender" | awk '{print $7, $8}'
+  echo -n "$cc download: "
+  iperf3 -c 64.188.71.147 -p 443 -t 3 -f m -R 2>&1 | grep "sender" | awk '{print $7, $8}'
+done
+
+
+
+
