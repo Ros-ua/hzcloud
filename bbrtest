@@ -22,5 +22,40 @@ for cc in bbr bbrplus; do
 done
 
 
+for cc in reno bbr bbrplus; do
+  sysctl -w net.ipv4.tcp_congestion_control=$cc > /dev/null
+  up_total=0; down_total=0
+  for i in $(seq 1 5); do
+    up=$(iperf3 -c 64.188.71.147 -p 443 -t 3 -f m 2>&1 | grep "sender" | awk '{print $7}')
+    down=$(iperf3 -c 64.188.71.147 -p 443 -t 3 -f m -R 2>&1 | grep "sender" | awk '{print $7}')
+    up_total=$(python3 -c "print($up_total + ${up:-0})")
+    down_total=$(python3 -c "print($down_total + ${down:-0})")
+    echo "$cc run$i: up=${up:-0} down=${down:-0} Mbits/sec"
+  done
+  python3 -c "print(f'$cc AVERAGE: up={$up_total/5:.0f} down={$down_total/5:.0f} Mbits/sec')"
+  echo "---"
+done
 
+
+
+for cc in reno bbr bbrplus; do
+  sysctl -w net.ipv4.tcp_congestion_control=$cc > /dev/null
+  up_total=0; down_total=0; up_count=0; down_count=0
+  for i in $(seq 1 15); do
+    up=$(iperf3 -c 64.188.71.147 -p 443 -t 5 -f m 2>&1 | grep "sender" | awk '{print $7}')
+    down=$(iperf3 -c 64.188.71.147 -p 443 -t 5 -f m -R 2>&1 | grep "sender" | awk '{print $7}')
+    # отбрасываем если меньше 50 Mbits (обрыв GFW)
+    up_total=$(python3 -c "v=${up:-0}; print($up_total + (v if v>=50 else 0))")
+    down_total=$(python3 -c "v=${down:-0}; print($down_total + (v if v>=50 else 0))")
+    up_count=$(python3 -c "v=${up:-0}; print($up_count + (1 if v>=50 else 0))")
+    down_count=$(python3 -c "v=${down:-0}; print($down_count + (1 if v>=50 else 0))")
+  done
+  python3 -c "
+up=$up_total; uc=$up_count
+down=$down_total; dc=$down_count
+u=up/uc if uc>0 else 0
+d=down/dc if dc>0 else 0
+print(f'$cc: up={u:.0f} ({uc}/15 valid)  down={d:.0f} ({dc}/15 valid)  combined={(u+d)/2:.0f} Mbits/sec')
+"
+done
 
