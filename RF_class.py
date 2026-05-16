@@ -53,6 +53,7 @@ class RF:
         self.min_health_single_exit = 2400  # Минимальное HP для выхода, если остался 1 живой
         self.min_health_group_exit = 4000  # Минимальное HP для выхода, если несколько живых
         self.term_low_hp_threshold = 12000
+        self.go_dange_cmd = "/go_dange_10015"
         self.bezvgroup = -1002220238697
         self.group59 = -1001323974021
         self.location = "🔥 61-65 Лес пламени"  # Локация по умолчанию
@@ -1143,7 +1144,7 @@ class RF:
             if last_message:
                 lstr = last_message[0].message.split('\n')
                 if any(condition in lstr[0] for condition in ["Ты дошел до локации.", "Вы уже находитесь в данной локации.", "Ты снова жив👼"]):
-                    await self.send_command( "/go_dange_10014")  # идти данж
+                    await self.send_command(self.go_dange_cmd)  # идти данж
                     return
             await asyncio.sleep(1)
     async def dangego(self):
@@ -2772,7 +2773,7 @@ class RF:
                                 "Данж будет через 1 минуту."
                             )
                         else:
-                            await self.send_command( "/go_dange_10014")
+                            await self.send_command(self.go_dange_cmd)
                     await event.message.delete()  # Удаляем сообщение
                 elif message_text == "_хил":
                     # Проверяем, что отправитель не является cave leader
