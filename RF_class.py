@@ -35,7 +35,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО NONE ===
         self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = self.group_members = None
         # === ЧИСЛА ===
-        self.version = "2.17"
+        self.version = "2.17.2"
         self.last_restart_at = datetime.datetime.now()
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
@@ -2249,14 +2249,9 @@ class RF:
         if self.is_in_caves and self.is_cave_leader:
             print("Через 50 минут в пещере как cave leader: шлём фольт всем, себе, затем кнопка (3)")
             for member_id in (self.group_members or []):    # перебираем всех участников группы
-                if member_id != self.cave_leader_id: # если участник не является cave leader, то отправляем сообщение о фольте
-                    try:
-                        entity = await self.client.get_entity(member_id)
-                        full_name = (entity.first_name or "") + (" " + entity.last_name if entity.last_name else "")
-                        if full_name == "🍀ΜῶμAsaLes🌸":
-                            continue
-                    except Exception:
-                        pass
+                if member_id != self.cave_leader_id:
+                    if member_id == 303259162: # 🍀ΜῶμAsaLes🌸
+                        continue
                     await asyncio.sleep(1)
                     await self.client.send_message(member_id, "Выходим из пещеры _фольт")
                     print(f"Отправлено сообщение участнику {member_id}: Выходим из пещеры _фольт")
