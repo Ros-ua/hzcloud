@@ -1909,7 +1909,8 @@ class RF:
                 "John Doe",
                 "Лучшее_что_было_в_моей_жизни-RF",
                 "👨‍🦳Пенсионер☠️",
-                "๖ۣۜᗯαsͥpwͣoͫℝt🐝"
+                "๖ۣۜᗯαsͥpwͣoͫℝt🐝",
+                "🍀ΜῶμAsaLes🌸"
             }
             # По умолчанию считаем, что мы лидеры пещеры
             self.is_cave_leader = True
@@ -2249,6 +2250,13 @@ class RF:
             print("Через 50 минут в пещере как cave leader: шлём фольт всем, себе, затем кнопка (3)")
             for member_id in (self.group_members or []):    # перебираем всех участников группы
                 if member_id != self.cave_leader_id: # если участник не является cave leader, то отправляем сообщение о фольте
+                    try:
+                        entity = await self.client.get_entity(member_id)
+                        full_name = (entity.first_name or "") + (" " + entity.last_name if entity.last_name else "")
+                        if full_name == "🍀ΜῶμAsaLes🌸":
+                            continue
+                    except Exception:
+                        pass
                     await asyncio.sleep(1)
                     await self.client.send_message(member_id, "Выходим из пещеры _фольт")
                     print(f"Отправлено сообщение участнику {member_id}: Выходим из пещеры _фольт")
