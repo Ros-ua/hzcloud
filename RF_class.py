@@ -35,7 +35,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО NONE ===
         self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = self.group_members = None
         # === ЧИСЛА ===
-        self.version = "2.17.2"
+        self.version = "5.24"
         self.last_restart_at = datetime.datetime.now()
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
@@ -2290,6 +2290,14 @@ class RF:
                         return
                     print("Отправляем команду /drink_102")
                     await self.send_command( "/drink_102")
+                    await event.message.delete()  # Удаляем сообщение
+                elif "_register" in message_text or "_reg" in message_text:
+                    # Проверяем, что отправитель не является cave leader
+                    if event.sender_id == self.cave_leader_id:
+                        print(f"Команда _register от cave leader {event.sender_id} игнорируется")
+                        return
+                    print("Отправляем команду /vote_register")
+                    await self.send_command( "/vote_register")
                     await event.message.delete()  # Удаляем сообщение
                 elif "_hero" in message_text:
                     # Отправляем команду /hero в игру
