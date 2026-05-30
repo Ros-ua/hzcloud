@@ -35,7 +35,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО NONE ===
         self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = self.group_members = None
         # === ЧИСЛА ===
-        self.version = "5.24"
+        self.version = "5.30"
         self.last_restart_at = datetime.datetime.now()
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
@@ -718,7 +718,7 @@ class RF:
         #         print("Ожидание CAPTCHA, действия не выполняются.")
         #         return  # Прерываем выполнение, если ожидаем CAPTCHA
         #     print("Персонаж был убит!")
-        #     # await self.send_command( RF.chv)
+        #     # await self.send_command(RF.chv)
         #     await self.check_arrival()
         elif any(phrase in line for line in lstr for phrase in [
             "Алтарь Хагал",
@@ -1542,7 +1542,7 @@ class RF:
             print("Обнаружено сообщение о времени. Вызываем gokragi()")
             self.killed_on_chv = True
             await asyncio.sleep(2)
-            await self.send_command( RF.chv)
+            await self.send_command(RF.chv)
             await self.gokragi()
             self.is_nacheve_active = False
             return True
@@ -1566,7 +1566,7 @@ class RF:
                 if self.go_to_heal:
                     print("Здоровье меньше или равно self.pvpgoheal. Отправляемся в ген. штаб для хила.")
                     await asyncio.sleep(2)
-                    await self.send_command( RF.chv)
+                    await self.send_command(RF.chv)
                     await self.wait_for_set_change() #не проверено
                     await asyncio.sleep(1)
                     await self.send_command( "🏛 В ген. штаб")
@@ -1578,7 +1578,7 @@ class RF:
                     self.is_nacheve_active = False
                     return True
                 else:
-                    await self.send_command( RF.chv)
+                    await self.send_command(RF.chv)
                     await self.wait_for_set_change() # не проверено
                     await asyncio.sleep(1)
                     # Проверяем имя пользователя для команды drink_103
@@ -2115,7 +2115,7 @@ class RF:
                         print("Копка активна, отправляем сообщение '🏛 В ген. штаб'")
                         await self.send_command( "🏛 В ген. штаб")
                         await asyncio.sleep(5)
-                        await self.send_command( RF.chv)
+                        await self.send_command(self.pvp_binds[-1][1])
                         await self.wait_for_set_change() #работает
                         await asyncio.sleep(1)
                         while self.is_moving:
@@ -2125,7 +2125,7 @@ class RF:
                         await asyncio.sleep(5)
                         await self.send_command( chosen_direction)
                     else:
-                        await self.send_command( RF.chv)
+                        await self.send_command(self.pvp_binds[-1][1])
                         await self.wait_for_set_change() #работает
                         await asyncio.sleep(1)
                         print(f"Копка не активна, сразу отправляем '{chosen_direction}'")
@@ -2140,7 +2140,7 @@ class RF:
                         print("Копка активна, отправляем сообщение '🏛 В ген. штаб'")
                         await self.send_command( "🏛 В ген. штаб")
                         await asyncio.sleep(5)
-                        await self.send_command( RF.chv)
+                        await self.send_command(self.pvp_binds[-1][1])
                         await self.wait_for_set_change()
                         await asyncio.sleep(1)
                         while self.is_moving:
@@ -2150,7 +2150,7 @@ class RF:
                         await asyncio.sleep(5)
                         await self.send_command( chosen_direction + "'")
                     else:
-                        await self.send_command( RF.chv)
+                        await self.send_command(self.pvp_binds[-1][1])
                         await self.wait_for_set_change()
                         await asyncio.sleep(1)
                         print(f"Копка не активна, сразу отправляем '{chosen_direction}'")
@@ -2165,7 +2165,7 @@ class RF:
                         print("Копка активна, отправляем сообщение '🏛 В ген. штаб'")
                         await self.send_command( "🏛 В ген. штаб")
                         await asyncio.sleep(5)
-                        await self.send_command( RF.chv)
+                        await self.send_command(self.pvp_binds[-1][1])
                         await self.wait_for_set_change()
                         await asyncio.sleep(1)
                         while self.is_moving:
@@ -2175,7 +2175,7 @@ class RF:
                         await asyncio.sleep(5)
                         await self.send_command( chosen_direction + "''")
                     else:
-                        await self.send_command( RF.chv)
+                        await self.send_command(self.pvp_binds[-1][1])
                         await self.wait_for_set_change()
                         await asyncio.sleep(1)
                         print(f"Копка не активна, сразу отправляем '{chosen_direction}''")
@@ -2190,7 +2190,7 @@ class RF:
                         print("Копка активна, отправляем сообщение '🏛 В ген. штаб'")
                         await self.send_command( "🏛 В ген. штаб")
                         await asyncio.sleep(5)
-                        await self.send_command( RF.chv)
+                        await self.send_command(self.pvp_binds[-1][1])
                         await self.wait_for_set_change()
                         await asyncio.sleep(1)
                         while self.is_moving:
@@ -2200,7 +2200,7 @@ class RF:
                         await asyncio.sleep(5)
                         await self.send_command( chosen_direction + "'''")
                     else:
-                        await self.send_command( RF.chv)
+                        await self.send_command(self.pvp_binds[-1][1])
                         await self.wait_for_set_change()
                         await asyncio.sleep(1)
                         print(f"Копка не активна, сразу отправляем '{chosen_direction}'''")
@@ -2386,7 +2386,7 @@ class RF:
                     if castle_command:
                         if self.kopka:
                             print(f"Отправляем комплект chv для замка {castle_command}")
-                            await self.send_command( RF.chv)
+                            await self.send_command(RF.chv)
                             await self.wait_for_set_change()
                             await asyncio.sleep(1)
                             print(f"Отправляем команду в ген. штаб")
@@ -2395,7 +2395,7 @@ class RF:
                             await asyncio.sleep(2)
                             await self.send_command( castle_command)
                         else:
-                            await self.send_command( RF.chv)
+                            await self.send_command(RF.chv)
                             await self.wait_for_set_change()
                             await asyncio.sleep(1)
                             await self.send_command( "💖 Пополнить здоровье")
@@ -2447,7 +2447,7 @@ class RF:
                             print("Копка активна, отправляем сообщение '🏛 В ген. штаб'")
                             await self.send_command("🏛 В ген. штаб")
                             await asyncio.sleep(5)
-                            await self.send_command(RF.chv)
+                            await self.send_command(self.pvp_binds[-1][1])
                             await self.wait_for_set_change()
                             await asyncio.sleep(1)
                             while self.is_moving:
@@ -2457,7 +2457,7 @@ class RF:
                             await asyncio.sleep(5)
                             await self.send_command(chosen_direction + "'")
                         else:
-                            await self.send_command(RF.chv)
+                            await self.send_command(self.pvp_binds[-1][1])
                             await self.wait_for_set_change()
                             await asyncio.sleep(1)
                             print(f"Копка не активна, сразу отправляем '{chosen_direction}'")
@@ -2476,7 +2476,7 @@ class RF:
                             print("Копка активна, отправляем сообщение '🏛 В ген. штаб'")
                             await self.send_command("🏛 В ген. штаб")
                             await asyncio.sleep(5)
-                            await self.send_command(RF.chv)
+                            await self.send_command(self.pvp_binds[-1][1])
                             await self.wait_for_set_change()
                             await asyncio.sleep(1)
                             while self.is_moving:
@@ -2486,7 +2486,7 @@ class RF:
                             await asyncio.sleep(5)
                             await self.send_command(chosen_direction + "''")
                         else:
-                            await self.send_command(RF.chv)
+                            await self.send_command(self.pvp_binds[-1][1])
                             await self.wait_for_set_change()
                             await asyncio.sleep(1)
                             print(f"Копка не активна, сразу отправляем '{chosen_direction}''")
@@ -2505,7 +2505,7 @@ class RF:
                             print("Копка активна, отправляем сообщение '🏛 В ген. штаб'")
                             await self.send_command("🏛 В ген. штаб")
                             await asyncio.sleep(5)
-                            await self.send_command(RF.chv)
+                            await self.send_command(self.pvp_binds[-1][1])
                             await self.wait_for_set_change()
                             await asyncio.sleep(1)
                             while self.is_moving:
@@ -2515,7 +2515,7 @@ class RF:
                             await asyncio.sleep(5)
                             await self.send_command(chosen_direction + "'''")
                         else:
-                            await self.send_command(RF.chv)
+                            await self.send_command(self.pvp_binds[-1][1])
                             await self.wait_for_set_change()
                             await asyncio.sleep(1)
                             print(f"Копка не активна, сразу отправляем '{chosen_direction}'''")
@@ -2621,7 +2621,7 @@ class RF:
                 elif "_данжи" in message_text:
                     self.mobs = False  # Устанавливаем флаг для данжей
                     # await self.client.send_message(self.cave_leader_id, "Ходим в данжи")  # Сообщение об изменении флага
-                    # await self.send_command( RF.chv)
+                    # await self.send_command(RF.chv)
                     await event.message.delete()  # Удаляем сообщение
                 elif "_выход" in message_text:
                     # Проверяем, что отправитель не является cave leader
