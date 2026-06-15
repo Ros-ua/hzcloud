@@ -35,7 +35,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО NONE ===
         self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = self.group_members = None
         # === ЧИСЛА ===
-        self.version = "6.13"
+        self.version = "6.15 test"
         self.last_restart_at = datetime.datetime.now()
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
@@ -238,6 +238,7 @@ class RF:
                     print(f"Не удалось получить здоровье для {self.your_name}, пропускаем.")
                     return
                 current_health = int(health_info.group(1))
+                self.my_health = current_health # добавлено
                 print(f"Текущее здоровье {self.your_name}: {current_health}")
                 # выбираем набор биндов в зависимости от режима
                 if not self.is_moving:
@@ -1090,10 +1091,45 @@ class RF:
             await self.set_moving_flag(duration)
             print(f"Движение начато: {lstr[0]}, продолжительность: {duration} секунд")
             # Добавляем проверку нахождения в пещерах и отправку проверки состава
+     
+     
+            # if self.is_in_caves:
+            #     await asyncio.sleep(5)  # Ждем 5 секунд
+            #     await self.send_command( "⚖️Проверить состав")
+            #     print("Отправлено сообщение: ⚖️Проверить состав (из-за движения в пещере)")
+
+
+            #добавлено
             if self.is_in_caves:
-                await asyncio.sleep(5)  # Ждем 5 секунд
-                await self.send_command( "⚖️Проверить состав")
-                print("Отправлено сообщение: ⚖️Проверить состав (из-за движения в пещере)")
+                selected_cmd = None
+                selected_threshold = float('inf')
+                for threshold, cmd in self.hp_binds:
+                    if self.my_health <= threshold and threshold < selected_threshold:
+                        selected_cmd = cmd
+                        selected_threshold = threshold
+                if selected_cmd and self.after_bind != selected_cmd:
+                    await asyncio.sleep(2)
+                    await self.send_command(selected_cmd)
+                    self.after_bind = selected_cmd
+                    print(f"Шаг в пещере: HP-сет {selected_threshold} HP ({selected_cmd}), my_health={self.my_health}")
+                else:
+                    print(f"Шаг в пещере: сет не менялся ({self.after_bind}), my_health={self.my_health}")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         elif "Ты прибыл в замок" in lstr[0]:
             self.in_castle = True
             print("Прибыли в замок")
