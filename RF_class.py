@@ -35,7 +35,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО NONE ===
         self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = self.group_members = None
         # === ЧИСЛА ===
-        self.version = "6.15 test"
+        self.version = "6.15 test2222222222"
         self.last_restart_at = datetime.datetime.now()
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
@@ -1344,6 +1344,7 @@ class RF:
                     return
                 if basilaris_hp < self.term_low_hp_threshold and basilaris_hp > 1:
                     self.term_low_hp = True
+                    self.active = True
                     self.go_to_heal = False
                     self.go_term_Basilaris = False
                     self.go_term_Aquilla = False
@@ -1360,6 +1361,7 @@ class RF:
                     return
                 if castitas_hp < self.term_low_hp_threshold and castitas_hp > 1:
                     self.term_low_hp = True
+                    self.active = True
                     self.go_to_heal = False
                     self.go_term_Aquilla = False
                     self.go_term_Basilaris = False
@@ -1376,6 +1378,7 @@ class RF:
                     return
                 if aquilla_hp < self.term_low_hp_threshold and aquilla_hp > 1:
                     self.term_low_hp = True
+                    self.active = True
                     self.go_to_heal = False
                     self.go_term_Aquilla = False
                     self.go_term_Basilaris = False
@@ -1393,12 +1396,20 @@ class RF:
                     # Обычная логика выбора алтаря
                     l_altars = []
                     if self.active:
-                        if not lstr[5].endswith("Castitas"): l_altars.append(0)
-                        if not lstr[6].endswith("Castitas"): l_altars.append(1)
-                        if not lstr[14].endswith("Castitas"): l_altars.append(2)
-                        if not lstr[15].endswith("Castitas"): l_altars.append(3)
-                        if not lstr[23].endswith("Castitas"): l_altars.append(4)
-                        if not lstr[24].endswith("Castitas"): l_altars.append(5)
+
+                        #добавляем все алтари
+                        l_altars = [0, 1, 2, 3, 4, 5]
+
+                        #спрятали
+                        # if not lstr[5].endswith("Castitas"): l_altars.append(0)
+                        # if not lstr[6].endswith("Castitas"): l_altars.append(1)
+                        # if not lstr[14].endswith("Castitas"): l_altars.append(2)
+                        # if not lstr[15].endswith("Castitas"): l_altars.append(3)
+                        # if not lstr[23].endswith("Castitas"): l_altars.append(4)
+                        # if not lstr[24].endswith("Castitas"): l_altars.append(5)
+
+
+
                     else:
                         if not lstr[5].endswith("Castitas"): l_altars.append(0)
                         if not lstr[6].endswith("Castitas"): l_altars.append(1)
