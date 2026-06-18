@@ -35,7 +35,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО NONE ===
         self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = self.group_members = None
         # === ЧИСЛА ===
-        self.version = "6.15 test3333333333"
+        self.version = "18.06 рефакторинг имён игроков"
         self.last_restart_at = datetime.datetime.now()
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
@@ -427,25 +427,9 @@ class RF:
                     pass
         elif "Ты уже находишься в данной локации!" in message.message:
             await asyncio.sleep(1)
-
-            #добавлено
             if self.active:
                 altar = random.choice(list(self.altar_dict.values()))
-
-
-            elif self.your_name == "👨‍🦳Пенсионер☠️":
-                # altar = random.choice(["🤖Алтарь Эйви", "🤖Алтарь Тир"])
-                altar = random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])
-            elif self.your_name == "๖ۣۜᗯαsͥpwͣoͫℝt🐝":
-                altar = random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])
-            elif self.your_name == "Ros_Hangzhou":
-                # altar = random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо", "🤖Алтарь Эйви", "🤖Алтарь Тир"])
-                altar = random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])    
-            elif self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
-                altar = random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])
-            elif self.your_name == "John Doe":
-                altar = random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])        
-            elif self.your_name == "Лучшее_что_было_в_моей_жизни-RF":
+            else:
                 altar = random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])
             await self.send_command(altar)
         # elif (lstr[-1].endswith("и воскреснешь через 10 минут.") or lstr[-1].startswith("Ты одержал победу над")) and self.in_castle:
@@ -587,19 +571,12 @@ class RF:
                 await self.cave_buttons_message.click(2)
         elif lstr[0].endswith("✅"):
             # await asyncio.sleep(1)
-            if self.your_name == "👨‍🦳Пенсионер☠️":
+            cave_done_players = {
+                "👨‍🦳Пенсионер☠️", "๖ۣۜᗯαsͥpwͣoͫℝt🐝", "Ros_Hangzhou",
+                "John Doe", "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗",
+            }
+            if self.your_name in cave_done_players:
                 await self.client.send_message(self.group59, "Пройдена")
-            elif self.your_name == "๖ۣۜᗯαsͥpwͣoͫℝt🐝":
-                await self.client.send_message(self.group59, "Пройдена")
-            elif self.your_name == "Ros_Hangzhou":
-                await self.client.send_message(self.group59, "Пройдена")
-            elif self.your_name == "John Doe":
-                await self.client.send_message(self.group59, "Пройдена")
-            elif self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
-                # Для этого игрока отправляем в обе группы
-                await self.client.send_message(self.group59, "Пройдена")
-                await asyncio.sleep(1)
-                # await self.client.send_message(self.bezvgroup, "Пройдена")
             self.waiting_for_captcha = False
             await asyncio.sleep(3)
             # Повторяем последнюю команду после CAPTCHA
@@ -827,42 +804,20 @@ class RF:
             elif self.terminal_type == "👩‍🚀 Терминал Basilaris":
                 self.current_location = "Basilaris терминал"
             await asyncio.sleep(1)
-            if self.your_name == "👨‍🦳Пенсионер☠️":
-                    await asyncio.sleep(1)
-                    if self.terminal_type == "🧝‍♀ Терминал Castitas":
-                        await self.nacheve()
-                    else:
-                        await self.vterminale()
-            if self.your_name == "Ros_Hangzhou":
-                    await asyncio.sleep(1)
-                    if self.terminal_type == "🧝‍♀ Терминал Castitas":
-                        await self.nacheve()
-                    else:
-                        await self.vterminale()
-            if self.your_name == "John Doe":
-                    await asyncio.sleep(1)
-                    if self.terminal_type == "🧝‍♀ Терминал Castitas":
-                        await self.nacheve()
-                    else:
-                        await self.vterminale()
-            if self.your_name == "Лучшее_что_было_в_моей_жизни-RF":
-                    await asyncio.sleep(1)
-                    if self.terminal_type == "🧝‍♀ Терминал Castitas":
-                        await self.nacheve()
-                    else:
-                        await self.vterminale()
-            if self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
-                    await asyncio.sleep(1)
-                    if self.terminal_type == "🧝‍♀ Терминал Castitas":
-                        await self.nacheve()
-                    else:
-                        await self.vterminale()
-            if self.your_name == "๖ۣۜᗯαsͥpwͣoͫℝt🐝":
-                    await asyncio.sleep(1)
-                    if self.terminal_type == "🧝‍♀ Терминал Castitas":
-                        await self.nacheve()
-                    else:
-                        await self.nacheve()
+            terminal_players = {
+                "👨‍🦳Пенсионер☠️", "Ros_Hangzhou", "John Doe",
+                "Лучшее_что_было_в_моей_жизни-RF", "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗",
+            }
+            if self.your_name in terminal_players:
+                await asyncio.sleep(1)
+                if self.terminal_type == "🧝‍♀ Терминал Castitas":
+                    await self.nacheve()
+                else:
+                    await self.vterminale()
+            elif self.your_name == "๖ۣۜᗯαsͥpwͣoͫℝt🐝":
+                # У Пчёлки в обеих ветках был nacheve() — всегда зовём его
+                await asyncio.sleep(1)
+                await self.nacheve()
            # if self.terminal_type == "🧝‍♀ Терминал Castitas":
             #     await self.nacheve()
             # elif self.terminal_type in ["🤖 Терминал Aquilla", "👩‍🚀 Терминал Basilaris"]:
@@ -1060,19 +1015,12 @@ class RF:
         ]):
             print("Капча")
             # Определяем куда отправлять сообщение в зависимости от имени игрока
-            if self.your_name == "👨‍🦳Пенсионер☠️":
+            captcha_players = {
+                "👨‍🦳Пенсионер☠️", "๖ۣۜᗯαsͥpwͣoͫℝt🐝", "Ros_Hangzhou",
+                "John Doe", "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗",
+            }
+            if self.your_name in captcha_players:
                 await self.client.send_message(self.group59, "Капча")
-            elif self.your_name == "๖ۣۜᗯαsͥpwͣoͫℝt🐝":
-                await self.client.send_message(self.group59, "Капча")
-            elif self.your_name == "Ros_Hangzhou":
-                await self.client.send_message(self.group59, "Капча")
-            elif self.your_name == "John Doe":
-                await self.client.send_message(self.group59, "Капча")
-            elif self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
-                # Для этого игрока отправляем в обе группы
-                await self.client.send_message(self.group59, "Капча")
-                await asyncio.sleep(1)
-                # await self.client.send_message(self.bezvgroup, "Капча")
             self.waiting_for_captcha = True
             # нажимаем капчу
             if message.reply_markup:
@@ -2063,27 +2011,16 @@ class RF:
                 # Список имен пользователей, для которых нужно отправлять /hero
                 users_need_hero = ["Ros_Hangzhou"]
                 # Логика для различных типов пользователей
-                if self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
-                    self.go_term_Basilaris = True
-                    self.go_term_Castitas = False
-                    self.go_term_Aquilla = False
-                elif self.your_name == "Ros_Hangzhou":
-                    self.go_term_Basilaris = True
-                    self.go_term_Castitas = False
-                    self.go_term_Aquilla = False
-                elif self.your_name == "John Doe":
-                    self.go_term_Basilaris = True
-                    self.go_term_Castitas = False
-                    self.go_term_Aquilla = False
-                elif self.your_name == "Лучшее_что_было_в_моей_жизни-RF":
-                    self.go_term_Basilaris = True
-                    self.go_term_Castitas = False
-                    self.go_term_Aquilla = False
-                elif self.your_name == "👨‍🦳Пенсионер☠️":
+                war_term_players = {
+                    "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗", "Ros_Hangzhou", "John Doe",
+                    "Лучшее_что_было_в_моей_жизни-RF", "👨‍🦳Пенсионер☠️",
+                }
+                if self.your_name in war_term_players:
                     self.go_term_Basilaris = True
                     self.go_term_Castitas = False
                     self.go_term_Aquilla = False
                 elif self.your_name == "๖ۣۜᗯαsͥpwͣoͫℝt🐝":
+                    # У Пчёлки дополнительно включён Castitas
                     self.go_term_Basilaris = True
                     self.go_term_Castitas = True
                     self.go_term_Aquilla = False
@@ -3269,20 +3206,9 @@ class RF:
             ])
         else:
             # Возвращаем алтарь в зависимости от имени
-            if self.your_name == "👨‍🦳Пенсионер☠️":
-                # return random.choice(["🤖Алтарь Эйви", "🤖Алтарь Тир"])
-                return random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])
-            elif self.your_name == "๖ۣۜᗯαsͥpwͣoͫℝt🐝":
-                return random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])
-            elif self.your_name == "Ros_Hangzhou":
-                # return random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо", "🤖Алтарь Эйви", "🤖Алтарь Тир"])
-                return random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])
-            elif self.your_name == "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗":
-                return random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])
-            elif self.your_name == "John Doe":
-                return random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])
-            elif self.your_name == "Лучшее_что_было_в_моей_жизни-RF":
-                return random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])
+            # Запасные варианты: Пенсионер — ["🤖Алтарь Эйви", "🤖Алтарь Тир"];
+            #                    Ros — ["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо", "🤖Алтарь Эйви", "🤖Алтарь Тир"]
+            return random.choice(["👩‍🚀Алтарь Иса", "👩‍🚀Алтарь Гебо"])
     async def handle_no_energy(self):
         print("нет энергии")
         # await asyncio.sleep(5) #на ивент
