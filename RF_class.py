@@ -35,7 +35,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО NONE ===
         self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = self.group_members = None
         # === ЧИСЛА ===
-        self.version = "18.06 прыжок в Basilaris"
+        self.version = "22.06 ещё игрок в Этер"
         self.last_restart_at = datetime.datetime.now()
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
@@ -847,6 +847,7 @@ class RF:
                 "Ros_Hangzhou",
                 # "𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗",
                 "๖ۣۜᗯαsͥpwͣoͫℝt🐝",
+                "Лучшее_что_было_в_моей_жизни-RF",
                 "пример",
             ]:
                 self.location = "🏔 Этер"
