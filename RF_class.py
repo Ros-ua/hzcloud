@@ -35,7 +35,7 @@ class RF:
         # === ВСЕ ЧТО РАВНО NONE ===
         self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = self.group_members = None
         # === ЧИСЛА ===
-        self.version = "22.06 ещё игрок в Этер"
+        self.version = "24.06 Дагаз на 37 минуте"
         self.last_restart_at = datetime.datetime.now()
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
@@ -2207,16 +2207,16 @@ class RF:
     async def pvp_heal_timer(self):
         """Таймер для изменения pvpgoheal через 43 минуты после начала войны"""
         print("Запущен таймер pvpgoheal на 43 минуты")
-        await asyncio.sleep(39 * 60)  # 39 минут
-        # На 39-й минуте: если сейчас на терминале — уходим на Дагаз
+        await asyncio.sleep(37 * 60)  # 37 минут
+        # На 37-й минуте: если сейчас на терминале — уходим на Дагаз
         if self.v_terminale:
-            print("39 минут: сейчас в терминале, отправляем переход на Алтарь Дагаз")
+            print("37 минут: сейчас в терминале, отправляем переход на Алтарь Дагаз")
             await self.send_command("🧝‍♀Алтарь Дагаз")
         self.go_term_Aquilla = False
         self.go_term_Basilaris = False
         self.go_term_Castitas = False
         self.active = True
-        await asyncio.sleep(2 * 60)  # +2 минуты (итого 41 минута)
+        await asyncio.sleep(4 * 60)  # +4 минуты (итого 41 минута)
         self.go_to_heal = False
         await asyncio.sleep(2 * 60)  # +2 минуты (итого 43 минуты)
         self.go_to_heal = True
