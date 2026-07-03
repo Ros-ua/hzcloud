@@ -37,7 +37,7 @@ class RF:
         # === СОБЫТИЯ ===
         self.sostav_event = asyncio.Event()  # "звонок": пришло сообщение "Состав:"
         # === ЧИСЛА ===
-        self.version = "03.07 хил и рес после состава"
+        self.version = "03.07 ждем состав дольше +10"
         self.last_restart_at = datetime.datetime.now()
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
@@ -176,10 +176,10 @@ class RF:
             # await asyncio.sleep(20)  # Ждем 20 секунд
             self.sostav_event.clear()  # сбрасываем старый сигнал
             try:
-                await asyncio.wait_for(self.sostav_event.wait(), timeout=16)
+                await asyncio.wait_for(self.sostav_event.wait(), timeout=26)
                 print("Хил: дождались состава")
             except asyncio.TimeoutError:
-                print("Хил: состав не пришел за 16 сек, действуем как раньше")
+                print("Хил: состав не пришел за 26 сек, действуем как раньше")
             await asyncio.sleep(4)  # пауза от 'Too many messages'
             if not self.is_player_dead and self.last_bind != self.hp_binds[0][1] and self.is_has_hil and self.extra_hil:
                 self.is_has_hil = False
@@ -561,10 +561,10 @@ class RF:
             # await asyncio.sleep(10)
             self.sostav_event.clear()  # сбрасываем старый сигнал
             try:
-                await asyncio.wait_for(self.sostav_event.wait(), timeout=12)
+                await asyncio.wait_for(self.sostav_event.wait(), timeout=22)
                 print("Рес: дождались состава")
             except asyncio.TimeoutError:
-                print("Рес: состав не пришел за 12 сек, действуем как раньше")
+                print("Рес: состав не пришел за 22 сек, действуем как раньше")
             if self.is_has_res and self.is_in_caves:  # Проверяем, что is_has_res равно True и мы в пещерах
                 self.is_has_res = False
                 # await asyncio.sleep(6)
