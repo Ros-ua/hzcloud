@@ -34,8 +34,10 @@ class RF:
         self.is_cave_leader = self.chv_is_running = self.is_run = self.na_nashem_altare = self.def_rudnik = self.after_caves = self.na_straj = self.is_player_dead = self.fast_cave = self.cave_task_running = self.waiting_for_captcha = self.is_moving = self.in_castle = self.v_terminale = self.is_training = self.cave_message_pinned = self.prem = self.go_term_Aquilla = self.go_term_Basilaris = self.go_term_Castitas = self.is_in_caves = self.is_in_gh = self.is_has_hil = self.is_has_res = self.is_nacheve_active = self.in_battle = self.term_low_hp = False
         # === ВСЕ ЧТО РАВНО NONE ===
         self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = self.group_members = None
+        # === СОБЫТИЯ ===
+        self.sostav_event = asyncio.Event()  # "звонок": пришло сообщение "Состав:"
         # === ЧИСЛА ===
-        self.version = "24.06 Дагаз на 37 минуте"
+        self.version = "03.07 хил и рес после состава"
         self.last_restart_at = datetime.datetime.now()
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
@@ -171,7 +173,14 @@ class RF:
             print(f"Статус has_hil обновлен: {self.is_has_hil}")
         # Логика смены снаряжения в зависимости от текущего здоровья
         elif self.extra_hill_hp <= self.my_health <= self.ned_hill_hp:
-            await asyncio.sleep(20)  # Ждем 20 секунд
+            # await asyncio.sleep(20)  # Ждем 20 секунд
+            self.sostav_event.clear()  # сбрасываем старый сигнал
+            try:
+                await asyncio.wait_for(self.sostav_event.wait(), timeout=16)
+                print("Хил: дождались состава")
+            except asyncio.TimeoutError:
+                print("Хил: состав не пришел за 16 сек, действуем как раньше")
+            await asyncio.sleep(4)  # пауза от 'Too many messages'
             if not self.is_player_dead and self.last_bind != self.hp_binds[0][1] and self.is_has_hil and self.extra_hil:
                 self.is_has_hil = False
                 await self.send_command( self.hp_binds[0][1])  # Максимальный HP-сет
@@ -549,10 +558,17 @@ class RF:
             self.my_health = self.my_max_health = self.hp_binds[0][0]
             self.after_bind = self.last_bind = self.hp_binds[0][1]  # Обновляем текущий бинд
             self.is_player_dead = True
-            await asyncio.sleep(10)
+            # await asyncio.sleep(10)
+            self.sostav_event.clear()  # сбрасываем старый сигнал
+            try:
+                await asyncio.wait_for(self.sostav_event.wait(), timeout=12)
+                print("Рес: дождались состава")
+            except asyncio.TimeoutError:
+                print("Рес: состав не пришел за 12 сек, действуем как раньше")
             if self.is_has_res and self.is_in_caves:  # Проверяем, что is_has_res равно True и мы в пещерах
                 self.is_has_res = False
-                await asyncio.sleep(6)
+                # await asyncio.sleep(6)
+                await asyncio.sleep(4)  # пауза от 'Too many messages'
                 await self.send_command( self.hp_binds[0][1])  # Надеваем бинд на самое большое HP
                 await self.wait_for_set_change() #жалоба
                 await asyncio.sleep(1)  # Ждем 3 секунды перед кликом
@@ -605,6 +621,7 @@ class RF:
             self.cave_message_pinned = False  # Сбрасываем флаг закрепления
             self.experience_history = []  # Добавлено: сброс истории опыта
         elif lstr[0].startswith("Состав:"):
+            self.sostav_event.set()  # сигнал всем, кто ждет состав (хил/рес)
             print("что там по составу")
             # Проверка баллов
             score_line = lstr[1]  # Предполагаем, что баллы находятся на второй строке
