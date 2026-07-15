@@ -37,7 +37,7 @@ class RF:
         # === СОБЫТИЯ ===
         self.sostav_event = asyncio.Event()  # "звонок": пришло сообщение "Состав:"
         # === ЧИСЛА ===
-        self.version = "03.07 _энка всем всегда в 59"
+        self.version = "15.07 _энка всем всегда в 59"
         self.last_restart_at = datetime.datetime.now()
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
