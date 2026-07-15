@@ -37,7 +37,7 @@ class RF:
         # === СОБЫТИЯ ===
         self.sostav_event = asyncio.Event()  # "звонок": пришло сообщение "Состав:"
         # === ЧИСЛА ===
-        self.version = "03.07 ждем состав дольше +10"
+        self.version = "03.07 _энка всем всегда в 59"
         self.last_restart_at = datetime.datetime.now()
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
@@ -2819,28 +2819,30 @@ class RF:
                     await event.message.delete()
                 elif "_энка" in message_text:
                     if self.last_energy_message:  # Проверяем, что last_energy_message не None
-                        if self.your_name in ["𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗", ]:
-                            # Для специального пользователя всегда отправляем в bezvgroup
-                            forwarded_msg = await self.last_energy_message.forward_to(self.bezvgroup)
-                        else:
-                            # Для остальных пользователей проверяем пещеры
-                            if self.is_in_caves:
-                                forwarded_msg = await self.last_energy_message.forward_to(self.group59)
-                            else:
-                                forwarded_msg = await self.last_energy_message.forward_to(self.vex_bot_id)
+                        # if self.your_name in ["𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗", ]:
+                        #     # Для специального пользователя всегда отправляем в bezvgroup
+                        #     forwarded_msg = await self.last_energy_message.forward_to(self.bezvgroup)
+                        # else:
+                        #     # Для остальных пользователей проверяем пещеры
+                        #     if self.is_in_caves:
+                        #         forwarded_msg = await self.last_energy_message.forward_to(self.group59)
+                        #     else:
+                        #         forwarded_msg = await self.last_energy_message.forward_to(self.vex_bot_id)
+                        forwarded_msg = await self.last_energy_message.forward_to(self.group59)  # все всегда шлют в 59
                         # Удаляем переслаанное сообщение через 3 секунды
                         await asyncio.sleep(3)
                         await forwarded_msg.delete()
                     else:
-                        if self.your_name in ["𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗", ]:
-                            # Для специального пользователя всегда отправляем в bezvgroup
-                            sent_msg = await self.client.send_message(self.bezvgroup, "ещё не капнуло")
-                        else:
-                            # Для остальных пользователей проверяем пещеры
-                            if self.is_in_caves:
-                                sent_msg = await self.client.send_message(self.group59, "ещё не капнуло")
-                            else:
-                                sent_msg = await self.client.send_message(self.vex_bot_id, "ещё не капнуло")
+                        # if self.your_name in ["𝕴𝖆𝖒𝖕𝖑𝖎𝖊𝖗", ]:
+                        #     # Для специального пользователя всегда отправляем в bezvgroup
+                        #     sent_msg = await self.client.send_message(self.bezvgroup, "ещё не капнуло")
+                        # else:
+                        #     # Для остальных пользователей проверяем пещеры
+                        #     if self.is_in_caves:
+                        #         sent_msg = await self.client.send_message(self.group59, "ещё не капнуло")
+                        #     else:
+                        #         sent_msg = await self.client.send_message(self.vex_bot_id, "ещё не капнуло")
+                        sent_msg = await self.client.send_message(self.group59, "ещё не капнуло")  # все всегда шлют в 59
                         # Удаляем отправленное сообщение через 3 секунды
                         await asyncio.sleep(3)
                         await sent_msg.delete()
