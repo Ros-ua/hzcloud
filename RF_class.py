@@ -37,7 +37,7 @@ class RF:
         # === СОБЫТИЯ ===
         self.sostav_event = asyncio.Event()  # "звонок": пришло сообщение "Состав:"
         # === ЧИСЛА ===
-        self.version = "15.07 _энка всем всегда в 59"
+        self.version = "16.07 пауза 2с перед пещерами"
         self.last_restart_at = datetime.datetime.now()
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
@@ -2607,6 +2607,7 @@ class RF:
                         await asyncio.sleep(120)
                         await self.send_command( "💖 Пополнить здоровье")
                         await self.wait_for_health_refill() #работает
+                        await asyncio.sleep(2)
                         await self.send_command( "🚠 Отправиться в пещеры")
                     await event.message.delete()  # Удаляем сообщение
                 elif "_шаг" in message_text:
