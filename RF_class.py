@@ -37,7 +37,7 @@ class RF:
         # === СОБЫТИЯ ===
         self.sostav_event = asyncio.Event()  # "звонок": пришло сообщение "Состав:"
         # === ЧИСЛА ===
-        self.version = "16.07 пауза 2с перед пещерами"
+        self.version = "16.07 в 20:54 не в пещере - идем на локацию"
         self.last_restart_at = datetime.datetime.now()
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
@@ -3182,10 +3182,11 @@ class RF:
             # Условие выхода из цикла (например, по какому-то флагу)
             if not self.is_in_caves or not self.is_cave_leader:  # Если не в пещере или не лидер, выходим из цикла
                 # await self.client.send_message(self.cave_leader_id, "Вы не были в пещере или не нажали кнопку.")  # Сообщение о том, что не нажали
-                if not self.waiting_for_captcha:  # Если не ждём капчу, отправляем /daily
+                if not self.waiting_for_captcha and not self.is_in_caves:  # не ждём капчу и точно НЕ в пещере
                     await asyncio.sleep(3)
                     # await self.send_command( "/daily")
-                    print ("Отправлено сообщение: /daily")
+                    await self.send_command(self.location)  # идём на свою локацию
+                    print(f"20:54: не в пещере, отправлена локация: {self.location}")
                 break
             # Если `self.is_moving` активен, ждем, пока он не станет `False`
             while self.is_moving:
