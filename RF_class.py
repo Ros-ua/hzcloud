@@ -37,7 +37,7 @@ class RF:
         # === СОБЫТИЯ ===
         self.sostav_event = asyncio.Event()  # "звонок": пришло сообщение "Состав:"
         # === ЧИСЛА ===
-        self.version = "16.07 отложки лидера в 20:54 в обеих ветках"
+        self.version = "17.07 Лучшее без отложек"
         self.last_restart_at = datetime.datetime.now()
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
@@ -3150,6 +3150,11 @@ class RF:
     async def schedule_cave_return(self):
         """Отложки самому себе (в 'Избранное') на возврат в пещеры.
         Телеграм отправит их сам, даже если бот в этот момент перезапустится."""
+        if self.your_name in [
+            "Лучшее_что_было_в_моей_жизни-RF",
+        ]:
+            print(f"Отложки не ставим: {self.your_name} в списке исключений")
+            return
         await asyncio.sleep(2)
         await self.client.send_message('me', '_состав', schedule=datetime.timedelta(minutes=40))
         await asyncio.sleep(2)
