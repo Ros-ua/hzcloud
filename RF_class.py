@@ -37,7 +37,7 @@ class RF:
         # === СОБЫТИЯ ===
         self.sostav_event = asyncio.Event()  # "звонок": пришло сообщение "Состав:"
         # === ЧИСЛА ===
-        self.version = "16.07 отложки лидера в 20:54 вне пещеры"
+        self.version = "16.07 отложки лидера в 20:54 в обеих ветках"
         self.last_restart_at = datetime.datetime.now()
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
@@ -3147,6 +3147,14 @@ class RF:
                         self.last_set_kingRagnar = new_set  # Обновляем last_set
                     print(f"Текущий сет: {self.last_set_kingRagnar}")
                     break
+    async def schedule_cave_return(self):
+        """Отложки самому себе (в 'Избранное') на возврат в пещеры.
+        Телеграм отправит их сам, даже если бот в этот момент перезапустится."""
+        await asyncio.sleep(2)
+        await self.client.send_message('me', '_состав', schedule=datetime.timedelta(minutes=40))
+        await asyncio.sleep(2)
+        await self.client.send_message('me', '_пещера', schedule=datetime.timedelta(minutes=45))
+        print("Отложки поставлены: '_состав' +40 мин, '_пещера' +45 мин")
     async def time_cave(self, lstr):  # Добавлен параметр lstr
         self.is_cave_leader = any(f"/group_guild_join_{self.cave_leader_id}" in line for line in lstr)
         # ДОБАВИТЬ ЭТУ СТРОКУ:
@@ -3188,18 +3196,15 @@ class RF:
                     await self.send_command(self.location)  # идём на свою локацию
                     print(f"20:54: не в пещере, отправлена локация: {self.location}")
                     if self.is_cave_leader:  # только лидер ставит отложки возврата в пещеры
-                        # Отложки самому себе (в "Избранное"): Телеграм отправит их сам, даже если бот перезапустится
-                        await asyncio.sleep(2)
-                        await self.client.send_message('me', '_состав', schedule=datetime.timedelta(minutes=40))
-                        await asyncio.sleep(2)
-                        await self.client.send_message('me', '_пещера', schedule=datetime.timedelta(minutes=45))
-                        print("Отложки поставлены: '_состав' +40 мин, '_пещера' +45 мин")
+                        await self.schedule_cave_return()
                 break
             # Если `self.is_moving` активен, ждем, пока он не станет `False`
             while self.is_moving:
                 await asyncio.sleep(2)  # Проверяем каждую секунду
             await asyncio.sleep(randint(10, 20))
             await self.rf_message.click(3)
+            # В эту ветку попадает только лидер, который был в пещере — тоже ставим отложки возврата
+            await self.schedule_cave_return()
             # await asyncio.sleep(5)
             # await self.send_command( "/daily")
             # await self.client.send_message(self.cave_leader_id, "Вы были в пещере и нажали кнопку.")  # Сообщение о нажатии
