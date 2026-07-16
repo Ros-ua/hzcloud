@@ -37,7 +37,7 @@ class RF:
         # === СОБЫТИЯ ===
         self.sostav_event = asyncio.Event()  # "звонок": пришло сообщение "Состав:"
         # === ЧИСЛА ===
-        self.version = "16.07 в 20:54 не в пещере - идем на локацию"
+        self.version = "16.07 отложки _состав и _пещера после выхода"
         self.last_restart_at = datetime.datetime.now()
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
@@ -3193,6 +3193,10 @@ class RF:
                 await asyncio.sleep(2)  # Проверяем каждую секунду
             await asyncio.sleep(randint(10, 20))
             await self.rf_message.click(3)
+            # Отложки самому себе (в "Избранное"): Телеграм отправит их сам, даже если бот перезапустится
+            await self.client.send_message('me', '_состав', schedule=datetime.timedelta(minutes=40))
+            await self.client.send_message('me', '_пещера', schedule=datetime.timedelta(minutes=45))
+            print("Отложки поставлены: '_состав' через 40 мин, '_пещера' через 45 мин")
             # await asyncio.sleep(5)
             # await self.send_command( "/daily")
             # await self.client.send_message(self.cave_leader_id, "Вы были в пещере и нажали кнопку.")  # Сообщение о нажатии
