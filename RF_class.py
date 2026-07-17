@@ -37,7 +37,7 @@ class RF:
         # === СОБЫТИЯ ===
         self.sostav_event = asyncio.Event()  # "звонок": пришло сообщение "Состав:"
         # === ЧИСЛА ===
-        self.version = "17.07 тест отложек _me"
+        self.version = "17.07 отложки 20 и 25-40 мин"
         self.last_restart_at = datetime.datetime.now()
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
@@ -3162,10 +3162,11 @@ class RF:
             print(f"Отложки не ставим: {self.your_name} в списке исключений")
             return
         await asyncio.sleep(2)
-        await self.client.send_message('me', '_состав', schedule=datetime.timedelta(minutes=40))
+        await self.client.send_message('me', '_состав', schedule=datetime.timedelta(minutes=20))
         await asyncio.sleep(2)
-        await self.client.send_message('me', '_пещера', schedule=datetime.timedelta(minutes=45))
-        print("Отложки поставлены: '_состав' +40 мин, '_пещера' +45 мин")
+        cave_delay = randint(25, 40)  # случайная минута возврата, чтобы не палиться
+        await self.client.send_message('me', '_пещера', schedule=datetime.timedelta(minutes=cave_delay))
+        print(f"Отложки поставлены: '_состав' +20 мин, '_пещера' +{cave_delay} мин")
     async def time_cave(self, lstr):  # Добавлен параметр lstr
         self.is_cave_leader = any(f"/group_guild_join_{self.cave_leader_id}" in line for line in lstr)
         # ДОБАВИТЬ ЭТУ СТРОКУ:
