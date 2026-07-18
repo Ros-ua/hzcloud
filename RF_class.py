@@ -37,7 +37,7 @@ class RF:
         # === СОБЫТИЯ ===
         self.sostav_event = asyncio.Event()  # "звонок": пришло сообщение "Состав:"
         # === ЧИСЛА ===
-        self.version = "17.07 отложки 20 и 25-40 мин"
+        self.version = "18.07 команда _privet"
         self.last_restart_at = datetime.datetime.now()
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
@@ -2561,10 +2561,10 @@ class RF:
                     msg = await self.client.send_message(event.chat_id, f"{self.version}\nРестарт: {restart_text}")
                     await asyncio.sleep(5)
                     await msg.delete()  # Удаляем сообщение о версии
-                elif "_me" in message_text:
+                elif "_privet" in message_text:
                     # Тест отложек: через минуту Телеграм сам отправит "привет" в Избранное
                     print("Тест отложки: ставим 'привет' в Избранное через минуту")
-                    await event.message.delete()  # Удаляем сообщение _me
+                    await event.message.delete()  # Удаляем сообщение _privet
                     await self.client.send_message('me', "привет", schedule=datetime.timedelta(minutes=1))
                     print("Отложка 'привет' поставлена на +1 минуту")
                 elif "_пещера" in message_text:
