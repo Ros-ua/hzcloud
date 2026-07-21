@@ -37,7 +37,7 @@ class RF:
         # === СОБЫТИЯ ===
         self.sostav_event = asyncio.Event()  # "звонок": пришло сообщение "Состав:"
         # === ЧИСЛА ===
-        self.version = "18.07 тест отложек переименован"
+        self.version = "21.07 время выхода по UTC"
         self.last_restart_at = datetime.datetime.now()
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
@@ -3183,11 +3183,12 @@ class RF:
         self.cave_task_running = True  # Устанавливаем флаг, что задача запущена
         print("Метод time_cave запущен.")
         # await self.client.send_message(self.cave_leader_id, "Метод time_cave запущен.")  # Отправка сообщения
-        # Константы для времени
+        # Константы для времени (по UTC: 20:54 UTC = за 6 мин до игровой полуночи = 5:00 утра по Китаю)
         CHECK_HOUR = 20
         CHECK_MINUTE = 54
         while True:
-            now = datetime.datetime.now()
+            # now = datetime.datetime.now()
+            now = datetime.datetime.now(datetime.timezone.utc)  # UTC — одинаково на любом сервере
             print(f"Текущее время: {now}")
             # await self.client.send_message(self.cave_leader_id, f"Текущее время на сервере: {now}")  # Отправка сообщения
             next_check = now.replace(hour=CHECK_HOUR, minute=CHECK_MINUTE, second=0, microsecond=0)
