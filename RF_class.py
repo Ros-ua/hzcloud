@@ -37,7 +37,7 @@ class RF:
         # === СОБЫТИЯ ===
         self.sostav_event = asyncio.Event()  # "звонок": пришло сообщение "Состав:"
         # === ЧИСЛА ===
-        self.version = "21.07 время выхода по UTC"
+        self.version = "21.07 проверка времени в личке"
         self.last_restart_at = datetime.datetime.now()
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
@@ -2567,6 +2567,31 @@ class RF:
                     await event.message.delete()  # Удаляем сообщение _privet
                     await self.client.send_message('me', "привет", schedule=datetime.timedelta(minutes=1))
                     print("Отложка 'привет' поставлена на +1 минуту")
+                elif "_time" in message_text:
+                    # Тест времени: текущее время и сколько осталось до 20:54 UTC (выход) и 21:00 UTC (рестарт)
+                    print("Получена команда показа времени")
+                    await event.message.delete()  # Удаляем сообщение
+                    now_utc = datetime.datetime.now(datetime.timezone.utc)
+                    now_local = datetime.datetime.now()
+                    # Ближайший выход из пещер: 20:54 UTC (та же математика, что в time_cave)
+                    exit_check = now_utc.replace(hour=20, minute=54, second=0, microsecond=0)
+                    if now_utc >= exit_check:
+                        exit_check += datetime.timedelta(days=1)
+                    # Ближайшая игровая полночь (обновление тотема, рестарт): 21:00 UTC
+                    midnight = now_utc.replace(hour=21, minute=0, second=0, microsecond=0)
+                    if now_utc >= midnight:
+                        midnight += datetime.timedelta(days=1)
+                    ost_exit = int((exit_check - now_utc).total_seconds())
+                    ost_mid = int((midnight - now_utc).total_seconds())
+                    msg = await self.client.send_message(
+                        event.chat_id,
+                        f"UTC: {now_utc.strftime('%H:%M:%S')}\n"
+                        f"Часы сервера: {now_local.strftime('%H:%M:%S')}\n"
+                        f"До выхода из пещер (20:54 UTC): {ost_exit // 3600}ч {(ost_exit % 3600) // 60}м\n"
+                        f"До игровой полуночи (21:00 UTC): {ost_mid // 3600}ч {(ost_mid % 3600) // 60}м"
+                    )
+                    await asyncio.sleep(10)
+                    await msg.delete()  # Удаляем сообщение с временем
                 elif "_пещера" in message_text:
                     # На аккаунте лидера команду выполняем всегда.
                     # На остальных аккаунтах игнорируем, если команду написал лидер.
