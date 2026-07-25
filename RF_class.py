@@ -37,7 +37,7 @@ class RF:
         # === СОБЫТИЯ ===
         self.sostav_event = asyncio.Event()  # "звонок": пришло сообщение "Состав:"
         # === ЧИСЛА ===
-        self.version = "26.07 моб для всех в группе 59"
+        self.version = "26.07 моб в группе сам удаляется"
         self.last_restart_at = datetime.datetime.now()
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
@@ -1998,6 +1998,15 @@ class RF:
             text = (event.message.text or "").lower().strip()
             if "_моб" in text and "_мобы" not in text:  # "_мобы" содержит "_моб" — отсекаем
                 print(f"Группа 59: команда _моб от {event.sender_id}")
+                if event.message.out:  # это моё собственное сообщение — мой бот удалит его через 10 сек
+                    async def delete_later(msg=event.message):
+                        await asyncio.sleep(10)
+                        try:
+                            await msg.delete()
+                            print("Команда в группе 59 удалена через 10 сек")
+                        except Exception as e:
+                            print(f"Не удалось удалить команду из группы 59: {e}")
+                    asyncio.create_task(delete_later())
                 await self.do_mob_command(text)
     def setup_war_listener(self):
         print("Устанавливаем обработчик сообщений для setup_war_listener")
