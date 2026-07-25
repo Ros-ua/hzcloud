@@ -37,7 +37,7 @@ class RF:
         # === СОБЫТИЯ ===
         self.sostav_event = asyncio.Event()  # "звонок": пришло сообщение "Состав:"
         # === ЧИСЛА ===
-        self.version = "21.07 проверка времени в личке"
+        self.version = "26.07 моб для всех в группе 59"
         self.last_restart_at = datetime.datetime.now()
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
@@ -135,7 +135,7 @@ class RF:
         # === ИНИЦИАЛИЗАЦИЯ КОМПОНЕНТОВ ===
         self.common_cave()
         self.setup_war_listener()
-        self.setup_captcha_listener()
+        self.setup_group_listener()
     def _contains_any_phrase(self, lines, phrases):
         """Оптимизированная проверка наличия фраз в строках. O(n) вместо O(n*m))"""
         if isinstance(phrases, str):
@@ -1975,26 +1975,30 @@ class RF:
                         if helth < self.ned_hill_hp:
                             await self.client.send_message(h_id, "Хил")
                     continue
-    def setup_captcha_listener(self):
-        """Устанавливает обработчик сообщений из группы для обработки 'Капча'"""
-        print("Устанавливаем обработчик сообщений для setup_captcha_listener")
+    async def do_mob_command(self, message_text):
+        """Логика команды _моб: запомнить N банок, при копке — в ген. штаб, иначе — на локацию"""
+        if self.is_in_caves:
+            return
+        match = re.search(r"_моб\s+(\d+)", message_text)
+        self.mob_drink_counter = int(match.group(1)) if match else 0  # 0 = не пить
+        self.mob_drink_total = self.mob_drink_counter  # Сохраняем общее количество для финального сообщения
+        self.drink_status_message_id = None  # Сбрасываем ID сообщения для новой серии
+        await asyncio.sleep(1)
+        if self.kopka:
+            await self.send_command("🏛 В ген. штаб")
+            await self.check_arrival()
+        else:
+            await self.send_command(self.location)
+    def setup_group_listener(self):
+        """Слушатель группы 59: команда _моб выполняется всеми ботами сразу.
+        (Раньше тут был setup_captcha_listener с 'У тебя капча' — больше не нужен.)"""
+        print("Устанавливаем обработчик сообщений для setup_group_listener")
         @self.client.on(events.NewMessage(chats=[self.group59]))
-        async def handle_group_captcha_message(event):
-            if event.message.text and "Капча" in event.message.text:
-                # Получаем ID отправителя сообщения
-                sender_id = event.message.from_id.user_id if event.message.from_id else None
-                # Отправляем сообщение только если оно от Ros_Hangzhou
-                if sender_id in (
-                    # self.ros_id,
-                    # self.pchelka_id,
-                    self.tomat_id,
-                ):
-                    # Отправляем сообщение в личные сообщения отправителю
-                    try:
-                        await self.client.send_message(sender_id, "У тебя капча")
-                        print(f"Отправлено сообщение в личные сообщения пользователю {sender_id}")
-                    except Exception as e:
-                        print(f"Ошибка при отправке сообщения пользователю {sender_id}: {e}")
+        async def handle_group59_message(event):
+            text = (event.message.text or "").lower().strip()
+            if "_моб" in text and "_мобы" not in text:  # "_мобы" содержит "_моб" — отсекаем
+                print(f"Группа 59: команда _моб от {event.sender_id}")
+                await self.do_mob_command(text)
     def setup_war_listener(self):
         print("Устанавливаем обработчик сообщений для setup_war_listener")
         @self.client.on(events.NewMessage(chats=-1001284047611))
@@ -2708,20 +2712,8 @@ class RF:
                     await self.send_command( "⚖️Проверить состав")
                     await event.message.delete()  # Удаляем сообщение
                 elif "_моб" in message_text:
-                    if self.is_in_caves:
-                        return
-                    match = re.search(r"_моб\s+(\d+)", message_text)
-                    self.mob_drink_counter = int(match.group(1)) if match else 0  # 0 = не пить
-                    self.mob_drink_total = self.mob_drink_counter  # Сохраняем общее количество для финального сообщения
-                    self.drink_status_message_id = None  # Сбрасываем ID сообщения для новой серии
-                    await asyncio.sleep(1)
-                    if self.kopka:
-                        await self.send_command("🏛 В ген. штаб")
-                        await event.message.delete()
-                        await self.check_arrival()
-                    else:
-                        await self.send_command(self.location)
-                        await event.message.delete()
+                    await event.message.delete()  # Удаляем сообщение
+                    await self.do_mob_command(message_text)
                 elif "_ивент" in message_text:
                     self.mobs = True
                     self.location = "🦇 51-60 Земли Изгнанников"  # Добавьте эту строку
