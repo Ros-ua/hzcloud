@@ -29,7 +29,7 @@ class RF:
     def __init__(self, client):
         self.client = client
         # === ВСЕ ЧТО РАВНО TRUE ===
-        self.extra_hil = self.kopka = self.mobs = self.active = self.go_to_heal = True
+        self.extra_hil = self.kopka = self.mobs = self.active = self.go_to_heal = self.war_exit_50 = True
         # === ВСЕ ЧТО РАВНО FALSE ===
         self.is_cave_leader = self.chv_is_running = self.is_run = self.na_nashem_altare = self.def_rudnik = self.after_caves = self.na_straj = self.is_player_dead = self.fast_cave = self.cave_task_running = self.waiting_for_captcha = self.is_moving = self.in_castle = self.v_terminale = self.is_training = self.cave_message_pinned = self.prem = self.go_term_Aquilla = self.go_term_Basilaris = self.go_term_Castitas = self.is_in_caves = self.is_in_gh = self.is_has_hil = self.is_has_res = self.is_nacheve_active = self.in_battle = self.term_low_hp = False
         # === ВСЕ ЧТО РАВНО NONE ===
@@ -37,7 +37,7 @@ class RF:
         # === СОБЫТИЯ ===
         self.sostav_event = asyncio.Event()  # "звонок": пришло сообщение "Состав:"
         # === ЧИСЛА ===
-        self.version = "26.07 моб в группе сам удаляется"
+        self.version = "30.07 флаг выхода на 50 минуте"
         self.last_restart_at = datetime.datetime.now()
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
@@ -515,6 +515,7 @@ class RF:
             "Ты направляешься в пещеры на санях",
         ]):
             self.is_in_caves = self.is_has_hil = self.is_has_res = self.extra_hil = True
+            self.war_exit_50 = True  # каждая новая пещера — выход на 50-й минуте войны снова включён
             self.my_health = self.my_max_health = self.hp_binds[0][0]
             self.after_bind = self.hp_binds[0][1]
             self.steps = 0  # Начинаем отслеживать шаги с 0
@@ -2270,7 +2271,8 @@ class RF:
         # Ждём ещё 25 минут (итого 50 минут от начала)
         await asyncio.sleep(25 * 60)
         # Если через 50 минут мы в пещере и мы cave leader — сначала фольт всем, себе, потом кнопка (3)
-        if self.is_in_caves and self.is_cave_leader:
+        # if self.is_in_caves and self.is_cave_leader:
+        if self.is_in_caves and self.is_cave_leader and self.war_exit_50:  # флаг снимается командой (война минус)
             print("Через 50 минут в пещере как cave leader: шлём фольт всем, себе, затем кнопка (3)")
             for member_id in (self.group_members or []):    # перебираем всех участников группы
                 if member_id != self.cave_leader_id:
@@ -2605,6 +2607,16 @@ class RF:
                     )
                     await asyncio.sleep(10)
                     await msg.delete()  # Удаляем сообщение с временем
+                elif "_война-" in message_text:
+                    # НЕ выходить из пещеры на 50-й минуте войны (до конца текущей пещеры)
+                    self.war_exit_50 = False
+                    print("Выход на 50-й минуте войны ОТКЛЮЧЕН")
+                    await event.message.delete()
+                elif "_война+" in message_text:
+                    # Снова выходить на 50-й минуте войны
+                    self.war_exit_50 = True
+                    print("Выход на 50-й минуте войны включен")
+                    await event.message.delete()
                 elif "_пещера" in message_text:
                     # На аккаунте лидера команду выполняем всегда.
                     # На остальных аккаунтах игнорируем, если команду написал лидер.
@@ -3704,6 +3716,7 @@ class RF:
         active_flags = []
         flags_to_check = {
             'is_cave_leader': 'is_cave_leader',
+            'war_exit_50': 'war_exit_50',
             'extra_hil': 'extra_hil',
             'mobs': 'mobs',
             'active': 'active',
