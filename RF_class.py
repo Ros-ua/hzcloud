@@ -37,7 +37,7 @@ class RF:
         # === СОБЫТИЯ ===
         self.sostav_event = asyncio.Event()  # "звонок": пришло сообщение "Состав:"
         # === ЧИСЛА ===
-        self.version = "30.07 флаг выхода на 50 минуте"
+        self.version = "02.08 банка в группе для живых"
         self.last_restart_at = datetime.datetime.now()
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
@@ -2009,6 +2009,21 @@ class RF:
                             print(f"Не удалось удалить команду из группы 59: {e}")
                     asyncio.create_task(delete_later())
                 await self.do_mob_command(text)
+            elif "_банка" in text or "_банку" in text or "_пить" in text:
+                if event.message.out:  # это моё собственное сообщение — мой бот удалит его через 10 сек
+                    async def delete_banka_later(msg=event.message):
+                        await asyncio.sleep(10)
+                        try:
+                            await msg.delete()
+                            print("Команда банки в группе 59 удалена через 10 сек")
+                        except Exception as e:
+                            print(f"Не удалось удалить команду банки из группы 59: {e}")
+                    asyncio.create_task(delete_banka_later())
+                if self.is_player_dead:
+                    print("Группа 59: банку не пьём — персонаж мёртв")
+                    return
+                print(f"Группа 59: команда банки от {event.sender_id}, пьём /drink_102")
+                await self.send_command("/drink_102")
     def setup_war_listener(self):
         print("Устанавливаем обработчик сообщений для setup_war_listener")
         @self.client.on(events.NewMessage(chats=-1001284047611))
