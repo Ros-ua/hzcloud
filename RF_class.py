@@ -37,7 +37,7 @@ class RF:
         # === СОБЫТИЯ ===
         self.sostav_event = asyncio.Event()  # "звонок": пришло сообщение "Состав:"
         # === ЧИСЛА ===
-        self.version = "02.08 банка в группе для живых"
+        self.version = "02.08 в пещере ЧВ-сет не надеваем"
         self.last_restart_at = datetime.datetime.now()
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
@@ -2084,8 +2084,11 @@ class RF:
                 asyncio.create_task(self.pvp_heal_timer())
                 if self.your_name not in users_need_hero:
                     await asyncio.sleep(10)
-                await self.send_command(RF.chv)
-                await self.wait_for_set_change()  # работает
+                # await self.send_command(RF.chv)
+                # await self.wait_for_set_change()  # работает
+                if not self.is_in_caves:  # в пещере сет не трогаем — продолжаем поход в своём
+                    await self.send_command(RF.chv)
+                    await self.wait_for_set_change()  # работает
                 if not any([self.is_in_caves, self.kopka, self.is_moving]):
                     await asyncio.sleep(1)
                     await self.send_command("💖 Пополнить здоровье")
