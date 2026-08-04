@@ -37,7 +37,7 @@ class RF:
         # === СОБЫТИЯ ===
         self.sostav_event = asyncio.Event()  # "звонок": пришло сообщение "Состав:"
         # === ЧИСЛА ===
-        self.version = "02.08 в пещере ЧВ-сет не надеваем"
+        self.version = "04.08 в пещеру только снаружи"
         self.last_restart_at = datetime.datetime.now()
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
@@ -2636,6 +2636,10 @@ class RF:
                     print("Выход на 50-й минуте войны включен")
                     await event.message.delete()
                 elif "_пещера" in message_text:
+                    # Работает только вне пещеры: уже в пещере — игнорируем
+                    if self.is_in_caves:
+                        print("Команда _пещера игнорируется: уже в пещере")
+                        return
                     # На аккаунте лидера команду выполняем всегда.
                     # На остальных аккаунтах игнорируем, если команду написал лидер.
                     if not self.is_cave_leader and event.sender_id == self.cave_leader_id:
