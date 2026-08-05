@@ -31,13 +31,13 @@ class RF:
         # === ВСЕ ЧТО РАВНО TRUE ===
         self.extra_hil = self.kopka = self.mobs = self.active = self.go_to_heal = self.war_exit_50 = True
         # === ВСЕ ЧТО РАВНО FALSE ===
-        self.is_cave_leader = self.chv_is_running = self.is_run = self.na_nashem_altare = self.def_rudnik = self.after_caves = self.na_straj = self.is_player_dead = self.fast_cave = self.cave_task_running = self.waiting_for_captcha = self.is_moving = self.in_castle = self.v_terminale = self.is_training = self.cave_message_pinned = self.prem = self.go_term_Aquilla = self.go_term_Basilaris = self.go_term_Castitas = self.is_in_caves = self.is_in_gh = self.is_has_hil = self.is_has_res = self.is_nacheve_active = self.in_battle = self.term_low_hp = False
+        self.is_cave_leader = self.chv_is_running = self.is_run = self.na_nashem_altare = self.def_rudnik = self.after_caves = self.na_straj = self.is_player_dead = self.fast_cave = self.cave_task_running = self.waiting_for_captcha = self.is_moving = self.in_castle = self.v_terminale = self.is_training = self.cave_message_pinned = self.prem = self.go_term_Aquilla = self.go_term_Basilaris = self.go_term_Castitas = self.is_in_caves = self.is_in_gh = self.is_has_hil = self.is_has_res = self.is_nacheve_active = self.in_battle = self.term_low_hp = self.war_in_hour = False
         # === ВСЕ ЧТО РАВНО NONE ===
         self.cave_buttons_message = self.elka_active = self.last_command = self.killed_on_chv = self.rf_message = self.last_talisman_info = self.cmd_altar = self.last_bind = self.after_bind = self.last_set_kingRagnar = self.move_timer = self.last_energy_message = self.got_reward = self.terminal_type = self.steps = self.cave_message_id = self.last_step = self.current_location = self.drink_status_message_id = self.group_members = None
         # === СОБЫТИЯ ===
         self.sostav_event = asyncio.Event()  # "звонок": пришло сообщение "Состав:"
         # === ЧИСЛА ===
-        self.version = "04.08 в пещеру только снаружи"
+        self.version = "04.08 перед войной шаг на каждую энергию"
         self.last_restart_at = datetime.datetime.now()
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
@@ -996,8 +996,9 @@ class RF:
         elif any(f"+1 к энергии 🔋{i}/5" in lstr[0] for i in range(1, 6)):
             self.last_energy_message = message  # Сохраняем сообщение о получении энергии
             # Проверяем, увеличилась ли энергия на 4 или 5
-            if any(f"+1 к энергии 🔋{i}/5" in lstr[0] for i in (4, 5)) and not self.def_rudnik and not self.elka_active:
-                await self.handle_energy()  # Вызываем обработчик энергии только для 4 и 5
+            # В последний час до войны (war_in_hour) в пещере шагаем на КАЖДУЮ энергию, не только 4/5
+            if (any(f"+1 к энергии 🔋{i}/5" in lstr[0] for i in (4, 5)) or (self.war_in_hour and self.is_in_caves)) and not self.def_rudnik and not self.elka_active:
+                await self.handle_energy()  # Вызываем обработчик энергии только для 4 и 5 (или каждую перед войной в пещере)
         # # данжи
         elif "Ты уверен, что хочешь попробовать пройти данж" in lstr[0]:
             await asyncio.sleep(1)
@@ -2054,6 +2055,7 @@ class RF:
                     await self.send_command(random_altar)
             elif any("Война в краговых шахтах началась!" in ln for ln in lines):
                 print("Обнаружено начало войны в крагах!")
+                self.war_in_hour = False  # война началась — предвоенный час кончился
                 # self.pvpgoheal = 4500
                 self.active = False
                 self.go_to_heal = True
@@ -2251,6 +2253,7 @@ class RF:
             # Обработка предупреждения о войне через час
             elif any("Война в краговых шахтах начнется через час!" in ln for ln in lines):
                 print("Обнаружено предупреждение о войне через час!")
+                self.war_in_hour = True  # последний час до войны: в пещере шагаем на каждую энергию
                 # Запускаем таймер на 58 минут
                 asyncio.create_task(self.war_preparation_timer())
     async def pvp_heal_timer(self):
@@ -3739,6 +3742,7 @@ class RF:
         flags_to_check = {
             'is_cave_leader': 'is_cave_leader',
             'war_exit_50': 'war_exit_50',
+            'war_in_hour': 'war_in_hour',
             'extra_hil': 'extra_hil',
             'mobs': 'mobs',
             'active': 'active',
