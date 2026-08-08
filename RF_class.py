@@ -37,7 +37,7 @@ class RF:
         # === СОБЫТИЯ ===
         self.sostav_event = asyncio.Event()  # "звонок": пришло сообщение "Состав:"
         # === ЧИСЛА ===
-        self.version = "04.08 перед войной шаг на каждую энергию"
+        self.version = "08.08 энка в группе из пещеры"
         self.last_restart_at = datetime.datetime.now()
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
@@ -2025,6 +2025,27 @@ class RF:
                     return
                 print(f"Группа 59: команда банки от {event.sender_id}, пьём /drink_102")
                 await self.send_command("/drink_102")
+            elif "_энка" in text:
+                if event.message.out:  # это моё собственное сообщение — мой бот удалит его через 10 сек
+                    async def delete_enka_later(msg=event.message):
+                        await asyncio.sleep(10)
+                        try:
+                            await msg.delete()
+                        except Exception as e:
+                            print(f"Не удалось удалить команду энки из группы 59: {e}")
+                    asyncio.create_task(delete_enka_later())
+                if not self.is_in_caves:
+                    print("Группа 59: энка — не в пещере, молчим")
+                    return
+                if self.is_player_dead:
+                    print("Группа 59: энка — персонаж мёртв, молчим")
+                    return
+                if self.last_energy_message:
+                    forwarded_msg = await self.last_energy_message.forward_to(self.group59)
+                else:
+                    forwarded_msg = await self.client.send_message(self.group59, "ещё не капнуло")
+                await asyncio.sleep(10)
+                await forwarded_msg.delete()  # Удаляем свою пересылку через 10 сек
     def setup_war_listener(self):
         print("Устанавливаем обработчик сообщений для setup_war_listener")
         @self.client.on(events.NewMessage(chats=-1001284047611))
