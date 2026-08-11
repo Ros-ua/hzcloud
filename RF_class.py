@@ -37,7 +37,7 @@ class RF:
         # === СОБЫТИЯ ===
         self.sostav_event = asyncio.Event()  # "звонок": пришло сообщение "Состав:"
         # === ЧИСЛА ===
-        self.version = "11.08 фольт в группе 59"
+        self.version = "11.08 фольт всем в группе 59"
         self.last_restart_at = datetime.datetime.now()
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
@@ -2055,9 +2055,7 @@ class RF:
                         except Exception as e:
                             print(f"Не удалось удалить команду фольта из группы 59: {e}")
                     asyncio.create_task(delete_folt_later())
-                if self.is_player_dead:
-                    print("Группа 59: фольт не надеваем — персонаж мёртв")
-                    return
+                # фольт надевают ВСЕ — и живые, и мёртвые (перед выходом из пещеры)
                 if hasattr(self, 'folt_binds') and self.folt_binds:
                     print(f"Группа 59: команда фольта от {event.sender_id}, надеваем сет")
                     await self.send_command(self.folt_binds[0][1])
