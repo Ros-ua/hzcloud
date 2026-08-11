@@ -37,7 +37,7 @@ class RF:
         # === СОБЫТИЯ ===
         self.sostav_event = asyncio.Event()  # "звонок": пришло сообщение "Состав:"
         # === ЧИСЛА ===
-        self.version = "08.08 энка в группе из пещеры"
+        self.version = "11.08 фольт в группе 59"
         self.last_restart_at = datetime.datetime.now()
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
@@ -2046,6 +2046,23 @@ class RF:
                     forwarded_msg = await self.client.send_message(self.group59, "ещё не капнуло")
                 await asyncio.sleep(10)
                 await forwarded_msg.delete()  # Удаляем свою пересылку через 10 сек
+            elif "_фольт" in text:
+                if event.message.out:  # это моё собственное сообщение — мой бот удалит его через 10 сек
+                    async def delete_folt_later(msg=event.message):
+                        await asyncio.sleep(10)
+                        try:
+                            await msg.delete()
+                        except Exception as e:
+                            print(f"Не удалось удалить команду фольта из группы 59: {e}")
+                    asyncio.create_task(delete_folt_later())
+                if self.is_player_dead:
+                    print("Группа 59: фольт не надеваем — персонаж мёртв")
+                    return
+                if hasattr(self, 'folt_binds') and self.folt_binds:
+                    print(f"Группа 59: команда фольта от {event.sender_id}, надеваем сет")
+                    await self.send_command(self.folt_binds[0][1])
+                else:
+                    print("Группа 59: фольт бинды не настроены")
     def setup_war_listener(self):
         print("Устанавливаем обработчик сообщений для setup_war_listener")
         @self.client.on(events.NewMessage(chats=-1001284047611))
