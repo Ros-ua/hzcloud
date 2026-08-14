@@ -37,7 +37,7 @@ class RF:
         # === СОБЫТИЯ ===
         self.sostav_event = asyncio.Event()  # "звонок": пришло сообщение "Состав:"
         # === ЧИСЛА ===
-        self.version = "11.08 фольт всем в группе 59"
+        self.version = "14.08 общий опрос версий в группе 59"
         self.last_restart_at = datetime.datetime.now()
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
@@ -2061,6 +2061,21 @@ class RF:
                     await self.send_command(self.folt_binds[0][1])
                 else:
                     print("Группа 59: фольт бинды не настроены")
+            elif text == "_ver":  # точное совпадение: ответы ботов сами попадают в эту же группу
+                if event.message.out:  # это моё собственное сообщение — мой бот удалит его через 20 сек
+                    async def delete_ver_later(msg=event.message):
+                        await asyncio.sleep(20)
+                        try:
+                            await msg.delete()
+                        except Exception as e:
+                            print(f"Не удалось удалить команду версии из группы 59: {e}")
+                    asyncio.create_task(delete_ver_later())
+                print(f"Группа 59: запрос версии от {event.sender_id}")
+                restart_text = self._format_restart_age()
+                msg = await self.client.send_message(
+                    self.group59, f"{self.your_name}\n{self.version}\nРестарт: {restart_text}")
+                await asyncio.sleep(20)
+                await msg.delete()  # Удаляем свой ответ через 20 сек
     def setup_war_listener(self):
         print("Устанавливаем обработчик сообщений для setup_war_listener")
         @self.client.on(events.NewMessage(chats=-1001284047611))
