@@ -37,7 +37,7 @@ class RF:
         # === СОБЫТИЯ ===
         self.sostav_event = asyncio.Event()  # "звонок": пришло сообщение "Состав:"
         # === ЧИСЛА ===
-        self.version = "19.08 гш в группе 59"
+        self.version = "19.08 общий выход из пещеры"
         self.last_restart_at = datetime.datetime.now()
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
@@ -2111,6 +2111,32 @@ class RF:
                     return
                 print(f"Группа 59: команда гш от {event.sender_id}")
                 await self.do_gsh_command()
+            elif "_выход" in text:
+                # Общий выход: ВСЕ надевают фольт, а пативод потом жмёт кнопку выхода из пещеры
+                if event.message.out:  # это моё собственное сообщение — мой бот удалит его через 10 сек
+                    async def delete_exit_later(msg=event.message):
+                        await asyncio.sleep(10)
+                        try:
+                            await msg.delete()
+                        except Exception as e:
+                            print(f"Не удалось удалить команду выхода из группы 59: {e}")
+                    asyncio.create_task(delete_exit_later())
+                folt_sent = False
+                if hasattr(self, 'folt_binds') and self.folt_binds:
+                    print(f"Группа 59: команда выхода от {event.sender_id} — надеваем фольт")
+                    await self.send_command(self.folt_binds[0][1])
+                    folt_sent = True
+                else:
+                    print("Группа 59: выход — фольт бинды не настроены")
+                if self.is_cave_leader:
+                    if self.is_in_caves:
+                        if folt_sent:
+                            await self.wait_for_set_change()
+                        await asyncio.sleep(2)
+                        await self.rf_message.click(3)
+                        print("Группа 59: пативод нажал выход из пещеры")
+                    else:
+                        print("Группа 59: пативод не в пещере — кнопку выхода не жмём")
     def setup_war_listener(self):
         print("Устанавливаем обработчик сообщений для setup_war_listener")
         @self.client.on(events.NewMessage(chats=-1001284047611))
