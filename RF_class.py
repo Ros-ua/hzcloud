@@ -37,7 +37,7 @@ class RF:
         # === СОБЫТИЯ ===
         self.sostav_event = asyncio.Event()  # "звонок": пришло сообщение "Состав:"
         # === ЧИСЛА ===
-        self.version = "28.08 общий выход из пещеры"
+        self.version = "28.08 гш как раньше, в 59 только выход"
         self.last_restart_at = datetime.datetime.now()
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
@@ -1991,24 +1991,6 @@ class RF:
             await self.check_arrival()
         else:
             await self.send_command(self.location)
-    async def do_gsh_command(self):
-        """Логика команды гш: при копке — макс-HP сет и в ген. штаб с отхилом, без копки — сет и пополнить здоровье"""
-        if self.kopka:
-            print("Отправляем комплект hp_{self.hp_binds[0][0]})")
-            await self.send_command( self.hp_binds[0][1])  # Используем переменную hp_{self.hp_binds[0][0]}) для надевания
-            await self.wait_for_set_change() #работает
-            await asyncio.sleep(1)
-            self.my_health = self.my_max_health = self.hp_binds[0][0]
-            print(f"Здоровье обновлено: {self.my_health}/{self.my_max_health}")
-            print("Отправляем команду /go_to_gsh")
-            await self.send_command( "🏛 В ген. штаб")
-            await self.arrival_hil()  # Вызываем arrival_hil после отправки в ген. штаб
-        else:
-            await self.send_command( self.hp_binds[0][1])
-            await self.wait_for_set_change() #работает
-            await asyncio.sleep(1)
-            self.my_health = self.my_max_health = self.hp_binds[0][0]
-            await self.send_command( "💖 Пополнить здоровье")
     def setup_group_listener(self):
         """Слушатель группы 59: команда _моб выполняется всеми ботами сразу.
         (Раньше тут был setup_captcha_listener с 'У тебя капча' — больше не нужен.)"""
@@ -2094,23 +2076,6 @@ class RF:
                     self.group59, f"{self.your_name}\n{self.version}\nРестарт: {restart_text}")
                 await asyncio.sleep(20)
                 await msg.delete()  # Удаляем свой ответ через 20 сек
-            elif "_гш" in text or "давайте в ген. штаб" in text:
-                if event.message.out:  # это моё собственное сообщение — мой бот удалит его через 10 сек
-                    async def delete_gsh_later(msg=event.message):
-                        await asyncio.sleep(10)
-                        try:
-                            await msg.delete()
-                        except Exception as e:
-                            print(f"Не удалось удалить команду гш из группы 59: {e}")
-                    asyncio.create_task(delete_gsh_later())
-                if self.is_cave_leader:
-                    print("Группа 59: гш — я пативод, не реагирую")
-                    return
-                if self.waiting_for_captcha:
-                    print("Группа 59: гш — жду капчу, пропускаю")
-                    return
-                print(f"Группа 59: команда гш от {event.sender_id}")
-                await self.do_gsh_command()
             elif "_выход" in text:
                 # Общий выход: ВСЕ надевают фольт, а пативод потом жмёт кнопку выхода из пещеры
                 if event.message.out:  # это моё собственное сообщение — мой бот удалит его через 10 сек
@@ -2576,7 +2541,22 @@ class RF:
                 elif ("_гш" in message_text or "Давайте в ген. штаб" in message_text) and not self.is_cave_leader and not self.waiting_for_captcha:
                     if event.sender_id == self.cave_leader_id:
                         return
-                    await self.do_gsh_command()
+                    if self.kopka:
+                        print("Отправляем комплект hp_{self.hp_binds[0][0]})")
+                        await self.send_command( self.hp_binds[0][1])  # Используем переменную hp_{self.hp_binds[0][0]}) для надевания
+                        await self.wait_for_set_change() #работает
+                        await asyncio.sleep(1)
+                        self.my_health = self.my_max_health = self.hp_binds[0][0]
+                        print(f"Здоровье обновлено: {self.my_health}/{self.my_max_health}")
+                        print("Отправляем команду /go_to_gsh")
+                        await self.send_command( "🏛 В ген. штаб")
+                        await self.arrival_hil()  # Вызываем arrival_hil после отправки в ген. штаб
+                    else:
+                        await self.send_command( self.hp_binds[0][1])
+                        await self.wait_for_set_change() #работает
+                        await asyncio.sleep(1)
+                        self.my_health = self.my_max_health = self.hp_binds[0][0]
+                        await self.send_command( "💖 Пополнить здоровье")
                     await event.message.delete()  # Удаляем сообщение
                 elif "_аргол" in message_text:
                     # Проверяем, что отправитель не является cave leader
