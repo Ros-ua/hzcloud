@@ -37,7 +37,7 @@ class RF:
         # === СОБЫТИЯ ===
         self.sostav_event = asyncio.Event()  # "звонок": пришло сообщение "Состав:"
         # === ЧИСЛА ===
-        self.version = "28.08.01 выход в группе 59"
+        self.version = "02.09.01 рес по панели без добычи"
         self.last_restart_at = datetime.datetime.now()
         self.vex_bot_id = 1033007754
         self.bot_id = 577009581
@@ -1146,6 +1146,13 @@ class RF:
             self.cave_buttons_message = message  # ← сохраняем кнопки отдельно
             await asyncio.sleep(2)
             await self.send_command( "⚖️Проверить состав")
+            return
+        if "не используете воскрешение" in lstr[0]:  # группа умирает: игра прислала панель с кнопками вместо Добычи
+            print("Панель 'воскрешение в течение 1 минуты' — сохраняем кнопки и запрашиваем состав")
+            self.rf_message = message
+            self.cave_buttons_message = message  # те же 4 кнопки: 0 здоровье, 1 воскреснуть, 2 дальше, 3 ген. штаб
+            await asyncio.sleep(2)
+            await self.send_command( "⚖️Проверить состав")  # разбудит ветку смерти → она нажмёт рес на этой панели
             return
     async def check_arrival_dange(self):  # ходим данжи
         print("check_arrival_dange")
